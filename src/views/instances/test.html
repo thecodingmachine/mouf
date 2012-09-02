@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<script src="utils.js"></script>
+		<script type="text/javascript">
+		var test = new Mouf.Promise();
+		test.then(function(arg1, arg2) {
+			alert("arg2: "+arg2);
+		});
+		test.triggerSuccess(window, 12,42);
+		
+		var test2 = new Mouf.Promise();
+		test2.triggerSuccess(window, 12,43);
+		test2.then(function(arg1, arg2) {
+			alert("arg2: "+arg2);
+		});
+		
+		</script>
+	</head>
+</html>

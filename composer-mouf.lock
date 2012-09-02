@@ -1,0 +1,74 @@
+{
+    "hash": "dbc4b8351ceb91637c1fa1e4ded94a3c",
+    "packages": [
+        {
+            "package": "mouf/html.htmlelement",
+            "version": "2.0.x-dev",
+            "source-reference": "c900ef7a7f1fa3c687c23e813b03d2251b8a524b",
+            "commit-date": "1345570368"
+        },
+        {
+            "package": "mouf/html.template.mouftemplate",
+            "version": "2.0.x-dev",
+            "source-reference": "95b9b9e0e24257ee71655a69e653c90fc10f5a00",
+            "commit-date": "1346348400"
+        },
+        {
+            "package": "mouf/html.template.templateinterface",
+            "version": "2.0.x-dev",
+            "source-reference": "67e3c1a7cfd8bfd22e3528e3e858c543aa4ff4ca",
+            "commit-date": "1346345609"
+        },
+        {
+            "package": "mouf/html.utils.weblibrarymanager",
+            "version": "2.0.x-dev",
+            "source-reference": "295f010575fac9ca6cef4086bf38d31bf6c8964b",
+            "commit-date": "1346405009"
+        },
+        {
+            "package": "mouf/mvc.splash",
+            "version": "4.0.x-dev",
+            "source-reference": "3b64a3983cf30eff7a670f06fb888383df406122",
+            "commit-date": "1346575639"
+        },
+        {
+            "package": "mouf/mvc.splash-common",
+            "version": "4.0.x-dev",
+            "source-reference": "513247291d3ff0c3a13c74020d45a35d992c672b",
+            "commit-date": "1346505239"
+        },
+        {
+            "package": "mouf/utils.i18n.fine",
+            "version": "3.0.x-dev",
+            "source-reference": "c7eebfced500a3c06140001d9b9e8f8d478099df",
+            "commit-date": "1346406534"
+        },
+        {
+            "package": "mouf/utils.log.errorlog_logger",
+            "version": "2.0.x-dev",
+            "source-reference": "258f20a3cbcd56abfb30ade29148d2d0ee4090fa",
+            "commit-date": "1346597740"
+        },
+        {
+            "package": "mouf/utils.log.log_interface",
+            "version": "2.0.x-dev",
+            "source-reference": "593727a9c81228e589e164eb7ee6b2c84715ed15",
+            "commit-date": "1346597766"
+        },
+        {
+            "package": "phpexcel/phpexcel",
+            "version": "v1.7.6"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "mouf/html.template.mouftemplate": 20,
+        "mouf/utils.i18n.fine": 20,
+        "mouf/mvc.splash": 20,
+        "mouf/utils.log.errorlog_logger": 20
+    }
+}
