@@ -52,8 +52,8 @@ if (!empty($this->constantsList)) {
 		} else {
 			echo '<input type="text" name="'.plainstring_to_htmlprotected($key).'" value="'.plainstring_to_htmlprotected(isset($def['value'])?$def['value']:$def['defaultValue']).'" />';
 		}
-		echo "<a href='register?name=".urlencode($key)."'><img src='".ROOT_URL."plugins/utils/icons/famfamfam/1.3/icons/pencil.png' alt='Edit' /></a>";
-		echo "<img src='".ROOT_URL."plugins/utils/icons/famfamfam/1.3/icons/cross.png' alt='Delete' onclick='deleteConstant(\"".plainstring_to_htmlprotected($key)."\")' />";
+		echo "<a href='register?name=".urlencode($key)."'><img src='".ROOT_URL."vendor/mouf/famfamfam/icons/pencil.png' alt='Edit' /></a>";
+		echo "<img src='".ROOT_URL."vendor/mouf/famfamfam/icons/cross.png' alt='Delete' onclick='deleteConstant(\"".plainstring_to_htmlprotected($key)."\")' />";
 		echo '</div>';
 		echo '</div>';
 	}

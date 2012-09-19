@@ -9,6 +9,9 @@
  */
 namespace Mouf;
 
+use Mouf\Reflection\MoufReflectionPropertyInterface;
+use Mouf\Reflection\MoufReflectionMethodInterface;
+
 /**
  * This class represents a property (as defined by the @Property annotation).
  * Since properties can be either public fields or setter methods, this class is used

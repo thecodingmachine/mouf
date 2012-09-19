@@ -9,7 +9,7 @@
  */
 namespace Mouf\Validator;
 
-use Mouf\HtmlElement\HtmlElementInterface;
+use Mouf\Html\HtmlElement\HtmlElementInterface;
 
 /**
  * Service specialized in validating the environment.

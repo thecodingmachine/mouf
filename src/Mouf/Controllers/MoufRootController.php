@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The base controller for Mouf (when the "mouf/" url is typed).
@@ -21,11 +21,11 @@ class MoufRootController extends Controller {
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
 	 *
-	 * @Action
+	 * @URL /
 	 * @Logged
 	 */
 	public function defaultAction() {
-		header("Location: ".ROOT_URL."mouf/validate/");
+		header("Location: ".ROOT_URL."validate/");
 	}
 }
 ?>

@@ -9,6 +9,13 @@
  */
 namespace Mouf\Actions;
 
+use Mouf\MoufInstanceDescriptor;
+
+use Mouf\MoufException;
+
+use Mouf\MoufManager;
+
+
 /**
  * This utility class should be used during package install processes
  * @author david
@@ -19,17 +26,41 @@ class InstallUtils {
 	public static $INIT_ADMIN = 2;
 		
 	public static function init($initMode) {
-		require_once dirname(__FILE__).'/../direct/utils/check_rights.php';
-		require_once dirname(__FILE__).'/../reflection/MoufReflectionClass.php';
+		require_once dirname(__FILE__).'/../../direct/utils/check_rights.php';
 		
+		$rootPath = self::findRootPath(getcwd()."/");
 		if ($initMode == self::$INIT_APP) {
-			require_once dirname(__FILE__).'/../../Mouf.php';
-			require_once dirname(__FILE__).'/../MoufPackageManager.php';
+			require_once $rootPath."mouf/Mouf.php";
 		} else {
-			require_once dirname(__FILE__).'/../MoufManager.php';
-			MoufManager::initMoufManager();
-			require_once dirname(__FILE__).'/../MoufAdmin.php';
-			require_once dirname(__FILE__).'/../MoufPackageManager.php';
+			if (file_exists($rootPath."vendor/mouf/mouf/mouf/Mouf.php")) {
+				require_once $rootPath."vendor/mouf/mouf/mouf/Mouf.php";
+			} else {
+				// We are installing a package in selfedit mode.
+				require_once $rootPath."mouf/Mouf.php";
+			}
+		}
+		
+		/*if ($initMode == self::$INIT_APP) {
+			require_once dirname(__FILE__).'/../../../../../../mouf/Mouf.php';
+			//require_once dirname(__FILE__).'/../MoufPackageManager.php';
+		} else {
+			require_once dirname(__FILE__).'/../../../mouf/Mouf.php';
+			//require_once dirname(__FILE__).'/../MoufManager.php';
+			//MoufManager::initMoufManager();
+			//require_once dirname(__FILE__).'/../MoufAdmin.php';
+			//require_once dirname(__FILE__).'/../MoufPackageManager.php';
+		}*/
+	}
+	
+	/**
+	 * Finds the root_path from the current working directory (that should be the directory containing install.php)
+	 * Nice thing with this technique: if this is a package part of Mouf dependencies, the ROOT_PATH is mouf and not the project.
+	 */
+	private static function findRootPath($cwd) {
+		if (file_exists($cwd."/mouf/Mouf.php")) {
+			return $cwd;
+		} else {
+			return self::findRootPath($cwd."../");
 		}
 	}
 	
@@ -41,7 +72,7 @@ class InstallUtils {
 	 * Therefore, to be effective, nothing should have been outputed.
 	 */
 	public static function continueInstall($selfEdit = false) {
-		header("Location: ".ROOT_URL."mouf/install/installStepDone?selfedit=".(($selfEdit)?"true":"false"));
+		header("Location: ".ROOT_URL."install/installStepDone?selfedit=".(($selfEdit)?"true":"false"));
 	}
 	
 	public static function massCreate($classes, $moufManager){
@@ -68,6 +99,28 @@ class InstallUtils {
 				$instance = self::createInstance($class, $moufManager);
 			}
 		}
+	}
+	
+	/**
+	 * Returns the instance $instanceName or creates it if it does not exist.
+	 * Throws an exception if the instance exist and is not of the requested class.
+	 * 
+	 * @param string $instanceName
+	 * @param string $className
+	 * @param MoufManager $moufManager
+	 * @return MoufInstanceDescriptor
+	 */
+	public static function getOrCreateInstance($instanceName, $className, MoufManager $moufManager) {
+		if ($moufManager->instanceExists($instanceName)) {
+			$instance = $moufManager->getInstanceDescriptor($instanceName);
+			if ($instance->getClassName() != $className) {
+				throw new MoufException("Invalid instance while installing package. The existing '$instanceName' instance should be a '$className'. Instead, we found an instance of the '{$instance->getClassName()}' class.");
+			}
+		} else {
+			$instance = $moufManager->createInstance($className);
+			$instance->setName($instanceName);
+		}
+		return $instance;
 	}
 	
 	public static function createInstance($class, $moufManager){

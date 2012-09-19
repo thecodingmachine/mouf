@@ -9,6 +9,9 @@
  */
 namespace Mouf\Actions;
 
+use Mouf\Mvc\Splash\Controllers\Controller;
+
+
 /**
  * The controller that performs the installation by running the MultiStepActionService in a loop.
  * 
@@ -61,8 +64,8 @@ class InstallController extends Controller {
 	public function defaultAction($selfedit = "false") {
 		$this->selfedit = $selfedit;
 		$this->actionsList = $this->multiStepActionService->getActionsList();
-		$this->template->addContentFile(dirname(__FILE__)."/views/install.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(__DIR__."/../../views/install/install.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -102,7 +105,7 @@ class InstallController extends Controller {
 		if (!$redirect) {
 			ob_start();
 			$this->actionsList = $this->multiStepActionService->getActionsList();
-			include dirname(__FILE__)."/views/displaySteps.php";
+			include __DIR__."/../../views/install/displaySteps.php";
 			$html = ob_get_clean();
 		}
 		

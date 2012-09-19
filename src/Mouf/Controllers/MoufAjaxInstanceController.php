@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * This controller displays the (not so) basic full ajax details page.
@@ -30,20 +30,20 @@ class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 	public function index($name, $selfedit = false) {
 		$this->initController($name, $selfedit);
 
-		$this->template->addCssFile("mouf/views/instances/defaultRenderer.css");
+		$this->template->addCssFile("src/views/instances/defaultRenderer.css");
 		
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/messages.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/utils.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/instances.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/defaultRenderer.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/moufui.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/jquery.scrollintoview.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/messages.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/utils.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/instances.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/defaultRenderer.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/moufui.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/saveManager.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");
 		
 		//$this->template->addContentFunction(array($this, "displayComponentView"));
-		$this->template->addContentFile(dirname(__FILE__)."/../../mouf/views/instances/viewInstance.php", $this);
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../src/views/instances/viewInstance.php", $this);
 		$this->template->addRightText("<div id='instanceList'></div>");
-		$this->template->draw();	
+		$this->template->toHtml();	
 	}
 	
 	/**

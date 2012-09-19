@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * This controller displays the JIT graph of the component.
@@ -32,9 +32,9 @@ class MoufDisplayGraphController extends AbstractMoufInstanceController {
 		
 		$template = $this->template;
 		$this->template->addHeadHtmlElement(new HtmlJSJit());
-		$this->template->addJsFile(ROOT_URL."mouf/views/displayGraph.js");
+		$this->template->addJsFile(ROOT_URL."src/views/displayGraph.js");
 		$template->addContentFile(dirname(__FILE__)."/../views/displayGraph.php", $this);
-		$template->draw();
+		$template->toHtml();
 	}
 	
 	

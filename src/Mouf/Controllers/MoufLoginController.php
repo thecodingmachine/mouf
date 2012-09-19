@@ -9,7 +9,8 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Security\Controllers\SimpleLoginController;
 
 /**
  * The MoufLoginController class provides the login page and login/logout mechanism for Mouf.
@@ -31,8 +32,8 @@ class MoufLoginController extends SimpleLoginController {
 	 */
 	public function defaultAction($login = null, $redirect = null) {
 		if (!file_exists(ROOT_PATH."MoufUsers.php")) {
-			$this->template->addContentFile(dirname(__FILE__)."/../views/missing_password_file.php", $this);
-			$this->template->draw();
+			$this->contentBlock->addFile(dirname(__FILE__)."/../views/missing_password_file.php", $this);
+			$this->template->toHtml();
 			return;
 		}
 		

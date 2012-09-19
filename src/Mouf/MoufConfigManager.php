@@ -16,6 +16,8 @@ namespace Mouf;
  * This class can be used to read and write from that file.
  *
  */
+use Mouf\Reflection\MoufReflectionProxy;
+
 class MoufConfigManager {
 
 	private $constants = null;

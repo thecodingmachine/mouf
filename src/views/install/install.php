@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 		jQuery('#errorZone').append("<div class='error'>An error occured in the install process. Error message:<br/><pre>"+xmlHttpRequest.responseText+"</pre></div>");
 	}});
 	var performNextStep = function() {
-		jQuery.getJSON("<?php echo ROOT_URL ?>mouf/install/nextstep", null, function(json){
+		jQuery.getJSON("<?php echo ROOT_URL ?>install/nextstep", null, function(json){
 			if (json.code == "finished") {
 				//jQuery('#installProcess').html("<div class='good'>Installation finished. TODO: redirect</div>");
 				jQuery('#installProcess').html(json.html);

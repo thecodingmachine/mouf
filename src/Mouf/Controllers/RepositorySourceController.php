@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller managing the repository list used to download the packages.
@@ -35,6 +35,15 @@ class RepositorySourceController extends Controller {
 	 * @var TemplateInterface
 	 */
 	public $template;
+	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
 	
 	/**
 	 * The list of repositories.
@@ -63,8 +72,8 @@ class RepositorySourceController extends Controller {
 			$this->repositoryUrls = $this->moufManager->getVariable("repositoryUrls");
 		}
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/displayRepositorySources.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/displayRepositorySources.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	protected $repositoryId = null;
@@ -87,8 +96,8 @@ class RepositorySourceController extends Controller {
 		
 		
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/editRepository.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -109,8 +118,8 @@ class RepositorySourceController extends Controller {
 		}
 		$this->repositoryUrls = $this->moufManager->getVariable("repositoryUrls");
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/editRepository.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**

@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use \Mouf\MoufManager;
+
 /**
  * Parses a document comment, and provides a set of getters on the different part of the comment.
  *
@@ -170,7 +172,12 @@ class MoufPhpDocComment {
 	
 		
 		$annotationClassName = $annotationName."Annotation";
-		if (class_exists($annotationClassName)) {
+		if (class_exists("\\Mouf\\Annotations\\".$annotationClassName)) {
+			foreach ($this->annotationsArrayAsString[$annotationName] as $value) {
+				$finalClassName = "\\Mouf\\Annotations\\".$annotationClassName;
+				$this->annotationsArrayAsObject[$annotationName][] = new $finalClassName($value);
+			}
+		} elseif (class_exists($annotationClassName)) {
 			foreach ($this->annotationsArrayAsString[$annotationName] as $value) {
 				$this->annotationsArrayAsObject[$annotationName][] = new $annotationClassName($value);
 			}

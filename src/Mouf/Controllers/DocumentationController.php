@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller displaying the documentation related to packages.
@@ -36,6 +36,15 @@ class DocumentationController extends Controller {
 	 */
 	public $template;
 	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+		
 	/**
 	 * The documentation menu.
 	 * 
@@ -86,8 +95,8 @@ class DocumentationController extends Controller {
 		//$this->moufPackageRoot = $this->packageManager->getOrderedPackagesList();
 		$this->packageList = $this->packageManager->getPackagesList();
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/doc/index.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(ROOT_PATH."src/views/doc/index.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	/**
@@ -221,7 +230,7 @@ class DocumentationController extends Controller {
 			$bodyStart = strpos($fileStr, "<body");
 			if ($bodyStart === false) {
 				$this->template->addContentText('<div class="staticwebsite">'.$fileStr.'</div>');
-				$this->template->draw();
+				$this->template->toHtml();
 			} else {
 				$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
 	
@@ -234,7 +243,7 @@ class DocumentationController extends Controller {
 				$body = substr($partBody, 0, $bodyEndTag);
 	
 				$this->template->addContentText('<div class="staticwebsite">'.$body.'</div>');
-				$this->template->draw();
+				$this->template->toHtml();
 			}
 		} elseif (strripos($filename, ".php") !== false) {
 			// PHP files are not accessible

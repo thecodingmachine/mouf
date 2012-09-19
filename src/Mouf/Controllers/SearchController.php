@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller managing full-text searches inside Mouf.
@@ -35,6 +35,15 @@ class SearchController extends Controller {
 	 * @var TemplateInterface
 	 */
 	public $template;
+	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
 	
 	/**
 	 * The search service references all the services that can searched in full-text.
@@ -72,8 +81,8 @@ class SearchController extends Controller {
 			$this->searchUrls[] = array("name"=>$service->getSearchModuleName(), "url"=>ROOT_URL."mouf/".$this->moufManager->findInstanceName($service)."/search");
 		}
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/search/results.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(ROOT_PATH."src/views/search/results.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	protected $repositoryId = null;
@@ -96,8 +105,8 @@ class SearchController extends Controller {
 		
 		
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/editRepository.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -118,8 +127,8 @@ class SearchController extends Controller {
 		}
 		$this->repositoryUrls = $this->moufManager->getVariable("repositoryUrls");
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/editRepository.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**

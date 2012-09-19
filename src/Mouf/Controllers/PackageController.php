@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller managing the list of packages included in the Mouf plugins directory.
@@ -35,6 +35,15 @@ class PackageController extends Controller implements DisplayPackageListInterfac
 	 * @var TemplateInterface
 	 */
 	public $template;
+	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
 	
 	/**
 	 * The service that will take actions to be performed to install.
@@ -156,8 +165,8 @@ class PackageController extends Controller implements DisplayPackageListInterfac
 		// Furthermore, we will sort packages with different version numbers by version number.
 		// So we will sort by group, then package, then version:
 		uasort($this->moufPackageList, array($this, "comparePackageGroup"));
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/displayPackagesList.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/displayPackagesList.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	public function comparePackageGroup(MoufPackage $package1, MoufPackage $package2) {
@@ -285,8 +294,8 @@ class PackageController extends Controller implements DisplayPackageListInterfac
 		//var_dump($this->moufDependencies); exit;
 				
 		if (((!empty($this->moufDependencies[MoufManager::SCOPE_APP]) || !empty($this->moufDependencies[MoufManager::SCOPE_ADMIN])) && $confirm=="false") || $this->toProposeUpgradePackage) {
-			$this->template->addContentFile(ROOT_PATH."mouf/views/packages/displayConfirmPackagesEnable.php", $this);
-			$this->template->draw();
+			$this->contentBlock->addFile(ROOT_PATH."src/views/packages/displayConfirmPackagesEnable.php", $this);
+			$this->template->toHtml();
 		} else {
 			
 			if (!array_search($this->package, $this->moufDependencies)) {
@@ -477,8 +486,8 @@ class PackageController extends Controller implements DisplayPackageListInterfac
 		
 		
 		if ((count($this->moufDependencies)>1 || count($this->toDeleteInstance)>0) && $confirm=="false") {
-			$this->template->addContentFile(ROOT_PATH."mouf/views/packages/displayConfirmPackagesDisable.php", $this);
-			$this->template->draw();	
+			$this->contentBlock->addFile(ROOT_PATH."src/views/packages/displayConfirmPackagesDisable.php", $this);
+			$this->template->toHtml();	
 		} else {
 			/*if (!array_search($this->package, $this->moufDependencies)) {
 				$this->moufDependencies[] = $this->package;

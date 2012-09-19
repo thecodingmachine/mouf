@@ -9,7 +9,9 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Html\HtmlElement\HtmlBlock;
+
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller that will call all validators on Mouf.
@@ -36,6 +38,14 @@ class MoufValidatorController extends Controller {
 	 */
 	public $template;
 	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
 	
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
@@ -47,8 +57,8 @@ class MoufValidatorController extends Controller {
 		if ($selfedit == "true") {
 			
 		}
-		$this->template->addContentFile(ROOT_PATH."mouf/views/validate.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/validate.php", $this);
+		$this->template->toHtml();
 	}
 }
 ?>

@@ -9,7 +9,10 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\MoufManager;
+
+use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Html\HtmlElement\HtmlBlock;
 
 /**
  * The controller managing the config.php file.
@@ -43,6 +46,14 @@ class ConfigController extends Controller {
 	 */
 	public $template;
 	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;	
 
 	/**
 	 * The list of constants defined.
@@ -59,7 +70,7 @@ class ConfigController extends Controller {
 	 * @param string $selfedit If true, the name of the component must be a component from the Mouf framework itself (internal use only) 
 	 * @param string $validation The validation message to display (either null, or confirmok).
 	 */
-	public function defaultAction($selfedit = "false", $validation = null) {
+	public function index($selfedit = "false", $validation = null) {
 		$this->selfedit = $selfedit;
 		
 		if ($selfedit == "true") {
@@ -70,8 +81,8 @@ class ConfigController extends Controller {
 		//$this->constantsList = $this->moufManager->getConfigManager()->getDefinedConstants();
 		$this->constantsList = $this->moufManager->getConfigManager()->getMergedConstants();
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/constants/displayConstantsList.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/constants/displayConstantsList.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -160,8 +171,8 @@ class ConfigController extends Controller {
 		// TODO: manage type!
 		//$this->type = $comment;
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/constants/registerConstant.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(ROOT_PATH."src/views/constants/registerConstant.php", $this);
+		$this->template->toHtml();
 	}
 
 	/**

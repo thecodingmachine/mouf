@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller managing the download of the packages.
@@ -46,6 +46,15 @@ class PackageDownloadController extends Controller implements DisplayPackageList
 	public $template;
 	
 	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+	
+	/**
 	 * The list of repositories.
 	 * 
 	 * @var array(array("name"=>string,"url"=>string))
@@ -72,8 +81,8 @@ class PackageDownloadController extends Controller implements DisplayPackageList
 			$this->repositoryUrls = $this->moufManager->getVariable("repositoryUrls");
 		}
 		
-		$this->template->addContentFile(ROOT_PATH."mouf/views/packages/displayDownloadPackages.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/displayDownloadPackages.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	protected $moufPackageRoot;

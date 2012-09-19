@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * This abstract controller helps performing basic operations to display a detail instance page
@@ -52,6 +52,15 @@ abstract class AbstractMoufInstanceController extends Controller {
 	 */
 	public $template;
 
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+	
 	/**
 	 * This function initiates the class variables of the controller according to the parameters passed.
 	 * It will also configure the template to have the correct entry, especially in the right menu thazt is context dependent.

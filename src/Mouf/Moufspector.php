@@ -13,6 +13,8 @@ namespace Mouf;
  * This class is used internally by Mouf and is specialized in analysing classes to find properties, etc... depending on the annotations. 
  *
  */
+use Mouf\Reflection\MoufReflectionClass;
+
 class Moufspector {
 	
 	/**

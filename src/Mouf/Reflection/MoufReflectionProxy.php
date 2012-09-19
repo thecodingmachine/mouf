@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Exception;
+
 /**
  * Class specialized in forwarding a reflexion request to another script that will perform it.
  * It is useful to perform reflexion in a separate script because in another script, the 
@@ -25,7 +27,7 @@ class MoufReflectionProxy {
 	 * @return MoufXmlReflectionClass
 	 */
 	public static function getClass($className, $selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/get_class.php?class=".$className."&selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_class.php?class=".$className."&selfedit=".(($selfEdit)?"true":"false");
 
 		$response = self::performRequest($url);
 		
@@ -39,7 +41,7 @@ class MoufReflectionProxy {
 	 * @return array<string>
 	 */
 	public static function getInstances($baseClass, $selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/get_instances.php?class=".$baseClass."&selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_instances.php?class=".$baseClass."&selfedit=".(($selfEdit)?"true":"false");
 		
 		$response = self::performRequest($url);
 
@@ -53,7 +55,7 @@ class MoufReflectionProxy {
 	}
 	
 	public static function getComponentsList($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/get_components_list.php?selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_components_list.php?selfedit=".(($selfEdit)?"true":"false");
 
 		$response = self::performRequest($url);
 
@@ -68,14 +70,14 @@ class MoufReflectionProxy {
 	}
 	
 	public static function getEnhancedComponentsList($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/get_enhanced_components_list.php?selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_enhanced_components_list.php?selfedit=".(($selfEdit)?"true":"false");
 
 		$response = self::performRequest($url);
 
 		$obj = unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\plainstring_to_htmlprotected($url)."'>".\plainstring_to_htmlprotected($url)."</a>");
 		}
 		
 		return $obj;
@@ -90,7 +92,7 @@ class MoufReflectionProxy {
 	 */
 	public static function getConfigConstants($selfEdit) {
 
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/get_defined_constants.php?selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_defined_constants.php?selfedit=".(($selfEdit)?"true":"false");
 		
 		$response = self::performRequest($url);
 
@@ -114,7 +116,7 @@ class MoufReflectionProxy {
 	 * @throws Exception
 	 */
 	public static function analyzeIncludes($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."mouf/direct/analyze_includes.php?selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/analyze_includes.php?selfedit=".(($selfEdit)?"true":"false");
 		
 		$response = self::performRequest($url);
 
@@ -172,7 +174,7 @@ class MoufReflectionProxy {
 		
 		
 		if( curl_error($ch) ) { 
-			throw new Exception("An error occured: ".curl_error($ch));
+			throw new \Exception("An error occured: ".curl_error($ch));
 		}
 		curl_close( $ch );
 		

@@ -9,7 +9,7 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * This controller displays the (not so) basic details page.
@@ -28,11 +28,11 @@ class MoufInstanceController extends AbstractMoufInstanceController {
 	public function defaultAction($name, $selfedit = false) {
 		$this->initController($name, $selfedit);
 		
-		$this->template->addJsFile(ROOT_URL."mouf/views/displayComponent.js");
+		$this->template->addJsFile(ROOT_URL."src/views/displayComponent.js");
 		
 		//$this->template->addContentFunction(array($this, "displayComponentView"));
-		$this->template->addContentFile(dirname(__FILE__)."/../../mouf/views/displayComponent.php", $this);
-		$this->template->draw();	
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../src/views/displayComponent.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	/**
@@ -40,7 +40,7 @@ class MoufInstanceController extends AbstractMoufInstanceController {
 	 *
 	 */
 	/*public function displayComponentView() {
-		include(dirname(__FILE__)."/../../mouf/views/displayComponent.php");
+		include(dirname(__FILE__)."/../../src/views/displayComponent.php");
 	}*/
 	
 	/**
@@ -57,9 +57,9 @@ class MoufInstanceController extends AbstractMoufInstanceController {
 		
 		$template = $this->template;
 		$this->template->addHeadHtmlElement(new HtmlJSJit());
-		$this->template->addJsFile(ROOT_URL."mouf/views/displayGraph.js");
+		$this->template->addJsFile(ROOT_URL."src/views/displayGraph.js");
 		$template->addContentFile(dirname(__FILE__)."/../views/displayGraph.php", $this);
-		$template->draw();
+		$template->toHtml();
 	}
 	
 	
@@ -286,7 +286,7 @@ class MoufInstanceController extends AbstractMoufInstanceController {
 		echo '<span class="sessionmarker" '.$hideSession.'>session</span> ';
 		echo '<span class="configmarker" '.$hideConfig.'>config</span>';
 		echo '<span class="requestmarker" '.$hideRequest.'>request</span>';
-		echo '<a onclick="onPropertyOptionsClick(\''.$property->getName().'\')" href="javascript:void(0)" ><img src="'.ROOT_URL.'mouf/views/images/bullet_wrench.png" alt="Options" /></a>';
+		echo '<a onclick="onPropertyOptionsClick(\''.$property->getName().'\')" href="javascript:void(0)" ><img src="'.ROOT_URL.'src/views/images/bullet_wrench.png" alt="Options" /></a>';
 		echo '</span>';
 	}
 }

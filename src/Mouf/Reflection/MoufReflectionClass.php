@@ -13,7 +13,7 @@ namespace Mouf\Reflection;
  * Reflection class extending ReflectionClass in order to access annotations.
  * 
  */
-class MoufReflectionClass extends ReflectionClass implements MoufReflectionClassInterface {
+class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClassInterface {
 	
 	/**
 	 * The phpDocComment we will use to access annotations.

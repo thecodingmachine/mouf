@@ -9,7 +9,8 @@
  */
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Html\HtmlElement\HtmlBlock;
 
 /**
  * The controller managing the list of developer components included in the Mouf app.
@@ -37,6 +38,15 @@ class ComponentsController extends Controller {
 	public $template;
 	
 	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+		
+	/**
 	 * The errors returned by analyzing the files.
 	 * @var array
 	 */
@@ -59,11 +69,11 @@ class ComponentsController extends Controller {
 		}
 				
 		$template = $this->template;
-		//$this->template->addJsFile(ROOT_URL."mouf/views/displayComponent.js");
+		//$this->template->addJsFile(ROOT_URL."src/views/displayComponent.js");
 		
 		$this->analyzeErrors = MoufReflectionProxy::analyzeIncludes($selfedit == "true");
 		$template->addContentFile(dirname(__FILE__)."/../views/displayComponentList.php", $this);
-		$template->draw();
+		$template->toHtml();
 	}
 	
 	/**

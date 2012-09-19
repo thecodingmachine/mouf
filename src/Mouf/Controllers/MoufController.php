@@ -7,9 +7,16 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
+
 namespace Mouf\Controllers;
 
-use Mouf\Splash\Controller;
+use Mouf\Html\HtmlElement\HtmlBlock;
+use Mouf\Reflection\MoufReflectionProxy;
+use Mouf\MoufManager;
+
+use Mouf\MoufSearchable;
+
+use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
  * The controller allowing access to the Mouf framework.
@@ -41,6 +48,15 @@ class MoufController extends Controller implements MoufSearchable {
 	 */
 	public $template;
 	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+		
 	/**
 	 * Array of all instances sorted by package and by class.
 	 *
@@ -231,8 +247,9 @@ class MoufController extends Controller implements MoufSearchable {
 		if ($this->ajax) {
 			$this->loadFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php");
 		} else {
-			$this->template->addContentFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php", $this);
-			$this->template->draw();
+			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/listComponentsByDirectory.php", $this);
+			//$this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php", $this);
+			$this->template->toHtml();
 		}
 	}
 	
@@ -251,8 +268,8 @@ class MoufController extends Controller implements MoufSearchable {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$this->template->addContentFile(dirname(__FILE__)."/../views/listComponents.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponents.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -270,7 +287,7 @@ class MoufController extends Controller implements MoufSearchable {
 		$template = $this->template;
 		$template->addContentFunction(array($this, "displayNewInstanceScreen"), $componentsList, $selfedit, $instanceName, $instanceClass);
 		//$template->addContentFile(dirname(__FILE__)."/../views/displayNewInstance.php", $this);
-		$template->draw();	
+		$template->toHtml();	
 	}
 	
 	/**
@@ -284,19 +301,19 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->instanceClass = $instanceClass;
 		$this->selfedit = $selfedit;
 		
-		$this->template->addCssFile("mouf/views/instances/defaultRenderer.css");
+		$this->template->addCssFile("src/views/instances/defaultRenderer.css");
 		
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/messages.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/utils.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/instances.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/defaultRenderer.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/moufui.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."mouf/views/instances/jquery.scrollintoview.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/messages.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/utils.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/instances.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/defaultRenderer.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/moufui.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/saveManager.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");
 		
 		$template = $this->template;
 		$template->addContentFile(dirname(__FILE__)."/../views/instances/newInstance.php", $this);
-		$template->draw();	
+		$template->toHtml();	
 	}
 	
 	/**
