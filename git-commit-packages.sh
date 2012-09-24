@@ -10,7 +10,7 @@ dir=
 
 		echo "Commiting/Pushing $i"
                 git add *
-		git commit -m $@
+		git commit -a -m $@
 		git push
         done
 
