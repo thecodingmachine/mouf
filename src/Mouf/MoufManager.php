@@ -1811,13 +1811,13 @@ class ".$this->mainClassName." {
 	 * Internal use only. Force loading all classes (even the one that can be autoloaded)
 	 * 
 	 */
-	public function forceAutoload() {
+	/*public function forceAutoload() {
 		if($this->autoloadableClasses) {
 			foreach ($this->autoloadableClasses as $class => $file) {
 				require_once ROOT_PATH.$file;
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Returns the scope for this MoufManager.

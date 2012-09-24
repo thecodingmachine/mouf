@@ -44,7 +44,7 @@ class MoufDocumentationPageDescriptor {
 	 */
 	private $package;
 	
-	public function __construct(SimpleXmlElement $elem, $package) {
+	public function __construct(\SimpleXmlElement $elem, $package) {
 		$this->package = $package;
 		
 		$docPagesList = array();

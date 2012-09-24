@@ -188,6 +188,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         $properties     = parent::getProperties();
         $moufProperties = array();
         foreach ($properties as $property) {
+        	// Workaround for PHP BUG: https://bugs.php.net/bug.php?id=62560
+        	if ($this->getName() == "Exception" && strpos($property->getName(), "trace") === 0) {
+        		continue;
+        	}
             $moufProperties[] = new MoufReflectionProperty($this, $property->getName());
         }
         

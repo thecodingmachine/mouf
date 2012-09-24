@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\MoufPropertyDescriptor;
+
 use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**

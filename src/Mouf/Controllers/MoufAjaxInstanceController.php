@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Html\HtmlElement\HtmlBlock;
+
 use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**
@@ -18,6 +20,12 @@ use Mouf\Mvc\Splash\Controllers\Controller;
  */
 class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 
+	/**
+	 * @Property
+	 * @var HtmlBlock
+	 */
+	public $rightBlock;
+	
 	/**
 	 * Displays the page to edit an instance.
 	 * 
@@ -30,7 +38,7 @@ class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 	public function index($name, $selfedit = false) {
 		$this->initController($name, $selfedit);
 
-		$this->template->addCssFile("src/views/instances/defaultRenderer.css");
+		/*$this->template->addCssFile("src/views/instances/defaultRenderer.css");
 		
 		$this->template->addJsFile(ROOT_URL."src/views/instances/messages.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/utils.js");
@@ -38,11 +46,11 @@ class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 		$this->template->addJsFile(ROOT_URL."src/views/instances/defaultRenderer.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/moufui.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");*/
 		
 		//$this->template->addContentFunction(array($this, "displayComponentView"));
-		$this->contentBlock->addFile(dirname(__FILE__)."/../../src/views/instances/viewInstance.php", $this);
-		$this->template->addRightText("<div id='instanceList'></div>");
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/viewInstance.php", $this);
+		$this->rightBlock->addText("<div id='instanceList'></div>");
 		$this->template->toHtml();	
 	}
 	

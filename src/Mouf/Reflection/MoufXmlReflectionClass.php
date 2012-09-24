@@ -41,7 +41,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
 		$this->xmlRoot = simplexml_load_string($xmlStr);
 		
 		if ($this->xmlRoot == null) {
-			throw new Exception("An error occured while retrieving message: ".$xmlStr);
+			throw new \Exception("An error occured while retrieving message: ".$xmlStr);
 		}
 	}
 	

@@ -10,6 +10,10 @@
 
 namespace Mouf\Controllers;
 
+use Mouf\MoufClassExplorer;
+
+use Mouf\Composer\ComposerService;
+
 use Mouf\Html\HtmlElement\HtmlBlock;
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\MoufManager;
@@ -131,6 +135,11 @@ class MoufController extends Controller implements MoufSearchable {
 	 * @Logged
 	 */
 	public function defaultAction($selfedit = "false", $query = null) {
+		//$test = new ComposerService();
+		//$test->getClassMap();
+		$classExplorer = new MoufClassExplorer($selfedit == "true");
+		$classMap = $classExplorer->getClassMap();
+		
 		$this->selfedit = $selfedit;
 		$this->query = $query;
 
@@ -140,12 +149,18 @@ class MoufController extends Controller implements MoufSearchable {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$enhancedComponentsList = MoufReflectionProxy::getEnhancedComponentsList($selfedit=="true");
+		/*$enhancedComponentsList = MoufReflectionProxy::getEnhancedComponentsList($selfedit=="true");
 		// Let's create a list by declaration file:
 		$componentsByFile = array();
 		foreach ($enhancedComponentsList as $name=>$componentDetails) {
 			$componentsByFile[$componentDetails["filename"]][] = $name;
+		}*/
+		
+		foreach ($classMap as $className=>$file) {
+			$componentsByFile[$file][] = $className;
 		}
+		
+		
 		// Now, let's remove the part of the file that is common to every file.
 		// The aim is to remove the C:/Program Files/.... or /var/www/...
 		$first = true;
@@ -202,6 +217,12 @@ class MoufController extends Controller implements MoufSearchable {
 				if (isset($instanceListByClass[$class])) {
 					$instancesByPackage[$package][$class] = $instanceListByClass[$class];
 					foreach ($instanceListByClass[$class] as $instance) {
+						unset($this->inErrorInstances[$instance]);
+					}
+				}
+				if (isset($instanceListByClass["\\".$class])) {
+					$instancesByPackage[$package][$class] = $instanceListByClass["\\".$class];
+					foreach ($instanceListByClass["\\".$class] as $instance) {
 						unset($this->inErrorInstances[$instance]);
 					}
 				}
@@ -301,7 +322,7 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->instanceClass = $instanceClass;
 		$this->selfedit = $selfedit;
 		
-		$this->template->addCssFile("src/views/instances/defaultRenderer.css");
+		/*$this->template->addCssFile("src/views/instances/defaultRenderer.css");
 		
 		$this->template->addJsFile(ROOT_URL."src/views/instances/messages.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/utils.js");
@@ -309,11 +330,10 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->template->addJsFile(ROOT_URL."src/views/instances/defaultRenderer.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/moufui.js");
 		$this->template->addJsFile(ROOT_URL."src/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");
+		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");*/
 		
-		$template = $this->template;
-		$template->addContentFile(dirname(__FILE__)."/../views/instances/newInstance.php", $this);
-		$template->toHtml();	
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstance.php", $this);
+		$this->template->toHtml();	
 	}
 	
 	/**

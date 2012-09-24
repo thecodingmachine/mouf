@@ -9,12 +9,16 @@
  */
 namespace Mouf;
 
+use Mouf\Reflection\MoufXmlReflectionClass;
+
+use Mouf\Composer\ComposerService;
+
+use Mouf\Reflection\MoufReflectionClass;
+
 /**
  * This class is used internally by Mouf and is specialized in analysing classes to find properties, etc... depending on the annotations. 
  *
  */
-use Mouf\Reflection\MoufReflectionClass;
-
 class Moufspector {
 	
 	/**
@@ -24,8 +28,12 @@ class Moufspector {
 	 * @type string the class or interface the @component must inherit to be part of the list. If not passed, all @component classes are returned.
 	 * @return array<string>
 	 */
-	public static function getComponentsList($type = null) {
-		$classesList = get_declared_classes();
+	public static function getComponentsList($type = null, $selfEdit = false) {
+		$composerService = new ComposerService($selfEdit);
+		$composerService->forceAutoLoad();
+		
+		$classesList = array_keys($composerService->getClassMap());
+		//$classesList = get_declared_classes();
 		$componentsList = array();
 		
 		foreach ($classesList as $className) {
@@ -70,8 +78,12 @@ class Moufspector {
 	 * @type string the class or interface the @component must inherit to be part of the list. If not passed, all @component classes are returned.
 	 * @return array<string, array<string, string>>
 	 */
-	public static function getEnhancedComponentsList($type = null) {
-		$classesList = get_declared_classes();
+	public static function getEnhancedComponentsList($type = null, $selfEdit = false) {
+		$composerService = new ComposerService($selfEdit);
+		//$composerService->forceAutoLoad();
+		
+		$classesList = array_keys($composerService->getClassMap());
+		//$classesList = get_declared_classes();
 		$componentsList = array();
 		
 		foreach ($classesList as $className) {

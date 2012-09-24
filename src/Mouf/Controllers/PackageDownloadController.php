@@ -10,6 +10,7 @@
 namespace Mouf\Controllers;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\MoufPackage;
 
 /**
  * The controller managing the download of the packages.

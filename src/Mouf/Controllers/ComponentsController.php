@@ -13,6 +13,7 @@ use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Html\HtmlElement\HtmlBlock;
 
 /**
+ * @deprecated
  * The controller managing the list of developer components included in the Mouf app.
  *
  * @Component

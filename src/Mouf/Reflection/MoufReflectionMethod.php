@@ -187,7 +187,7 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
    	 *
    	 * @param SimpleXmlElement $root The root XML node the method will be appended to.
    	 */
-    public function toXml(SimpleXmlElement $root) {
+    public function toXml(\SimpleXmlElement $root) {
     	$methodNode = $root->addChild("method");
     	$methodNode->addAttribute("name", $this->getName());
     	$modifier = "";

@@ -4,8 +4,8 @@
         {
             "package": "mouf/famfamfam",
             "version": "1.3.x-dev",
-            "source-reference": "2ad90cbeba9b42d81fc15df173c150daa736879e",
-            "commit-date": "1348064555"
+            "source-reference": "30730b2268dd0adc775f95d7eb9ae8962b491221",
+            "commit-date": "1348065644"
         },
         {
             "package": "mouf/html.htmlelement",

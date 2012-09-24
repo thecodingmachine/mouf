@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufException;
+
 use Mouf\MoufPropertyDescriptor;
 
 /**
@@ -175,9 +177,10 @@ class MoufReflectionHelper {
 	/**
 	 * Returns a PHP array representing the parameter.
 	 *
+	 * @param MoufReflectionParameterInterface $refParameter
 	 * @return array
 	 */
-	public static function parameterToJson($refParameter) {
+	public static function parameterToJson(MoufReflectionParameterInterface $refParameter) {
 		$result = array();
 		$result['name'] = $refParameter->getName();
 		$result['hasDefault'] = $refParameter->isDefaultValueAvailable();
@@ -185,8 +188,14 @@ class MoufReflectionHelper {
 			$result['default'] = $refParameter->getDefaultValue();
 		}
 		$result['isArray'] = $refParameter->isArray();
-		if ($refParameter->getClass() != null) {
-			$result['class'] = $refParameter->getClass()->getName();
+		
+		try {
+			$class = $refParameter->getClass(); 
+			if ($class != null) {
+				$result['class'] = $class->getName();
+			}
+		} catch (MoufException $e) {
+			$result['classinerror'] = $e->getMessage();
 		}
 		return $result;
 	}

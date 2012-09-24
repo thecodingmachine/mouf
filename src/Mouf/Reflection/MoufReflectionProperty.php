@@ -171,9 +171,11 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
 	  		$className = $this->refClass->getName();
 	  		// TODO: find a way to get default value for abstract properties.
 	  		// TODO: optimize this: we should not have to create one new instance for every property....
-	  		$instance = new $className();
+	  		/*$instance = new $className();
 			$property = $this->getName();
-	    	return $instance->$property;
+	    	return $instance->$property;*/
+	  		$defaultProperties = $this->refClass->getDefaultProperties();
+	  		return $defaultProperties[$this->getName()];
     	} else {
     		return null;
     	}
@@ -185,7 +187,7 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
    	 *
    	 * @param SimpleXmlElement $root The root XML node the property will be appended to.
    	 */
-    public function toXml(SimpleXmlElement $root) {
+    public function toXml(\SimpleXMLElement $root) {
     	$propertyNode = $root->addChild("property");
     	$propertyNode->addAttribute("name", $this->getName());
     	$propertyNode->addChild("comment", $this->getDocComment());

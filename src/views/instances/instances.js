@@ -252,9 +252,10 @@ var MoufInstanceManager = (function () {
 			if (_instances[instanceName] && !_instances[instanceName].incomplete) {
 				promise.triggerSuccess(window, _instances[instanceName]);
 			} else {
-				jQuery.ajax(this.rootUrl+"direct/get_instance_details.php", {
+				jQuery.ajax(this.rootUrl+"src/direct/get_instance_details.php", {
 					data: {
 						name: instanceName,
+						selfedit: this.selfEdit?"true":"false",
 						encode: "json"
 					}
 				}).fail(function(e) {
@@ -296,7 +297,8 @@ var MoufInstanceManager = (function () {
 				jQuery.ajax(this.rootUrl+"direct/get_class.php", {
 					data: {
 						"class": className,
-						encode: "json"
+						encode: "json",
+						selfedit: this.selfEdit?"true":"false"
 					}
 				}).fail(function(e) {
 					var msg = e;
@@ -334,9 +336,10 @@ var MoufInstanceManager = (function () {
 			var promise = new Mouf.Promise();
 			
 			
-			jQuery.ajax(this.rootUrl+"direct/get_all_classes.php", {
+			jQuery.ajax(this.rootUrl+"src/direct/get_all_classes.php", {
 				data: {
-					encode: "json"
+					encode: "json",
+					selfedit: this.selfEdit?"true":"false"
 				}
 			}).fail(function(e) {
 				var msg = e;
@@ -389,7 +392,8 @@ var MoufInstanceManager = (function () {
 			jQuery.ajax(this.rootUrl+"direct/get_instances_with_details.php", {
 				data: {
 					class: type,
-					encode: "json"
+					encode: "json",
+					selfedit: this.selfEdit?"true":"false"
 				}
 			}).fail(function(e) {
 				var msg = e;

@@ -634,7 +634,7 @@ class MoufPackageManager {
 		return $fileName;
 	}
 	
-	private function recurseAddDir(ZipArchive $zip, $currentDir) {
+	private function recurseAddDir(\ZipArchive $zip, $currentDir) {
 
 		$files = glob("$currentDir/*");
 		

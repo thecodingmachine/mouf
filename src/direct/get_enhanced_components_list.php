@@ -42,7 +42,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
-MoufManager::getMoufManager()->forceAutoload();
+//MoufManager::getMoufManager()->forceAutoload();
 
 $file=null;
 $line=null;
@@ -64,9 +64,9 @@ if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]="json") {
 }
 
 if ($encode == "php") {
-	echo serialize(Moufspector::getEnhancedComponentsList($type));
+	echo serialize(Moufspector::getEnhancedComponentsList($type, $_REQUEST["selfedit"]=="true"));
 } elseif ($encode == "json") {
-	echo json_encode(Moufspector::getEnhancedComponentsList($type));
+	echo json_encode(Moufspector::getEnhancedComponentsList($type, $_REQUEST["selfedit"]=="true"));
 } else {
 	echo "invalid encode parameter";
 }

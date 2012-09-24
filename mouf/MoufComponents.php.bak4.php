@@ -28,8 +28,6 @@ $moufManager->addComponentInstances(array (
     array (
       'template' => 'moufTemplate',
       'contentBlock' => 'block.content',
-    		'rightBlock' => 'block.right',
-    		
     ),
   ),
   'block.content' => 

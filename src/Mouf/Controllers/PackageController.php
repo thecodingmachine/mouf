@@ -9,6 +9,10 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\MoufDependencyDescriptor;
+
+use Mouf\MoufPackage;
+
 use Mouf\Mvc\Splash\Controllers\Controller;
 
 /**

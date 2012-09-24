@@ -13,6 +13,8 @@ namespace Mouf\Reflection;
  * Extended Reflection class for parameters.
  * 
  */
+use Mouf\MoufException;
+
 class MoufReflectionParameter extends \ReflectionParameter implements MoufReflectionParameterInterface
 {
     /**
@@ -119,14 +121,18 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     /**
      * returns the type (class) hint for this parameter
      *
-     * @return  stubReflectionClass
+     * @return  MoufReflectionClass
      */
     public function getClass()
     {
-        $refClass = parent::getClass();
-        if (null === $refClass) {
-            return null;
-        }
+    	try {
+	        $refClass = parent::getClass();
+	        if (null === $refClass) {
+	            return null;
+	        }
+    	} catch (\ReflectionException $e) {
+    		throw new MoufException("Error while analyzing @var annotation for parameter {$this->paramName} in '{$this->getDeclaringClass()->getName()}::{$this->getDeclaringFunction()->getName()}': ".$e->getMessage(), 0, $e);
+    	}
         
         $moufRefClass = new MoufReflectionClass($refClass->getName());
         return $moufRefClass;
@@ -150,7 +156,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
    	 *
    	 * @param SimpleXmlElement $root The root XML node the property will be appended to.
    	 */
-    public function toXml(SimpleXmlElement $root) {
+    public function toXml(\SimpleXMLElement $root) {
     	$propertyNode = $root->addChild("parameter");
     	$propertyNode->addAttribute("name", $this->getName());
     	$propertyNode->addAttribute("hasDefault", $this->isDefaultValueAvailable()?"true":"false");
