@@ -28,7 +28,7 @@ while (ob_get_level() != 0) {
 }
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
-	require_once '../../../../mouf/Mouf.php';
+	require_once '../../../../../mouf/Mouf.php';
 } else {
 	require_once '../../mouf/Mouf.php';
 	/*require_once '../MoufManager.php';

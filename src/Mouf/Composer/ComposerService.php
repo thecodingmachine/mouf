@@ -68,7 +68,7 @@ class ComposerService {
 			chdir(__DIR__."/../../..");
 			\putenv('COMPOSER=composer-mouf.json');
 		} else {
-			chdir(__DIR__."/../../../../..");
+			chdir(__DIR__."/../../../../../..");
 		}
 		
 		$composer = $this->getComposer(); 

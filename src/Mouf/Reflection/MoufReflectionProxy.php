@@ -203,7 +203,7 @@ class MoufReflectionProxy {
 		$obj = unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\htmlspecialchars($url)."'>".\htmlspecialchars($url)."</a>");
 		}
 		
 		return $obj;
@@ -261,9 +261,9 @@ class MoufReflectionProxy {
 	
 	public static function getLocalUrlToProject(){
 		if (isset($_SERVER['HTTPS'])) {
-			$url = "https://".$_SERVER['SERVER_NAME'].ROOT_URL;
+			$url = "https://".$_SERVER['SERVER_NAME'].MOUF_URL;
 		} else {
-			$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].ROOT_URL;
+			$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].MOUF_URL;
 		}
 		return $url;
 	}

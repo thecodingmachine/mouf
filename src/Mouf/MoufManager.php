@@ -84,7 +84,7 @@ class MoufManager {
 			self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
 			self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
 			//self::$defaultInstance->requireFileName = "../MoufRequire.php";
-			self::$defaultInstance->adminUiFileName = "../../MoufUI.php";
+			self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 			self::$defaultInstance->mainClassName = "Mouf";
 			self::$defaultInstance->pathToMouf = "mouf/";
 			// FIXME: not appscope for sure

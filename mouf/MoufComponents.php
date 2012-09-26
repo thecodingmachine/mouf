@@ -222,7 +222,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setUrl' => 
       array (
-        'value' => 'mouf/newInstance',
+        'value' => 'mouf/newInstance2',
         'type' => 'string',
         'metadata' => 
         array (
@@ -296,7 +296,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/page_add.png',
+        'value' => 'src-dev/views/images/page_add.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -428,7 +428,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/table.png',
+        'value' => 'src-dev/views/images/table.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -639,7 +639,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/download.png',
+        'value' => 'src-dev/views/images/download.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -737,7 +737,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/note_edit.png',
+        'value' => 'src-dev/views/images/note_edit.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -856,7 +856,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/page_white_php.png',
+        'value' => 'src-dev/views/images/page_white_php.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -946,7 +946,7 @@ $moufManager->addComponentInstances(array (
     array (
       'logoImg' => 
       array (
-        'value' => 'src/views/images/MoufLogo.png',
+        'value' => 'src-dev/views/images/MoufLogo.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1060,7 +1060,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'src/views/chooseInstancePopup.js',
+          0 => 'src-dev/views/chooseInstancePopup.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1095,7 +1095,7 @@ $moufManager->addComponentInstances(array (
 						'setCssFiles' =>
 						array (
 								'value' => 								array (
-										0 => 'src/views/styles.css',
+										0 => 'src-dev/views/styles.css',
 								),
 								
 								'type' => 'string',
@@ -1115,13 +1115,13 @@ $moufManager->addComponentInstances(array (
 						'setJsFiles' =>
 						array (
 								'value' => 								array (
-										0 => 'src/views/instances/messages.js',
-										1 => 'src/views/instances/utils.js',
-										2 => 'src/views/instances/instances.js',
-										3 => 'src/views/instances/defaultRenderer.js',
-										4 => 'src/views/instances/moufui.js',
-										5 => 'src/views/instances/saveManager.js',
-										6 => 'src/views/instances/jquery.scrollintoview.js',
+										0 => 'src-dev/views/instances/messages.js',
+										1 => 'src-dev/views/instances/utils.js',
+										2 => 'src-dev/views/instances/instances.js',
+										3 => 'src-dev/views/instances/defaultRenderer.js',
+										4 => 'src-dev/views/instances/moufui.js',
+										5 => 'src-dev/views/instances/saveManager.js',
+										6 => 'src-dev/views/instances/jquery.scrollintoview.js',
 
 								),
 																'type' => 'string',
@@ -1132,7 +1132,7 @@ $moufManager->addComponentInstances(array (
 						'setCssFiles' =>
 						array (
 								'value' => 								array (
-										0 => 'src/views/instances/defaultRenderer.css',
+										0 => 'src-dev/views/instances/defaultRenderer.css',
 								),
 								
 								
@@ -1449,7 +1449,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/door_open.png',
+        'value' => 'src-dev/views/images/door_open.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1559,7 +1559,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/folder_add.png',
+        'value' => 'src-dev/views/images/folder_add.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1657,7 +1657,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/database.png',
+        'value' => 'src-dev/views/images/database.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1779,7 +1779,7 @@ $moufManager->addComponentInstances(array (
     array (
       'logoImg' => 
       array (
-        'value' => 'src/views/images/MoufLogo.png',
+        'value' => 'src-dev/views/images/MoufLogo.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1809,7 +1809,7 @@ $moufManager->addComponentInstances(array (
     array (
       'logoImg' => 
       array (
-        'value' => 'src/views/images/MoufLogo.png',
+        'value' => 'src-dev/views/images/MoufLogo.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1827,7 +1827,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'src/views/styles.css',
+          0 => 'src-dev/views/styles.css',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1861,7 +1861,7 @@ $moufManager->addComponentInstances(array (
       ),
       'logoImg' => 
       array (
-        'value' => 'src/views/images/MoufLogo.png',
+        'value' => 'src-dev/views/images/MoufLogo.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1879,7 +1879,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'src/views/styles.css',
+          0 => 'src-dev/views/styles.css',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1978,7 +1978,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/tick.png',
+        'value' => 'src-dev/views/images/tick.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2095,7 +2095,7 @@ $moufManager->addComponentInstances(array (
       ),
       'logoImg' => 
       array (
-        'value' => 'src/views/images/MoufLogo.png',
+        'value' => 'src-dev/views/images/MoufLogo.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2113,7 +2113,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'src/views/styles.css',
+          0 => 'src-dev/views/styles.css',
         ),
         'type' => 'string',
         'metadata' => 
@@ -2453,7 +2453,7 @@ $moufManager->addComponentInstances(array (
     array (
       'fileName' => 
       array (
-        'value' => 'src/views/search/searchbox.php',
+        'value' => 'src-dev/views/search/searchbox.php',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2490,7 +2490,7 @@ $moufManager->addComponentInstances(array (
     array (
       'additionalPhpFile' => 
       array (
-        'value' => 'src/views/instances/setRootUrlBlock.php',
+        'value' => 'src-dev/views/instances/setRootUrlBlock.php',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2757,7 +2757,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/page_white_stack.png',
+        'value' => 'src-dev/views/images/page_white_stack.png',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2852,7 +2852,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setUrl' => 
       array (
-        'value' => 'src/views/images/report.png',
+        'value' => 'src-dev/views/images/report.png',
         'type' => 'string',
         'metadata' => 
         array (

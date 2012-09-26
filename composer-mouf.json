@@ -113,7 +113,7 @@
         "mouf/html.template.menus.basicmenu" : "2.*"
     },
     "autoload": {
-        "psr-0": {"Mouf": "src/"}
+        "psr-0": {"Mouf": ["src/", "src-dev/"]}
     },
     "minimum-stability": "dev" 
 }

@@ -13,7 +13,7 @@
 
 	<head>
 
-                <link href="../plugins/html/template/MoufTemplate/1.0/css/style.css" rel="stylesheet" type="text/css">
+                <link href="vendor/mouf/html.template.mouftemplate/css/style.css" rel="stylesheet" type="text/css">
 		<title>Welcome to Mouf</title>
 	</head>
         <body>
@@ -21,7 +21,7 @@
         <div id="header">
                 <div id="logo">
                         <a href="/Mouf_Website/">
-                                <img src="../mouf/views/images/MoufLogo.png" alt="Mouf" />
+                                <img src="src/views/images/MoufLogo.png" alt="Mouf" />
                         </a>
                 </div>
         </div>
@@ -51,10 +51,10 @@ if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/..")) {
 
 		<h1>Web directory must be writable for the Apache user</h1>
 		<p>In order to run Mouf, you will first need to change the permissions on the web directory so that the Apache user can write into it.
-		Especially, you should check that those 2 directories can be written into:</p>
+		Especially, you should check that those directories can be written into:</p>
 		<ul>
-			<?php if(!is_writable(dirname(__FILE__)."/..")) {?>
-				<li><?php echo realpath(dirname(__FILE__)."/..") ?></li>
+			<?php if(!is_writable(dirname(__FILE__)."/../../..")) {?>
+				<li><?php echo realpath(dirname(__FILE__)."/../../..") ?></li>
 			<?php }
 			if(!is_writable(dirname(__FILE__))) {?>
 				<li><?php echo realpath(dirname(__FILE__)) ?></li>
@@ -66,11 +66,11 @@ if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/..")) {
 		?>
 			<p>You can try these commands:</p>
 			<pre>
-			<?php if(!is_writable(dirname(__FILE__)."/..")) {?>
-chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__)."/..") ?><br/>
+			<?php if(!is_writable(dirname(__FILE__)."/../../..")) {?>
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__)."/../../..") ?><br/>
 			<?php }
 			if(!is_writable(dirname(__FILE__))) {?>
-chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__));
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__));
 			}?>
 </pre>
 		<?php 
@@ -90,7 +90,7 @@ chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FI
 }
 ?>
 		<h1>Welcome to the Mouf framework</h1>
-		<form action="install.php" method="post">
+		<form action="src/install.php" method="post">
 		
 			<p>Apparently, this is the first time you are running Mouf. You will need to install it.</p>
 			<?php if (file_exists(dirname(__FILE__)."/../MoufUsers.php")): ?>

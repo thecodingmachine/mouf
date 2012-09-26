@@ -19,7 +19,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
-	require_once '../../../../mouf/Mouf.php';
+	require_once '../../../../../mouf/Mouf.php';
 } else {
 	require_once '../../mouf/Mouf.php';
 }

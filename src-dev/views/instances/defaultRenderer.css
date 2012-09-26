@@ -1,0 +1,265 @@
+div.smallinstance, div.smallclass {
+	width: 200px;
+	min-height: 16px;
+	border: solid 1px black;
+	background-color: #eee7e7;
+	padding: 5px 5px 5px 26px;
+	margin-bottom: 2px;
+	border-radius: 5px;
+	background-image: url(images/class.png);
+	background-position: 5px center;
+	background-repeat: no-repeat;
+	
+	word-wrap: break-word;
+	font-family: monospace;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;	
+	user-select: none;
+	
+	cursor: pointer;
+}
+
+.ui-draggable {
+	cursor: move;
+}
+
+div.smallinstance.ui-draggable, div.smallclass.ui-draggable {
+	cursor: move;
+}
+
+div.smallinstance:hover, div.smallclass:hover, div.mediuminstance:hover {
+	background-color: #d7d0d0;
+}
+
+div.mediuminstance {
+	min-width: 200px;
+	min-height: 16px;
+	border: solid 1px black;
+	background-color: #eee7e7;
+	padding: 5px 5px 5px 26px;
+	margin-bottom: 2px;
+	border-radius: 5px;
+	background-image: url(images/class.png);
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	
+	word-wrap: break-word;
+	cursor: move;
+	font-family: monospace;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;	
+	user-select: none;
+}
+
+/*** Add a value/component ****/
+
+div.addavalue {
+	clear: both;
+	background-image: url(images/add.png);
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	background-color:#CBEFCB;
+	color:#002200;	
+    border: solid 1px #77AA77;
+    padding: 5px 0px 5px 22px;
+	cursor: pointer;
+}
+
+div.addavalue:hover {
+	background-color:#DBFFDB;
+}
+
+/*** Save icon ***/
+
+div.saveIcon {
+    height: 22px;
+    right: 3px;
+    min-width: 80px;
+    overflow: hidden;
+    position: fixed;
+    top: 3px;
+    z-index: 99999;
+}
+
+div.saveIcon.saving {
+	background-image: url(images/disk.png);
+	background-repeat: no-repeat;
+	background-position: 3px center;
+    background-color: #AAAAAA;
+    border: solid 1px #777777;
+    padding: 5px 0px 0px 22px;
+}
+
+div.saveIcon.saveDone {
+	background-image: url(images/tick.png);
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	background-color: #AAFFAA;
+    border: solid 1px #77AA77;
+    padding: 5px 0px 0px 22px;
+}
+
+/**** Array elemnts ****/
+input.key {
+	width: 100px;
+}
+
+/**** Bin ****/
+
+body > div.bin {
+	width: 100%;
+	background-color: #cccccc;
+	height: 64px;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	z-index: 99999;
+	opacity: 0.9;
+}
+
+body > div.bin:hover {
+	background-color: #eeeeee;
+}
+	
+body > div.bin > div.binText {
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 16px;
+	width: 300px;
+	height: 48px;
+	font-size: 24px;
+	padding-left: 54px;
+	background-image: url(images/trashcan_empty.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+body > div.bin:hover > div.binText {
+	background-image: url(images/trashcan_full.png);
+}
+
+/**** Tooltip and tool menu *****/
+
+div.inlinemenuicon {
+	width: 16px;
+	height: 16px;
+	margin: 4px;
+	background-image: url(images/inlinemenusprite.png);
+}
+
+div.inlinemenuicon:hover {
+	background-image: url(images/inlinemenusprite.png);
+	background-position: 0px -16px;
+}
+
+
+ul.inlinemenu {
+	display: none;
+	position: absolute;
+	width: 200px;
+	background-color: #DFDFD0;
+	border-radius: 5px;
+	border: solid 2px #AAAAAA;
+	padding: 0;
+}
+
+ul.inlinemenu > li {
+	overflow: hidden;
+	height: 20px;
+	padding: 4px 10px 0px 10px;
+}
+
+ul.inlinemenu > li:nth-child(even) {
+	background-color: #CFCFC0;
+}
+
+ul.inlinemenu > li:hover {
+	background-color: #BFBFB0;
+}
+
+ul.inlinemenu > li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+div.fieldContainer {
+	overflow: hidden;
+}
+
+div.fieldContainer div.moveable {
+	margin-top: 4px;
+}
+
+div.fieldContainer > div {
+	float: left;
+}
+
+div.fieldContainer > span {
+	float: left;
+	margin-top: 5px;
+}
+
+div.fieldContainer > input {
+	float: left;
+}
+
+
+div.stringRenderer > input {
+	float: left;
+}
+
+div.stringRenderer > div.inlinemenuicon {
+	float: left;
+}
+
+div.stringRenderer {
+	overflow: hidden;
+}
+
+div.stringRenderer > input.null {
+	font-style: italic;
+	color: #777;
+}
+
+div.fieldInstanceRenderer > div.instanceReceiver {
+	float: left;
+	min-width: 232px;
+	/*height: 28px;*/
+	background-color: #eeeeaa;
+	border: dashed 1px #773333;
+	padding: 3px;
+}
+
+div.fieldInstanceRenderer > div.instanceReceiver > div.null {
+	text-align: center;
+}
+
+div.fieldInstanceRenderer > div.instanceReceiver.stateActive {
+	background-color: #ffffcc;
+}
+
+div.fieldInstanceRenderer > div.instanceReceiver.stateHover {
+	background-color: #dddd99;
+}
+
+div.fieldInstanceRenderer > div.inlinemenuicon {
+	float: left; 
+}
+
+.classesList {
+	overflow: hidden;
+}
+
+.classesList div.class {
+	float: left;
+	margin-right: 2px;
+}
