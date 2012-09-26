@@ -70,7 +70,7 @@ class ComponentsController extends Controller {
 		}
 				
 		$template = $this->template;
-		//$this->template->addJsFile(ROOT_URL."src/views/displayComponent.js");
+		//$this->template->addJsFile(ROOT_URL."src-dev/views/displayComponent.js");
 		
 		$this->analyzeErrors = MoufReflectionProxy::analyzeIncludes($selfedit == "true");
 		$template->addContentFile(dirname(__FILE__)."/../views/displayComponentList.php", $this);

@@ -30,7 +30,6 @@ class Moufspector {
 	 */
 	public static function getComponentsList($type = null, $selfEdit = false) {
 		$composerService = new ComposerService($selfEdit);
-		$composerService->forceAutoLoad();
 		
 		$classesList = array_keys($composerService->getClassMap());
 		//$classesList = get_declared_classes();
@@ -47,7 +46,7 @@ class Moufspector {
 							$componentsList[] = $className;
 							continue;
 						}
-					} catch (ReflectionException $e) {
+					} catch (\ReflectionException $e) {
 						// The interface might not exist, that's not a problem
 					}
 					try {
@@ -55,8 +54,8 @@ class Moufspector {
 							$componentsList[] = $className;
 							continue;
 						}
-					} catch (ReflectionException $e) {
-						// The interface might not exist, that's not a problem
+					} catch (\ReflectionException $e) {
+						// The class might not exist, that's not a problem
 					}
 					if ($refClass->getName() == $type) {
 						$componentsList[] = $className;

@@ -108,7 +108,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 			$specialActionsMenuItem = new MenuItem("Special actions", null, $items);
 						
 			//$menu = new Menu($items);
-			\Mouf::getSpecialActionsMenu()->addChild($specialActionsMenuItem);
+			\MoufAdmin::getSpecialActionsMenu()->addChild($specialActionsMenuItem);
 			
 			//$this->template->addRightHtmlElement($menuItems);	
 		}
@@ -118,7 +118,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 		$viewDependencyGraphMenuItem = new MenuItem("View dependency graph", "mouf/displayGraph/");
 		$viewDependencyGraphMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));
 		$commonMenuItem = new MenuItem("Common", null, array($viewPropertiesMenuItem, $viewDependencyGraphMenuItem));
-		\Mouf::getInstanceMenu()->addChild($commonMenuItem);
+		\MoufAdmin::getInstanceMenu()->addChild($commonMenuItem);
 		/*$this->template->addRightHtmlElement(new SplashMenu(
 			array(
 			new SplashMenuItem("<b>Common</b>", null, null),
@@ -146,7 +146,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 				$children[] = $child;
 			}
 			$referredByMenuItem = new MenuItem('Referred by instances:', null, $children);
-			\Mouf::getInstanceMenu()->addChild($referredByMenuItem);
+			\MoufAdmin::getInstanceMenu()->addChild($referredByMenuItem);
 		}
 	}
 	

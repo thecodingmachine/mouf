@@ -81,7 +81,7 @@ class ConfigController extends Controller {
 		//$this->constantsList = $this->moufManager->getConfigManager()->getDefinedConstants();
 		$this->constantsList = $this->moufManager->getConfigManager()->getMergedConstants();
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/constants/displayConstantsList.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/constants/displayConstantsList.php", $this);
 		$this->template->toHtml();
 	}
 	
@@ -171,7 +171,7 @@ class ConfigController extends Controller {
 		// TODO: manage type!
 		//$this->type = $comment;
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/constants/registerConstant.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/constants/registerConstant.php", $this);
 		$this->template->toHtml();
 	}
 

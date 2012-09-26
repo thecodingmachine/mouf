@@ -21,7 +21,7 @@
         <div id="header">
                 <div id="logo">
                         <a href="/Mouf_Website/">
-                                <img src="src/views/images/MoufLogo.png" alt="Mouf" />
+                                <img src="src-dev/views/images/MoufLogo.png" alt="Mouf" />
                         </a>
                 </div>
         </div>

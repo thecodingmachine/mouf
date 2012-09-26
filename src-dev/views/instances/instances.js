@@ -294,7 +294,7 @@ var MoufInstanceManager = (function () {
 			if (_classes[className] && !_classes[className].incomplete) {
 				promise.triggerSuccess(window, _classes[className]);
 			} else {
-				jQuery.ajax(this.rootUrl+"direct/get_class.php", {
+				jQuery.ajax(this.rootUrl+"src/direct/get_class.php", {
 					data: {
 						"class": className,
 						encode: "json",
@@ -389,7 +389,7 @@ var MoufInstanceManager = (function () {
 			var promise = new Mouf.Promise();
 			
 			// TODO: add support for selfedit! (or "whatevermoufmanagername").
-			jQuery.ajax(this.rootUrl+"direct/get_instances_with_details.php", {
+			jQuery.ajax(this.rootUrl+"src/direct/get_instances_with_details.php", {
 				data: {
 					class: type,
 					encode: "json",

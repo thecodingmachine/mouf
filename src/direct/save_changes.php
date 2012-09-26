@@ -9,6 +9,8 @@
  */
  
 
+use Mouf\MoufManager;
+
 ini_set('display_errors', 1);
 // Add E_ERROR to error reporting it it is not already set
 error_reporting(E_ERROR | error_reporting());

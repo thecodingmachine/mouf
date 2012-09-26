@@ -2907,7 +2907,7 @@ unset($moufManager);
  * This object can be used to get the objects manage by MOUF.
  *
  */
-class Mouf {
+class MoufAdmin {
 	/**
 	 * @return \Mouf\Controllers\MoufAjaxInstanceController
 	 */

@@ -357,3 +357,14 @@ a.button.modify {
 	background-position: 5px center;
         padding-left: 26px;
 }
+
+
+div.searchbox input {
+	width: 190px;
+}
+
+div.searchbox button {
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+

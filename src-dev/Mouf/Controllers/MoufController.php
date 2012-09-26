@@ -322,15 +322,15 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->instanceClass = $instanceClass;
 		$this->selfedit = $selfedit;
 		
-		/*$this->template->addCssFile("src/views/instances/defaultRenderer.css");
+		/*$this->template->addCssFile("src-dev/views/instances/defaultRenderer.css");
 		
-		$this->template->addJsFile(ROOT_URL."src/views/instances/messages.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/utils.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/instances.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/defaultRenderer.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/moufui.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."src/views/instances/jquery.scrollintoview.js");*/
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/messages.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/utils.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/instances.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/defaultRenderer.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/moufui.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/saveManager.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/jquery.scrollintoview.js");*/
 		
 		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstance.php", $this);
 		$this->template->toHtml();	

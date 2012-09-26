@@ -125,7 +125,7 @@ var MoufUI = (function () {
 		showSourceFile: function(fileName, line) {
 			var container = jQuery("<div/>").attr('title', fileName);
 			jQuery.ajax({
-				url: MoufInstanceManager.rootUrl+"direct/get_source_file.php",
+				url: MoufInstanceManager.rootUrl+"src/direct/get_source_file.php",
 				data: {
 					file: fileName
 				}

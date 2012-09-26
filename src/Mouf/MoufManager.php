@@ -81,12 +81,12 @@ class MoufManager {
 	public static function initMoufManager() {
 		if (self::$defaultInstance == null) {
 			self::$defaultInstance = new MoufManager();
-			self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
-			self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
+			self::$defaultInstance->configManager = new MoufConfigManager("../../../../../config.php");
+			self::$defaultInstance->componentsFileName = "../../../../../mouf/MoufComponents.php";
 			//self::$defaultInstance->requireFileName = "../MoufRequire.php";
-			self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
+			self::$defaultInstance->adminUiFileName = "../../../../../mouf/MoufUI.php";
 			self::$defaultInstance->mainClassName = "Mouf";
-			self::$defaultInstance->pathToMouf = "mouf/";
+			//self::$defaultInstance->pathToMouf = "mouf/";
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
 		}
@@ -101,13 +101,13 @@ class MoufManager {
 	public static function switchToHidden() {
 		self::$hiddenInstance = self::$defaultInstance;
 		self::$defaultInstance = new MoufManager();
-		self::$defaultInstance->configManager = new MoufConfigManager("config.php");
-		self::$defaultInstance->componentsFileName = "MoufAdminComponents.php";
-		self::$defaultInstance->requireFileName = "MoufAdminRequire.php";
-		self::$defaultInstance->adminUiFileName = "MoufAdminUI.php";
+		self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
+		self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
+		//self::$defaultInstance->requireFileName = "MoufAdminRequire.php";
+		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
-		self::$defaultInstance->pathToMouf = "";
+		//self::$defaultInstance->pathToMouf = "";
 	}
 	
 	/**

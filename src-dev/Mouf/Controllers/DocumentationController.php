@@ -9,6 +9,11 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Composer\ComposerService;
+use Mouf\Composer\PackageInterface;
+
+use Mouf\MoufManager;
+
 use Mouf\MoufDocumentationPageDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
@@ -60,11 +65,11 @@ class DocumentationController extends Controller {
 	 * 
 	 * @var MoufPackageManager
 	 */
-	public $packageManager;
+	//public $packageManager;
 		
 	/**
 	 * 
-	 * @var array<MoufPackage>
+	 * @var array<PackageInterface>
 	 */
 	protected $packageList;
 
@@ -92,12 +97,11 @@ class DocumentationController extends Controller {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$this->packageManager = new MoufPackageManager();
+		$composerService = new ComposerService($this->selfedit == "true");
 		
-		//$this->moufPackageRoot = $this->packageManager->getOrderedPackagesList();
-		$this->packageList = $this->packageManager->getPackagesList();
+		$this->packageList = $composerService->getLocalPackages();
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/doc/index.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/doc/index.php", $this);
 		$this->template->toHtml();	
 	}
 	

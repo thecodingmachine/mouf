@@ -107,7 +107,7 @@ class IncludesAnalyzerController extends Controller {
 			}
 		}
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/includes/index.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/includes/index.php", $this);
 		$this->template->toHtml();	
 	}	
 }

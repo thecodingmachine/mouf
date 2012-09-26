@@ -81,7 +81,7 @@ class SearchController extends Controller {
 			$this->searchUrls[] = array("name"=>$service->getSearchModuleName(), "url"=>ROOT_URL."mouf/".$this->moufManager->findInstanceName($service)."/search");
 		}
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/search/results.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/search/results.php", $this);
 		$this->template->toHtml();	
 	}
 	
@@ -105,7 +105,7 @@ class SearchController extends Controller {
 		
 		
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/packages/editRepository.php", $this);
 		$this->template->toHtml();
 	}
 	
@@ -127,7 +127,7 @@ class SearchController extends Controller {
 		}
 		$this->repositoryUrls = $this->moufManager->getVariable("repositoryUrls");
 		
-		$this->contentBlock->addFile(ROOT_PATH."src/views/packages/editRepository.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/packages/editRepository.php", $this);
 		$this->template->toHtml();
 	}
 	

@@ -57,7 +57,7 @@ class MoufValidatorController extends Controller {
 		if ($selfedit == "true") {
 			
 		}
-		$this->contentBlock->addFile(ROOT_PATH."src/views/validate.php", $this);
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/validate.php", $this);
 		$this->template->toHtml();
 	}
 }

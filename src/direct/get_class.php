@@ -17,14 +17,13 @@ error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	require_once '../../../../../mouf/Mouf.php';
+	$mouf_base_path = ROOT_PATH;
+	$selfEdit = false;
 } else {
 	require_once '../../mouf/Mouf.php';
-	/*require_once '../MoufManager.php';
-	MoufManager::initMoufManager();
-	require_once '../../MoufUniversalParameters.php';
-	require_once '../MoufAdmin.php';*/
+	$mouf_base_path = ROOT_PATH."mouf/";
+	$selfEdit = true;
 }
-//require_once '../Moufspector.php';
 
 // Note: checking rights is done after loading the required files because we need to open the session
 // and only after can we check if it was not loaded before loading it ourselves...

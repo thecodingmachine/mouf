@@ -32,7 +32,7 @@ class MoufDisplayGraphController extends AbstractMoufInstanceController {
 		
 		$template = $this->template;
 		$this->template->addHeadHtmlElement(new HtmlJSJit());
-		$this->template->addJsFile(ROOT_URL."src/views/displayGraph.js");
+		$this->template->addJsFile(ROOT_URL."src-dev/views/displayGraph.js");
 		$template->addContentFile(dirname(__FILE__)."/../views/displayGraph.php", $this);
 		$template->toHtml();
 	}

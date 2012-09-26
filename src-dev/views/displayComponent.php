@@ -55,7 +55,7 @@ function addNewDropDown(element, name, defaultValue, hasKey, defaultKey, type, i
 			str += "=&gt;";
 		}
 		str += "<a href='<?php echo ROOT_URL ?>mouf/mouf/displayComponent?name="+defaultValue+"&amp;selfedit=<?php echo $this->selfedit ?>'>"+defaultValue+"</a>";
-		str += '<a onclick="fillOptionList(\''+name+"_mouf_dropdown_select_"+dropDownCnt+'\', \''+imageId+'\', \''+varType+'\', \''+defaultValue+'\'); document.getElementById(\''+name+'_mouf_dropdown_text_'+dropDownCnt+'\').style.display=\'none\';document.getElementById(\''+name+"_mouf_dropdown_dropdown_"+dropDownCnt+'\').style.display=\'inline\';" ><img src="<?php echo ROOT_URL; ?>src/views/images/pencil.png" alt="edit" /></a>';
+		str += '<a onclick="fillOptionList(\''+name+"_mouf_dropdown_select_"+dropDownCnt+'\', \''+imageId+'\', \''+varType+'\', \''+defaultValue+'\'); document.getElementById(\''+name+'_mouf_dropdown_text_'+dropDownCnt+'\').style.display=\'none\';document.getElementById(\''+name+"_mouf_dropdown_dropdown_"+dropDownCnt+'\').style.display=\'inline\';" ><img src="<?php echo ROOT_URL; ?>src-dev/views/images/pencil.png" alt="edit" /></a>';
 		str += "</span>";
 		str += "<span id='"+name+"_mouf_dropdown_dropdown_"+dropDownCnt+"' style='display:none'>";
 	}
@@ -84,12 +84,12 @@ function addNewDropDown(element, name, defaultValue, hasKey, defaultKey, type, i
 		str += "<option value='"+htmlEntitiesAndQuotes(defaultValue)+"'>"+htmlEntitiesAndQuotes(defaultValue)+"</option>"
 	}
 	str += "</select>";
-	str += "<img id='"+imageId+"' src='<?php echo ROOT_URL ?>src/views/images/ajax-loader.gif' alt='' />";
+	str += "<img id='"+imageId+"' src='<?php echo ROOT_URL ?>src-dev/views/images/ajax-loader.gif' alt='' />";
 	
 	if (isInArray == true) {
-		str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src/views/images/cross.png\"></a>";
+		str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src-dev/views/images/cross.png\"></a>";
 	}
-	//str += '<a onclick="document.getElementById(\''+name+'_mouf_dropdown_text_'+dropDownCnt+'\').style.display=\'inline\';document.getElementById(\''+name+"_mouf_dropdown_dropdown_"+dropDownCnt+'\').style.display=\'none\';"><img src="<?php echo ROOT_URL ?>src/views/images/tick.png"></a>';
+	//str += '<a onclick="document.getElementById(\''+name+'_mouf_dropdown_text_'+dropDownCnt+'\').style.display=\'inline\';document.getElementById(\''+name+"_mouf_dropdown_dropdown_"+dropDownCnt+'\').style.display=\'none\';"><img src="<?php echo ROOT_URL ?>src-dev/views/images/tick.png"></a>';
 	if (defaultValue != "") {
 		str += "</span>";
 	} else {
@@ -137,7 +137,7 @@ function addNewTextBox(element, name, defaultValue, hasKey, defaultKey) {
 		str += "=&gt;";
 	}
 	str += "<input type='text' name='"+htmlEntitiesAndQuotes(name)+"[]' value=\""+htmlEntitiesAndQuotes(defaultValue)+"\">";
-	str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src/views/images/cross.png\"></a>";
+	str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src-dev/views/images/cross.png\"></a>";
 	str += "</div>";
 	element.insert(str);
 	dropDownCnt++;
@@ -174,7 +174,7 @@ function addNewCheckBox(element, name, defaultValue, hasKey, defaultKey) {
 		str += "=&gt;";
 	}
 	str += "<input type='checkbox' name='"+name+"[]' value=\"true\" "+(defaultValue?"checked=\"checked\"":"")+"\" >";
-	str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src/views/images/cross.png\"></a>";
+	str += "<a onclick='$(\""+name+"_mouf_dropdown_"+dropDownCnt+"\").remove()'><img src=\"<?php echo ROOT_URL ?>src-dev/views/images/cross.png\"></a>";
 	str += "</div>";
 	element.insert(str);
 	dropDownCnt++;
@@ -433,7 +433,7 @@ jQuery(document).ready (function() {
 						if ($defaultValue != null) {
 							echo '<span id="'.$property->getName().'_mouf_link" >';
 							echo '<a href="'.ROOT_URL.'mouf/mouf/displayComponent?name='.plainstring_to_htmlprotected($defaultValue).'&amp;selfedit='.$this->selfedit.'">'.$defaultValue.'</a>';
-							echo '<a onclick="document.getElementById(\''.$property->getName().'_mouf_link\').style.display=\'none\';document.getElementById(\'moufproperty_'.$property->getName().'\').style.display=\'inline\';" ><img src="'.ROOT_URL.'src/views/images/pencil.png" alt="edit" /></a>';
+							echo '<a onclick="document.getElementById(\''.$property->getName().'_mouf_link\').style.display=\'none\';document.getElementById(\'moufproperty_'.$property->getName().'\').style.display=\'inline\';" ><img src="'.ROOT_URL.'src-dev/views/images/pencil.png" alt="edit" /></a>';
 							echo "</span>\n";
 							$defaultDisplaySelect = 'style="display:none"';
 						}
@@ -473,7 +473,7 @@ jQuery(document).ready (function() {
 					echo '<input type="text" id="moufproperty_'.$property->getName().'" name="'.$property->getName().'" value="'.plainstring_to_htmlprotected($defaultValue).'" />';
 					
 					// TODO: uncomment to enable
-					//echo '<a onclick="onPropertyOptionsClick(\''.$property->getName().'\')" href="javascript:void(0)" ><img src="'.ROOT_URL.'src/views/images/bullet_wrench.png" alt="Options" /></a>';
+					//echo '<a onclick="onPropertyOptionsClick(\''.$property->getName().'\')" href="javascript:void(0)" ><img src="'.ROOT_URL.'src-dev/views/images/bullet_wrench.png" alt="Options" /></a>';
 				}
 				
 				echo '</td>';

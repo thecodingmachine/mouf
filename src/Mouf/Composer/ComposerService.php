@@ -217,6 +217,30 @@ class ComposerService {
 		return $path;
 	}
 	
+	/**
+	 * Returns an array of Composer packages currently installed.
+	 * 
+	 * @return PackageInterface[]
+	 */
+	public function getLocalPackages() {
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
+		
+		if ($this->selfEdit) {
+			chdir(__DIR__."/../../..");
+			\putenv('COMPOSER=composer-mouf.json');
+		} else {
+			chdir(__DIR__."/../../../../../..");
+		}
+		
+		$composer = $this->getComposer();
+				
+		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$package = $composer->getPackage();
+		$packagesList = $localRepos->getPackages();
+		$packagesList[] = $package;
+		
+		return $packagesList;		
+	}
 }
 
 ?>

@@ -69,7 +69,7 @@ Dropzone:
  -->
 
 <div>
-<button onclick="MoufUI.showSourceFile('testClasses.php',6);return false;">Show PHP file</button>
+<button onclick="MoufUI.showSourceFile('src/Mouf/Test.php',6);return false;">Show PHP file</button>
 </div>
 
 
