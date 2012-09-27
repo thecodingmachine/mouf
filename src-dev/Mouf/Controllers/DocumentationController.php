@@ -121,6 +121,8 @@ class DocumentationController extends Controller {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 
+		// TODO: ADD support for @URL doc/view/*
+		
 		$this->packageManager = new MoufPackageManager();
 		
 		// TODO
@@ -298,27 +300,30 @@ class DocumentationController extends Controller {
 		return ROOT_URL."mouf/doc/view/".$documentationPageDescriptor->getPackage()->getPackageDirectory()."/".$link;
 	}
 	
-	function displayDocDirectory($docPages) {
+	/**
+	 * Display the doc links for one package.
+	 * 
+	 * @param array<string, string> $docPages
+	 * @param string $packageName
+	 */
+	public function displayDocDirectory($docPages, $packageName) {
 		?>
 		<ul>
 		<?php 
-		foreach ($docPages as $docPage):
-			/* @var $docPage MoufDocumentationPageDescriptor */
+		foreach ($docPages as $url=>$title):
 			?>
 			<li>
-			
 			<?php 
-			$url = $this->getLink($docPage);
 			if ($url) {
-				echo "<a href='".$url."'>";
+				echo "<a href='".$packageName."/doc/".$url."'>";
 			}
-			echo $docPage->getTitle();
+			echo $title;
 			if ($url) {
 				echo "</a>";
 			}
-			if ($docPage->getChildren()) {
+			/*if ($docPage->getChildren()) {
 				displayDocDirectory($docPage->getChildren());
-			}
+			}*/
 			?>
 			</li>
 			<?php 

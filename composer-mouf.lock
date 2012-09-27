@@ -1,5 +1,5 @@
 {
-    "hash": "cdf5418d4cbdfddc6b1be7a0d7274896",
+    "hash": "8790331a05a9e3206f0c5be7b63b6b74",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -139,12 +139,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.menus.topribbonmenu.git",
-                "reference": "4b50e4880537ca5e9892ed0b603f744e24655060"
+                "reference": "1fb6434175678df39091e4a908da248a9c17b90c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/zipball/4b50e4880537ca5e9892ed0b603f744e24655060",
-                "reference": "4b50e4880537ca5e9892ed0b603f744e24655060",
+                "url": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/zipball/1fb6434175678df39091e4a908da248a9c17b90c",
+                "reference": "1fb6434175678df39091e4a908da248a9c17b90c",
                 "shasum": ""
             },
             "require": {
@@ -152,17 +152,19 @@
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
                 "mouf/html.widgets.menu": "2.*"
             },
-            "time": "1347118445",
+            "time": "1348696552",
             "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
-                },
+            "extra": {
                 "mouf": {
                     "install": {
                         "install.php": "file"
                     }
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
                 }
             },
             "license": [
@@ -290,20 +292,27 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "51b48766dcc071c3a6feef9352d3b51469056f2b"
+                "reference": "d2de65bc08e3777855dee9b09d82cbfb795cb03c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/zipball/51b48766dcc071c3a6feef9352d3b51469056f2b",
-                "reference": "51b48766dcc071c3a6feef9352d3b51469056f2b",
+                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/zipball/d2de65bc08e3777855dee9b09d82cbfb795cb03c",
+                "reference": "d2de65bc08e3777855dee9b09d82cbfb795cb03c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.htmlelement": ">=2.0-dev,<3.0"
             },
-            "time": "1346781668",
+            "time": "1348696270",
             "type": "library",
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -389,26 +398,28 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "4048de269fd5dfb6d87cbffdd7c329794725e4e3"
+                "reference": "b586d543ee769144e4e430a70e89066c8c9a0603"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/zipball/4048de269fd5dfb6d87cbffdd7c329794725e4e3",
-                "reference": "4048de269fd5dfb6d87cbffdd7c329794725e4e3",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/zipball/b586d543ee769144e4e430a70e89066c8c9a0603",
+                "reference": "b586d543ee769144e4e430a70e89066c8c9a0603",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "time": "1346762115",
+            "time": "1348695573",
             "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
                 }
             },
+            "installation-source": "source",
             "license": [
                 "MIT"
             ],
@@ -437,26 +448,28 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-filetree.git",
-                "reference": "ac01a8a9b32411f6f391d43ea97e819920034817"
+                "reference": "984d8509df74f48d88c3c81ad2c8ee28c4005742"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/zipball/ac01a8a9b32411f6f391d43ea97e819920034817",
-                "reference": "ac01a8a9b32411f6f391d43ea97e819920034817",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/zipball/984d8509df74f48d88c3c81ad2c8ee28c4005742",
+                "reference": "984d8509df74f48d88c3c81ad2c8ee28c4005742",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0"
             },
-            "time": "1346781929",
+            "time": "1348695626",
             "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
                 }
             },
+            "installation-source": "source",
             "license": [
                 "MIT"
             ],
@@ -487,26 +500,28 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git",
-                "reference": "3872e0e11ada9235483805fb9efa88007499146a"
+                "reference": "9932c0a45607c9451590181f0f5406a501a9d36f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/zipball/3872e0e11ada9235483805fb9efa88007499146a",
-                "reference": "3872e0e11ada9235483805fb9efa88007499146a",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/zipball/9932c0a45607c9451590181f0f5406a501a9d36f",
+                "reference": "9932c0a45607c9451590181f0f5406a501a9d36f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0"
             },
-            "time": "1346762119",
+            "time": "1348695664",
             "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
                 }
             },
+            "installation-source": "source",
             "license": [
                 "MIT"
             ],
@@ -537,20 +552,27 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.syntaxhighlighter.git",
-                "reference": "ccac80f3841a300b67e66c8da0cf351ce39849a5"
+                "reference": "e23256f83f85c111496d974af216a033a474aecc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/zipball/ccac80f3841a300b67e66c8da0cf351ce39849a5",
-                "reference": "ccac80f3841a300b67e66c8da0cf351ce39849a5",
+                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/zipball/e23256f83f85c111496d974af216a033a474aecc",
+                "reference": "e23256f83f85c111496d974af216a033a474aecc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2"
             },
-            "time": "1347115603",
+            "time": "1348695694",
             "type": "library",
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -585,20 +607,27 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.underscore.git",
-                "reference": "88f83fcef8552022124f5cd0e70380811c85a5a6"
+                "reference": "98cdc51a5ae42552a245892f2c83f55ff8617927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/zipball/88f83fcef8552022124f5cd0e70380811c85a5a6",
-                "reference": "88f83fcef8552022124f5cd0e70380811c85a5a6",
+                "url": "https://github.com/thecodingmachine/javascript.underscore/zipball/98cdc51a5ae42552a245892f2c83f55ff8617927",
+                "reference": "98cdc51a5ae42552a245892f2c83f55ff8617927",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "time": "1346601577",
+            "time": "1348695719",
             "type": "library",
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "install.php": "file"
+                    }
+                }
+            },
             "installation-source": "source",
             "license": [
                 "MIT"
@@ -1061,20 +1090,32 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.i18n.fine.git",
-                "reference": "c7eebfced500a3c06140001d9b9e8f8d478099df"
+                "reference": "bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine/zipball/c7eebfced500a3c06140001d9b9e8f8d478099df",
-                "reference": "c7eebfced500a3c06140001d9b9e8f8d478099df",
+                "url": "https://github.com/thecodingmachine/utils.i18n.fine/zipball/bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f",
+                "reference": "bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "phpexcel/phpexcel": ">=1.7.6, <2.0.0"
             },
-            "time": "1346406534",
+            "time": "1348696332",
             "type": "library",
+            "extra": {
+                "mouf": {
+                    "install": {
+                        "mouf/install.php": "file"
+                    },
+                    "doc": {
+                        "using_fine.html": "Using FINE",
+                        "date_functions.html": "Date functions",
+                        "currency_functions.html": "Currency functions"
+                    }
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1224,7 +1265,7 @@
             "require": {
                 "php": ">5.2.0"
             },
-            "time": "2012-09-04 18:29:37",
+            "time": "2012-09-04 16:29:37",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

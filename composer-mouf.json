@@ -115,5 +115,10 @@
     "autoload": {
         "psr-0": {"Mouf": ["src/", "src-dev/"]}
     },
-    "minimum-stability": "dev" 
+    "minimum-stability": "dev" ,
+    "extra": {
+    	"mouf": {
+    
+    	}
+    }
 }

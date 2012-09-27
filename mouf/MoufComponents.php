@@ -357,7 +357,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setUrl' => 
       array (
-        'value' => 'phpInfo',
+        'value' => 'phpInfo/',
         'type' => 'string',
         'metadata' => 
         array (

@@ -68,7 +68,7 @@ class MoufConfigManager {
 			$proxy = new MoufReflectionProxy();
 			// TODO: really not very clean.
 			// We need to move out of "selfedit" into a "managed dir" view of things.
-			if ($this->configFileName == "../config.php") {
+			if ($this->configFileName == "../../../../../config.php") {
 				$selfEdit = false;
 			} else {
 				$selfEdit = true;

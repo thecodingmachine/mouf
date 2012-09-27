@@ -1,4 +1,4 @@
-<?php /* @var $this DocumentationController */
+<?php /* @var $this Mouf\Controllers\DocumentationController */
 /*
  * This file is part of the Mouf core package.
  *
@@ -16,14 +16,16 @@ use Mouf\Composer\PackageInterface;
 
 
 foreach ($this->packageList as $package):
-var_export($package->getExtra());
+//var_export($package->getPrettyName());echo "<br/>";
+//var_export($package->getExtra());echo "<br/>";echo "<br/>";
 	/* @var $package PackageInterface */
-	$docPages = $package->getExtra();
-	if ($docPages):
-		?><h2><?php echo $package->getDisplayName() ?></h2>
-		<p>Package <?php echo $package->getDescriptor()->getGroup()."/".$package->getDescriptor()->getName()." Version: ".$package->getDescriptor()->getVersion() ?></p>
+	$extra = $package->getExtra();
+	if (isset($extra['mouf']['doc'])) :
+		$docPages = $extra['mouf']['doc'];
+	?><h2><?php echo $package->getPrettyName() ?></h2>
+		<p>Package <?php echo $package->getName()." ".$package->getVersion() ?></p>
 		<?php 
-		$this->displayDocDirectory($docPages);
+		$this->displayDocDirectory($docPages, $package->getName());
 		?>
 		<?php
 	endif;
