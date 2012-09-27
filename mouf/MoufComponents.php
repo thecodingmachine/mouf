@@ -21,7 +21,7 @@ $moufManager->setAllVariables(array (
 $moufManager->addComponentInstances(array (
   'ajaxinstance' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufAjaxInstanceController',
+    'class' => 'Mouf\\Controllers\\MoufAjaxInstanceController',
     'external' => false,
     'weak' => false,
     'fieldBinds' => 
@@ -34,19 +34,19 @@ $moufManager->addComponentInstances(array (
   ),
   'block.content' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlBlock',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
   ),
   'block.footer' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlBlock',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
   ),
   'block.header' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlBlock',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
     'fieldBinds' => 
@@ -59,7 +59,7 @@ $moufManager->addComponentInstances(array (
   ),
   'block.left' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlBlock',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
     'fieldBinds' => 
@@ -75,13 +75,13 @@ $moufManager->addComponentInstances(array (
   ),
   'block.right' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlBlock',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
   ),
   'components' => 
   array (
-    'class' => '\\Mouf\\Controllers\\ComponentsController',
+    'class' => 'Mouf\\Controllers\\ComponentsController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -91,7 +91,7 @@ $moufManager->addComponentInstances(array (
   ),
   'componentsSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -163,7 +163,7 @@ $moufManager->addComponentInstances(array (
   ),
   'config' => 
   array (
-    'class' => '\\Mouf\\Controllers\\ConfigController',
+    'class' => 'Mouf\\Controllers\\ConfigController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -208,7 +208,7 @@ $moufManager->addComponentInstances(array (
   ),
   'createNewInstanceMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -290,7 +290,7 @@ $moufManager->addComponentInstances(array (
   ),
   'createNewInstanceMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -333,7 +333,7 @@ $moufManager->addComponentInstances(array (
   ),
   'displayGraph' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufDisplayGraphController',
+    'class' => 'Mouf\\Controllers\\MoufDisplayGraphController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -343,7 +343,7 @@ $moufManager->addComponentInstances(array (
   ),
   'displayPhpInfoMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -422,7 +422,7 @@ $moufManager->addComponentInstances(array (
   ),
   'displayPhpInfoMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -438,7 +438,7 @@ $moufManager->addComponentInstances(array (
   ),
   'doc' => 
   array (
-    'class' => '\\Mouf\\Controllers\\DocumentationController',
+    'class' => 'Mouf\\Controllers\\DocumentationController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -449,12 +449,12 @@ $moufManager->addComponentInstances(array (
   ),
   'documentationMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\Menu',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
     'external' => false,
   ),
   'documentationMenuRenderer' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
+    'class' => 'Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -463,7 +463,7 @@ $moufManager->addComponentInstances(array (
   ),
   'documentationSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -551,7 +551,7 @@ $moufManager->addComponentInstances(array (
   ),
   'downloadPackages2MenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -633,7 +633,7 @@ $moufManager->addComponentInstances(array (
   ),
   'downloadPackages2MenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -649,7 +649,7 @@ $moufManager->addComponentInstances(array (
   ),
   'editConfigurationMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -731,7 +731,7 @@ $moufManager->addComponentInstances(array (
   ),
   'editConfigurationMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -752,7 +752,7 @@ $moufManager->addComponentInstances(array (
   ),
   'errorLogger' => 
   array (
-    'class' => '\\Mouf\\Utils\\Log\\ErrorLogLogger',
+    'class' => 'Mouf\\Utils\\Log\\ErrorLogLogger',
     'external' => false,
     'fieldProperties' => 
     array (
@@ -768,7 +768,7 @@ $moufManager->addComponentInstances(array (
   ),
   'includePhpFilesMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -850,7 +850,7 @@ $moufManager->addComponentInstances(array (
   ),
   'includePhpFilesMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -866,7 +866,7 @@ $moufManager->addComponentInstances(array (
   ),
   'install' => 
   array (
-    'class' => '\\Mouf\\Actions\\InstallController',
+    'class' => 'Mouf\\Actions\\InstallController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -928,7 +928,7 @@ $moufManager->addComponentInstances(array (
   ),
   'installTemplate' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
     array (
@@ -964,7 +964,7 @@ $moufManager->addComponentInstances(array (
   ),
   'instance' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufInstanceController',
+    'class' => 'Mouf\\Controllers\\MoufInstanceController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -974,12 +974,12 @@ $moufManager->addComponentInstances(array (
   ),
   'instanceMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\Menu',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
     'external' => false,
   ),
   'instanceMenuRenderer' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
+    'class' => 'Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -988,7 +988,7 @@ $moufManager->addComponentInstances(array (
   ),
   'jQueryLibrary' => 
   array (
-    'class' => '\\Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
     'external' => false,
     'weak' => false,
     'setterProperties' => 
@@ -1012,7 +1012,7 @@ $moufManager->addComponentInstances(array (
   ),
   'jQueryUiLibrary' => 
   array (
-    'class' => '\\Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
     'external' => false,
     'weak' => false,
     'setterProperties' => 
@@ -1146,7 +1146,7 @@ $moufManager->addComponentInstances(array (
 		),
   'javascript.jquery-filetree' => 
   array (
-    'class' => '\\Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
     'external' => false,
     'weak' => false,
     'setterProperties' => 
@@ -1185,7 +1185,7 @@ $moufManager->addComponentInstances(array (
   ),
   'javascript.syntaxHighlighter' => 
   array (
-    'class' => '\\Mouf\\Javascript\\SyntaxHighlighterWebLibrary',
+    'class' => 'Mouf\\Javascript\\SyntaxHighlighterWebLibrary',
     'external' => false,
     'weak' => false,
   ),
@@ -1247,7 +1247,7 @@ $moufManager->addComponentInstances(array (
   ),
   'login' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufLoginController',
+    'class' => 'Mouf\\Controllers\\MoufLoginController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -1364,7 +1364,7 @@ $moufManager->addComponentInstances(array (
   ),
   'logout2MenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1443,7 +1443,7 @@ $moufManager->addComponentInstances(array (
   ),
   'logout2MenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1459,7 +1459,7 @@ $moufManager->addComponentInstances(array (
   ),
   'mainMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\Menu',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
     'external' => false,
     'setterBinds' => 
     array (
@@ -1471,7 +1471,7 @@ $moufManager->addComponentInstances(array (
   ),
   'manageLocalPackagesMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1553,7 +1553,7 @@ $moufManager->addComponentInstances(array (
   ),
   'manageLocalPackagesMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1569,7 +1569,7 @@ $moufManager->addComponentInstances(array (
   ),
   'manageRepositoriesMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1651,7 +1651,7 @@ $moufManager->addComponentInstances(array (
   ),
   'manageRepositoriesMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1667,7 +1667,7 @@ $moufManager->addComponentInstances(array (
   ),
   'miscellaneousSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -1740,7 +1740,7 @@ $moufManager->addComponentInstances(array (
   ),
   'mouf' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufController',
+    'class' => 'Mouf\\Controllers\\MoufController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -1750,7 +1750,7 @@ $moufManager->addComponentInstances(array (
   ),
 		'includes' =>
 		array (
-				'class' => '\\Mouf\\Controllers\\IncludesAnalyzerController',
+				'class' => 'Mouf\\Controllers\\IncludesAnalyzerController',
 				'external' => false,
 				'fieldBinds' =>
 				array (
@@ -1764,7 +1764,7 @@ $moufManager->addComponentInstances(array (
 		
   'moufInstallTemplate' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
     array (
@@ -1797,7 +1797,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufInstallTemplate2' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -1838,7 +1838,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufLoginTemplate' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
     array (
@@ -1890,7 +1890,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufStatus2MenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1972,7 +1972,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufStatus2MenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -1988,7 +1988,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -2071,7 +2071,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufTemplate' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
     array (
@@ -2168,7 +2168,7 @@ $moufManager->addComponentInstances(array (
   ),
   'packages' => 
   array (
-    'class' => '\\Mouf\\Controllers\\PackageController',
+    'class' => 'Mouf\\Controllers\\PackageController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2179,12 +2179,12 @@ $moufManager->addComponentInstances(array (
   ),
   'packagesService' => 
   array (
-    'class' => '\\Mouf\\Controllers\\PackageServiceController',
+    'class' => 'Mouf\\Controllers\\PackageServiceController',
     'external' => false,
   ),
   'packagesSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -2257,7 +2257,7 @@ $moufManager->addComponentInstances(array (
   ),
   'packagetransfer' => 
   array (
-    'class' => '\\Mouf\\Controllers\\PackageDownloadController',
+    'class' => 'Mouf\\Controllers\\PackageDownloadController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2268,12 +2268,12 @@ $moufManager->addComponentInstances(array (
   ),
   'phpInfo' => 
   array (
-    'class' => '\\Mouf\\Controllers\\PhpInfoController',
+    'class' => 'Mouf\\Controllers\\PhpInfoController',
     'external' => false,
   ),
   'phpProjectSubMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterBinds' => 
     array (
@@ -2350,7 +2350,7 @@ $moufManager->addComponentInstances(array (
   ),
   'repositories' => 
   array (
-    'class' => '\\Mouf\\Controllers\\RepositorySourceController',
+    'class' => 'Mouf\\Controllers\\RepositorySourceController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2431,12 +2431,12 @@ $moufManager->addComponentInstances(array (
   ),
   'rootController' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufRootController',
+    'class' => 'Mouf\\Controllers\\MoufRootController',
     'external' => false,
   ),
   'search' => 
   array (
-    'class' => '\\Mouf\\Controllers\\SearchController',
+    'class' => 'Mouf\\Controllers\\SearchController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2447,7 +2447,7 @@ $moufManager->addComponentInstances(array (
   ),
   'searchBox' => 
   array (
-    'class' => '\\Mouf\\Html\\HtmlElement\\HtmlFromFile',
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlFromFile',
     'external' => false,
     'fieldProperties' => 
     array (
@@ -2483,7 +2483,7 @@ $moufManager->addComponentInstances(array (
   ),
   'setRootUrlJsBlock' => 
   array (
-    'class' => '\\Mouf\\Html\\Utils\\WebLibraryManager\\InlineWebLibrary',
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\InlineWebLibrary',
     'external' => false,
     'weak' => false,
     'fieldProperties' => 
@@ -2500,12 +2500,12 @@ $moufManager->addComponentInstances(array (
   ),
   'specialActionsMenu' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\Menu',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
     'external' => false,
   ),
   'specialActionsMenuRenderer' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
+    'class' => 'Mouf\\Html\\Template\\Menus\\BasicMenuRenderer',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2546,7 +2546,7 @@ $moufManager->addComponentInstances(array (
   ),
   'splash.errorsController' => 
   array (
-    'class' => '\\Mouf\\Mvc\\Splash\\Controllers\\HttpErrorsController',
+    'class' => 'Mouf\\Mvc\\Splash\\Controllers\\HttpErrorsController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2581,7 +2581,7 @@ $moufManager->addComponentInstances(array (
   ),
   'topRibbonMenuRenderer' => 
   array (
-    'class' => '\\Mouf\\Html\\Template\\Menus\\TopRibbonMenuRenderer',
+    'class' => 'Mouf\\Html\\Template\\Menus\\TopRibbonMenuRenderer',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2643,7 +2643,7 @@ $moufManager->addComponentInstances(array (
   ),
   'validate' => 
   array (
-    'class' => '\\Mouf\\Controllers\\MoufValidatorController',
+    'class' => 'Mouf\\Controllers\\MoufValidatorController',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2654,7 +2654,7 @@ $moufManager->addComponentInstances(array (
   ),
   'validatorService' => 
   array (
-    'class' => '\\Mouf\\Validator\\MoufValidatorService',
+    'class' => 'Mouf\\Validator\\MoufValidatorService',
     'external' => false,
     'fieldBinds' => 
     array (
@@ -2669,7 +2669,7 @@ $moufManager->addComponentInstances(array (
   ),
   'viewDeclaredInstancesMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -2751,7 +2751,7 @@ $moufManager->addComponentInstances(array (
   ),
   'viewDeclaredInstancesMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (
@@ -2767,7 +2767,7 @@ $moufManager->addComponentInstances(array (
   ),
   'viewDocumentationMenuItem' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
     'external' => false,
     'setterProperties' => 
     array (
@@ -2846,7 +2846,7 @@ $moufManager->addComponentInstances(array (
   ),
   'viewDocumentationMenuItemIcon' => 
   array (
-    'class' => '\\Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
     'setterProperties' => 
     array (

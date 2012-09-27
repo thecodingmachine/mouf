@@ -2026,7 +2026,8 @@ class ".$this->mainClassName." {
 	 */
 	public function getClassDescriptor($className) {
 		if (!isset($this->classDescriptors[$className])) {
-			if (MoufManager::getMoufManager()->getScope() == self::SCOPE_APP && $this->getScope() == self::SCOPE_APP) {
+			if ((MoufManager::getMoufManager()->getScope() == self::SCOPE_APP && $this->getScope() == self::SCOPE_APP)
+				|| (MoufManager::getMoufManager()->getScope() == self::SCOPE_ADMIN && $this->getScope() == self::SCOPE_ADMIN)) {
 				// We are fully in the scope of the application:
 				$this->classDescriptors[$className] = new MoufReflectionClass($className);
 			} else {

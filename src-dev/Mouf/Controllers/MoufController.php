@@ -266,7 +266,7 @@ class MoufController extends Controller implements MoufSearchable {
 		}
 		
 		if ($this->ajax) {
-			$this->loadFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php");
+			$this->loadFile(dirname(__FILE__)."/../../views/listComponentsByDirectory.php");
 		} else {
 			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/listComponentsByDirectory.php", $this);
 			//$this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php", $this);
