@@ -4,12 +4,12 @@ namespace Mouf\Composer;
 use  Composer\IO\IOInterface;
 
 /**
- * An IO class to manage IOs in Mouf from Composer.
+ * An IO class to manage IOs in Mouf from Composer using the slow iframe technique and Chunked encoded HTTP requests.
  * 
  * @author David Négrier
  * @Component
  */
-class MoufComposerIO implements IOInterface {
+class MoufJsComposerIO implements IOInterface {
 	/**
 	 * Is this input means interactive?
 	 *
@@ -44,10 +44,13 @@ class MoufComposerIO implements IOInterface {
 	 * @param bool         $newline  Whether to add a newline or not
 	 */
 	public function write($messages, $newline = true) {
-		echo strreplace(array("<info>", "</info>", "<comment>", "</comment>"), array("<strong>", "</strong>", "<em>", "</em>"), $messages);
 		if ($newline) {
-			echo "<br/>";
+			$messages.= "<br/>";
 		}
+		
+		$msg = "<script>window.parent.Composer.consoleOutput(".json_encode($messages).")</script>";
+		
+		ChunckedUtils::writeChunk($msg);
 	}
 	
 	/**

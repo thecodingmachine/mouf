@@ -1265,7 +1265,7 @@
             "require": {
                 "php": ">5.2.0"
             },
-            "time": "2012-09-04 16:29:37",
+            "time": "2012-09-04 14:29:37",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

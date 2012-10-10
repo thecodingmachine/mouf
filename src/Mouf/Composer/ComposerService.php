@@ -2,6 +2,7 @@
 namespace Mouf\Composer;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Composer\Repository\PlatformRepository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,6 +24,10 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Util\Filesystem;
 use Composer\Autoload\ClassMapGenerator;
+use Composer\Package\CompletePackageInterface;
+use Composer\Json\JsonFile;
+use Composer\Json\JsonManipulator;
+use Composer\Installer;
 
 /**
  * A service to access composer functions.
@@ -64,12 +69,6 @@ class ComposerService {
 		
 		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
 		
-		if ($this->selfEdit) {
-			chdir(__DIR__."/../../..");
-			\putenv('COMPOSER=composer-mouf.json');
-		} else {
-			chdir(__DIR__."/../../../../../..");
-		}
 		
 		$composer = $this->getComposer(); 
 		
@@ -187,10 +186,25 @@ class ComposerService {
 	
 	protected function getComposer() {
 		if (null === $this->composer) {
-			$this->io = new MoufComposerIO();
+			
+			$this->configureEnv();
+			
+			$this->io = new MoufJsComposerIO();
 			$this->composer = Factory::create($this->io);
 		}
 		return $this->composer;
+	}
+	
+	/**
+	 * Changes the current working directory and set environment variables to be able to work with Composer.
+	 */
+	private function configureEnv() {
+		if ($this->selfEdit) {
+			chdir(__DIR__."/../../..");
+			\putenv('COMPOSER=composer-mouf.json');
+		} else {
+			chdir(__DIR__."/../../../../../..");
+		}
 	}
 	
 	/**
@@ -239,7 +253,220 @@ class ComposerService {
 		$packagesList = $localRepos->getPackages();
 		$packagesList[] = $package;
 		
-		return $packagesList;		
+		return $packagesList;
+	}
+	
+	protected $onlyName;
+	protected $tokens;
+	protected $lowMatches;
+	protected $onPackageFoundCallback;
+	
+	/**
+	 * Returns a list of packages matching the search query.
+	 * 
+	 * @param string $text
+	 * @return PackageInterface[]
+	 */
+	public function searchPackages($text, OnPackageFoundInterface $callback) {
+		$this->onPackageFoundCallback = $callback;
+		$composer = $this->getComposer();
+		$platformRepo = new PlatformRepository;
+
+		$localRepo = $composer->getRepositoryManager()->getLocalRepository();
+		$installedRepo = new CompositeRepository(array($localRepo, $platformRepo));
+		$repos = new CompositeRepository(array_merge(array($installedRepo), $composer->getRepositoryManager()->getRepositories()));
+		
+		//$this->onlyName = $input->getOption('only-name');
+		$this->onlyName = false;
+		//$this->tokens = $input->getArgument('tokens');
+		$this->tokens = explode(" ", $text);
+		
+		//$this->output = $output;
+		$repos->filterPackages(array($this, 'processPackage'), 'Composer\Package\CompletePackage');
+		
+		/*foreach ($this->lowMatches as $details) {
+			$output->writeln($details['name'] . '<comment>:</comment> '. $details['description']);
+		}*/
+	}
+	
+	public function processPackage($package)
+	{
+		if ($package instanceof AliasPackage || isset($this->matches[$package->getName()])) {
+			return;
+		}
+	
+		foreach ($this->tokens as $token) {
+			if (!$score = $this->matchPackage($package, $token)) {
+				continue;
+			}
+	
+			/*if (false !== ($pos = stripos($package->getName(), $token))) {
+				$name = substr($package->getPrettyName(), 0, $pos)
+				. '<strong>' . substr($package->getPrettyName(), $pos, strlen($token)) . '</strong>'
+				. substr($package->getPrettyName(), $pos + strlen($token));
+			} else {
+				$name = $package->getPrettyName();
+			}
+	
+			$description = strtok($package->getDescription(), "\r\n");
+			if (false !== ($pos = stripos($description, $token))) {
+				$description = substr($description, 0, $pos)
+				. '<strong>' . substr($description, $pos, strlen($token)) . '</strong>'
+				. substr($description, $pos + strlen($token));
+			}*/
+	
+			/*if ($score >= 3) {
+				$this->output->writeln($name . '<comment>:</comment> '. $description);
+				$this->matches[$package->getName()] = true;
+			} else {
+				$this->lowMatches[$package->getName()] = array(
+						'name' => $name,
+						'description' => $description,
+				);
+			}*/
+			$this->onPackageFoundCallback->onPackageFound($package, $score);
+	
+			return;
+		}
+	}
+	
+	/**
+	 * tries to find a token within the name/keywords/description
+	 *
+	 * @param  CompletePackageInterface $package
+	 * @param  string           $token
+	 * @return boolean
+	 */
+	private function matchPackage(CompletePackageInterface $package, $token)
+	{
+		$score = 0;
+	
+		if (false !== stripos($package->getName(), $token)) {
+			$score += 5;
+		}
+	
+		if (!$this->onlyName && false !== stripos(join(',', $package->getKeywords() ?: array()), $token)) {
+			$score += 3;
+		}
+	
+		if (!$this->onlyName && false !== stripos($package->getDescription(), $token)) {
+			$score += 1;
+		}
+	
+		return $score;
+	}
+	
+	public function install($name, $version, $requireDev = false, $preferSource = false, $dev = false) {
+		// From the RequireCommand code:
+		$this->configureEnv();
+		
+		$factory = new Factory;
+		$file = $factory->getComposerFile();
+		
+		/*if (!file_exists($file)) {
+			$output->writeln('<error>'.$file.' not found.</error>');
+		
+			return 1;
+		}
+		if (!is_readable($file)) {
+			$output->writeln('<error>'.$file.' is not readable.</error>');
+		
+			return 1;
+		}*/
+		
+		$json = new JsonFile($file);
+		$composerJson = $json->read();
+		
+		//$requirements = $this->determineRequirements($input, $output, $input->getArgument('packages'));
+		
+		$requireKey = $dev ? 'require-dev' : 'require';
+		$baseRequirements = array_key_exists($requireKey, $composerJson) ? $composerJson[$requireKey] : array();
+		//$requirements = $this->formatRequirements($requirements);
+		
+		$requirements[$name] = $version;
+		
+		if (!$this->updateFileCleanly($json, $baseRequirements, $requirements, $requireKey)) {
+			foreach ($requirements as $package => $version) {
+				$baseRequirements[$package] = $version;
+			}
+		
+			$composerJson[$requireKey] = $baseRequirements;
+			$json->write($composerJson);
+		}
+		
+		$composer = $this->getComposer();
+		
+		// Update packages
+		$io = $this->io;
+		
+		// We cannot update packages if we are in "source" mode (because the git/svn checkout
+		// can ask for questions about SSH authentication, ... and because we don't know how to
+		// answer questions...)
+		// TODO: find a way to know what composer will try to install and put a message if there
+		// is a "dev" version in the lot.
+		$io->write("Your composer.json file has been written. Go in the command line and run 'php composer.phar update' to install this new package.");
+		
+		/*$install = Installer::create($io, $composer);
+		
+		$install
+		->setVerbose(true)
+		->setPreferSource($preferSource)
+		->setDevMode($dev)
+		->setUpdate(true)
+		->setUpdateWhitelist($requirements);
+		;
+		
+		return $install->run() ? 0 : 1;*/
+		
+	}
+	
+	public function uninstall($name) {
+		$this->configureEnv();
+	
+		$factory = new Factory;
+		$file = $factory->getComposerFile();
+	
+		$json = new JsonFile($file);
+		$composerJson = $json->read();
+		
+		if (isset($composerJson['require'])) {
+			unset($composerJson['require'][$name]);
+		}
+		if (isset($composerJson['require-dev'])) {
+			unset($composerJson['require'][$name]);
+		}
+		
+		$json->write($composerJson);
+	
+		// Init IO
+		$this->getComposer();
+		$io = $this->io;
+		$io->write("Your composer.json file has been written. Go in the command line and run '<strong>php composer.phar update</strong>' to complete the removal of your package.");	
+	}
+	
+	/**
+	 * Copied from RequireCommand class...
+	 * 
+	 * @param unknown_type $json
+	 * @param array $base
+	 * @param array $new
+	 * @param unknown_type $requireKey
+	 */
+	private function updateFileCleanly($json, array $base, array $new, $requireKey)
+	{
+		$contents = file_get_contents($json->getPath());
+	
+		$manipulator = new JsonManipulator($contents);
+	
+		foreach ($new as $package => $constraint) {
+			if (!$manipulator->addLink($requireKey, $package, $constraint)) {
+				return false;
+			}
+		}
+	
+		file_put_contents($json->getPath(), $manipulator->getContents());
+	
+		return true;
 	}
 }
 

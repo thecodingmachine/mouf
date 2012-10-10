@@ -1,5 +1,5 @@
 <?php 
-
+/* @var $this Mouf\Controllers\MoufController */
 
 ?>
 <div id="messages"></div>
@@ -95,7 +95,7 @@ jQuery(document).ready(function() {
 	MoufSaveManager.onSaveStatusChange(function(status) {
 		// If the status changes, it is that we are in the process of saving...
 		if (status == "saved") {
-			window.location = "../ajaxinstance/?name="+jQuery("input[name=instanceName]").val();
+			window.location = "../ajaxinstance/?name="+jQuery("input[name=instanceName]").val()+"&selfedit=<?php echo $this->selfedit ?>";
 		}
 	});
 });

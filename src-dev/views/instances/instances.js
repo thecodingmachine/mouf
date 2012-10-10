@@ -354,14 +354,15 @@ var MoufInstanceManager = (function () {
 				}
 				try {
 					handleUniversalResponse(result, function() {
-						var componentsList = _.filter(_classes, function(classDescriptor) {
+						/*var componentsList = _.filter(_classes, function(classDescriptor) {
 							var annotations = classDescriptor.getAnnotations(); 
 							if (annotations && annotations["Component"]) {
 								return true;
 							} else {
 								return false;
 							}
-						})
+						})*/
+						var componentsList = _classes;
 						promise.triggerSuccess(window, componentsList);
 					});
 				} catch (e) {

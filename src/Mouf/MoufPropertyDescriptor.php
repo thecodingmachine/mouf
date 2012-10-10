@@ -79,6 +79,7 @@ class MoufPropertyDescriptor {
 	private function analyzeType() {
 		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			$property = $this->object;
+			// FIXME: take into account the "use" keyword!
 			if ($property->hasAnnotation("var")) {
 				$varTypes = $property->getAnnotations("var");
 				if (count($varTypes)>1) {
@@ -89,6 +90,25 @@ class MoufPropertyDescriptor {
 				$this->type = $varTypeAnnot->getType();
 				$this->subType = $varTypeAnnot->getSubType();
 				$this->keyType = $varTypeAnnot->getKeyType();
+				
+				$declaringClass = $property->getDeclaringClass();
+				$useNamespaces = $declaringClass->getUseNamespaces();
+				//var_dump($declaringClass->getName());
+				// Let's resolve the class name...
+				$className = (string)$declaringClass->getName();
+					
+				$pos = strrpos($className, "\\");
+				
+				$namespace = null;
+				// There is no namespace, let's do nothing!
+				if ($pos !== false) {
+					// The namespace without the final \
+					$namespace = substr($className, 0, $pos);
+				}
+				
+				
+				$this->type = self::resolveType($this->type, $useNamespaces, $namespace);
+				$this->subType = self::resolveType($this->subType, $useNamespaces, $namespace);
 			}
 		} else {
 			// For setters:
@@ -135,7 +155,7 @@ class MoufPropertyDescriptor {
 			}
 		}
 		// Apply a namespace to type and subtype if necessary
-		$this->applyNamespace();
+		//$this->applyNamespace();
 	}
 	
 	/**
@@ -318,7 +338,7 @@ class MoufPropertyDescriptor {
 	 * If so, we apply the namespace to the type and subtypes
 	 * 
 	 */
-	private function applyNamespace() {
+	/*private function applyNamespace() {
 		if (!$this->isPrimitiveType()) {
 			// Let's append the namespace if any and if the type is a class.
 			$classObj = $this->object->getDeclaringClass();
@@ -345,6 +365,35 @@ class MoufPropertyDescriptor {
 			}
 		}
 		
+	}*/
+	
+	/**
+	 * Give a fully qualified class name from the $type and declared "use" statements.
+	 * 
+	 * @param string $type
+	 * @param array<string, string> $useMap
+	 */
+	private static function resolveType($type, $useMap, $namespace) {
+		$index = strpos($type, '\\');
+		if ($index === false) {
+			if (isset($useMap[$type])) {
+				return $useMap[$type];
+			} else {
+				return $type;
+			}
+		}
+		if ($index === 0) {
+			// Starting with \. Already a fully qualified name.
+			return $type;
+		}
+		$leftPart = substr($type, 0, $index);
+		$rightPart = substr($type, $index);
+		
+		if (isset($useMap[$leftPart])) {
+			return $useMap[$leftPart].$rightPart;
+		} else {
+			return $namespace.'\\'.$type;
+		}
 	}
 }
 ?>

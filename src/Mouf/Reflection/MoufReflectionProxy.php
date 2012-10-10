@@ -234,6 +234,8 @@ class MoufReflectionProxy {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		}
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:')); //Fixes the HTTP/1.1 417 Expectation Failed Bug
 	
 		// Let's forward all cookies so the session in preserved.
 		// Problem: because the session file is locked, we cannot do that without closing the session first

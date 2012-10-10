@@ -405,18 +405,21 @@ var MoufDefaultRenderer = (function () {
 	 * Returns the renderer annotation.
 	 */
 	var getRendererAnnotation = function(classDescriptor) {
-		var renderers = classDescriptor.getAnnotations()['Renderer'];
-		if (renderers) {
-			var renderer = renderers[0];
-			if (renderer != null) {
-				try {
-					var jsonRenderer = jQuery.parseJSON(renderer);
-				} catch (e) {
-					throw "Invalid @Renderer annotation sent. The @Renderer must have a JSON object attached.\nAnnotation found: @Renderer "+renderer+"\nError detected:"+e;
+		var annotations = classDescriptor.getAnnotations();
+		if (annotations) {
+			var renderers = annotations['Renderer'];
+			if (renderers) {
+				var renderer = renderers[0];
+				if (renderer != null) {
+					try {
+						var jsonRenderer = jQuery.parseJSON(renderer);
+					} catch (e) {
+						throw "Invalid @Renderer annotation sent. The @Renderer must have a JSON object attached.\nAnnotation found: @Renderer "+renderer+"\nError detected:"+e;
+					}
+					return jsonRenderer;
 				}
-				return jsonRenderer;
+				return null;
 			}
-			return null;
 		}
 	}
 	

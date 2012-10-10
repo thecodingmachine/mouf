@@ -28,8 +28,7 @@ $moufManager->addComponentInstances(array (
     array (
       'template' => 'moufTemplate',
       'contentBlock' => 'block.content',
-    		'rightBlock' => 'block.right',
-    		
+      'rightBlock' => 'block.right',
     ),
   ),
   'block.content' => 
@@ -304,6 +303,34 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'css.moufCssStyles' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'setterProperties' => 
+    array (
+      'setJsFiles' => 
+      array (
+        'value' => false,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setCssFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/styles.css',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'defaultWebLibraryManager' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibraryManager',
@@ -321,8 +348,9 @@ $moufManager->addComponentInstances(array (
         5 => 'javascript.syntaxHighlighter',
         6 => 'setRootUrlJsBlock',
         7 => 'javascript.jquery-filetree',
-      	8 => 'css.moufCssStyles',
-      	9 => 'javascript.moufInstanceLibrary',
+        8 => 'css.moufCssStyles',
+        9 => 'javascript.moufInstanceLibrary',
+      		10 => 'javascript.composer',
       ),
     ),
   ),
@@ -557,7 +585,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setLabel' => 
       array (
-        'value' => 'Download packages',
+        'value' => 'Install/Remove packages',
         'type' => 'string',
         'metadata' => 
         array (
@@ -565,7 +593,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setUrl' => 
       array (
-        'value' => 'packagetransfer/',
+        'value' => 'composer/view',
         'type' => 'string',
         'metadata' => 
         array (
@@ -864,6 +892,16 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'includes' => 
+  array (
+    'class' => 'Mouf\\Controllers\\IncludesAnalyzerController',
+    'external' => false,
+    'fieldBinds' => 
+    array (
+      'template' => 'moufTemplate',
+      'contentBlock' => 'block.content',
+    ),
+  ),
   'install' => 
   array (
     'class' => 'Mouf\\Actions\\InstallController',
@@ -872,7 +910,7 @@ $moufManager->addComponentInstances(array (
     array (
       'multiStepActionService' => 'installService',
       'template' => 'moufInstallTemplate',
-    		'contentBlock' => 'block.content',
+      'contentBlock' => 'block.content',
     ),
   ),
   'installProcessValidator' => 
@@ -932,10 +970,7 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'setterBinds' => 
     array (
-      'setWebLibraryManager' => 
-      array (
-        0 => 'defaultWebLibraryManager',
-      ),
+      'setWebLibraryManager' => 'defaultWebLibraryManager',
       'setHeader' => 'block.header',
       'setFooter' => 'block.footer',
       'setLeft' => 'block.left',
@@ -960,6 +995,17 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
+    ),
+  ),
+  'installedPackagesController' => 
+  array (
+    'class' => 'Mouf\\Controllers\\Composer\\InstalledPackagesController',
+    'external' => false,
+    'weak' => false,
+    'fieldBinds' => 
+    array (
+      'template' => 'moufTemplate',
+      'contentBlock' => 'block.content',
     ),
   ),
   'instance' => 
@@ -1077,73 +1123,26 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-		'css.moufCssStyles' =>
-		array (
-				'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
-				'external' => false,
-				'weak' => false,
-				'setterProperties' =>
-				array (
-						'setJsFiles' =>
-						array (
-								'value' => false,
-								'type' => 'string',
-								'metadata' =>
-								array (
-								),
-						),
-						'setCssFiles' =>
-						array (
-								'value' => 								array (
-										0 => 'src-dev/views/styles.css',
-								),
-								
-								'type' => 'string',
-								'metadata' =>
-								array (
-								),
-						),
-				),
-		),
-		'javascript.moufInstanceLibrary' =>
-		array (
-				'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
-				'external' => false,
-				'weak' => false,
-				'setterProperties' =>
-				array (
-						'setJsFiles' =>
-						array (
-								'value' => 								array (
-										0 => 'src-dev/views/instances/messages.js',
-										1 => 'src-dev/views/instances/utils.js',
-										2 => 'src-dev/views/instances/instances.js',
-										3 => 'src-dev/views/instances/defaultRenderer.js',
-										4 => 'src-dev/views/instances/moufui.js',
-										5 => 'src-dev/views/instances/saveManager.js',
-										6 => 'src-dev/views/instances/jquery.scrollintoview.js',
-
-								),
-																'type' => 'string',
-								'metadata' =>
-								array (
-								),
-						),
-						'setCssFiles' =>
-						array (
-								'value' => 								array (
-										0 => 'src-dev/views/instances/defaultRenderer.css',
-								),
-								
-								
-		
-								'type' => 'string',
-								'metadata' =>
-								array (
-								),
-						),
-				),
-		),
+  'javascript.composer' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'setterProperties' => 
+    array (
+      'setJsFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/composer/composer.js',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'javascript.jquery-filetree' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
@@ -1180,6 +1179,43 @@ $moufManager->addComponentInstances(array (
       'setDependencies' => 
       array (
         0 => 'jQueryLibrary',
+      ),
+    ),
+  ),
+  'javascript.moufInstanceLibrary' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'setterProperties' => 
+    array (
+      'setJsFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/instances/messages.js',
+          1 => 'src-dev/views/instances/utils.js',
+          2 => 'src-dev/views/instances/instances.js',
+          3 => 'src-dev/views/instances/defaultRenderer.js',
+          4 => 'src-dev/views/instances/moufui.js',
+          5 => 'src-dev/views/instances/saveManager.js',
+          6 => 'src-dev/views/instances/jquery.scrollintoview.js',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setCssFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/instances/defaultRenderer.css',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
       ),
     ),
   ),
@@ -1469,202 +1505,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'manageLocalPackagesMenuItem' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterProperties' => 
-    array (
-      'setLabel' => 
-      array (
-        'value' => 'Enable/disable local packages',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setUrl' => 
-      array (
-        'value' => 'packages/',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => 
-        array (
-          0 => 'selfedit',
-        ),
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-    'setterBinds' => 
-    array (
-      'setAdditionalStyles' => 
-      array (
-        0 => 'manageLocalPackagesMenuItemIcon',
-      ),
-    ),
-  ),
-  'manageLocalPackagesMenuItemIcon' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
-    'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/folder_add.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
-  'manageRepositoriesMenuItem' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterProperties' => 
-    array (
-      'setLabel' => 
-      array (
-        'value' => 'Manage repositories',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setUrl' => 
-      array (
-        'value' => 'repositories/',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => 
-        array (
-          0 => 'selfedit',
-        ),
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-    'setterBinds' => 
-    array (
-      'setAdditionalStyles' => 
-      array (
-        0 => 'manageRepositoriesMenuItemIcon',
-      ),
-    ),
-  ),
-  'manageRepositoriesMenuItemIcon' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
-    'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/database.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
   'miscellaneousSubMenu' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
@@ -1748,32 +1588,16 @@ $moufManager->addComponentInstances(array (
       'contentBlock' => 'block.content',
     ),
   ),
-		'includes' =>
-		array (
-				'class' => 'Mouf\\Controllers\\IncludesAnalyzerController',
-				'external' => false,
-				'fieldBinds' =>
-				array (
-						'template' => 'moufTemplate',
-						'contentBlock' => 'block.content',
-				),
-		),
-		
-		
-		
-		
   'moufInstallTemplate' => 
   array (
     'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
     array (
-      //'setHeader' => 'block.header',
       'setFooter' => 'block.footer',
-      //'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
-    		'setWebLibraryManager' => 'defaultWebLibraryManager',
+      'setWebLibraryManager' => 'defaultWebLibraryManager',
     ),
     'fieldProperties' => 
     array (
@@ -2190,9 +2014,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setChildren' => 
       array (
-        0 => 'manageLocalPackagesMenuItem',
-        1 => 'downloadPackages2MenuItem',
-        2 => 'manageRepositoriesMenuItem',
+        0 => 'downloadPackages2MenuItem',
       ),
     ),
     'setterProperties' => 
@@ -2909,63 +2731,63 @@ unset($moufManager);
  */
 class MoufAdmin {
 	/**
-	 * @return \Mouf\Controllers\MoufAjaxInstanceController
+	 * @return Mouf\Controllers\MoufAjaxInstanceController
 	 */
 	 public static function getAjaxinstance() {
 	 	return MoufManager::getMoufManager()->getInstance('ajaxinstance');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlBlock
+	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_content() {
 	 	return MoufManager::getMoufManager()->getInstance('block.content');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlBlock
+	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_footer() {
 	 	return MoufManager::getMoufManager()->getInstance('block.footer');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlBlock
+	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_header() {
 	 	return MoufManager::getMoufManager()->getInstance('block.header');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlBlock
+	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_left() {
 	 	return MoufManager::getMoufManager()->getInstance('block.left');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlBlock
+	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_right() {
 	 	return MoufManager::getMoufManager()->getInstance('block.right');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\ComponentsController
+	 * @return Mouf\Controllers\ComponentsController
 	 */
 	 public static function getComponents() {
 	 	return MoufManager::getMoufManager()->getInstance('components');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getComponentsSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('componentsSubMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\ConfigController
+	 * @return Mouf\Controllers\ConfigController
 	 */
 	 public static function getConfig() {
 	 	return MoufManager::getMoufManager()->getInstance('config');
@@ -2979,17 +2801,24 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getCreateNewInstanceMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('createNewInstanceMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getCreateNewInstanceMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('createNewInstanceMenuItemIcon');
+	 }
+
+	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getCss_moufCssStyles() {
+	 	return MoufManager::getMoufManager()->getInstance('css.moufCssStyles');
 	 }
 
 	/**
@@ -3007,49 +2836,49 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufDisplayGraphController
+	 * @return Mouf\Controllers\MoufDisplayGraphController
 	 */
 	 public static function getDisplayGraph() {
 	 	return MoufManager::getMoufManager()->getInstance('displayGraph');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getDisplayPhpInfoMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('displayPhpInfoMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getDisplayPhpInfoMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('displayPhpInfoMenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\DocumentationController
+	 * @return Mouf\Controllers\DocumentationController
 	 */
 	 public static function getDoc() {
 	 	return MoufManager::getMoufManager()->getInstance('doc');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\Menu
+	 * @return Mouf\Html\Widgets\Menu\Menu
 	 */
 	 public static function getDocumentationMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('documentationMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\Menus\BasicMenuRenderer
+	 * @return Mouf\Html\Template\Menus\BasicMenuRenderer
 	 */
 	 public static function getDocumentationMenuRenderer() {
 	 	return MoufManager::getMoufManager()->getInstance('documentationMenuRenderer');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getDocumentationSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('documentationSubMenu');
@@ -3063,28 +2892,28 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getDownloadPackages2MenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('downloadPackages2MenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getDownloadPackages2MenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('downloadPackages2MenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getEditConfigurationMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('editConfigurationMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getEditConfigurationMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('editConfigurationMenuItemIcon');
@@ -3098,28 +2927,35 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Utils\Log\ErrorLogLogger
+	 * @return Mouf\Utils\Log\ErrorLogLogger
 	 */
 	 public static function getErrorLogger() {
 	 	return MoufManager::getMoufManager()->getInstance('errorLogger');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getIncludePhpFilesMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('includePhpFilesMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getIncludePhpFilesMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('includePhpFilesMenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Actions\InstallController
+	 * @return Mouf\Controllers\IncludesAnalyzerController
+	 */
+	 public static function getIncludes() {
+	 	return MoufManager::getMoufManager()->getInstance('includes');
+	 }
+
+	/**
+	 * @return Mouf\Actions\InstallController
 	 */
 	 public static function getInstall() {
 	 	return MoufManager::getMoufManager()->getInstance('install');
@@ -3140,42 +2976,49 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getInstallTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('installTemplate');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufInstanceController
+	 * @return Mouf\Controllers\Composer\InstalledPackagesController
+	 */
+	 public static function getInstalledPackagesController() {
+	 	return MoufManager::getMoufManager()->getInstance('installedPackagesController');
+	 }
+
+	/**
+	 * @return Mouf\Controllers\MoufInstanceController
 	 */
 	 public static function getInstance() {
 	 	return MoufManager::getMoufManager()->getInstance('instance');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\Menu
+	 * @return Mouf\Html\Widgets\Menu\Menu
 	 */
 	 public static function getInstanceMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('instanceMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\Menus\BasicMenuRenderer
+	 * @return Mouf\Html\Template\Menus\BasicMenuRenderer
 	 */
 	 public static function getInstanceMenuRenderer() {
 	 	return MoufManager::getMoufManager()->getInstance('instanceMenuRenderer');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
 	 */
 	 public static function getJQueryLibrary() {
 	 	return MoufManager::getMoufManager()->getInstance('jQueryLibrary');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
 	 */
 	 public static function getJQueryUiLibrary() {
 	 	return MoufManager::getMoufManager()->getInstance('jQueryUiLibrary');
@@ -3189,14 +3032,28 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getJavascript_composer() {
+	 	return MoufManager::getMoufManager()->getInstance('javascript.composer');
+	 }
+
+	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
 	 */
 	 public static function getJavascript_jqueryfiletree() {
 	 	return MoufManager::getMoufManager()->getInstance('javascript.jquery-filetree');
 	 }
 
 	/**
-	 * @return \Mouf\Javascript\SyntaxHighlighterWebLibrary
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getJavascript_moufInstanceLibrary() {
+	 	return MoufManager::getMoufManager()->getInstance('javascript.moufInstanceLibrary');
+	 }
+
+	/**
+	 * @return Mouf\Javascript\SyntaxHighlighterWebLibrary
 	 */
 	 public static function getJavascript_syntaxHighlighter() {
 	 	return MoufManager::getMoufManager()->getInstance('javascript.syntaxHighlighter');
@@ -3217,7 +3074,7 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufLoginController
+	 * @return Mouf\Controllers\MoufLoginController
 	 */
 	 public static function getLogin() {
 	 	return MoufManager::getMoufManager()->getInstance('login');
@@ -3231,112 +3088,112 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getLogout2MenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('logout2MenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getLogout2MenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('logout2MenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\Menu
+	 * @return Mouf\Html\Widgets\Menu\Menu
 	 */
 	 public static function getMainMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('mainMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getManageLocalPackagesMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('manageLocalPackagesMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getManageLocalPackagesMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('manageLocalPackagesMenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getManageRepositoriesMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('manageRepositoriesMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getManageRepositoriesMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('manageRepositoriesMenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getMiscellaneousSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('miscellaneousSubMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufController
+	 * @return Mouf\Controllers\MoufController
 	 */
 	 public static function getMouf() {
 	 	return MoufManager::getMoufManager()->getInstance('mouf');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getMoufInstallTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufInstallTemplate');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getMoufInstallTemplate2() {
 	 	return MoufManager::getMoufManager()->getInstance('moufInstallTemplate2');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getMoufLoginTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufLoginTemplate');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getMoufStatus2MenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('moufStatus2MenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getMoufStatus2MenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('moufStatus2MenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getMoufSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('moufSubMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getMoufTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufTemplate');
@@ -3357,42 +3214,42 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\PackageController
+	 * @return Mouf\Controllers\PackageController
 	 */
 	 public static function getPackages() {
 	 	return MoufManager::getMoufManager()->getInstance('packages');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\PackageServiceController
+	 * @return Mouf\Controllers\PackageServiceController
 	 */
 	 public static function getPackagesService() {
 	 	return MoufManager::getMoufManager()->getInstance('packagesService');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getPackagesSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('packagesSubMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\PackageDownloadController
+	 * @return Mouf\Controllers\PackageDownloadController
 	 */
 	 public static function getPackagetransfer() {
 	 	return MoufManager::getMoufManager()->getInstance('packagetransfer');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\PhpInfoController
+	 * @return Mouf\Controllers\PhpInfoController
 	 */
 	 public static function getPhpInfo() {
 	 	return MoufManager::getMoufManager()->getInstance('phpInfo');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getPhpProjectSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('phpProjectSubMenu');
@@ -3406,7 +3263,7 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\RepositorySourceController
+	 * @return Mouf\Controllers\RepositorySourceController
 	 */
 	 public static function getRepositories() {
 	 	return MoufManager::getMoufManager()->getInstance('repositories');
@@ -3427,21 +3284,21 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufRootController
+	 * @return Mouf\Controllers\MoufRootController
 	 */
 	 public static function getRootController() {
 	 	return MoufManager::getMoufManager()->getInstance('rootController');
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\SearchController
+	 * @return Mouf\Controllers\SearchController
 	 */
 	 public static function getSearch() {
 	 	return MoufManager::getMoufManager()->getInstance('search');
 	 }
 
 	/**
-	 * @return \Mouf\Html\HtmlElement\HtmlFromFile
+	 * @return Mouf\Html\HtmlElement\HtmlFromFile
 	 */
 	 public static function getSearchBox() {
 	 	return MoufManager::getMoufManager()->getInstance('searchBox');
@@ -3455,21 +3312,21 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Utils\WebLibraryManager\InlineWebLibrary
+	 * @return Mouf\Html\Utils\WebLibraryManager\InlineWebLibrary
 	 */
 	 public static function getSetRootUrlJsBlock() {
 	 	return MoufManager::getMoufManager()->getInstance('setRootUrlJsBlock');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\Menu
+	 * @return Mouf\Html\Widgets\Menu\Menu
 	 */
 	 public static function getSpecialActionsMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('specialActionsMenu');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\Menus\BasicMenuRenderer
+	 * @return Mouf\Html\Template\Menus\BasicMenuRenderer
 	 */
 	 public static function getSpecialActionsMenuRenderer() {
 	 	return MoufManager::getMoufManager()->getInstance('specialActionsMenuRenderer');
@@ -3480,6 +3337,13 @@ class MoufAdmin {
 	 */
 	 public static function getSplash() {
 	 	return MoufManager::getMoufManager()->getInstance('splash');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\HttpErrorsController
+	 */
+	 public static function getSplash_errorsController() {
+	 	return MoufManager::getMoufManager()->getInstance('splash.errorsController');
 	 }
 
 	/**
@@ -3497,7 +3361,7 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Html\Template\Menus\TopRibbonMenuRenderer
+	 * @return Mouf\Html\Template\Menus\TopRibbonMenuRenderer
 	 */
 	 public static function getTopRibbonMenuRenderer() {
 	 	return MoufManager::getMoufManager()->getInstance('topRibbonMenuRenderer');
@@ -3518,49 +3382,42 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return \Mouf\Controllers\MoufValidatorController
+	 * @return Mouf\Controllers\MoufValidatorController
 	 */
 	 public static function getValidate() {
 	 	return MoufManager::getMoufManager()->getInstance('validate');
 	 }
 
 	/**
-	 * @return \Mouf\Mvc\Splash\Controllers\HttpErrorsController
-	 */
-	 public static function getSplash_errorsController() {
-	 	return MoufManager::getMoufManager()->getInstance('splash.errorsController');
-	 }
-
-	/**
-	 * @return \Mouf\Validator\MoufValidatorService
+	 * @return Mouf\Validator\MoufValidatorService
 	 */
 	 public static function getValidatorService() {
 	 	return MoufManager::getMoufManager()->getInstance('validatorService');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getViewDeclaredInstancesMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('viewDeclaredInstancesMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getViewDeclaredInstancesMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('viewDeclaredInstancesMenuItemIcon');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItem
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getViewDocumentationMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('viewDocumentationMenuItem');
 	 }
 
 	/**
-	 * @return \Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
 	 */
 	 public static function getViewDocumentationMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('viewDocumentationMenuItemIcon');

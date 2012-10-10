@@ -29,9 +29,10 @@ class Moufspector {
 	 * @return array<string>
 	 */
 	public static function getComponentsList($type = null, $selfEdit = false) {
-		$composerService = new ComposerService($selfEdit);
+		//$composerService = new ComposerService($selfEdit);
+		$moufClassExporer = new MoufClassExplorer($selfEdit);
 		
-		$classesList = array_keys($composerService->getClassMap());
+		$classesList = array_keys($moufClassExporer->getClassMap());
 		//$classesList = get_declared_classes();
 		$componentsList = array();
 		

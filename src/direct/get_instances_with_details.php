@@ -45,7 +45,11 @@ if (get_magic_quotes_gpc()==1)
 	$className = $_REQUEST["class"];
 }
 
-$moufManager = MoufManager::getMoufManager();
+//if ($selfEdit) {
+//	$moufManager = MoufManager::getMoufManagerHiddenInstance();
+//} else {
+	$moufManager = MoufManager::getMoufManager();
+//}
 
 
 $instanceList = $moufManager->findInstances($className);
@@ -60,7 +64,7 @@ foreach ($instanceList as $instanceName) {
 }
 
 // Now, let's get the full list of absolutely all classes implementing "class".
-$classList = Moufspector::getComponentsList($className);
+$classList = Moufspector::getComponentsList($className, $selfEdit);
 $classArray = array();
 $childClassArray = array();
 

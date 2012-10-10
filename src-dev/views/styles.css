@@ -126,7 +126,7 @@ div.packageenabled {
 
 span.packagename {
 	font-family: Rockwell, Georgia, Arial, Verdana, Helvetica, sans-serif;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	font-size: 14px;
 	color: #EE0038;
 }
@@ -368,3 +368,40 @@ div.searchbox button {
 	padding-bottom: 1px;
 }
 
+div.package div.packageicon img {
+	float: left;
+}
+
+/************ COMPOSER *************/
+
+#composeroutput {
+	width: 100%;
+	background-color: black;
+	color: green;
+	height: 50px;
+	overflow: hidden;
+	padding: 5px;
+	/*
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,.06);
+	-webkit-box-shadow: 0 0 10px rgba(0,0,0,.06);
+	box-shadow: 0 0 10px rgba(0,0,0,.06);*/
+}
+
+div.composersearch input.searchbig {
+	
+}
+
+div.composersearch input.searchbig.searching {
+	background-image: url(images/ajax-loader.gif);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+#composerpackagessearch div div.package + div.package {
+	display: none;
+	margin-left: 40px;
+}
+
+.hidden {
+	display:none;
+}

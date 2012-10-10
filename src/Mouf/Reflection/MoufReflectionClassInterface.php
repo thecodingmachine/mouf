@@ -85,4 +85,22 @@ interface MoufReflectionClassInterface {
 	 */
 	public function getProperties();
 	
+	/**
+	 * For the current class, returns a list of "use" statement used in the file for that class.
+	 * The key is the "alias" of the path, and the value the path.
+	 *
+	 * So if you have:
+	 * 	use Mouf\Mvc\Splash\Controller as SplashController
+	 *
+	 * the key will be "SplashController" and the value "Mouf\Mvc\Splash\Controller"
+	 *
+	 * Similarly, if you have only
+	 * 	use Mouf\Mvc\Splash\Controller
+	 *
+	 * the key will be "Controllers" and the value "Mouf\Mvc\Splash\Controller"
+	 *
+	 * @return array<string, string>
+	 */
+	public function getUseNamespaces();
+	
 }

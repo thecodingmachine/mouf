@@ -224,9 +224,16 @@ var MoufUI = (function () {
 		 */
 		renderClassesList : function(options) {
 			var containerDiv = jQuery("<div/>");
+			
 			var filterDiv = jQuery("<div/>").addClass("classesFilter").appendTo(containerDiv);
 			jQuery("<label/>").text("Filter:").appendTo(filterDiv);
 			var inputFilter = jQuery("<input/>").appendTo(filterDiv);
+			
+			var filterDiv2 = jQuery("<div/>").addClass("classesFilter").appendTo(containerDiv);
+			var componentAnnotationFilter = jQuery("<input/>").attr("type","checkbox").appendTo(filterDiv2);
+			jQuery("<label/>").text("Only display the classes with the @Component annotation").appendTo(filterDiv2);
+			
+			
 			var classListDiv = jQuery("<div/>").addClass("classesList").appendTo(containerDiv);
 			
 			MoufInstanceManager.getComponents().then(function(classes) {
@@ -243,6 +250,7 @@ var MoufUI = (function () {
 
 				var applyFilter = function() {
 					var filterText = inputFilter.val().toLowerCase();
+					var onlyComponents = componentAnnotationFilter.is(':checked')
 					
 					classListDiv.children().each(function(cnt, child) {
 						var classDescriptor = jQuery(child).data('class');
@@ -257,17 +265,32 @@ var MoufUI = (function () {
 							}
 						});
 
+						var hasComponentAnnotation = false;
 						if (!found) {
 							// Look in the class name and any of the parent classname:
 							do {
+								if (onlyComponents) {
+									var annotations = classDescriptor.getAnnotations();
+									if (annotations && annotations['Component']) {
+										hasComponentAnnotation = true;
+									}
+								}
+								
 								var className = classDescriptor.getName().toLowerCase();
 								if (className.indexOf(filterText) != -1) {
 									found = true;
-									break;
+									if (!onlyComponents) {
+										break;
+									}
 								}
 								classDescriptor = classDescriptor.getParentClass(); 
 							} while (classDescriptor != null);
 						}
+						
+						if (onlyComponents && !hasComponentAnnotation) {
+							found = false;
+						}
+						
 						if (found) {
 							jQuery(child).show();
 						} else {
@@ -277,6 +300,7 @@ var MoufUI = (function () {
 				}
 				 
 				inputFilter.keyup(applyFilter);
+				componentAnnotationFilter.change(applyFilter);
 
 				applyFilter();
 				

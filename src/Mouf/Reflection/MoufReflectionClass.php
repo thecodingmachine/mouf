@@ -329,6 +329,13 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		$method->toXml($root);
     	}
     	
+    	$uses = $this->getUseNamespaces();
+    	foreach ($uses as $as=>$path) {
+    		$use = $root->addChild("use");
+    		$use->addAttribute("as", $as);
+    		$use->addAttribute("path", $path);
+    	}
+    	
     	$xml = $root->asXml();
     	return $xml;
     }
@@ -344,5 +351,80 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	return MoufReflectionHelper::classToJson($this);
     }
 
+    private $useNamespaces;
+    
+    /**
+     * For the current class, returns a list of "use" statement used in the file for that class.
+     * The key is the "alias" of the path, and the value the path.
+     * 
+     * So if you have:
+     * 	use Mouf\Mvc\Splash\Controller as SplashController
+     * 
+     * the key will be "SplashController" and the value "Mouf\Mvc\Splash\Controller"
+     * 
+     * Similarly, if you have only
+     * 	use Mouf\Mvc\Splash\Controller
+     * 
+     * the key will be "Controllers" and the value "Mouf\Mvc\Splash\Controller"
+     * 
+     * @return array<string, string>
+     */
+    public function getUseNamespaces() {
+    	if ($this->useNamespaces === null) {
+    		$this->useNamespaces = array();
+    		
+    		$contents = file_get_contents($this->getFileName());
+   			$tokens   = token_get_all($contents);
+    		
+    		$classes = array();
+    		
+    		//$namespace = '';
+    		for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+    			$token = $tokens[$i];
+    		
+    			if (is_string($token)) {
+    				continue;
+    			}
+    		
+    			$class = '';
+    		
+    			$path = '';
+    			
+    			switch ($token[0]) {
+    				case T_USE;
+	    				while (($t = $tokens[++$i]) && is_array($t)) {
+	    					if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+	    						$path .= $t[1];
+	    						if ($t[0] == T_STRING) {
+	    							$as = $t[1];
+	    						} 
+	    					}
+	    				}
+	    				$nextToken = $tokens[$i+1];
+	    				if ($nextToken[0] === T_AS) {
+	    					$as = $tokens[$i+2][1];
+	    				}
+	    				$path = ltrim($path, '\\');
+	    				$this->useNamespaces[$as] = $path;
+    				
+    				/*case T_NAMESPACE:
+    					$namespace = '';
+    					// If there is a namespace, extract it
+    					while (($t = $tokens[++$i]) && is_array($t)) {
+    						if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+    							$namespace .= $t[1];
+    						}
+    					}
+    					$namespace .= '\\';
+    					break;*/
+    				
+    				default:
+    					break;
+    			}
+    		}
+    		
+    	}
+    	return $this->useNamespaces;
+    }
 }
 ?>

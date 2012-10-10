@@ -21,7 +21,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
 	/**
 	 * The XML message we will analyse
 	 *
-	 * @var SimpleXmlElement
+	 * @var \SimpleXmlElement
 	 */
 	private $xmlRoot;
 	
@@ -290,6 +290,33 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
     	}
     	
     }
+
+    
+    /**
+     * For the current class, returns a list of "use" statement used in the file for that class.
+     * The key is the "alias" of the path, and the value the path.
+     *
+     * So if you have:
+     * 	use Mouf\Mvc\Splash\Controller as SplashController
+     *
+     * the key will be "SplashController" and the value "Mouf\Mvc\Splash\Controller"
+     *
+     * Similarly, if you have only
+     * 	use Mouf\Mvc\Splash\Controller
+     *
+     * the key will be "Controllers" and the value "Mouf\Mvc\Splash\Controller"
+     *
+     * @return array<string, string>
+     */
+    public function getUseNamespaces() {
+    	$uses = array();
+    	foreach ($this->xmlRoot->use as $use) {
+    		/* @var $use \SimpleXmlElement */
+    		$uses[(string) $use['as']] = (string) $use['path'];
+    	}
+    	return $uses;
+    }
+    
     
     /**
      * returns a list of all properties which satify the given matcher
