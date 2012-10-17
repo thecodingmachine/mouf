@@ -210,6 +210,15 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
         
         return $moufMethods;
     }
+    
+    public function getConstructor() {
+    	foreach ($this->xmlRoot->method as $method) {
+    		if (((string)$method['constructor']) == "true") {
+    			return new MoufXmlReflectionMethod($this, $method);
+    		}
+    	}
+    	return null;
+    }
 
     /**
      * returns the specified property or null if it does not exist

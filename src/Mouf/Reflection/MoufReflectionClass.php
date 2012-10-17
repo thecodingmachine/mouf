@@ -105,6 +105,15 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         $moufRefMethod = new MoufReflectionMethod($this, $name);
         return $moufRefMethod;
     }
+    
+    public function getConstructor() {
+    	$constructor = parent::getConstructor();
+    	if ($constructor == null) {
+    		return null;
+    	}
+    	$moufRefMethod = new MoufReflectionMethod($this, $constructor->getName());
+    	return $moufRefMethod;
+    }
 
     /**
      * returns a list of all methods
@@ -282,7 +291,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      * @return array<string, MoufPropertyDescriptor> An array containing MoufXmlReflectionProperty objects.
      */
     public function getMoufProperties() {
-    	require_once 'MoufReflectionHelper.php';
+    	//require_once 'MoufReflectionHelper.php';
     	if ($this->moufProperties === null) {
     		$this->moufProperties = MoufReflectionHelper::getMoufProperties($this);
     	}

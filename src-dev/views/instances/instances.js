@@ -657,7 +657,10 @@ MoufInstanceProperty.prototype.getMetaData = function() {
  */
 MoufInstanceProperty.prototype.getMoufProperty = function() {
 	var classDescriptor = MoufInstanceManager.getLocalClass(this.parent.getClassName());
-	if (classDescriptor.getProperty(this.name) != null) {
+	var constructor = classDescriptor.getConstructor();
+	if (constructor && constructor.getParameter(this.name) != null) {
+		return classDescriptor.getConstructor().getParameter(this.name);
+	} else if (classDescriptor.getProperty(this.name) != null) {
 		return classDescriptor.getProperty(this.name);
 	} else if (classDescriptor.getMethod(this.name) != null) {
 		return classDescriptor.getMethod(this.name);
@@ -877,6 +880,9 @@ MoufClass.prototype.getLocalAnnotations = function() {
  */
 MoufClass.prototype.getAnnotations = function() {
 	var annotations = this.json['comment']['annotations']; 
+	if (annotations == null) {
+		annotations = {};
+	}
 	
 	var thisClass = this;
 	do {
@@ -899,11 +905,19 @@ MoufClass.prototype.getAnnotations = function() {
 }
 
 /**
- * Returns the list of all Mouf properties (properties and setters with a @Property annotation)
+ * Returns the list of all Mouf properties (constructor parameters, properties and setters with a @Property annotation)
  */
 MoufClass.prototype.getMoufProperties = function() {
 	var moufProperties = [];
-	
+
+	var constructor = this.getConstructor();
+	if (constructor) {
+		var parameters = constructor.getParameters();
+		for (var i=0; i<parameters.length; i++) {
+			moufProperties.push(parameters[i]);
+		}
+	}
+
 	var properties = this.getProperties();
 	for (var i=0; i<properties.length; i++) {
 		var property = properties[i]; 
@@ -991,6 +1005,19 @@ MoufClass.prototype.getMethods = function() {
  */
 MoufClass.prototype.getMethod = function(methodName) {
 	return this.methodsByName[methodName];
+}
+
+/**
+ * Returns an object of type MoufMethod that represents the constructor of this class.
+ */
+MoufClass.prototype.getConstructor = function() {
+	for (var i=0; i<this.methods.length; i++) {
+		var method = this.methods[i];
+		if (method.isConstructor()) {
+			return method;
+		}
+	}
+	return null;
 }
 
 /**
@@ -1119,9 +1146,9 @@ var MoufMethod = function(json) {
 	this.parametersByName = {};
 	var jsonParameters = this.json["parameters"];
 	for (var i=0; i<jsonParameters.length; i++) {
-		var parameter = new MoufParameter(jsonParameters[i]);
+		var parameter = new MoufParameter(jsonParameters[i], this);
 		this.parameters.push(parameter);
-		this.parametersByName[parameter.name] = parameter;
+		this.parametersByName[parameter.getName()] = parameter;
 	}
 }
 
@@ -1142,28 +1169,28 @@ MoufMethod.prototype.getModifier = function() {
 /**
  * Returns whether the method is static or not
  */
-MoufMethod.prototype.getStatic = function() {
+MoufMethod.prototype.isStatic = function() {
 	return this.json['static'];
 }
 
 /**
  * Returns whether the method is abstract or not
  */
-MoufMethod.prototype.getAbstract = function() {
+MoufMethod.prototype.isAbstract = function() {
 	return this.json['abstract'];
 }
 
 /**
  * Returns whether the method is a constructor or not
  */
-MoufMethod.prototype.getAbstract = function() {
+MoufMethod.prototype.isConstructor = function() {
 	return this.json['constructor'];
 }
 
 /**
  * Returns whether the method is final or not
  */
-MoufMethod.prototype.getAbstract = function() {
+MoufMethod.prototype.isFinal = function() {
 	return this.json['final'];
 }
 
@@ -1269,15 +1296,16 @@ MoufMethod.prototype.getParameters = function() {
  * Returns an object of type MoufInstanceProperty that represents the property of this instance.
  */
 MoufMethod.prototype.getParameter = function(propertyName) {
-	return this.properties[propertyName];
+	return this.parametersByName[propertyName];
 }
 
 
 /**
  * Let's define the MoufParameter class, that defines a PHP parameter in a method.
  */
-var MoufParameter = function(json) {
+var MoufParameter = function(json, parentMethod) {
 	this.json = json;
+	this.parentMethod = parentMethod;
 }
 
 /**
@@ -1315,11 +1343,52 @@ MoufParameter.prototype.getClassName = function() {
 	return this.json['class'];
 }
 
+/**
+ * Returns the name of the parameter.
+ */
+MoufParameter.prototype.getPropertyName = function() {
+	return this.getName();
+}
 
+/**
+ * Returns the type of the parameter (the class, if any)
+ */
+MoufParameter.prototype.getType = function() {
+	return this.json['type'];
+}
 
+/**
+ * Returns the type of the array's value if the type of the parameter is an array (as defined in the @var annotation).
+ */
+MoufParameter.prototype.getSubType = function() {
+	return this.json['subtype'];
+}
 
+/**
+ * Returns the type of the array's key if the type of the parameter is an associative array (as defined in the @var annotation).
+ */
+MoufParameter.prototype.getKeyType = function() {
+	return this.json['keytype'];
+}
 
+/**
+ * Returns the MoufInstanceProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)
+ */
+MoufParameter.prototype.getMoufInstanceProperty = function(instance) {
+	return instance.getProperty(this.json['name']);
+}
 
+/**
+ * A parameter cannot have a set of annotations, but we return the annotations of the method
+ * it belongs to:
+ * {
+ * 	"annotationName", [param1, param2....]
+ * }
+ * There are as many params as there are annotations
+ */
+MoufParameter.prototype.getAnnotations = function() {
+	return this.parentMethod.getAnnotations(); 
+}
 
 
 

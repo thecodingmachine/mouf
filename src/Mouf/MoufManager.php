@@ -1,12 +1,12 @@
 <?php
 /*
  * This file is part of the Mouf core package.
- *
- * (c) 2012 David Negrier <david@mouf-php.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
+*
+* (c) 2012 David Negrier <david@mouf-php.com>
+*
+* For the full copyright and license information, please view the LICENSE.txt
+* file that was distributed with this source code.
+*/
 namespace Mouf;
 
 use Mouf\Reflection\MoufReflectionProxy;
@@ -20,11 +20,11 @@ use Mouf\Reflection\MoufReflectionClass;
 class MoufManager {
 	const SCOPE_APP = 'app';
 	const SCOPE_ADMIN = 'admin';
-	
+
 	const DECLARE_ON_EXIST_EXCEPTION = 'exception';
 	const DECLARE_ON_EXIST_KEEP_INCOMING_LINKS = 'keepincominglinks';
 	const DECLARE_ON_EXIST_KEEP_ALL = 'keepall';
-	
+
 	/**
 	 * The default instance of the MoufManager.
 	 *
@@ -64,7 +64,7 @@ class MoufManager {
 	public static function getMoufManagerHiddenInstance() {
 		return self::$hiddenInstance;
 	}
-	
+
 	/**
 	 * Returns true if there is a hidden instance (which probably means we are in the Mouf admin console).
 	 *
@@ -73,7 +73,7 @@ class MoufManager {
 	public static function hasHiddenInstance() {
 		return (self::$hiddenInstance != null);
 	}
-	
+
 	/**
 	 * Instantiates the default instance of the MoufManager.
 	 * Does nothing if the default instance is already instanciated.
@@ -91,7 +91,7 @@ class MoufManager {
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
 		}
 	}
-	
+
 	/**
 	 * This function takes the whole configuration stored in the default instance of the Mouf framework
 	 * and switches it in the hidden instance.
@@ -109,14 +109,14 @@ class MoufManager {
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
 		//self::$defaultInstance->pathToMouf = "";
 	}
-	
+
 	/**
 	 * The config manager (that writes the config.php file).
 	 *
 	 * @var MoufConfigManager
 	 */
 	private $configManager;
-	
+
 	/**
 	 * The array of component instances managed by mouf.
 	 * The objects in this array have been already instanciated.
@@ -124,13 +124,13 @@ class MoufManager {
 	 * @var array<string, object>
 	 */
 	private $objectInstances = array();
-	
+
 	/**
 	 * The array of component instances that have been declared.
 	 * This array contains the definition that will be used to create the instances.
 	 *
 	 * $declaredInstance["instanceName"] = $instanceDefinitionArray;
-	 * 
+	 *
 	 * $instanceDefinitionArray["class"] = "string"
 	 * $instanceDefinitionArray["fieldProperties"] = array("propertyName" => $property);
 	 * $instanceDefinitionArray["setterProperties"] = array("setterName" => $property);
@@ -140,32 +140,32 @@ class MoufManager {
 	 * $instanceDefinitionArray["weak"] = true|false (if true, object can be garbage collected if not referenced)
 	 * $instanceDefinitionArray["anonymous"] = true|false (if true, object name should not be displayed. Object becomes "weak")
 	 * $instanceDefinitionArray["external"] = true|false
-	 * 
+	 *
 	 * $property["type"] = "string|config|request|session";
 	 * $property["value"] = $value;
 	 * $property['metadata'] = array($key=>$value)
-	 * 
+	 *
 	 * @var array<string, array>
 	 */
 	private $declaredInstances = array();
-	
-		
+
+
 	/**
 	 * A list of files to be required (relative to the directory of Mouf.php)
 	 *
 	 * @var array
 	 */
 	private $registeredComponents = array();
-	
+
 	/**
 	 * A list of components name that are external.
 	 * External components are not saved when the rewriteMouf method is called.
-	 * They are useful for declaring components instances that should not be modified. 
+	 * They are useful for declaring components instances that should not be modified.
 	 *
 	 * @var array<string>
 	 */
 	private $externalComponents = array();
-	
+
 	/**
 	 * The list of packages that are enabled.
 	 * The list contains the path to the package.xml file from the plugins directory.
@@ -174,7 +174,7 @@ class MoufManager {
 	 * @var array<string>
 	 */
 	private $packagesList = array();
-	
+
 	/**
 	 * The list of packages that are enabled in admin scope.
 	 * The list contains the path to the package.xml file from the plugins directory.
@@ -185,23 +185,23 @@ class MoufManager {
 	 * @var array<string>
 	 */
 	private $packagesListInAdminScope = array();
-	
-	
+
+
 	/**
 	 * A list of variables that are stored in Mouf. Variables can contain anything, and are used by some modules for different
 	 * purposes. For instance, the list of repositories is stored as a variables, etc...
-	 * 
+	 *
 	 * @var array<string, mixed>
 	 */
 	private $variables = array();
-	
+
 	/**
 	 * The name of the file that contains the components declarations
 	 *
 	 * @var string
 	 */
 	private $componentsFileName;
-	
+
 	/**
 	 * The name of the file that contains the "requires" on the components
 	 *
@@ -212,40 +212,40 @@ class MoufManager {
 	/**
 	 * The scope for the MoufManager.
 	 * Can be one of MoufManager::SCOPE_APP (the main application) or MoufManager::SCOPE_ADMIN (the Mouf instance for the admin)
-	 * 
+	 *
 	 * @var string
 	 */
 	private $scope;
-	
+
 	/**
 	 * The name of the file that contains the "requires" on the components for the admin part of Mouf
 	 *
 	 * @var string
 	 */
 	private $adminUiFileName;
-	
+
 	/**
 	 * The name of the main class that will be generated (by default: Mouf)
 	 *
 	 * @var string
 	 */
 	private $mainClassName;
-	
+
 	/**
 	 * The path to theMouf directory from the mouf file.
 	 * For instance: "mouf/" is the Mouf.php file is in the root directory of the webapp.
-	 * 
+	 *
 	 * @var string
 	 */
 	private $pathToMouf;
-	
+
 	/**
 	 * A list of classes autoloadable that are stored in Mouf.
-	 * 
+	 *
 	 * @var array<className, fileName>
 	 */
 	private $autoloadableClasses;
-	
+
 	/**
 	 * Returns the config manager (the service in charge of writing the config.php file).
 	 *
@@ -254,7 +254,7 @@ class MoufManager {
 	public function getConfigManager() {
 		return $this->configManager;
 	}
-	
+
 	/**
 	 * Returns the instance of the specified object.
 	 *
@@ -266,16 +266,16 @@ class MoufManager {
 		}
 		return $this->objectInstances[$instanceName];
 	}
-	
+
 	/**
 	 * Returns true if the instance name passed in parameter is defined in Mouf.
-	 * 
+	 *
 	 * @param string $instanceName
 	 */
 	public function instanceExists($instanceName) {
 		return isset($this->declaredInstances[$instanceName]);
 	}
-	
+
 	/**
 	 * Returns the list of all instances of objects in Mouf.
 	 * Objects are not instanciated. Instead, a list containing the name of the instance in the key
@@ -291,7 +291,7 @@ class MoufManager {
 		}
 		return $arr;
 	}
-	
+
 	/**
 	 * Sets at one all the instances of all the components.
 	 * This is used internally to load the state of Mouf very quickly.
@@ -302,7 +302,7 @@ class MoufManager {
 	public function addComponentInstances(array $definition) {
 		$this->declaredInstances = array_merge($this->declaredInstances, $definition);
 	}
-	
+
 	/**
 	 * Declares a new component.
 	 *
@@ -330,7 +330,7 @@ class MoufManager {
 		$this->declaredInstances[$instanceName]["class"] = $className;
 		$this->declaredInstances[$instanceName]["external"] = $external;
 	}
-	
+
 	/**
 	 * Removes an instance.
 	 * Sets to null any property linking to that component.
@@ -348,7 +348,7 @@ class MoufManager {
 						$keys_matching = array_keys($properties, $instanceName);
 						if (!empty($keys_matching)) {
 							foreach ($keys_matching as $key) {
-								unset($properties[$key]); 
+								unset($properties[$key]);
 							}
 							$this->bindComponents($declaredInstanceName, $paramName, $properties);
 						}
@@ -370,7 +370,7 @@ class MoufManager {
 						$keys_matching = array_keys($properties, $instanceName);
 						if (!empty($keys_matching)) {
 							foreach ($keys_matching as $key) {
-								unset($properties[$key]); 
+								unset($properties[$key]);
 							}
 							$this->bindComponentsViaSetter($declaredInstanceName, $setterName, $properties);
 						}
@@ -380,34 +380,34 @@ class MoufManager {
 							$this->bindComponentViaSetter($declaredInstanceName, $setterName, null);
 						}
 					}
-				}	
+				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Renames an instance.
 	 * All properties are redirected to the new instance accordingly.
 	 *
 	 * @param string $instanceName Old name
-	 * @param string $instanceName New name
+	 * @param string $newInstanceName New name
 	 */
 	public function renameComponent($instanceName, $newInstanceName) {
 		if ($instanceName == $newInstanceName) {
 			return;
 		}
-		
+
 		if (isset($this->declaredInstances[$newInstanceName])) {
 			throw new MoufException("Unable to rename instance '$instanceName' to '$newInstanceName': Instance '$newInstanceName' already exists.");
 		}
-		
+
 		if (isset($this->declaredInstances[$instanceName]['external']) && $this->declaredInstances[$instanceName]['external'] == true) {
 			throw new MoufException("Unable to rename instance '$instanceName' into '$newInstanceName': Instance '$instanceName' is declared externally.");
 		}
-		
+
 		$this->declaredInstances[$newInstanceName] = $this->declaredInstances[$instanceName];
 		unset($this->declaredInstances[$instanceName]);
-		
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["fieldBinds"])) {
 				foreach ($declaredInstance["fieldBinds"] as $paramName=>$properties) {
@@ -429,7 +429,7 @@ class MoufManager {
 				}
 			}
 		}
-		
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["setterBinds"])) {
 				foreach ($declaredInstance["setterBinds"] as $setterName=>$properties) {
@@ -448,11 +448,11 @@ class MoufManager {
 							$this->bindComponentViaSetter($declaredInstanceName, $setterName, $newInstanceName);
 						}
 					}
-				}	
+				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the type of the instance.
 	 *
@@ -460,9 +460,9 @@ class MoufManager {
 	 * @return string The class name of the instance
 	 */
 	public function getInstanceType($instanceName) {
-		return $this->declaredInstances[$instanceName]['class'];		
+		return $this->declaredInstances[$instanceName]['class'];
 	}
-	
+
 	/**
 	 * Instantiate the object (and any object needed on the way)
 	 *
@@ -471,12 +471,57 @@ class MoufManager {
 		if (!isset($this->declaredInstances[$instanceName])) {
 			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' is not defined.", 1, $instanceName);
 		}
-		
+
 		$instanceDefinition = $this->declaredInstances[$instanceName];
 
 		$className = $instanceDefinition["class"];
-		
-		$object = new $className();
+
+		if (isset($instanceDefinition['constructor'])) {
+			$constructorParametersArray = $instanceDefinition['constructor'];
+			
+			$classDescriptor = new \ReflectionClass($className);
+			
+			$constructorParameters = array();
+			foreach ($constructorParametersArray as $constructorParameterDefinition) {
+				$value = $constructorParameterDefinition["value"];
+				switch ($constructorParameterDefinition['parametertype']) {
+					case "primitive":
+						switch ($constructorParameterDefinition["type"]) {
+							case "string":
+								$constructorParameters[] = $value;
+								break;
+							case "request":
+								$constructorParameters[] = $_REQUEST[$value];
+								break;
+							case "session":
+								$constructorParameters[] = $_SESSION[$value];
+								break;
+							case "config":
+								$constructorParameters[] = constant($value);
+								break;
+							default:
+								throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
+						}
+						break;
+					case "object":
+						if (is_array($value)) {
+							$tmpArray = array();
+							foreach ($value as $keyInstanceName=>$valueInstanceName) {
+								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+							}
+							$constructorParameters[] = $tmpArray;
+						} else {
+							$constructorParameters[] = $this->getInstance($value);
+						}
+						break;
+					default:	
+						throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
+				}
+			}
+			$object = $classDescriptor->newInstanceArgs($constructorParameters);
+		} else {
+			$object = new $className();
+		}
 		$this->objectInstances[$instanceName] = $object;
 		if (isset($instanceDefinition["fieldProperties"])) {
 			foreach ($instanceDefinition["fieldProperties"] as $key=>$valueDef) {
@@ -498,7 +543,7 @@ class MoufManager {
 				}
 			}
 		}
-		
+
 		if (isset($instanceDefinition["setterProperties"])) {
 			foreach ($instanceDefinition["setterProperties"] as $key=>$valueDef) {
 				//$object->$key($valueDef["value"]);
@@ -520,13 +565,13 @@ class MoufManager {
 				}
 			}
 		}
-		
+
 		if (isset($instanceDefinition["fieldBinds"])) {
 			foreach ($instanceDefinition["fieldBinds"] as $key=>$value) {
 				if (is_array($value)) {
 					$tmpArray = array();
 					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);	
+						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
 					}
 					$object->$key = $tmpArray;
 				} else {
@@ -534,13 +579,13 @@ class MoufManager {
 				}
 			}
 		}
-		
+
 		if (isset($instanceDefinition["setterBinds"])) {
 			foreach ($instanceDefinition["setterBinds"] as $key=>$value) {
 				if (is_array($value)) {
 					$tmpArray = array();
 					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);	
+						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
 					}
 					$object->$key($tmpArray);
 				} else {
@@ -548,7 +593,7 @@ class MoufManager {
 				}
 			}
 		}
-		
+
 		return $object;
 	}
 
@@ -565,12 +610,12 @@ class MoufManager {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session. Value passed: '".$type."'");
 		}
-		
+
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["value"] = $paramValue;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["type"] = $type;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["metadata"] = $metadata;
 	}
-	
+
 	/**
 	 * Binds a parameter to the instance using a setter.
 	 *
@@ -584,12 +629,34 @@ class MoufManager {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
 		}
-		
+
 		$this->declaredInstances[$instanceName]["setterProperties"][$setterName]["value"] = $paramValue;
 		$this->declaredInstances[$instanceName]["setterProperties"][$setterName]["type"] = $type;
 		$this->declaredInstances[$instanceName]["setterProperties"][$setterName]["metadata"] = $metadata;
 	}
-	
+
+	/**
+	 * Binds a parameter to the instance using a construcotr parameter.
+	 *
+	 * @param string $instanceName
+	 * @param string $index
+	 * @param string $paramValue
+	 * @param string $parameterType Can be one of "primitive" or "object".
+	 * @param string $type Can be one of "string|config|request|session"
+	 * @param array $metadata An array containing metadata
+	 */
+	public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
+		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
+			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
+		}
+
+		$this->declaredInstances[$instanceName]["constructor"][$index]["value"] = $paramValue;
+		$this->declaredInstances[$instanceName]["constructor"][$index]["parametertype"] = $parameterType;
+		$this->declaredInstances[$instanceName]["constructor"][$index]["type"] = $type;
+		$this->declaredInstances[$instanceName]["constructor"][$index]["metadata"] = $metadata;
+	}
+
+
 	/**
 	 * Unsets all the parameters (using a property or a setter) for the given instance.
 	 *
@@ -599,7 +666,7 @@ class MoufManager {
 		unset($this->declaredInstances[$instanceName]["fieldProperties"]);
 		unset($this->declaredInstances[$instanceName]["setterProperties"]);
 	}
-	
+
 	/**
 	 * Returns the value for the given parameter.
 	 *
@@ -615,7 +682,7 @@ class MoufManager {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns the value for the given parameter that has been set using a setter.
 	 *
@@ -633,6 +700,36 @@ class MoufManager {
 	}
 
 	/**
+	 * Returns the value for the given parameter that has been set using a constructor.
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 * @return mixed
+	 */
+	public function getParameterForConstructor($instanceName, $index) {
+		if (isset($this->declaredInstances[$instanceName]['constructor'][$index]['value'])) {
+			return $this->declaredInstances[$instanceName]['constructor'][$index]['value'];
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * The type of the parameter for a constructor parameter. Can be one of "primitive" or "object".
+	 * @param string $instanceName
+	 * @param int $index
+	 * @return string
+	 */
+	public function isConstructorParameterObjectOrPrimitive($instanceName, $index) {
+		if (isset($this->declaredInstances[$instanceName]['constructor'][$index]['parametertype'])) {
+			return $this->declaredInstances[$instanceName]['constructor'][$index]['parametertype'];
+		} else {
+			return null;
+		}
+	}
+
+
+	/**
 	 * Returns the type for the given parameter (can be one of "string", "config", "session" or "request")
 	 *
 	 * @param string $instanceName
@@ -646,7 +743,7 @@ class MoufManager {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session" or "request")
 	 *
@@ -661,7 +758,22 @@ class MoufManager {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session" or "request")
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 * @return string
+	 */
+	public function getParameterTypeForConstructor($instanceName, $index) {
+		if (isset($this->declaredInstances[$instanceName]['constructor'][$index]['type'])) {
+			return $this->declaredInstances[$instanceName]['constructor'][$index]['type'];
+		} else {
+			return null;
+		}
+	}
+
 	/**
 	 * Sets the type for the given parameter (can be one of "string", "config", "session" or "request")
 	 *
@@ -672,7 +784,7 @@ class MoufManager {
 	public function setParameterType($instanceName, $paramName, $type) {
 		$this->declaredInstances[$instanceName]['fieldProperties'][$paramName]['type'] = $type;
 	}
-	
+
 	/**
 	 * Sets the type for the given parameter that has been set using a setter (can be one of "string", "config", "session" or "request")
 	 *
@@ -683,13 +795,23 @@ class MoufManager {
 	public function setParameterTypeForSetter($instanceName, $setterName, $type) {
 		$this->declaredInstances[$instanceName]['setterProperties'][$setterName]['type'] = $type;
 	}
-	
+
+	/**
+	 * Sets the type for the given parameter that has been set using a constructor parameter (can be one of "string", "config", "session" or "request")
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 * @param string $type
+	 */
+	public function setParameterTypeForConstructor($instanceName, $index, $type) {
+		$this->declaredInstances[$instanceName]['constructor'][$index]['type'] = $type;
+	}
 
 	/**
 	 * Returns the metadata for the given parameter.
 	 * Metadata is an array of key=>value, containing additional info.
 	 * For instance, it could contain information on the way to represent a field in the UI, etc...
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @param string $paramName
 	 * @return string
@@ -701,12 +823,12 @@ class MoufManager {
 			return array();
 		}
 	}
-	
+
 	/**
 	 * Returns the metadata for the given parameter that has been set using a setter.
 	 * Metadata is an array of key=>value, containing additional info.
 	 * For instance, it could contain information on the way to represent a field in the UI, etc...
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @param string $setterName
 	 * @return string
@@ -718,8 +840,29 @@ class MoufManager {
 			return array();
 		}
 	}
-	
-	
+
+	/**
+	 * Returns the metadata for the given parameter that has been set using a constructor parameter.
+	 * Metadata is an array of key=>value, containing additional info.
+	 * For instance, it could contain information on the way to represent a field in the UI, etc...
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 * @return string
+	 */
+	public function getParameterMetadataForConstructor($instanceName, $index) {
+		if (isset($this->declaredInstances[$instanceName]['constructor'][$index]['metadata'])) {
+			return $this->declaredInstances[$instanceName]['constructor'][$index]['metadata'];
+		} else {
+			return array();
+		}
+	}
+
+
+
+
+
+
 	/**
 	 * Returns true if the param is set for the given instance.
 	 *
@@ -731,7 +874,7 @@ class MoufManager {
 		// todo: improve this
 		return isset($this->declaredInstances[$instanceName]['fieldProperties'][$paramName]);
 	}
-	
+
 	/**
 	 * Returns true if the param is set for the given instance using a setter.
 	 *
@@ -743,7 +886,7 @@ class MoufManager {
 		// todo: improve this
 		return isset($this->declaredInstances[$instanceName]['setterProperties'][$setterName]);
 	}
-	
+
 	/**
 	 * Binds another instance to the instance.
 	 *
@@ -758,7 +901,7 @@ class MoufManager {
 			$this->declaredInstances[$instanceName]["fieldBinds"][$paramName] = $paramValue;
 		}
 	}
-	
+
 	/**
 	 * Binds another instance to the instance via a setter.
 	 *
@@ -773,7 +916,7 @@ class MoufManager {
 			$this->declaredInstances[$instanceName]["setterBinds"][$setterName] = $paramValue;
 		}
 	}
-	
+
 	/**
 	 * Binds an array of instance to the instance.
 	 *
@@ -802,7 +945,7 @@ class MoufManager {
 		} else {
 			$this->declaredInstances[$instanceName]["setterBinds"][$setterName] = $paramValue;
 		}
-	}	
+	}
 
 	/**
 	 * This simply adds the passed file to the list of "registered components".
@@ -815,29 +958,29 @@ class MoufManager {
 	public function registerComponent($fileName, $autoload = 'auto') {
 		$this->registeredComponents[$fileName] = array('name' => $fileName, 'autoload' => $autoload);
 	}
-	
+
 	/**
 	 * This function will rewrite the MoufComponents.php file and the MoufRequire.php file (or their "admin" counterpart)
 	 * according to parameters stored in the MoufManager
 	 */
 	public function rewriteMouf() {
 		//require_once('MoufPackageManager.php');
-		
+
 		if (!is_writable(dirname(dirname(__FILE__)."/".$this->componentsFileName)) || (file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(__FILE__)."/".$this->componentsFileName))) {
 			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->componentsFileName));
 			$filename = basename(dirname(__FILE__)."/".$this->componentsFileName);
 			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
 		}
-		
-		if (!is_writable(dirname(dirname(__FILE__)."/".$this->requireFileName)) || (file_exists(dirname(__FILE__)."/".$this->requireFileName) && !is_writable(dirname(__FILE__)."/".$this->requireFileName))) {
+
+		/*if (!is_writable(dirname(dirname(__FILE__)."/".$this->requireFileName)) || (file_exists(dirname(__FILE__)."/".$this->requireFileName) && !is_writable(dirname(__FILE__)."/".$this->requireFileName))) {
 			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->requireFileName));
-			$filename = basename(dirname(__FILE__)."/".$this->requireFileName);
-			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
-		}
-		
+		$filename = basename(dirname(__FILE__)."/".$this->requireFileName);
+		throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
+		}*/
+
 		// Let's start by garbage collecting weak instances.
 		$this->purgeUnreachableWeakInstances();
-		
+
 		$fp = fopen(dirname(__FILE__)."/".$this->componentsFileName, "w");
 		fwrite($fp, "<?php\n");
 		fwrite($fp, "/**\n");
@@ -849,32 +992,32 @@ class MoufManager {
 		fwrite($fp, "\n");
 		fwrite($fp, "\$moufManager->getConfigManager()->setConstantsDefinitionArray(".var_export($this->getConfigManager()->getConstantsDefinitionArray(), true).");\n");
 		fwrite($fp, "\n");
-		
+
 		// Declare packages
 		/*fwrite($fp, "\$moufManager->setPackagesByXmlFile(".var_export($this->packagesList, true).");\n");
-		fwrite($fp, "\n");
-		
+		 fwrite($fp, "\n");
+
 		fwrite($fp, "\$moufManager->setPackagesByXmlFileInAdminScope(".var_export($this->packagesListInAdminScope, true).");\n");
 		fwrite($fp, "\n");*/
-		
+
 		// Import external components
 		// FIXME: adapt to composer!!!
 		/*$packageManager = new MoufPackageManager(dirname(__FILE__).'/../plugins');
-		foreach ($this->packagesList as $fileName) {
-			$package = $packageManager->getPackage($fileName);
-			foreach ($package->getExternalComponentsRequiredFiles() as $requiredFile) {
-				// Please notice that this is a require and not a require_once.
-				// This is because the file could be required twice: one for Mouf and one for the admin.
-				// Therefore, the file should not declare functions or classes.
-				fwrite($fp, "require dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
-			}
+		 foreach ($this->packagesList as $fileName) {
+		$package = $packageManager->getPackage($fileName);
+		foreach ($package->getExternalComponentsRequiredFiles() as $requiredFile) {
+		// Please notice that this is a require and not a require_once.
+		// This is because the file could be required twice: one for Mouf and one for the admin.
+		// Therefore, the file should not declare functions or classes.
+		fwrite($fp, "require dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
+		}
 		}
 		fwrite($fp, "\n");*/
 
 		// Import all variables
 		fwrite($fp, "\$moufManager->setAllVariables(".var_export($this->variables, true).");\n");
 		fwrite($fp, "\n");
-		
+
 		// Declare all components in one instruction
 		$internalDeclaredInstances = array();
 		foreach ($this->declaredInstances as $name=>$declaredInstance) {
@@ -882,14 +1025,14 @@ class MoufManager {
 				$internalDeclaredInstances[$name] = $declaredInstance;
 			}
 		}
-		
+
 		// Sort all instances by key. This way, new instances are not added at the end of the array,
 		// and this reduces the number of conflicts when working in team with a version control system.
 		ksort($internalDeclaredInstances);
-		
+
 		fwrite($fp, "\$moufManager->addComponentInstances(".var_export($internalDeclaredInstances, true).");\n");
 		fwrite($fp, "\n");
-		
+
 		// Declare local components
 		foreach ($this->registeredComponents as $registeredComponent => $registeredComponentParameters) {
 			//fwrite($fp, "require_once dirname(__FILE__).'/$registeredComponent';\n");
@@ -899,17 +1042,17 @@ class MoufManager {
 			fwrite($fp, "\$moufManager->registerComponent('$registeredComponent', '".$autoload."');\n");
 		}
 		fwrite($fp, "\n");
-		
+
 		fwrite($fp, "unset(\$moufManager);\n");
 		fwrite($fp, "\n");
-		
+
 		fwrite($fp, "/**
- * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
- * This object can be used to get the objects manage by MOUF.
- *
- */
-class ".$this->mainClassName." {
-");
+				* This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
+				* This object can be used to get the objects manage by MOUF.
+				*
+				*/
+				class ".$this->mainClassName." {
+				");
 		$getters = array();
 		foreach ($this->declaredInstances as $name=>$classDesc) {
 			if (!isset($classDesc['class'])) {
@@ -933,118 +1076,118 @@ class ".$this->mainClassName." {
 			fwrite($fp, "	 }\n\n");
 		}
 		fwrite($fp, "}\n");
-		
-		
+
+
 		fwrite($fp, "?>\n");
 		fclose($fp);
-		
+
 		// Analyze includes to manage autoloadable files.
-		/*$selfEdit = ($this->scope == MoufManager::SCOPE_ADMIN); 
-		$analyzeResults = MoufReflectionProxy::analyzeIncludes($selfEdit);
+		/*$selfEdit = ($this->scope == MoufManager::SCOPE_ADMIN);
+		 $analyzeResults = MoufReflectionProxy::analyzeIncludes($selfEdit);
 
 		$autoloadableFiles = array();
 		$classesFiles = array();
 
 		// If no error in the curl analyze
 		if (!isset($analyzeResults['errorType'])) {
-			// Packages
-			foreach ($analyzeResults['packages']["classes"] as $file => $classes) {
-				if($classes)
-					$autoloadableFiles[$file] = true;
-			}
-			foreach ($analyzeResults['packages']["interfaces"] as $file => $interfaces) {
-				if($interfaces)
-					$autoloadableFiles[$file] = true;
-			}
-			foreach ($analyzeResults['packages']["functions"] as $file => $functions) {
-				if($functions)
-					$autoloadableFiles[$file] = false;
-			}
-		
-			// Check the configuration of package, it is possible some require must never or force autoload
-			foreach ($this->packagesList as $fileName) {
-				$package = $packageManager->getPackage($fileName);
-				$packagePath = $this->pathToMouf."../plugins/".$package->getPackageDirectory().'/';
-				foreach ($package->getRequiredFilesParameters() as $requiredFile => $requiredFileParameters) {
-					if(isset($requiredFileParameters['autoload'])) {
-						if($requiredFileParameters['autoload'] == 'never') {
-							$autoloadableFiles[$packagePath.$requiredFile] = false;
-						}
-						elseif($requiredFileParameters['autoload'] == 'force') {
-							$autoloadableFiles[$packagePath.$requiredFile] = true;
-						}
-					}
-				}
-			}
-			
-			// Array to associate class with file
-			foreach ($analyzeResults['packages']["classes"] as $file => $classes) {
-				if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
-					foreach ($classes as $class) {
-						$classesFiles[$class] = $file;
-					}
-				}
-			}
-		
-			foreach ($analyzeResults['packages']["interfaces"] as $file => $interfaces) {
-				if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
-					foreach ($interfaces as $interface) {
-						$classesFiles[$interface] = $file;
-					}
-				}
-			}
-			
-			// Requested files
-			foreach ($analyzeResults["classes"] as $file => $classes) {
-				if($classes)
-					$autoloadableFiles[$file] = true;
-			}
-			foreach ($analyzeResults["interfaces"] as $file => $interfaces) {
-				if($interfaces)
-					$autoloadableFiles[$file] = true;
-			}
-			foreach ($analyzeResults["functions"] as $file => $functions) {
-				if($functions)
-					$autoloadableFiles[$file] = false;
-			}
-		
-			// Check the configuration of require, it s possible some require must never or force autoload
-			foreach ($this->registeredComponents as $registeredComponent => $registeredComponentParameters) {
-				if(isset($registeredComponentParameters['autoload'])) {
-					if($registeredComponentParameters['autoload'] == 'never') {
-						$autoloadableFiles[$registeredComponent] = false;
-					}
-					elseif($registeredComponentParameters['autoload'] == 'force') {
-						$autoloadableFiles[$registeredComponent] = true;
-					}
-				}
-			}
-			
-			// Array to associate class with file
-			foreach ($analyzeResults["classes"] as $file => $classes) {
-				if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
-					foreach ($classes as $class) {
-						$classesFiles[$class] = $file;
-					}
-				}
-			}
-		
-			foreach ($analyzeResults["interfaces"] as $file => $interfaces) {
-				if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
-					foreach ($interfaces as $interface) {
-						$classesFiles[$interface] = $file;
-					}
-				}
-			}
+		// Packages
+		foreach ($analyzeResults['packages']["classes"] as $file => $classes) {
+		if($classes)
+			$autoloadableFiles[$file] = true;
 		}
-		
+		foreach ($analyzeResults['packages']["interfaces"] as $file => $interfaces) {
+		if($interfaces)
+			$autoloadableFiles[$file] = true;
+		}
+		foreach ($analyzeResults['packages']["functions"] as $file => $functions) {
+		if($functions)
+			$autoloadableFiles[$file] = false;
+		}
+
+		// Check the configuration of package, it is possible some require must never or force autoload
+		foreach ($this->packagesList as $fileName) {
+		$package = $packageManager->getPackage($fileName);
+		$packagePath = $this->pathToMouf."../plugins/".$package->getPackageDirectory().'/';
+		foreach ($package->getRequiredFilesParameters() as $requiredFile => $requiredFileParameters) {
+		if(isset($requiredFileParameters['autoload'])) {
+		if($requiredFileParameters['autoload'] == 'never') {
+		$autoloadableFiles[$packagePath.$requiredFile] = false;
+		}
+		elseif($requiredFileParameters['autoload'] == 'force') {
+		$autoloadableFiles[$packagePath.$requiredFile] = true;
+		}
+		}
+		}
+		}
+			
+		// Array to associate class with file
+		foreach ($analyzeResults['packages']["classes"] as $file => $classes) {
+		if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
+		foreach ($classes as $class) {
+		$classesFiles[$class] = $file;
+		}
+		}
+		}
+
+		foreach ($analyzeResults['packages']["interfaces"] as $file => $interfaces) {
+		if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
+		foreach ($interfaces as $interface) {
+		$classesFiles[$interface] = $file;
+		}
+		}
+		}
+			
+		// Requested files
+		foreach ($analyzeResults["classes"] as $file => $classes) {
+		if($classes)
+			$autoloadableFiles[$file] = true;
+		}
+		foreach ($analyzeResults["interfaces"] as $file => $interfaces) {
+		if($interfaces)
+			$autoloadableFiles[$file] = true;
+		}
+		foreach ($analyzeResults["functions"] as $file => $functions) {
+		if($functions)
+			$autoloadableFiles[$file] = false;
+		}
+
+		// Check the configuration of require, it s possible some require must never or force autoload
+		foreach ($this->registeredComponents as $registeredComponent => $registeredComponentParameters) {
+		if(isset($registeredComponentParameters['autoload'])) {
+		if($registeredComponentParameters['autoload'] == 'never') {
+		$autoloadableFiles[$registeredComponent] = false;
+		}
+		elseif($registeredComponentParameters['autoload'] == 'force') {
+		$autoloadableFiles[$registeredComponent] = true;
+		}
+		}
+		}
+			
+		// Array to associate class with file
+		foreach ($analyzeResults["classes"] as $file => $classes) {
+		if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
+		foreach ($classes as $class) {
+		$classesFiles[$class] = $file;
+		}
+		}
+		}
+
+		foreach ($analyzeResults["interfaces"] as $file => $interfaces) {
+		if(isset($autoloadableFiles[$file]) && $autoloadableFiles[$file]) {
+		foreach ($interfaces as $interface) {
+		$classesFiles[$interface] = $file;
+		}
+		}
+		}
+		}
+
 		// Finally, let's add Mouf classes to the list of autoloadable classes:
 		$classesFiles['MoufInstanceDescriptor']='mouf/MoufInstanceDescriptor.php';
 		$classesFiles['MoufInstancePropertyDescriptor']='mouf/MoufInstancePropertyDescriptor.php';
 		$classesFiles['MoufPropertyDescriptor']='mouf/MoufPropertyDescriptor.php';
 		$classesFiles['varAnnotation']='mouf/annotations/varAnnotation.php';
 		$classesFiles['paramAnnotation']='mouf/annotations/paramAnnotation.php';
-		
+
 		// Now, let's write the MoufRequire file that contains all the "require_once" stuff.
 		$fp2 = fopen(dirname(__FILE__)."/".$this->requireFileName, "w");
 		fwrite($fp2, "<?php\n");
@@ -1056,74 +1199,74 @@ class ".$this->mainClassName." {
 		fwrite($fp2, "// Register autoloadable classes\n");
 		fwrite($fp2, 'MoufManager::getMoufManager()->registerAutoloadedClasses('.var_export($classesFiles, true).');'."\n");
 		fwrite($fp2, 'spl_autoload_register(array(MoufManager::getMoufManager(), "autoload"));'."\n");
-		
+
 		// Let's add the require_once from the packages first!
 		fwrite($fp2, "// Packages dependencies\n");
 		fwrite($fp2, "\$localFilePath = dirname(__FILE__);\n");
 		foreach ($this->packagesList as $fileName) {
-			$package = $packageManager->getPackage($fileName);
-			foreach ($package->getRequiredFiles() as $requiredFile) {
-				$pathFromRootPath = $this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile;
-				if(((!isset($autoloadableFiles[$pathFromRootPath]) || !$autoloadableFiles[$pathFromRootPath])
-						&& $package->getAutoloadRequiredFile($requiredFile) == 'auto')
-					|| $package->getAutoloadRequiredFile($requiredFile) == 'never') {
-					fwrite($fp2, "require_once \$localFilePath.'/".$pathFromRootPath."';\n");
-				}
-			}
+		$package = $packageManager->getPackage($fileName);
+		foreach ($package->getRequiredFiles() as $requiredFile) {
+		$pathFromRootPath = $this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile;
+		if(((!isset($autoloadableFiles[$pathFromRootPath]) || !$autoloadableFiles[$pathFromRootPath])
+				&& $package->getAutoloadRequiredFile($requiredFile) == 'auto')
+				|| $package->getAutoloadRequiredFile($requiredFile) == 'never') {
+		fwrite($fp2, "require_once \$localFilePath.'/".$pathFromRootPath."';\n");
+		}
+		}
 		}
 		fwrite($fp2, "\n");
-		
+
 		fwrite($fp2, "// User dependencies\n");
-		
+
 		foreach ($this->registeredComponents as $registeredComponent => $registeredComponentParameters) {
-			if(!isset($autoloadableFiles[$registeredComponent]) || !$autoloadableFiles[$registeredComponent]) {
-				fwrite($fp2, "require_once \$localFilePath.'/$registeredComponent';\n");
-			}
+		if(!isset($autoloadableFiles[$registeredComponent]) || !$autoloadableFiles[$registeredComponent]) {
+		fwrite($fp2, "require_once \$localFilePath.'/$registeredComponent';\n");
+		}
 		}
 		fwrite($fp2, "\n");
-		
-		
-		
+
+
+
 		fwrite($fp2, "?>\n");
 		fclose($fp2);*/
 
 		// Now, let's write the MoufUI file that contains all the "require_once" stuff for the admin part of Mouf.
 		// FIXME: find some way to change this by parsing all composer.json file and scanning files to be included!!!!
 		// PLUS: use main class loaded if the Mouf class loader failed to load a class.
-		
-/*		$fp3 = fopen(dirname(__FILE__)."/".$this->adminUiFileName, "w");
-		fwrite($fp3, "<?php\n");
+
+		/*		$fp3 = fopen(dirname(__FILE__)."/".$this->adminUiFileName, "w");
+		 fwrite($fp3, "<?php\n");
 		fwrite($fp3, "/**\n");
 		fwrite($fp3, " * This is a file automatically generated by the Mouf framework. Do not modify it, as it could be overwritten.\n");
 		fwrite($fp3, " * /\n");
 		fwrite($fp3, "\n");
-		
+
 		fwrite($fp3, "// Files from packages declared in the admin <scope/>.\n");
 		foreach ($this->packagesListInAdminScope as $fileName) {
-			$package = $packageManager->getPackage($fileName);
-			foreach ($package->getRequiredFiles() as $requiredFile) {
-				fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
-			}
+		$package = $packageManager->getPackage($fileName);
+		foreach ($package->getRequiredFiles() as $requiredFile) {
+		fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
 		}
-		
+		}
+
 		fwrite($fp3, "\n");
-		
+
 		fwrite($fp3, "// Files declared in the <adminRequire/> section.\n");
 		foreach ($this->packagesList as $fileName) {
-			$package = $packageManager->getPackage($fileName);
-			foreach ($package->getAdminRequiredFiles() as $requiredFile) {
-				fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
-			}
+		$package = $packageManager->getPackage($fileName);
+		foreach ($package->getAdminRequiredFiles() as $requiredFile) {
+		fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
+		}
 		}
 		fwrite($fp3, "\n");
-		
-		
-		
+
+
+
 		fwrite($fp3, "?>\n");
 		fclose($fp3);*/
-		
+
 	}
-	
+
 	/**
 	 * Generate the string for the getter by uppercasing the first character and prepending "get".
 	 *
@@ -1137,11 +1280,11 @@ class ".$this->mainClassName." {
 		$modInstance = str_replace(".", "_", $modInstance);
 		// Let's remove anything that is not an authorized character:
 		$modInstance = preg_replace("/[^A-Za-z0-9_]/", "", $modInstance);
-		
-		
+
+
 		return "get".strtoupper(substr($modInstance,0,1)).substr($modInstance,1);
 	}
-	
+
 	/**
 	 * Return all instances names whose instance type is (or extends or inherits) the provided $instanceType
 	 *
@@ -1149,18 +1292,29 @@ class ".$this->mainClassName." {
 	 * @return array<string>
 	 */
 	public function findInstances($instanceType) {
+		
 		$instancesArray = array();
+
+		$reflectionInstanceType = new \ReflectionClass($instanceType);
+		$isInterface = $reflectionInstanceType->isInterface();
+
 		foreach ($this->declaredInstances as $instanceName=>$classDesc) {
 			$className = $classDesc['class'];
-			$obj = new $className();
-			//if (is_a($obj, $instanceType)) {
-			if ($obj instanceof $instanceType) {
-				$instancesArray[] = $instanceName;
+				
+			$reflectionClass = new \ReflectionClass($className);
+			if ($isInterface) {
+				if ($reflectionClass->implementsInterface($instanceType)) {
+					$instancesArray[] = $instanceName;
+				}
+			} else {
+				if ($reflectionClass->isSubclassOf($instanceType) || $reflectionClass->getName() == $instanceType) {
+					$instancesArray[] = $instanceName;
+				}
 			}
 		}
-		return $instancesArray;		
+		return $instancesArray;
 	}
-	
+
 	/**
 	 * Returns the name(s) of the component bound to instance $instanceName on property $propertyName.
 	 *
@@ -1175,7 +1329,7 @@ class ".$this->mainClassName." {
 		else
 			return null;
 	}
-	
+
 	/**
 	 * Returns the name(s) of the component bound to instance $instanceName on setter $setterName.
 	 *
@@ -1189,12 +1343,12 @@ class ".$this->mainClassName." {
 		else
 			return null;
 	}
-	
+
 	/**
-	 * Returns the list of all components bound to that component. 
+	 * Returns the list of all components bound to that component.
 	 *
 	 * @param string $instanceName
-	 * @return array<string, comp(s)> where comp(s) is a string or an array<string> if there are many components for that property. The key of the array is the name of the property. 
+	 * @return array<string, comp(s)> where comp(s) is a string or an array<string> if there are many components for that property. The key of the array is the name of the property.
 	 */
 	public function getBoundComponents($instanceName) {
 		$binds = array();
@@ -1206,9 +1360,9 @@ class ".$this->mainClassName." {
 				$binds[MoufPropertyDescriptor::getPropertyNameFromSetterName($setter)] = $bind;
 			}
 		}
-		return $binds;		
+		return $binds;
 	}
-	
+
 	/**
 	 * Returns the list of instances that are pointing to this instance through one of their properties.
 	 *
@@ -1217,7 +1371,7 @@ class ".$this->mainClassName." {
 	 */
 	public function getOwnerComponents($instanceName) {
 		$instancesList = array();
-		
+
 		foreach ($this->declaredInstances as $scannedInstance=>$instanceDesc) {
 			if (isset($instanceDesc['fieldBinds'])) {
 				foreach ($instanceDesc['fieldBinds'] as $declaredBindProperty) {
@@ -1232,7 +1386,7 @@ class ".$this->mainClassName." {
 				}
 			}
 		}
-		
+
 		foreach ($this->declaredInstances as $scannedInstance=>$instanceDesc) {
 			if (isset($instanceDesc['setterBinds'])) {
 				foreach ($instanceDesc['setterBinds'] as $declaredBindProperty) {
@@ -1247,18 +1401,18 @@ class ".$this->mainClassName." {
 				}
 			}
 		}
-		
+
 		return $instancesList;
-		
+
 	}
-	
+
 	/**
 	 * Returns the list of files that will be included by Mouf, relative to the root of the project
 	 *
 	 * @return array<string>
 	 */
 	public function getRegisteredComponentFiles() {
-		
+
 		$fileArray = array();
 		$dirMoufFile = dirname($this->requireFileName);
 		$fulldir = realpath(dirname(__FILE__)."/..");
@@ -1268,10 +1422,10 @@ class ".$this->mainClassName." {
 			$relativeFile = str_replace("\\", "/", $relativeFile);
 			$fileArray[] = $relativeFile;
 		}
-		
+
 		return $fileArray;
 	}
-	
+
 	/**
 	 * Returns the list of files that will be included by Mouf, relative to the root of the project
 	 * Add parameters of files like autoload
@@ -1279,7 +1433,7 @@ class ".$this->mainClassName." {
 	 * @return array<string, array<string, string>>
 	 */
 	public function getRegisteredComponentFilesParameters() {
-		
+
 		$fileArray = array();
 		$dirMoufFile = dirname($this->requireFileName);
 		$fulldir = realpath(dirname(__FILE__)."/..");
@@ -1289,10 +1443,10 @@ class ".$this->mainClassName." {
 			$relativeFile = str_replace("\\", "/", $relativeFile);
 			$fileArray[$relativeFile] = $registeredComponentParameters;
 		}
-		
+
 		return $fileArray;
 	}
-	
+
 	/**
 	 * Sets a list of files that will be included by Mouf, relative to the root of the project.
 	 *
@@ -1300,7 +1454,7 @@ class ".$this->mainClassName." {
 	 * @param array<string, string> $autoloads List of files in index and autoload value
 	 */
 	public function setRegisteredComponentFiles($files, $autoloads = array()) {
-		
+
 		$dirMoufFile = dirname(dirname(__FILE__)."/".$this->requireFileName);
 		$fulldir = realpath(dirname(__FILE__)."/../");
 		$fulldir = str_replace("\\", "/", $fulldir);
@@ -1324,7 +1478,7 @@ class ".$this->mainClassName." {
 
 	/**
 	 * Adds one file that will be included by Mouf, relative to the root of the project.
-	 * 
+	 *
 	 * @param string $file
 	 * @param string $autoload Autoload parameter, auto by default
 	 */
@@ -1341,9 +1495,9 @@ class ".$this->mainClassName." {
 		if (array_key_exists($file, $this->registeredComponents) === false) {
 			$path = $this->createRelativePath($dirMoufFile, $fileFull);
 			$this->registeredComponents[$path] = array('name' => $path, 'autoload' => $autoload);
-		}		
+		}
 	}
-	
+
 	/**
 	 * Creates a relative path from the directory $fromDirectory (current dir) to the file $toFile.
 	 *
@@ -1351,11 +1505,11 @@ class ".$this->mainClassName." {
 	 * @param unknown_type $toFile
 	 */
 	private function createRelativePath($fromDirectory, $toFile) {
-		
+
 		$realPathFromDir = str_replace("\\", "/", realpath($fromDirectory)) ;
 		$realPathToFile = str_replace("\\", "/", realpath($toFile));
 		// Let's find the common root by going through each directory.
-		
+
 		$realPathFromDirArray = explode("/", $realPathFromDir);
 		$realPathToFileArray = explode("/", $realPathToFile);
 
@@ -1363,17 +1517,17 @@ class ".$this->mainClassName." {
 			array_shift($realPathFromDirArray);
 			array_shift($realPathToFileArray);
 		}
-		
+
 		$nbDirsRemaining = count($realPathFromDirArray);
-		
-		
+
+
 		$path = str_repeat("../", $nbDirsRemaining).implode("/", $realPathToFileArray);
 		return $path;
 	}
-	
+
 	/**
 	 * Adds a package by providing the path to the package.xml file.
-	 * The path is relative to the "plugins" directory. 
+	 * The path is relative to the "plugins" directory.
 	 *
 	 * Deprecated. Should not be used.
 	 * FOR BACKWARD COMPATIBILITY ONLY
@@ -1383,13 +1537,13 @@ class ".$this->mainClassName." {
 	public function addPackageByXmlFile($fileName) {
 		$this->packagesList[] = $fileName;
 	}
-	
+
 	/**
 	 * Adds a package by providing the path to the package.xml file.
 	 * The path is relative to the "plugins" directory.
 	 * A complete check is performed.
 	 * If another version of the package is present, the version of the package is replaced.
-	 * This function also ensures the order of the dependencies is correct. 
+	 * This function also ensures the order of the dependencies is correct.
 	 *
 	 * @param string $fileName
 	 */
@@ -1413,8 +1567,8 @@ class ".$this->mainClassName." {
 		// TODO: TAKE IN PARAMETER THE SCOPE!!!!
 
 		$myPackageDescriptor = MoufPackageDescriptor::getPackageDescriptorFromPackageFile($fileName);
-		
-		
+
+
 		// If we are supposed to add an admin package from the app scope, this means the admin package is added from tha app mode as an "admin" scope dependency
 		if ($this->scope == MoufManager::SCOPE_APP && $scope == MoufManager::SCOPE_ADMIN) {
 			// Let's first check if the package to install is not one of Mouf admin core packages.
@@ -1422,79 +1576,79 @@ class ".$this->mainClassName." {
 			$packagesList = MoufManager::getMoufManager()->listEnabledPackagesXmlFiles(false);
 			foreach ($packagesList as $key=>$packageFileName) {
 				$packageDescriptor = MoufPackageDescriptor::getPackageDescriptorFromPackageFile($packageFileName);
-				 
+					
 				if ($packageDescriptor->getGroup() == $myPackageDescriptor->getGroup() && $packageDescriptor->getName() == $myPackageDescriptor->getName()) {
-				 	// We must replace this package but we can't!
+					// We must replace this package but we can't!
 					throw new MoufException("Problem! Cannot install ".$myPackageDescriptor->getGroup()."/".$myPackageDescriptor->getName()."/".$myPackageDescriptor->getVersion().". The Mouf admin includes by default this package in version ".$packageDescriptor->getVersion());
-				}				 
+				}
 			}
-			
+				
 			// Now, let's see if we should replace any additional package (this is ok).
 			$replaced = false;
 			foreach ($this->packagesListInAdminScope as $key=>$packageFileName) {
 				$packageDescriptor = MoufPackageDescriptor::getPackageDescriptorFromPackageFile($packageFileName);
-				 
+					
 				if ($packageDescriptor->getGroup() == $myPackageDescriptor->getGroup() && $packageDescriptor->getName() == $myPackageDescriptor->getName()) {
-				 	// We must replace this package!
+					// We must replace this package!
 					$this->packagesListInAdminScope[$key] = $fileName;
 					$replaced = true;
 					break;
-				}				 
+				}
 			}
-			
+				
 			if (!$replaced) {
-				$this->packagesListInAdminScope[] = $fileName;	
+				$this->packagesListInAdminScope[] = $fileName;
 			}
-			
+				
 			// TODO: add reorderpackages support for the $packagesListInAdminScope
 			return;
 		}
-		
+
 		$packageDescriptors = array();
-		
+
 		// Whether the package replaces an existing package or not.
 		$replaced = false;
-		
+
 		foreach ($this->packagesList as $key=>$packageFileName) {
 			$packageDescriptor = MoufPackageDescriptor::getPackageDescriptorFromPackageFile($packageFileName);
-			 
+
 			if ($packageDescriptor->getGroup() == $myPackageDescriptor->getGroup() && $packageDescriptor->getName() == $myPackageDescriptor->getName()) {
-			 	// We must replace this package!
+				// We must replace this package!
 				$this->packagesList[$key] = $fileName;
 				$replaced = true;
 				break;
 			}
-			 
+
 		}
-		
+
 		if (!$replaced) {
-			$this->packagesList[] = $fileName;	
+			$this->packagesList[] = $fileName;
 		}
-		
+
 		$this->reorderPackagesDependencies();
 	}
-	
+
 	/**
 	 * This function sorts the packages according to their dependency order.
 	 */
 	public function reorderPackagesDependencies() {
-		
+
 		$packagesXmlFiles = $this->listEnabledPackagesXmlFiles();
 		// In case some packages are there twice (this should never happen unless the user plays with the MoufComponents file).
 		$packagesXmlFiles = array_unique($packagesXmlFiles);
-		
+
 		// As long as there are packages to be reordered...
 		while ($reorderDescriptor = $this->checkPackageOrder()) {
 			$parentPackage = $reorderDescriptor["parentPackage"];
 			/* @var $parentPackage MoufPackage */
 			$parentPackageXmlFile = $parentPackage->getDescriptor()->getGroup()."/".$parentPackage->getDescriptor()->getName()."/".$parentPackage->getDescriptor()->getVersion()."/package.xml";
-			
+				
 			$tooLateListPackageXmlFiles = array();
 			foreach ($reorderDescriptor["tooLateChildren"] as $tooLateListPackage) {
 				/* @var $tooLateListPackage MoufPackageDescriptor */
 				$tooLateListPackageXmlFiles[] = $tooLateListPackage->getGroup()."/".$tooLateListPackage->getName()."/".$tooLateListPackage->getVersion()."/package.xml";
 			}
-			
+				
 			$newPackagesXmlFilesList = array();
 			foreach ($packagesXmlFiles as $packageXmlFile) {
 				if ($packageXmlFile != $parentPackageXmlFile && array_search($packageXmlFile, $tooLateListPackageXmlFiles) === false ) {
@@ -1511,12 +1665,12 @@ class ".$this->mainClassName." {
 			$this->setPackagesByXmlFile($packagesXmlFiles);
 		}
 	}
-	
+
 	/**
 	 * This function checks the order of the packages.
 	 * It can return a list of packages that should be reordered.
 	 * Returns false if everything is alright.
-	 * 
+	 *
 	 * @return array("parentPackage"=>MoufPackage, "tooLateList"=>array(MoufPackage))
 	 */
 	private function checkPackageOrder() {
@@ -1525,14 +1679,14 @@ class ".$this->mainClassName." {
 
 		$errorList = array();
 		$tooLateList = array();
-		
+
 		foreach ($packagesXmlFiles as $packageXmlFile) {
 			$packageManager = new MoufPackageManager($this->getFullPathToPluginsDirectory());
 			//$packageManager = new MoufPackageManager(dirname(__FILE__)."/../plugins");
-			
+				
 			$package = $packageManager->getPackage($packageXmlFile);
 			$dependencies = $package->getDependenciesAsDescriptors();
-			
+				
 			$found = false;
 			foreach ($dependencies as $dependency) {
 				$tooLate = false;
@@ -1540,13 +1694,13 @@ class ".$this->mainClassName." {
 				// Let's test if each dependency is available, and in the first part of the dependencies.
 				foreach ($packagesXmlFiles as $packageXmlFileCheck) {
 					if ($packageXmlFileCheck == $packageXmlFile) {
-						// After current package, we are too late, we should change the order of the packages. 
+						// After current package, we are too late, we should change the order of the packages.
 						$tooLate = true;
 					}
-					
+						
 					$installedPackageDescriptor = MoufPackageDescriptor::getPackageDescriptorFromPackageFile($packageXmlFileCheck);
 					if ($dependency->getGroup() == $installedPackageDescriptor->getGroup()
-						&& $dependency->getName() == $installedPackageDescriptor->getName()) {
+							&& $dependency->getName() == $installedPackageDescriptor->getName()) {
 						if (!$dependency->isCompatibleWithVersion($installedPackageDescriptor->getVersion())) {
 							// Let's just ignore incompatible package.
 							// This method is about checking the order
@@ -1560,7 +1714,7 @@ class ".$this->mainClassName." {
 						}
 					}
 				}
-				
+
 				if (!$found) {
 					// Let's just ignore not found packages.
 					// This method is about checking the order
@@ -1569,38 +1723,38 @@ class ".$this->mainClassName." {
 				}
 			}
 			if ($tooLateList) {
-				return $tooLateList; 
+				return $tooLateList;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set the packages list all at once.
 	 * This function does not perform any verifications. It is used in MoufComponents.php to load all the
 	 * package list quickly, at once.
-	 * 
+	 *
 	 * @param array $fileNameArray
 	 */
 	public function setPackagesByXmlFile($fileNameArray) {
 		$this->packagesList = $fileNameArray;
 	}
-	
+
 	/**
 	 * Set the packages list that must be loaded in admin scope all at once.
 	 * This function does not perform any verifications. It is used in MoufComponents.php to load all the
 	 * package list quickly, at once.
-	 * 
+	 *
 	 * @param array $fileNameArray
 	 */
 	public function setPackagesByXmlFileInAdminScope($fileNameArray) {
 		$this->packagesListInAdminScope = $fileNameArray;
 	}
-	
-	
+
+
 	/**
 	 * Removes a package by providing the path to the package.xml file.
-	 * The path is relative to the "plugins" directory. 
+	 * The path is relative to the "plugins" directory.
 	 *
 	 * @param string $fileName
 	 */
@@ -1608,10 +1762,10 @@ class ".$this->mainClassName." {
 		$key = array_search($fileName, $this->packagesList);
 		unset($this->packagesList[$key]);
 	}
-	
+
 	/**
 	 * Returns true if the package is enabled.
-	 * The path provided should by related to "plugins" directory. 
+	 * The path provided should by related to "plugins" directory.
 	 *
 	 * @param string $fileName
 	 */
@@ -1622,11 +1776,11 @@ class ".$this->mainClassName." {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns the version number enabled for the package passed in parameter,
 	 * or null if the package is not enabled.
-	 * 
+	 *
 	 * @param string $group
 	 * @param string $name
 	 */
@@ -1640,10 +1794,10 @@ class ".$this->mainClassName." {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the path to all the packages.xml files that are enabled, as a list of strings.
-	 * 
+	 *
 	 * @param bool $includeAdminScope For the SCOPE_ADMIN MoufManager, if $includeAdminScope=true, the list will return packages that are loaded in admin because of a dependency.
 	 * @return array<string>
 	 */
@@ -1656,19 +1810,19 @@ class ".$this->mainClassName." {
 		$additionalPackageList = MoufManager::getMoufManager()->packagesListInAdminScope;
 		return array_merge($packageList, $additionalPackageList);
 	}
-	
+
 	/**
 	 * Returns the name of a Mouf instance from the object.
 	 * Note: this quite be pretty slow as all instances are searched.
 	 * FALSE is returned if nothing is found.
-	 * 
+	 *
 	 * @param object $instance
 	 * @return string The name of the instance.
 	 */
 	public function findInstanceName($instance) {
 		return array_search($instance, $this->objectInstances);
 	}
-	
+
 	/**
 	 * Returns the full path to the plugins directory.
 	 *
@@ -1678,7 +1832,7 @@ class ".$this->mainClassName." {
 		//return dirname(__FILE__)."/../".$this->pathToMouf."../plugins";
 		return dirname(__FILE__)."/../plugins";
 	}
-	
+
 	/**
 	 * Duplicates an instance.
 	 *
@@ -1694,7 +1848,7 @@ class ".$this->mainClassName." {
 		}
 		$this->declaredInstances[$destInstanceName] = $this->declaredInstances[$srcInstanceName];
 	}
-	
+
 	/**
 	 * Returns the list of files to be included because of the packages.
 	 * This function can be useful to analyze the Mouf includes.
@@ -1711,11 +1865,11 @@ class ".$this->mainClassName." {
 		}
 		return $files;
 	}
-	
+
 	/**
 	 * This function performs a check to see if all packages that we are referencing are indeed available.
 	 * If not, the function returns an array with the list of missing packages (as packages descriptor).
-	 * 
+	 *
 	 * @return array<MoufPackageDescriptor>
 	 */
 	public function getMissingPackages() {
@@ -1728,7 +1882,7 @@ class ".$this->mainClassName." {
 		}
 		return $missingPackages;
 	}
-	
+
 	/**
 	 * Returns the list of files to be required (relative to the directory of Mouf.php)
 	 *
@@ -1741,12 +1895,12 @@ class ".$this->mainClassName." {
 		}
 		return $return;
 	}
-	
+
 	/**
 	 * Returns the value of a variable (or null if the variable is not set).
 	 * Variables can contain anything, and are used by some modules for different
 	 * purposes. For instance, the list of repositories is stored as a variables, etc...
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function getVariable($name) {
@@ -1759,87 +1913,89 @@ class ".$this->mainClassName." {
 
 	/**
 	 * Returns whether the variable is set or not.
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function issetVariable($name) {
 		return isset($this->variables[$name]);
 	}
-	
-	
+
+
 	/**
 	 * Sets the value of a variable.
 	 * Variables can contain anything, and are used by some modules for different
 	 * purposes. For instance, the list of repositories is stored as a variables, etc...
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function setVariable($name, $value) {
 		$this->variables[$name] = $value;
 	}
-	
+
 	/**
 	 * Sets all the variables, at once.
-	 * Used at load time to initialize all variables. 
-	 * 
+	 * Used at load time to initialize all variables.
+	 *
 	 * @param array $variables
 	 */
 	public function setAllVariables(array $variables) {
 		$this->variables = $variables;
 	}
-	
+
 	/**
 	 * Internal use only. Sets all the classes that can be autoloaded
-	 * 
+	 *
 	 * @param array<className, fileName> $classes
 	 */
 	public function registerAutoloadedClasses($classes) {
 		$this->autoloadableClasses = $classes;
 	}
-	
+
 	/**
 	 * Autoload a class not load
-	 * 
+	 *
 	 * @param string $className
 	 */
 	public function autoload($className) {
 		if(isset($this->autoloadableClasses[$className]))
 			require_once ROOT_PATH.$this->autoloadableClasses[$className];
 	}
-	
+
 	/**
 	 * Internal use only. Force loading all classes (even the one that can be autoloaded)
-	 * 
+	 *
 	 */
 	/*public function forceAutoload() {
 		if($this->autoloadableClasses) {
-			foreach ($this->autoloadableClasses as $class => $file) {
-				require_once ROOT_PATH.$file;
-			}
-		}
+	foreach ($this->autoloadableClasses as $class => $file) {
+	require_once ROOT_PATH.$file;
+	}
+	}
 	}*/
-	
+
 	/**
 	 * Returns the scope for this MoufManager.
 	 * The scope can be one of MoufManager::SCOPE_APP (the main application) or MoufManager::SCOPE_ADMIN (the Mouf instance for the admin)
-	 * 
-	 * @return string 
+	 *
+	 * @return string
 	 */
 	public function getScope() {
 		return $this->scope;
 	}
-	
+
 	/**
 	 * This function will delete any weak instance that would not be referred anymore.
 	 * This is used to garbage-collect any unused weak instances.
+	 * 
+	 * This is public only for test purposes
 	 */
-	private function purgeUnreachableWeakInstances() {
+	public function purgeUnreachableWeakInstances() {
 		foreach ($this->declaredInstances as $key=>$instance) {
 			if (!isset($instance['weak']) || $instance['weak'] == false) {
 				$this->walkForGarbageCollection($this->declaredInstances[$key]);
 			}
 		}
-		
+
 		// At this point any instance with the "noGarbageCollect" attribute should be kept. Others should be eliminated.
 		$keptInstances = array();
 		foreach ($this->declaredInstances as $key=>$instance) {
@@ -1851,13 +2007,13 @@ class ".$this->mainClassName." {
 				unset($this->declaredInstances[$key]);
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Recursive function that mark this instance as NOT garbage collectable and go through referred nodes.
-	 * 
+	 *
 	 * @param array $instance
 	 */
 	private function walkForGarbageCollection(&$instance) {
@@ -1865,9 +2021,29 @@ class ".$this->mainClassName." {
 			// No need to go through already visited nodes.
 			return;
 		}
-		
+
 		$instance['noGarbageCollect'] = true;
-		
+
+		if (isset($instance['constructor'])) {
+			foreach ($instance['constructor'] as $argument) {
+				if ($argument["parametertype"] == "object") {
+					$value = $argument["value"];
+					if(is_array($value)) {
+						foreach ($value as $singleValue) {
+							if ($singleValue != null) {
+								$this->walkForGarbageCollection($this->declaredInstances[$singleValue]);
+							}
+						}
+					}
+					else {
+						if ($value != null) {
+							$this->walkForGarbageCollection($this->declaredInstances[$value]);
+						}
+					}
+				}
+
+			}
+		}
 		if (isset($instance['fieldBinds'])) {
 			foreach ($instance['fieldBinds'] as $prop) {
 				if(is_array($prop)) {
@@ -1897,10 +2073,10 @@ class ".$this->mainClassName." {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns true if the instance is week
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @return bool
 	 */
@@ -1911,7 +2087,7 @@ class ".$this->mainClassName." {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Decides whether an instance should be weak or not.
 	 * @param string $instanceName
@@ -1920,8 +2096,8 @@ class ".$this->mainClassName." {
 	public function setInstanceWeakness($instanceName, $weak) {
 		$this->declaredInstances[$instanceName]['weak'] = $weak;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if the instance is anonymous
 	 *
@@ -1935,7 +2111,7 @@ class ".$this->mainClassName." {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Decides whether an instance is anonymous or not.
 	 * @param string $instanceName
@@ -1950,16 +2126,16 @@ class ".$this->mainClassName." {
 			unset($this->declaredInstances[$instanceName]['anonymous']);
 		}
 	}
-	
+
 	/**
 	 * Returns an "anonymous" name for an instance.
 	 * "anonymous" names start with "__anonymous__" and is followed by a number.
 	 * This function will return a name that is not already used.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getFreeAnonymousName() {
-		
+
 		$i=0;
 		do {
 			$anonName = "__anonymous__".$i;
@@ -1968,21 +2144,21 @@ class ".$this->mainClassName." {
 			}
 			$i++;
 		} while (true);
-		
+
 		return $anonName;
 	}
-	
+
 	/**
 	 * An array of instanciated MoufInstanceDescriptor objects.
 	 * These descriptors are created by getInstanceDescriptor or createInstance function.
-	 * 
+	 *
 	 * @var array<string, MoufInstanceDescriptor>
 	 */
 	private $instanceDescriptors;
-	
+
 	/**
 	 * Returns an object describing the instance whose name is $name.
-	 * 
+	 *
 	 * @param string $name
 	 * @return MoufInstanceDescriptor
 	 */
@@ -1995,7 +2171,7 @@ class ".$this->mainClassName." {
 			throw new MoufException("Instance '".$name."' does not exist.");
 		}
 	}
-	
+
 	/**
 	 * Creates a new instance and returns the instance descriptor.
 	 * @param string $className The name of the class of the instance.
@@ -2008,26 +2184,26 @@ class ".$this->mainClassName." {
 		$this->setInstanceAnonymousness($name, true);
 		return $this->getInstanceDescriptor($name);
 	}
-	
+
 	/**
 	 * A list of descriptors.
-	 * 
+	 *
 	 * @var array<string, MoufXmlReflectionClass>
 	 */
 	private $classDescriptors = array();
-	
+
 	/**
 	 * Returns an object describing the class passed in parameter.
 	 * The class must be included by Mouf (using the "include PHP files" features, or be part of an enabled package)
 	 * This method should only be called in the context of the Mouf administration UI.
-	 *   
+	 *
 	 * @param string $className The name of the class to import
 	 * @return MoufXmlReflectionClass
 	 */
 	public function getClassDescriptor($className) {
 		if (!isset($this->classDescriptors[$className])) {
-			if ((MoufManager::getMoufManager()->getScope() == self::SCOPE_APP && $this->getScope() == self::SCOPE_APP)
-				|| (MoufManager::getMoufManager()->getScope() == self::SCOPE_ADMIN && $this->getScope() == self::SCOPE_ADMIN)) {
+			if (MoufManager::getMoufManager() == null || (MoufManager::getMoufManager()->getScope() == self::SCOPE_APP && $this->getScope() == self::SCOPE_APP)
+					|| (MoufManager::getMoufManager()->getScope() == self::SCOPE_ADMIN && $this->getScope() == self::SCOPE_ADMIN)) {
 				// We are fully in the scope of the application:
 				$this->classDescriptors[$className] = new MoufReflectionClass($className);
 			} else {

@@ -17,7 +17,7 @@ namespace Mouf\Reflection;
  * be useful.
  * 
  */
-class MoufXmlReflectionParameter extends \ReflectionParameter implements MoufReflectionParameterInterface
+class MoufXmlReflectionParameter implements MoufReflectionParameterInterface
 {
 	/**
 	 * The XML message we will analyse
@@ -76,17 +76,14 @@ class MoufXmlReflectionParameter extends \ReflectionParameter implements MoufRef
     /**
      * helper method to return the reflection routine defining this parameter
      *
-     * @return  stubReflectionRoutine
-     * @todo    replace by getDeclaringFunction() as soon as Stubbles requires at least PHP 5.2.3
+     * @return  MoufReflectionMethod
      */
-    protected function getRefRoutine()
+    public function getDeclaringFunction()
     {
         if (null === $this->refRoutine) {
             if (is_array($this->routineName) === true) {
                 $this->refRoutine = new MoufReflectionMethod($this->routineName[0], $this->routineName[1]);
-            } /*else {
-                $this->refRoutine = new stubReflectionFunction($this->routineName);
-            }*/
+            }
         }
         
         return $this->refRoutine;
@@ -166,6 +163,10 @@ class MoufXmlReflectionParameter extends \ReflectionParameter implements MoufRef
 		return unserialize((string)($this->xmlElem['default']));
 	}
 	
+	public function getDefaultValue() {
+		return $this->getDefault();
+	}
+	
 	public function isArray() {
     	return (string)($this->xmlElem['isArray']) == "true";
     }
@@ -177,6 +178,15 @@ class MoufXmlReflectionParameter extends \ReflectionParameter implements MoufRef
      */
 	public function getType() {
     	return (string)$this->xmlElem['class'];
+    }
+    
+    /**
+     * Returns the position of the parameter in the parameters list (starting 0)
+     * 
+     * @return number
+     */
+    public function getPosition() {
+    	return (int)$this->xmlElem['position'];
     }
 }
 ?>

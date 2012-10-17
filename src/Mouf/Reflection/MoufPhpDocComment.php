@@ -156,18 +156,20 @@ class MoufPhpDocComment {
 		// Ok, let's instanciate the annotation.
 		// Is there an instance named like the annotation?
 		$moufManager = MoufManager::getMoufManager();
-		if ($moufManager->instanceExists($annotationName)) {
-			
-			$instance = $moufManager->getInstance($annotationName);
-			if ($instance instanceof MoufAnnotationInterface) {
-				foreach ($this->annotationsArrayAsString[$annotationName] as $value) {
-					$clonedInstance = clone $instance;
-					$clonedInstance->setValue($value);
-					/* @var $clonedInstance MoufAnnotationInterface */
-					$this->annotationsArrayAsObject[$annotationName][] = $clonedInstance;
+		if ($moufManager) {
+			if ($moufManager->instanceExists($annotationName)) {
+				
+				$instance = $moufManager->getInstance($annotationName);
+				if ($instance instanceof MoufAnnotationInterface) {
+					foreach ($this->annotationsArrayAsString[$annotationName] as $value) {
+						$clonedInstance = clone $instance;
+						$clonedInstance->setValue($value);
+						/* @var $clonedInstance MoufAnnotationInterface */
+						$this->annotationsArrayAsObject[$annotationName][] = $clonedInstance;
+					}
 				}
+				return $this->annotationsArrayAsObject[$annotationName];
 			}
-			return $this->annotationsArrayAsObject[$annotationName];
 		}
 	
 		

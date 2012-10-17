@@ -61,17 +61,14 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     /**
      * helper method to return the reflection routine defining this parameter
      *
-     * @return  stubReflectionRoutine
-     * @todo    replace by getDeclaringFunction() as soon as Stubbles requires at least PHP 5.2.3
+     * @return  MoufReflectionMethod
      */
-    protected function getRefRoutine()
+    public function getDeclaringFunction()
     {
         if (null === $this->refRoutine) {
             if (is_array($this->routineName) === true) {
                 $this->refRoutine = new MoufReflectionMethod($this->routineName[0], $this->routineName[1]);
-            } /*else {
-                $this->refRoutine = new stubReflectionFunction($this->routineName);
-            }*/
+            }
         }
         
         return $this->refRoutine;
@@ -159,6 +156,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     public function toXml(\SimpleXMLElement $root) {
     	$propertyNode = $root->addChild("parameter");
     	$propertyNode->addAttribute("name", $this->getName());
+    	$propertyNode->addAttribute("position", $this->getPosition());
     	$propertyNode->addAttribute("hasDefault", $this->isDefaultValueAvailable()?"true":"false");
     	if ($this->isDefaultValueAvailable()) {
 			$propertyNode->addAttribute("default", serialize($this->getDefaultValue())); 

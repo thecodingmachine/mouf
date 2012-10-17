@@ -11,9 +11,10 @@ namespace Mouf;
 
 use Mouf\Reflection\MoufReflectionPropertyInterface;
 use Mouf\Reflection\MoufReflectionMethodInterface;
+use Mouf\Reflection\MoufReflectionParameterInterface;
 
 /**
- * This class represents a property (as defined by the @Property annotation).
+ * This class represents a property (as defined by the @Property annotation or as a constructor parameter).
  * Since properties can be either public fields or setter methods, this class is used
  * as an abstraction level over the property. 
  *
@@ -21,15 +22,22 @@ use Mouf\Reflection\MoufReflectionMethodInterface;
 class MoufPropertyDescriptor {
 	public static $PUBLIC_FIELD = "field";
 	public static $SETTER = "setter";
+	public static $CONSTRUCTOR = "constructor";
 
 	private $name;
+
+	/**
+	 * The index of the property if this is a constructor property.
+	 * @var int
+	 */
+	private $index;
 	
 	private $methodName;
 	
 	/**
-	 * A MoufReflectionPropertyInterface or a MoufReflectionMethodInterface (depending on the kind of property: field or setter)
+	 * A MoufReflectionPropertyInterface or a MoufReflectionMethodInterface or a MoufReflectionParameterInterface (depending on the kind of property: field or setter or constructor parameter)
 	 *
-	 * @var mixed
+	 * @var MoufReflectionPropertyInterface|MoufReflectionMethodInterface|MoufReflectionParameterInterface
 	 */
 	private $object;
 	
@@ -38,14 +46,15 @@ class MoufPropertyDescriptor {
 	private $subType;
 	
 	/**
-	 * Constructs the MoufPropertyDescriptor from a MoufReflectionPropertyInterface or a MoufReflectionMethodInterface (depending on the object passed in parameter)
+	 * Constructs the MoufPropertyDescriptor from a MoufReflectionPropertyInterface or a MoufReflectionMethodInterface or a MoufReflectionParameterInterface (depending on the kind of property: field or setter or constructor parameter)
 	 *
-	 * @param mixed $object a MoufXmlReflectionProperty or a MoufXmlReflectionMethod
+	 * @param MoufReflectionPropertyInterface|MoufReflectionMethodInterface|MoufReflectionParameterInterface $object
+	 * @throws MoufException
 	 */
 	public function __construct($object) {
 		$this->object = $object;
 		
-		if (!$object instanceof MoufReflectionPropertyInterface && !$object instanceof MoufReflectionMethodInterface) {
+		if (!$object instanceof MoufReflectionPropertyInterface && !$object instanceof MoufReflectionMethodInterface && !$object instanceof MoufReflectionParameterInterface) {
 			throw new MoufException("Error while creating MoufPropertyDescriptor. Invalid object passed in parameter.");
 		}
 		
@@ -70,6 +79,9 @@ class MoufPropertyDescriptor {
 					}
 				}
 			}
+		} elseif ($object instanceof MoufReflectionParameterInterface) {
+			$this->name = $object->getName();
+			$this->index = $object->getPosition();
 		} else {
 			$this->name = $object->getName();
 		}
@@ -79,7 +91,6 @@ class MoufPropertyDescriptor {
 	private function analyzeType() {
 		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			$property = $this->object;
-			// FIXME: take into account the "use" keyword!
 			if ($property->hasAnnotation("var")) {
 				$varTypes = $property->getAnnotations("var");
 				if (count($varTypes)>1) {
@@ -106,10 +117,69 @@ class MoufPropertyDescriptor {
 					$namespace = substr($className, 0, $pos);
 				}
 				
-				
 				$this->type = self::resolveType($this->type, $useNamespaces, $namespace);
 				$this->subType = self::resolveType($this->subType, $useNamespaces, $namespace);
 			}
+		} elseif ($this->object instanceof MoufReflectionParameterInterface) {
+			$parameter = $this->object;
+			/* @var $parameter MoufReflectionParameterInterface */
+			$method = $parameter->getDeclaringFunction();
+			if ($method->hasAnnotation("param")) {
+				$paramTypes = $method->getAnnotations("param");
+				$paramsAnnotations = array();
+				$paramName = $parameter->getName();
+				
+				if (is_array($paramTypes)) {
+					foreach ($paramTypes as $param) {
+						if ($param->getParameterName() == '$'.$paramName) {
+							$paramsAnnotations[] = $param;
+						}
+					}
+				}
+				if (count($paramsAnnotations)>1) {
+					throw new MoufException("Error in docblock of method ".$method->getName()." of class ".$method->getDeclaringClass()->getName().". More than one @param annotation was found for variable ".$paramName.".");
+				}
+
+				
+				if (count($paramsAnnotations)==1) {
+					// If there is one @param annotation:
+					$paramAnnotation = $paramsAnnotations[0];
+				
+					
+					
+					
+					$declaringClass = $method->getDeclaringClass();
+					$useNamespaces = $declaringClass->getUseNamespaces();
+					//var_dump($declaringClass->getName());
+					// Let's resolve the class name...
+					$className = (string)$declaringClass->getName();
+						
+					$pos = strrpos($className, "\\");
+					
+					$namespace = null;
+					// There is no namespace, let's do nothing!
+					if ($pos !== false) {
+						// The namespace without the final \
+						$namespace = substr($className, 0, $pos);
+					}
+					
+					
+					$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
+					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
+					$this->keyType = $paramAnnotation->getKeyType();
+					/*$this->type = $paramAnnotation->getType();
+					$this->subType = $paramAnnotation->getSubType();
+					$this->keyType = $paramAnnotation->getKeyType();*/
+				} else {
+					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
+					if ($parameter->isArray()) {
+						$this->type = "array";
+					} elseif ($parameter->getType() != null) {
+						$this->type = "\\".$parameter->getType();
+					}
+				}
+			}
+			
 		} else {
 			// For setters:
 			$method = $this->object;
@@ -133,8 +203,23 @@ class MoufPropertyDescriptor {
 					// If there is one @param annotation:
 					$paramAnnotation = $paramsAnnotations[0];
 				
-					$this->type = $paramAnnotation->getType();
-					$this->subType = $paramAnnotation->getSubType();
+					$declaringClass = $method->getDeclaringClass();
+					$useNamespaces = $declaringClass->getUseNamespaces();
+					//var_dump($declaringClass->getName());
+					// Let's resolve the class name...
+					$className = (string)$declaringClass->getName();
+					
+					$pos = strrpos($className, "\\");
+						
+					$namespace = null;
+					// There is no namespace, let's do nothing!
+					if ($pos !== false) {
+						// The namespace without the final \
+						$namespace = substr($className, 0, $pos);
+					}
+						
+					$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
+					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
 					$this->keyType = $paramAnnotation->getKeyType();
 				} else {
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
@@ -142,7 +227,7 @@ class MoufPropertyDescriptor {
 					if ($parameters[0]->isArray()) {
 						$this->type = "array";
 					} elseif ($parameters[0]->getType() != null) {
-						$this->type = $parameters[0]->getType();
+						$this->type = '\\'.$parameters[0]->getType();
 					}
 				}
 			} else {
@@ -150,7 +235,7 @@ class MoufPropertyDescriptor {
 				if ($parameters[0]->isArray()) {
 					$this->type = "array";
 				} elseif ($parameters[0]->getType() != null) {
-					$this->type = $parameters[0]->getType();
+					$this->type = '\\'.$parameters[0]->getType();
 				}
 			}
 		}
@@ -204,8 +289,10 @@ class MoufPropertyDescriptor {
 	 * @return string
 	 */
 	public function getSource() {
-		if ($this->object instanceof MoufXmlReflectionProperty) {
+		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			return MoufPropertyDescriptor::$PUBLIC_FIELD;
+		} elseif ($this->object instanceof MoufReflectionParameterInterface) {
+			return MoufPropertyDescriptor::$CONSTRUCTOR;
 		} else {
 			return MoufPropertyDescriptor::$SETTER;
 		}
@@ -279,6 +366,15 @@ class MoufPropertyDescriptor {
 	 */
 	public function isSetterProperty() {
 		return $this->object instanceof MoufReflectionMethodInterface;
+	}
+	
+	/**
+	 * Returns true if the property comes from the constructor
+	 *
+	 * @return bool
+	 */
+	public function isConstructor() {
+		return $this->object instanceof MoufReflectionParameterInterface;
 	}
 	
 	/**
@@ -369,17 +465,26 @@ class MoufPropertyDescriptor {
 	
 	/**
 	 * Give a fully qualified class name from the $type and declared "use" statements.
+	 * Note: The returned fully qualified name always starts with a \
 	 * 
 	 * @param string $type
 	 * @param array<string, string> $useMap
 	 */
 	private static function resolveType($type, $useMap, $namespace) {
+		if ($type == null || $type == "array" || self::isPrimitiveTypeStatic($type)) {
+			return $type;
+		}
+		
 		$index = strpos($type, '\\');
 		if ($index === false) {
 			if (isset($useMap[$type])) {
-				return $useMap[$type];
+				return '\\'.$useMap[$type];
 			} else {
-				return $type;
+				if ($namespace) {
+					return '\\'.$namespace.'\\'.$type;
+				} else {
+					return '\\'.$type;
+				}
 			}
 		}
 		if ($index === 0) {
@@ -390,10 +495,19 @@ class MoufPropertyDescriptor {
 		$rightPart = substr($type, $index);
 		
 		if (isset($useMap[$leftPart])) {
-			return $useMap[$leftPart].$rightPart;
+			return '\\'.$useMap[$leftPart].$rightPart;
 		} else {
-			return $namespace.'\\'.$type;
+			return '\\'.$namespace.'\\'.$type;
 		}
+	}
+	
+	/**
+	 * Returns the index of the parameter if this property is a constructor.
+	 * 
+	 * @return int
+	 */
+	public function getParameterIndex() {
+		return $this->index;
 	}
 }
 ?>

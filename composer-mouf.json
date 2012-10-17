@@ -1,98 +1,4 @@
 {
-    "repositories": [
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.utils.weblibrarymanager.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.template.templateinterface.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.template.mouftemplate.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/utils.i18n.fine.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/mvc.splash.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/mvc.splash-common.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-filetree.git"
-        },
-		{
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/javascript.underscore.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/javascript.syntaxhighlighter.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.widgets.menu.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.template.menus.basicmenu.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/html.template.menus.topribbonmenu.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/security.userservice.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/security.userservice-splash.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/security.userfiledao.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/security.simplelogincontroller.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/utils.cache.cache-interface.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/utils.cache.file-cache.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/utils.common.getvars.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:moufmouf/famfamfam.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger"
-        }
-    ],
     "require": {
         "mouf/html.template.mouftemplate": ">=2.0-dev",
         "mouf/utils.i18n.fine": ">=3.0-dev",
@@ -112,8 +18,11 @@
         "mouf/famfamfam" : "1.3.*",
         "mouf/html.template.menus.basicmenu" : "2.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
-        "psr-0": {"Mouf": ["src/", "src-dev/"]}
+        "psr-0": {"Mouf": ["src/", "src-dev/", "tests/"]}
     },
     "minimum-stability": "dev" ,
     "extra": {

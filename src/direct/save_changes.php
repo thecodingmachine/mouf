@@ -94,12 +94,40 @@ foreach ($changesList as $command) {
 			if ($propertyDescriptor->isPrimitiveType() || $propertyDescriptor->isArrayOfPrimitiveTypes()) {
 				if ($propertyDescriptor->isPublicFieldProperty()) {
 					$moufManager->setParameter($instanceName, $propertyName, $value);
-				} else {
+				} elseif ($propertyDescriptor->isConstructor()) {
+					$property->setValue($value);
+					//$moufManager->setParameterTypeForConstructor($instanceName, $index, $value);
+				} elseif ($propertyDescriptor->isSetterProperty()) {
 					$moufManager->setParameterViaSetter($instanceName, $propertyDescriptor->getMethodName(), $value);
+				} else {
+					throw new Exception("Unsupported property descriptor");
 				}
 			} else {
 				if ($propertyDescriptor->isPublicFieldProperty()) {
 					$moufManager->bindComponent($instanceName, $propertyName, $value);
+				} elseif ($propertyDescriptor->isConstructor()) {
+					if (!is_array($value)) {
+						if ($value != null) {
+							$property->setValue($moufManager->getInstanceDescriptor($value));
+						} else {
+							$property->setValue(null);
+						}
+					} else {
+						$arrayOfString = $value;
+						if ($arrayOfString !== null){
+							$arrayOfDescriptors = array();
+							foreach ($arrayOfString as $key=>$instanceName) {
+								if ($instanceName != null) {
+									$arrayOfDescriptors[$key] = $this->moufManager->getInstanceDescriptor($instanceName);
+								} else {
+									$arrayOfDescriptors[$key] = null;
+								}
+							}
+						}else{
+							$arrayOfDescriptors = null;
+						}
+						$property->setValue($arrayOfDescriptors);
+					}
 				} else {
 					$moufManager->bindComponentsViaSetter($instanceName, $propertyDescriptor->getMethodName(), $value);
 				}

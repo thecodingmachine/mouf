@@ -141,7 +141,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 			$this->canBeWeak = true;
 			$children = array();
 			foreach ($componentsList as $component) {
-				$child = new MenuItem($component, ROOT_URL.'mouf/mouf/displayComponent?name='.urlencode($component));
+				$child = new MenuItem($component, ROOT_URL.'ajaxinstance/?name='.urlencode($component));
 				$child->setPropagatedUrlParameters(array("selfedit"));
 				$children[] = $child;
 			}

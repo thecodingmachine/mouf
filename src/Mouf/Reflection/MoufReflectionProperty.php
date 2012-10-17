@@ -195,10 +195,11 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	if ($this->isPublic() && !$this->isStatic()) {
 	    	// Default value
 	    	$className = $this->refClass->getName();
-	    	$instance = new $className();
+	    	/*$instance = new $className();
 			$property = $this->getName();;
 	
-			$propertyNode->addChild("default", serialize($instance->$property)); 
+			$propertyNode->addChild("default", serialize($instance->$property));*/
+			$propertyNode->addChild("default", serialize($this->getDefault()));
     	}    	
     }
     

@@ -25,9 +25,18 @@ class MoufReflectionHelper {
 	/**
 	 * Returns the Mouf properties for a class.
 	 */
-	public static function getMoufProperties($refClass) {
+	public static function getMoufProperties(MoufReflectionClassInterface $refClass) {
 		$moufProperties = array();
-		 
+		
+		$constructor = $refClass->getConstructor();
+		if ($constructor != null) {
+			foreach($constructor->getParameters() as $parameter) {
+				$propertyDescriptor = new MoufPropertyDescriptor($parameter);
+				//$moufProperties[] = $attribute;
+				$moufProperties[$propertyDescriptor->getName()] = $propertyDescriptor;
+			}
+		}
+		
 		foreach($refClass->getProperties() as $attribute) {
 			/* @var $attribute MoufXmlReflectionProperty */
 			if ($attribute->hasAnnotation("Property")) {
@@ -158,6 +167,7 @@ class MoufReflectionHelper {
 			$result['parameters'][] = self::parameterToJson($parameter);
 		}
 		
+		// FIXME: type should be scoped with namespace / use
 		$properties = $refMethod->getAnnotations("Property");
 		if (!empty($properties)) {
 			$result['moufProperty'] = true;
@@ -188,15 +198,19 @@ class MoufReflectionHelper {
 			$result['default'] = $refParameter->getDefaultValue();
 		}
 		$result['isArray'] = $refParameter->isArray();
-		
-		try {
-			$class = $refParameter->getClass(); 
-			if ($class != null) {
-				$result['class'] = $class->getName();
+
+		// Let's export only the type if we are in a constructor... in order to save time.
+		if ($refParameter->getDeclaringFunction()->isConstructor()) {
+			$moufPropertyDescriptor = new MoufPropertyDescriptor($refParameter);
+			$result['type'] = $moufPropertyDescriptor->getType();
+			if ($moufPropertyDescriptor->isAssociativeArray()) {
+				$result['keytype'] = $moufPropertyDescriptor->getKeyType();
 			}
-		} catch (MoufException $e) {
-			$result['classinerror'] = $e->getMessage();
+			if ($moufPropertyDescriptor->isArray()) {
+				$result['subtype'] = $moufPropertyDescriptor->getSubType();
+			}
 		}
+		
 		return $result;
 	}
 }

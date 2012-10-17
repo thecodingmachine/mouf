@@ -51,6 +51,10 @@ if (get_magic_quotes_gpc()==1)
 	$moufManager = MoufManager::getMoufManager();
 //}
 
+if (strpos($className, '\\') === 0) {
+	$className = substr($className, 1);
+}
+	
 
 $instanceList = $moufManager->findInstances($className);
 

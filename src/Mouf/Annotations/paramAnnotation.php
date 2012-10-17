@@ -9,6 +9,8 @@
  */
 namespace Mouf\Annotations;
 
+use Mouf\MoufException;
+
 /**
  * The @param annotation.
  * This annotation contains the name of the parameter and the type. Finally, some explanation about the parameter.

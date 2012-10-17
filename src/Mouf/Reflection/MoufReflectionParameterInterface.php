@@ -15,11 +15,38 @@ namespace Mouf\Reflection;
  * @author David Negrier
  */
 interface MoufReflectionParameterInterface {
+	/**
+	 * Returns the property name
+	 *
+	 * @return string
+	 */
+	public function getName();
 	
 	/**
-	* Returns the class of the parameter (if any)
-	*
-	* @return string
-	*/
+	 * Returns the default value
+	 *
+	 * @return mixed
+	 */
+	public function getDefaultValue();
+	
+	/**
+	 * Returns the declaring function containing this parameter.
+	 *
+	 * @return MoufReflectionMethodInterface
+	 */
+	public function getDeclaringFunction();
+	
+	/**
+	 * Returns the class of the parameter (if any)
+	 *
+	 * @return string
+	 */
 	public function getType();
+	
+	/**
+	 * Returns the position of the parameter in the parameters list (starting 0)
+	 *
+	 * @return number
+	 */
+	public function getPosition();
 }
