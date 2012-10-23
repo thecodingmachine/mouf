@@ -5,26 +5,34 @@
 <div id="messages"></div>
 
 
-<form action="createComponent" method="post" id="createInstanceForm">
+<form action="createComponent" method="post" id="createInstanceForm" class="form-horizontal">
 <input type="hidden" name="selfedit" value="<?php echo plainstring_to_htmlprotected($this->selfedit); ?>" />
 
 
-<h1>Create a new instance</h1>
+<legend>Create a new instance</legend>
 
-<div>
-<label for="instanceName">Instance name:</label><input type="text" name="instanceName" value="<?php echo plainstring_to_htmlprotected($this->instanceName) ?>" />
+<div class="control-group">
+	<label for="instanceName" class="control-label">Instance name:</label>
+	<div class="controls">
+		<input type="text" name="instanceName" value="<?php echo plainstring_to_htmlprotected($this->instanceName) ?>" placeholder="Your instance name" />
+	</div>
 </div>
 
-<div>
-<label>Class:</label>
-<a id="selectaclasslink" href="#">Click here to select a class</a>
-<div id="selectedclasscontainer"></div>
+<div class="control-group">
+	<label class="control-label">Class:</label>
+	<div class="controls">
+		<a id="selectaclasslink" href="#">Click here to select a class</a>
+		<div id="selectedclasscontainer"></div>
+	</div>
 </div>
 
 <input type="hidden" name="instanceClass" value="<?php echo plainstring_to_htmlprotected($this->instanceClass) ?>" />
 
-
-<button type="submit" value="Create" >Create</button>
+<div class="control-group">
+	<div class="controls">
+		<button type="submit" value="Create" class="btn btn-danger">Create</button>
+	</div>
+</div>
 
 </form>
 
@@ -45,8 +53,6 @@ jQuery(document).ready(function() {
 			}*/
 		});
 
-		jQuery("#selectaclasslink").hide();
-		
 		return false;
 	}
 	
@@ -57,6 +63,8 @@ jQuery(document).ready(function() {
 			jQuery("#selectedclasscontainer").empty();
 			classDescriptor.render().appendTo("#selectedclasscontainer").click(openSelectClass);
 			jQuery("input[name=instanceClass]").val(classDescriptor.getName());
+
+			jQuery("#selectaclasslink").hide();
 		}
 	}).appendTo("#classesList");
 

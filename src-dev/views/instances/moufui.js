@@ -10,6 +10,12 @@
    };
 }(jQuery));
 
+// Enable Bootstrap tooltips by default.
+$(document).ready(function() {
+	$('body').tooltip({
+	    selector: '[rel=tooltip]'
+	});
+})
 
 /**
  * The MoufUI object is used to display recurrent parts of the Mouf interface
@@ -40,7 +46,9 @@ var MoufUI = (function () {
 			jQuery(ui.item).remove();
 		}
 	});*/
-	_bin.droppable({ 
+	_bin.droppable({
+		greedy: true,
+		tolerance: "touch",
 		drop: function( event, ui ) {
 			if (_binCallback) {
 				_binCallback(event, ui);
@@ -56,10 +64,10 @@ var MoufUI = (function () {
 		 */
 		displayInstanceOfType : function(targetSelector, type, displayInstances, displayClasses) {
 			MoufInstanceManager.getInstanceListByType(type).then(function(instances, classes) {
-				jQuery("<h1/>").text("Type "+type).appendTo(targetSelector);
+				jQuery("<h2/>").html("Type "+MoufUI.getHtmlClassName(type)).appendTo(targetSelector);
 				var divFilter = jQuery("<div>Filter: </div>").appendTo(targetSelector);
 				var inputFilter = jQuery("<input/>").addClass("instanceFilter").appendTo(divFilter);
-				jQuery("<h2/>").text("Instances").appendTo(targetSelector);
+				jQuery("<h3/>").text("Instances").appendTo(targetSelector);
 				var instanceListDiv = jQuery("<div/>").addClass("instanceList").appendTo(targetSelector);
 				for (var key in instances) {
 					var instance = instances[key];
@@ -71,7 +79,7 @@ var MoufUI = (function () {
 						connectToSortable: ".todo"*/
 					}).appendTo(instanceListDiv);
 				}
-				jQuery("<h2/>").text("Classes").appendTo(targetSelector);
+				jQuery("<h3/>").text("Classes").appendTo(targetSelector);
 				var classListDiv = jQuery("<div/>").addClass("classList").appendTo(targetSelector);
 				for (var key in classes) {
 					var classDescriptor = classes[key];
@@ -170,7 +178,7 @@ var MoufUI = (function () {
 		 *  ]);
 		 */
 		createMenuIcon: function(items) {
-			var div = jQuery("<div/>").addClass("inlinemenuicon");
+			/*var div = jQuery("<div/>").addClass("inlinemenuicon");
 			// Sadly, we cannot pass UL the in the same HTML block because the containing block might be "overflow: hidden" 
 			// and that would propagate to our element. So let's put the UL at the top of the document, and let's position it
 			// by Javascript.
@@ -203,7 +211,38 @@ var MoufUI = (function () {
 				ul.hide();
 			})
 			
+			return div;*/
+			
+			var div = jQuery("<div/>").addClass("btn-group");
+			
+			var buttonDropdownToggle = jQuery("<button><span class='caret'></span></button>").addClass("btn btn-mini dropdown-toggle").attr("data-toggle", "dropdown").appendTo(div);
+			var ul = jQuery("<ul/>").addClass("dropdown-menu").appendTo(div);
+			_.each(items, function(item) {
+				var li = jQuery("<li/>")
+				if (!item.click) {
+					li.html(item.label);
+				} else {
+					var a = jQuery("<a href='#'/>").html(item.label);
+					a.appendTo(li);
+					a.click(function() {
+						item.click(item);
+						return false;
+					});
+				}
+				li.appendTo(ul);
+			});
+			
 			return div;
+		    /*<div class="btn-group">
+		    <button class="btn">Action</button>
+		    <button class="btn dropdown-toggle" data-toggle="dropdown">
+		    <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu">
+		    <!-- dropdown menu links -->
+		    </ul>
+		    </div>*/
+			
 		},
 		
 		/**
@@ -320,7 +359,33 @@ var MoufUI = (function () {
 				type = type.substr(1);
 			}
 			return "mouftype_"+type.replace(/\\/g, "___");
-		} 
+		},
 
+		/**
+		 * Returns the HTML to display a class with an hover effect that displays a tooltip with the namespace.
+		 */
+		getHtmlClassName: function(className) {
+			if (className.indexOf("\\") == 0) {
+				className = className.substr(1);
+			}
+			var pos = className.lastIndexOf("\\"); 
+			if (pos == -1) {
+				return className;
+			}
+			var packageName = className.substr(0, pos);
+			var singleClassName = className.substr(pos+1);
+			return "<span rel='tooltip' title='Namespace: "+packageName+"'>"+singleClassName+"</span>";
+		},
+		
+		/**
+		 * Returns only the name of the class, without the namespace.
+		 */
+		getShortClassName: function(className) {
+			var pos = className.lastIndexOf("\\"); 
+			if (pos == -1) {
+				return className;
+			}
+			return className.substr(pos+1);
+		}
 	}
 })();

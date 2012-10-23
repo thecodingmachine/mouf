@@ -72,19 +72,15 @@ var MoufSaveManager = (function () {
 			finalValue = value;
 		}
 		
-		// TODO: implement support of array server-side
 		var command = {
 			"command": "setProperty",
 			"instance": moufInstanceProperty.getInstance().getName(),
 			"property": moufInstanceProperty.getMoufProperty().getName(),
 			"value": finalValue,
+			"source": moufInstanceProperty.getSource(),
 			"isNull": (finalValue === null)
 		};
-		
-		/*if (moufInstanceProperty instanceof MoufInstanceSubProperty) {
-			command.key = moufInstanceProperty.key;
-		}*/
-		
+				
 		_changesList.push(command);
 		_save();
 	}

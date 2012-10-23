@@ -1,4 +1,6 @@
 <?php
+use Mouf\MoufException;
+
 /*
  * This file is part of the Mouf core package.
  *
@@ -67,10 +69,25 @@ foreach ($changesList as $command) {
 		case "setProperty":
 			$instanceName = $command['instance'];
 			$propertyName = $command['property'];
+			$source = $command['source'];
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
-			$property = $instanceDescriptor->getProperty($propertyName);
-			$propertyDescriptor = $property->getPropertyDescriptor();
 			
+			// Source can be "constructor", "property" or "setter".
+			switch ($source) {
+				case "constructor":
+					$property = $instanceDescriptor->getConstructorArgumentProperty($propertyName);
+					break;
+				case "setter":
+					$property = $instanceDescriptor->getSetterProperty($propertyName);
+					break;
+				case "property":
+					$property = $instanceDescriptor->getPublicFieldProperty($propertyName);
+					break;
+				default:
+					throw new MoufException("Unknown source '".$source."' while saving parameter ".$propertyName);
+			}
+			
+			$propertyDescriptor = $property->getPropertyDescriptor();
 			
 			if ($command['isNull'] == "true") {
 				$value = null;
@@ -88,48 +105,34 @@ foreach ($changesList as $command) {
 				}
 			}
 			
+			// FIXME: do not use setParameter/setParameterViaSetter directly!
+			// use the source!
 			
-			/*if ($propertyDescriptor->is)
-			$property->setValue($value)*/
+			
 			if ($propertyDescriptor->isPrimitiveType() || $propertyDescriptor->isArrayOfPrimitiveTypes()) {
-				if ($propertyDescriptor->isPublicFieldProperty()) {
-					$moufManager->setParameter($instanceName, $propertyName, $value);
-				} elseif ($propertyDescriptor->isConstructor()) {
-					$property->setValue($value);
-					//$moufManager->setParameterTypeForConstructor($instanceName, $index, $value);
-				} elseif ($propertyDescriptor->isSetterProperty()) {
-					$moufManager->setParameterViaSetter($instanceName, $propertyDescriptor->getMethodName(), $value);
-				} else {
-					throw new Exception("Unsupported property descriptor");
-				}
+				$property->setValue($value);
 			} else {
-				if ($propertyDescriptor->isPublicFieldProperty()) {
-					$moufManager->bindComponent($instanceName, $propertyName, $value);
-				} elseif ($propertyDescriptor->isConstructor()) {
-					if (!is_array($value)) {
-						if ($value != null) {
-							$property->setValue($moufManager->getInstanceDescriptor($value));
-						} else {
-							$property->setValue(null);
-						}
+				if (!is_array($value)) {
+					if ($value != null) {
+						$property->setValue($moufManager->getInstanceDescriptor($value));
 					} else {
-						$arrayOfString = $value;
-						if ($arrayOfString !== null){
-							$arrayOfDescriptors = array();
-							foreach ($arrayOfString as $key=>$instanceName) {
-								if ($instanceName != null) {
-									$arrayOfDescriptors[$key] = $this->moufManager->getInstanceDescriptor($instanceName);
-								} else {
-									$arrayOfDescriptors[$key] = null;
-								}
-							}
-						}else{
-							$arrayOfDescriptors = null;
-						}
-						$property->setValue($arrayOfDescriptors);
+						$property->setValue(null);
 					}
 				} else {
-					$moufManager->bindComponentsViaSetter($instanceName, $propertyDescriptor->getMethodName(), $value);
+					$arrayOfString = $value;
+					if ($arrayOfString !== null){
+						$arrayOfDescriptors = array();
+						foreach ($arrayOfString as $key=>$instanceName) {
+							if ($instanceName != null) {
+								$arrayOfDescriptors[$key] = $moufManager->getInstanceDescriptor($instanceName);
+							} else {
+								$arrayOfDescriptors[$key] = null;
+							}
+						}
+					}else{
+						$arrayOfDescriptors = null;
+					}
+					$property->setValue($arrayOfDescriptors);
 				}
 			}
 			break;

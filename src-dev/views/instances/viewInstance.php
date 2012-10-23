@@ -92,6 +92,7 @@ jQuery(function() {
 */
 
 
+
  MoufInstanceManager.getInstance(<?php echo json_encode($this->instanceName) ?>).then(function(instance) {
 	 /*
 	var myClass = MoufInstanceManager.getLocalClass(instance.getClassName());

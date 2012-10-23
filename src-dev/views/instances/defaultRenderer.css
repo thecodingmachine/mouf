@@ -47,9 +47,9 @@ div.mediuminstance {
 	background-position: 5px 5px;
 	background-repeat: no-repeat;
 	
-	word-wrap: break-word;
+	
 	cursor: move;
-	font-family: monospace;
+	
 	
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -57,6 +57,11 @@ div.mediuminstance {
 	-moz-user-select: none;
 	-ms-user-select: none;	
 	user-select: none;
+}
+
+span.instancetitle {
+	word-wrap: break-word;
+	font-family: monospace;
 }
 
 /*** Add a value/component ****/
@@ -169,6 +174,7 @@ ul.inlinemenu {
 	border-radius: 5px;
 	border: solid 2px #AAAAAA;
 	padding: 0;
+	margin: 14px 0 14px 0;
 }
 
 ul.inlinemenu > li {
@@ -191,47 +197,49 @@ ul.inlinemenu > li a {
 	height: 100%;
 }
 
-div.fieldContainer {
-	overflow: hidden;
-}
-
 div.fieldContainer div.moveable {
 	margin-top: 4px;
 }
 
 div.fieldContainer > div {
-	float: left;
+	display: inline-block;
 }
 
 div.fieldContainer > span {
-	float: left;
+	display: inline-block;
 	margin-top: 5px;
 }
 
 div.fieldContainer > input {
-	float: left;
+	display: inline-block;
 }
 
-
+div.stringRenderer > div {
+	display: inline-block;
+}
 div.stringRenderer > input {
-	float: left;
+	display: inline-block;
 }
 
-div.stringRenderer > div.inlinemenuicon {
-	float: left;
-}
+/*div.stringRenderer > div.inlinemenuicon {
+	display: inline-block;
+}*/
 
-div.stringRenderer {
+/*div.stringRenderer {
 	overflow: hidden;
-}
+}*/
 
 div.stringRenderer > input.null {
 	font-style: italic;
 	color: #777;
 }
 
+div.fieldInstanceRenderer > div {
+	display: inline-block;
+	vertical-align: top;
+}
+
 div.fieldInstanceRenderer > div.instanceReceiver {
-	float: left;
 	min-width: 232px;
 	/*height: 28px;*/
 	background-color: #eeeeaa;
@@ -249,10 +257,6 @@ div.fieldInstanceRenderer > div.instanceReceiver.stateActive {
 
 div.fieldInstanceRenderer > div.instanceReceiver.stateHover {
 	background-color: #dddd99;
-}
-
-div.fieldInstanceRenderer > div.inlinemenuicon {
-	float: left; 
 }
 
 .classesList {

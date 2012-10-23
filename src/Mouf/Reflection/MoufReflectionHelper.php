@@ -25,37 +25,34 @@ class MoufReflectionHelper {
 	/**
 	 * Returns the Mouf properties for a class.
 	 */
-	public static function getMoufProperties(MoufReflectionClassInterface $refClass) {
-		$moufProperties = array();
-		
-		$constructor = $refClass->getConstructor();
-		if ($constructor != null) {
-			foreach($constructor->getParameters() as $parameter) {
-				$propertyDescriptor = new MoufPropertyDescriptor($parameter);
-				//$moufProperties[] = $attribute;
-				$moufProperties[$propertyDescriptor->getName()] = $propertyDescriptor;
-			}
-		}
-		
-		foreach($refClass->getProperties() as $attribute) {
-			/* @var $attribute MoufXmlReflectionProperty */
-			if ($attribute->hasAnnotation("Property")) {
-				$propertyDescriptor = new MoufPropertyDescriptor($attribute);
-				//$moufProperties[] = $attribute;
-				$moufProperties[$attribute->getName()] = $propertyDescriptor;
-			}
-		}
-		 
-		foreach($refClass->getMethods() as $method) {
-			/* @var $attribute MoufXmlReflectionProperty */
-			if ($method->hasAnnotation("Property")) {
-				$propertyDescriptor = new MoufPropertyDescriptor($method);
-				//$moufProperties[] = $attribute;
-				$moufProperties[$method->getName()] = $propertyDescriptor;
-			}
-		}
-		return $moufProperties;	
-	}
+//	public static function getMoufProperties(MoufReflectionClassInterface $refClass) {
+//		$moufProperties = array();
+//		
+//		$constructor = $refClass->getConstructor();
+//		if ($constructor != null) {
+//			foreach($constructor->getParameters() as $parameter) {
+//				$propertyDescriptor = new MoufPropertyDescriptor($parameter);
+//				$moufProperties[$propertyDescriptor->getName()] = $propertyDescriptor;
+//			}
+//		}
+//		
+//		foreach($refClass->getProperties() as $attribute) {
+//			/* @var $attribute MoufXmlReflectionProperty */
+//			if ($attribute->hasAnnotation("Property")) {
+//				$propertyDescriptor = new MoufPropertyDescriptor($attribute);
+//				$moufProperties[$attribute->getName()] = $propertyDescriptor;
+//			}
+//		}
+//		 
+//		foreach($refClass->getMethods() as $method) {
+//			/* @var $attribute MoufXmlReflectionProperty */
+//			if ($method->hasAnnotation("Property")) {
+//				$propertyDescriptor = new MoufPropertyDescriptor($method);
+//				$moufProperties[$method->getName()] = $propertyDescriptor;
+//			}
+//		}
+//		return $moufProperties;	
+//	}
 	
 	/**
 	 * Returns a PHP array representing the class.
@@ -98,7 +95,9 @@ class MoufReflectionHelper {
 		
 		$result['properties'] = array();
 		foreach ($refClass->getProperties() as $property) {
-			$result['properties'][] = self::propertyToJson($property);
+			if ($property->isPublic() && !$property->isStatic()) {
+				$result['properties'][] = self::propertyToJson($property);
+			}
 		}
 		
 		$result['methods'] = array();
@@ -120,9 +119,9 @@ class MoufReflectionHelper {
 		$result['comment'] = $refProperty->getMoufPhpDocComment()->getJsonArray();
 		$result['default'] = $refProperty->getDefault();
 
-		$properties = $refProperty->getAnnotations("Property");
+		/*$properties = $refProperty->getAnnotations("Property");
 		if (!empty($properties)) {
-			$result['moufProperty'] = true;
+			$result['moufProperty'] = true;*/
 			$moufPropertyDescriptor = new MoufPropertyDescriptor($refProperty);
 			$result['type'] = $moufPropertyDescriptor->getType();
 			if ($moufPropertyDescriptor->isAssociativeArray()) {
@@ -131,7 +130,7 @@ class MoufReflectionHelper {
 			if ($moufPropertyDescriptor->isArray()) {
 				$result['subtype'] = $moufPropertyDescriptor->getSubType();
 			}
-		}		
+		//}		
 				
 		return $result;
 	}
@@ -167,19 +166,22 @@ class MoufReflectionHelper {
 			$result['parameters'][] = self::parameterToJson($parameter);
 		}
 		
-		// FIXME: type should be scoped with namespace / use
-		$properties = $refMethod->getAnnotations("Property");
-		if (!empty($properties)) {
-			$result['moufProperty'] = true;
-			$moufPropertyDescriptor = new MoufPropertyDescriptor($refMethod);
-			$result['type'] = $moufPropertyDescriptor->getType();
-			if ($moufPropertyDescriptor->isAssociativeArray()) {
-				$result['keytype'] = $moufPropertyDescriptor->getKeyType();
-			}
-			if ($moufPropertyDescriptor->isArray()) {
-				$result['subtype'] = $moufPropertyDescriptor->getSubType();
-			}
-		}		
+		//$properties = $refMethod->getAnnotations("Property");
+		try {
+			/*if (!empty($properties)) {
+				$result['moufProperty'] = true;*/
+				$moufPropertyDescriptor = new MoufPropertyDescriptor($refMethod);
+				$result['type'] = $moufPropertyDescriptor->getType();
+				if ($moufPropertyDescriptor->isAssociativeArray()) {
+					$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+				}
+				if ($moufPropertyDescriptor->isArray()) {
+					$result['subtype'] = $moufPropertyDescriptor->getSubType();
+				}
+			//}
+		} catch (\Exception $e) {
+			$result['classinerror'] = $e->getMessage();
+		}
 		
 		return $result;
 	}
@@ -199,16 +201,20 @@ class MoufReflectionHelper {
 		}
 		$result['isArray'] = $refParameter->isArray();
 
-		// Let's export only the type if we are in a constructor... in order to save time.
-		if ($refParameter->getDeclaringFunction()->isConstructor()) {
-			$moufPropertyDescriptor = new MoufPropertyDescriptor($refParameter);
-			$result['type'] = $moufPropertyDescriptor->getType();
-			if ($moufPropertyDescriptor->isAssociativeArray()) {
-				$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+		try {
+			// Let's export only the type if we are in a constructor... in order to save time.
+			if ($refParameter->getDeclaringFunction()->isConstructor()) {
+				$moufPropertyDescriptor = new MoufPropertyDescriptor($refParameter);
+				$result['type'] = $moufPropertyDescriptor->getType();
+				if ($moufPropertyDescriptor->isAssociativeArray()) {
+					$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+				}
+				if ($moufPropertyDescriptor->isArray()) {
+					$result['subtype'] = $moufPropertyDescriptor->getSubType();
+				}
 			}
-			if ($moufPropertyDescriptor->isArray()) {
-				$result['subtype'] = $moufPropertyDescriptor->getSubType();
-			}
+		} catch (\Exception $e) {
+			$result['classinerror'] = $e->getMessage();
 		}
 		
 		return $result;

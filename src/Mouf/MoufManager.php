@@ -327,6 +327,11 @@ class MoufManager {
 				// Do nothing
 			}
 		}
+		
+		if (strpos($className, '\\' === 0)) {
+			$className = substr($className, 1);
+		}
+		
 		$this->declaredInstances[$instanceName]["class"] = $className;
 		$this->declaredInstances[$instanceName]["external"] = $external;
 	}
@@ -507,11 +512,19 @@ class MoufManager {
 						if (is_array($value)) {
 							$tmpArray = array();
 							foreach ($value as $keyInstanceName=>$valueInstanceName) {
-								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+								if ($valueInstanceName !== null) {
+									$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+								} else {
+									$tmpArray[$keyInstanceName] = null;
+								}
 							}
 							$constructorParameters[] = $tmpArray;
 						} else {
-							$constructorParameters[] = $this->getInstance($value);
+							if ($value !== null) {
+								$constructorParameters[] = $this->getInstance($value);
+							} else {
+								$constructorParameters[] = null;
+							}
 						}
 						break;
 					default:	
@@ -966,7 +979,7 @@ class MoufManager {
 	public function rewriteMouf() {
 		//require_once('MoufPackageManager.php');
 
-		if (!is_writable(dirname(dirname(__FILE__)."/".$this->componentsFileName)) || (file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(__FILE__)."/".$this->componentsFileName))) {
+		if ((file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(__FILE__)."/".$this->componentsFileName)) || (!file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(dirname(__FILE__)."/".$this->componentsFileName)))) {
 			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->componentsFileName));
 			$filename = basename(dirname(__FILE__)."/".$this->componentsFileName);
 			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
@@ -2179,6 +2192,7 @@ class MoufManager {
 	 * @return MoufInstanceDescriptor
 	 */
 	public function createInstance($className, $mode = self::DECLARE_ON_EXIST_EXCEPTION) {
+		
 		$name = $this->getFreeAnonymousName();
 		$this->declareComponent($name, $className, false, $mode);
 		$this->setInstanceAnonymousness($name, true);

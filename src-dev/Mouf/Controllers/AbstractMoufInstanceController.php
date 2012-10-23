@@ -35,7 +35,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 	 * 
 	 * @var array<MoufPropertyDescriptor>
 	 */
-	public $properties;
+	//public $properties;
 	public $reflectionClass;
 	public $selfedit;
 	public $weak;
@@ -93,7 +93,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 		
 		$this->className = $this->moufManager->getInstanceType($this->instanceName);		
 		$this->reflectionClass = MoufReflectionProxy::getClass($this->className, $selfedit=="true");
-		$this->properties = Moufspector::getPropertiesForClass($this->reflectionClass);
+		//$this->properties = Moufspector::getPropertiesForClass($this->reflectionClass);
 		$this->weak = $this->moufManager->isInstanceWeak($this->instanceName);
 		
 		// Init the right menu:
@@ -240,13 +240,13 @@ abstract class AbstractMoufInstanceController extends Controller {
 	 * @param MoufPropertyDescription $property
 	 * @return mixed
 	 */
-	protected function getValueForPropertyByName($propertyName) {
+	/*protected function getValueForPropertyByName($propertyName) {
 		foreach ($this->properties as $property) {
 			if ($property->getName() == $propertyName) {
 				return $this->getValueForProperty($property);
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Returns all components that are from the baseClass (or base interface) type.

@@ -9,6 +9,10 @@
  */
 namespace Mouf;
 
+use Mouf\Reflection\MoufReflectionClass;
+
+use Mouf\Reflection\MoufXmlReflectionClass;
+
 /**
  * This object represent an instance declared in the Mouf framework.
  * 
@@ -33,9 +37,33 @@ class MoufInstanceDescriptor {
 	 * A list of properties (not the list of all properties).
 	 * Used for caching.
 	 * 
-	 * @var array<MoufInstancePropertyDescriptor>
+	 * @var MoufInstancePropertyDescriptor[]
 	 */
 	private $properties = array();
+	
+	/**
+	 * A list of public properties (not sure to be complete)
+	 * Used for caching.
+	 * 
+	 * @var MoufInstancePropertyDescriptor[]
+	 */
+	private $publicProperties = array();
+	
+	/**
+	 * A list of setter properties (not sure to be complete)
+	 * Used for caching.
+	 *
+	 * @var MoufInstancePropertyDescriptor[]
+	 */
+	private $setterProperties = array();
+	
+	/**
+	 * A list of constructor properties (not sure to be complete)
+	 * Used for caching.
+	 *
+	 * @var MoufInstancePropertyDescriptor[]
+	 */
+	private $constructorProperties = array();
 	
 	/**
 	 * The constructor should exclusively be used by MoufManager.
@@ -125,7 +153,7 @@ class MoufInstanceDescriptor {
 	
 	/**
 	 * Returns the class descriptor for this class
-	 * @return MoufXmlReflectionClass
+	 * @return MoufReflectionClass
 	 */
 	public function getClassDescriptor() {
 		return $this->moufManager->getClassDescriptor($this->getClassName());
@@ -133,15 +161,89 @@ class MoufInstanceDescriptor {
 	
 	/**
 	 * Returns an object describing a property of a field.
+	 * This will first search in the constructor parameters, then in the setters, and finally in the public fields.
+	 * For a setter, you can use the name of the method (for instance "setField"), or directly the name
+	 * of the underlying variable ("field").
 	 * 
 	 * @param string $name
 	 * @return MoufInstancePropertyDescriptor
 	 */
 	public function getProperty($name) {
-		if (!isset($this->properties[$name])) {
-			$this->properties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $name);
+		$classDescriptor = $this->getClassDescriptor();
+		$constructorProperties = $classDescriptor->getInjectablePropertiesByConstructor();
+		if (isset($constructorProperties[$name])) {
+			return $this->getConstructorArgumentProperty($name);
 		}
-		return $this->properties[$name]; 
+		
+		$methodProperties = $classDescriptor->getInjectablePropertiesBySetter();
+		if (isset($methodProperties[$name])) {
+			return $this->getSetterProperty($name);
+		} else {
+			foreach ($methodProperties as $methodProperty) {
+				if ($methodProperty->getName() == $name) {
+					return $this->getSetterProperty($methodProperty->getMethodName());
+				}
+			}
+		}
+		
+		$publicProperties = $classDescriptor->getInjectablePropertiesByPublicProperty();
+		if (isset($publicProperties[$name])) {
+			return $this->getPublicFieldProperty($name);
+		}
+		
+		throw new MoufException("Unable to find a property names ".$name." for instance ".$this->getName()." from class ".$this->getClassName());
+	}
+
+	/**
+	 * Returns an object describing the public field $name for this instance.
+	 * 
+	 * @param string $name
+	 * @return MoufInstancePropertyDescriptor
+	 */
+	public function getPublicFieldProperty($name) {
+		if (!isset($this->publicProperties[$name])) {
+			$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyByPublicProperty($name));
+		}
+		return $this->publicProperties[$name];
+	}
+	
+	/**
+	 * Returns an object describing the property via setter whose name is $name for this instance.
+	 * 
+	 * @param string $name
+	 * @return MoufInstancePropertyDescriptor
+	 */
+	public function getSetterProperty($name) {
+		if (!isset($this->setterProperties[$name])) {
+			
+			$classDescriptor = $this->getClassDescriptor();
+			$methodProperties = $classDescriptor->getInjectablePropertiesBySetter();
+			if (isset($methodProperties[$name])) {
+				$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($name));
+			} else {
+				foreach ($methodProperties as $methodProperty) {
+					if ($methodProperty->getName() == $name) {
+						$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($methodProperty->getMethodName()));
+						break;
+					}
+				}
+			}
+		}
+		return $this->setterProperties[$name];
+	}
+	
+	/**
+	 * Returns an object describing the property set via the constructor.
+	 * The name of the argument is $name.
+	 *
+	 * @param string $name
+	 * @return MoufInstancePropertyDescriptor
+	 */
+	public function getConstructorArgumentProperty($name) {
+		if (!isset($this->constructorProperties[$name])) {
+			$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyByConstructor($name));
+		}
+		return $this->constructorProperties[$name];
 	}
 	
 	/**
@@ -153,38 +255,68 @@ class MoufInstanceDescriptor {
 		$instanceArray['name'] = $this->name;
 		$instanceArray['class'] = $this->getClassName();
 		$instanceArray['anonymous'] = $this->isAnonymous();
-		$instanceArray['properties'] = array();
-		$moufProperties = $classDescriptor->getMoufProperties();
-		foreach ($moufProperties as $propertyName=>$moufProperty) {
+		//$instanceArray['properties'] = array();
+		//$moufProperties = $classDescriptor->getMoufProperties();
+		//foreach ($moufProperties as $propertyName=>$moufProperty) {
 			/* @var $moufProperty MoufPropertyDescriptor */
-			$instanceArray['properties'][$propertyName] = array();
-			//$instanceArray['properties'][$propertyName]['source'] = $moufProperty->getSource();
-			$property = $this->getProperty($propertyName);
-			$value = $property->getValue();
-			if ($value instanceof MoufInstanceDescriptor) {
-				$serializableValue = $value->getIdentifierName();
-			} elseif (is_array($value)) {
-				// We cannot match a PHP array to a JSON array!
-				// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
-				// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
-				$serializableValue = self::arrayToJson($value);
-				
-// 				$serializableValue = array_map(function($singleValue) {
-// 					if ($singleValue instanceof MoufInstanceDescriptor) {
-// 						return $singleValue->getName();
-// 					} else {
-// 						return $singleValue;
-// 					}
-// 				}, $value);
-			} else {
-				$serializableValue = $value;
-			}
-			$instanceArray['properties'][$propertyName]['value'] = $serializableValue;
-			$instanceArray['properties'][$propertyName]['origin'] = $property->getOrigin();
-			$instanceArray['properties'][$propertyName]['metadata'] = $property->getMetaData();
-			
+		//	$instanceArray['properties'][$propertyName] = array();
+		//	//$instanceArray['properties'][$propertyName]['source'] = $moufProperty->getSource();
+		//	$property = $this->getProperty($propertyName);
+		//	$value = $property->getValue();
+		//	if ($value instanceof MoufInstanceDescriptor) {
+		//		$serializableValue = $value->getIdentifierName();
+		//	} elseif (is_array($value)) {
+		//		// We cannot match a PHP array to a JSON array!
+		//		// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
+		//		// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
+		//		$serializableValue = self::arrayToJson($value);
+		//	} else {
+		//		$serializableValue = $value;
+		//	}
+		//	$instanceArray['properties'][$propertyName]['value'] = $serializableValue;
+		//	$instanceArray['properties'][$propertyName]['origin'] = $property->getOrigin();
+		//	$instanceArray['properties'][$propertyName]['metadata'] = $property->getMetaData();
+		//}
+		$instanceArray['constructorArguments'] = array();
+		foreach ($classDescriptor->getInjectablePropertiesByConstructor() as $propertyName=>$moufProperty) {
+			$instanceArray['constructorArguments'][$propertyName] = $this->propertyToJson($this->getConstructorArgumentProperty($propertyName));
 		}
+
+		$instanceArray['properties'] = array();
+		foreach ($classDescriptor->getInjectablePropertiesByPublicProperty() as $propertyName=>$moufProperty) {
+			$instanceArray['properties'][$propertyName] = $this->propertyToJson($this->getPublicFieldProperty($propertyName));
+		}
+		
+		$instanceArray['setters'] = array();
+		foreach ($classDescriptor->getInjectablePropertiesBySetter() as $propertyName=>$moufProperty) {
+			$instanceArray['setters'][$propertyName] = $this->propertyToJson($this->getSetterProperty($propertyName));
+		}
+		
 		return $instanceArray;
+	}
+
+	/**
+	 * Serializes a $moufProperty int a PHP array
+	 * @param MoufInstancePropertyDescriptor $instanceProperty
+	 * @return array
+	 */
+	private function propertyToJson(MoufInstancePropertyDescriptor $instanceProperty) {
+		$result = array();
+		$value = $instanceProperty->getValue();
+		if ($value instanceof MoufInstanceDescriptor) {
+			$serializableValue = $value->getIdentifierName();
+		} elseif (is_array($value)) {
+			// We cannot match a PHP array to a JSON array!
+			// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
+			// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
+			$serializableValue = self::arrayToJson($value);
+		} else {
+			$serializableValue = $value;
+		}
+		$result['value'] = $serializableValue;
+		$result['origin'] = $instanceProperty->getOrigin();
+		$result['metadata'] = $instanceProperty->getMetaData();
+		return $result;
 	}
 	
 	/**

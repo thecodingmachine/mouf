@@ -343,14 +343,15 @@ $moufManager->addComponentInstances(array (
         0 => 'javascript.underscore',
         1 => 'jQueryLibrary',
         2 => 'jQueryUiLibrary',
-        3 => 'javascript.jquery-filetree',
-        4 => 'javascript.chooseInstancePopupJs',
-        5 => 'javascript.syntaxHighlighter',
-        6 => 'setRootUrlJsBlock',
-        7 => 'javascript.jquery-filetree',
-        8 => 'css.moufCssStyles',
-        9 => 'javascript.moufInstanceLibrary',
-      		10 => 'javascript.composer',
+        3 => 'javascript.bootstrap',
+        4 => 'javascript.syntaxHighlighter',
+        5 => 'setRootUrlJsBlock',
+        6 => 'javascript.jquery-filetree',
+        7 => 'javascript.moufInstanceLibrary',
+        8 => 'javascript.composer',
+        9 => 'css.moufCssStyles',
+        10 => 'javascript.chooseInstancePopupJs',
+        11 => 'javascript.jquery-filetree',
       ),
     ),
   ),
@@ -1095,6 +1096,41 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'javascript.bootstrap' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'setterProperties' => 
+    array (
+      'setJsFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'vendor/mouf/html.utils.bootstrap/js/bootstrap.min.js',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setCssFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'vendor/mouf/html.utils.bootstrap/css/bootstrap.min.css',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterBinds' => 
+    array (
+      'setRenderer' => 'defaultWebLibraryRenderer',
+    ),
+  ),
   'javascript.chooseInstancePopupJs' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
@@ -1154,7 +1190,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/html.template.menus.topribbonmenu/topribbonmenu.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery-filetree/jqueryFileTree.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1165,7 +1201,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/html.template.menus.topribbonmenu/topribbonmenu.css',
+          0 => 'vendor/mouf/javascript.jquery.jquery-filetree/jqueryFileTree.css',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1224,6 +1260,45 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Javascript\\SyntaxHighlighterWebLibrary',
     'external' => false,
     'weak' => false,
+  ),
+  'javascript.topribbonmenu' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'setterProperties' => 
+    array (
+      'setJsFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'vendor/mouf/html.template.menus.topribbonmenu/topribbonmenu.js',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setCssFiles' => 
+      array (
+        'value' => 
+        array (
+          0 => 'vendor/mouf/html.template.menus.topribbonmenu/topribbonmenu.css',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterBinds' => 
+    array (
+      'setRenderer' => 'defaultWebLibraryRenderer',
+      'setDependencies' => 
+      array (
+        0 => 'jQueryLibrary',
+      ),
+    ),
   ),
   'javascript.underscore' => 
   array (
@@ -1895,6 +1970,59 @@ $moufManager->addComponentInstances(array (
   ),
   'moufTemplate' => 
   array (
+    'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
+    'external' => false,
+    'weak' => false,
+    'setterBinds' => 
+    array (
+      'setWebLibraryManager' => 'defaultWebLibraryManager',
+      'setHeader' => 'block.header',
+      'setFooter' => 'block.footer',
+      'setLeft' => 'block.left',
+      'setRight' => 'block.right',
+      'setContent' => 'block.content',
+    ),
+    'fieldProperties' => 
+    array (
+      'logoImg' => 
+      array (
+        'value' => 'src-dev/views/images/MoufLogo.png',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'title' => 
+      array (
+        'value' => 'Mouf - Build your website',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterProperties' => 
+    array (
+      'setLeftColumnSize' => 
+      array (
+        'value' => '2',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setRightColumnSize' => 
+      array (
+        'value' => '2',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
+  'moufTemplate.bak' => 
+  array (
     'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
     'setterBinds' => 
@@ -2403,11 +2531,23 @@ $moufManager->addComponentInstances(array (
   ),
   'topRibbonMenuRenderer' => 
   array (
-    'class' => 'Mouf\\Html\\Template\\Menus\\TopRibbonMenuRenderer',
+    'class' => 'Mouf\\Html\\Template\\Menus\\BootstrapMenuRenderer',
     'external' => false,
     'fieldBinds' => 
     array (
       'menu' => 'mainMenu',
+    ),
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'value' => NULL,
+        'parametertype' => 'object',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
     ),
   ),
   'userFileDao' => 
@@ -2725,12 +2865,12 @@ $moufManager->registerComponent('load.php', 'auto');
 unset($moufManager);
 
 /**
- * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
- * This object can be used to get the objects manage by MOUF.
- *
- */
-class MoufAdmin {
-	/**
+				* This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
+				* This object can be used to get the objects manage by MOUF.
+				*
+				*/
+				class MoufAdmin {
+					/**
 	 * @return Mouf\Controllers\MoufAjaxInstanceController
 	 */
 	 public static function getAjaxinstance() {
@@ -3027,6 +3167,13 @@ class MoufAdmin {
 	/**
 	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
 	 */
+	 public static function getJavascript_bootstrap() {
+	 	return MoufManager::getMoufManager()->getInstance('javascript.bootstrap');
+	 }
+
+	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
 	 public static function getJavascript_chooseInstancePopupJs() {
 	 	return MoufManager::getMoufManager()->getInstance('javascript.chooseInstancePopupJs');
 	 }
@@ -3057,6 +3204,13 @@ class MoufAdmin {
 	 */
 	 public static function getJavascript_syntaxHighlighter() {
 	 	return MoufManager::getMoufManager()->getInstance('javascript.syntaxHighlighter');
+	 }
+
+	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getJavascript_topribbonmenu() {
+	 	return MoufManager::getMoufManager()->getInstance('javascript.topribbonmenu');
 	 }
 
 	/**
@@ -3106,34 +3260,6 @@ class MoufAdmin {
 	 */
 	 public static function getMainMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('mainMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getManageLocalPackagesMenuItem() {
-	 	return MoufManager::getMoufManager()->getInstance('manageLocalPackagesMenuItem');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
-	 */
-	 public static function getManageLocalPackagesMenuItemIcon() {
-	 	return MoufManager::getMoufManager()->getInstance('manageLocalPackagesMenuItemIcon');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getManageRepositoriesMenuItem() {
-	 	return MoufManager::getMoufManager()->getInstance('manageRepositoriesMenuItem');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
-	 */
-	 public static function getManageRepositoriesMenuItemIcon() {
-	 	return MoufManager::getMoufManager()->getInstance('manageRepositoriesMenuItemIcon');
 	 }
 
 	/**
@@ -3193,10 +3319,17 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\BootstrapTemplate
 	 */
 	 public static function getMoufTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufTemplate');
+	 }
+
+	/**
+	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 */
+	 public static function getMoufTemplate_bak() {
+	 	return MoufManager::getMoufManager()->getInstance('moufTemplate.bak');
 	 }
 
 	/**
@@ -3361,7 +3494,7 @@ class MoufAdmin {
 	 }
 
 	/**
-	 * @return Mouf\Html\Template\Menus\TopRibbonMenuRenderer
+	 * @return Mouf\Html\Template\Menus\BootstrapMenuRenderer
 	 */
 	 public static function getTopRibbonMenuRenderer() {
 	 	return MoufManager::getMoufManager()->getInstance('topRibbonMenuRenderer');

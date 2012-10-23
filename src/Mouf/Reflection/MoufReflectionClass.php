@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
+
 /**
  * Reflection class extending ReflectionClass in order to access annotations.
  * 
@@ -190,7 +192,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     /**
      * returns a list of all properties
      *
-     * @return  array<MoufReflectionProperty>
+     * @return  MoufReflectionProperty[]
      */
     public function getProperties($filter = null)
     {
@@ -290,14 +292,14 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      *
      * @return array<string, MoufPropertyDescriptor> An array containing MoufXmlReflectionProperty objects.
      */
-    public function getMoufProperties() {
+    /*public function getMoufProperties() {
     	//require_once 'MoufReflectionHelper.php';
     	if ($this->moufProperties === null) {
     		$this->moufProperties = MoufReflectionHelper::getMoufProperties($this);
     	}
     	 
     	return $this->moufProperties;
-    }
+    }*/
     
     /**
      * Returns the Mouf property whose name is $name
@@ -306,7 +308,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      * @param string $name
      * @return MoufPropertyDescriptor
      */
-    public function getMoufProperty($name) {
+    /*public function getMoufProperty($name) {
     	$moufProperties = $this->getMoufProperties();
     	if (isset($moufProperties[$name])) {
     		return $moufProperties[$name];
@@ -314,6 +316,117 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		return null;
     	}
     	 
+    }*/
+    
+    /**
+     * @var MoufPropertyDescriptor[]
+     */
+    private $injectablePropertiesByConstructor;
+    
+    /**
+     * Returns the list of MoufPropertyDescriptor that can be injected via the constructor.
+     * 
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+     */
+    public function getInjectablePropertiesByConstructor() {
+    	if ($this->injectablePropertiesByConstructor === null) {
+	    	$moufProperties = array();
+	    	$constructor = $this->getConstructor();
+	    	if ($constructor != null) {
+	    		foreach($constructor->getParameters() as $parameter) {
+	    			$propertyDescriptor = new MoufPropertyDescriptor($parameter);
+	    			$moufProperties[$propertyDescriptor->getName()] = $propertyDescriptor;
+	    		}
+	    	}
+	    	$this->injectablePropertiesByConstructor = $moufProperties;
+    	}
+    	return $this->injectablePropertiesByConstructor;
+    }
+    
+    /**
+     * Returns a Mouf property descriptor for the public property whose argument name is $name.
+     *
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyByConstructor($name) {
+    	$properties = $this->getInjectablePropertiesByConstructor();
+    	return $properties[$name];
+    }
+    
+    
+    /**
+     * @var MoufPropertyDescriptor[]
+     */
+    private $injectablePropertiesByPublicProperty;
+    
+    /**
+     * Returns the list of MoufPropertyDescriptor that can be injected via a public property of the class.
+     * 
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+     */
+    public function getInjectablePropertiesByPublicProperty() {
+    	if ($this->injectablePropertiesByPublicProperty === null) {
+	    	$moufProperties = array();
+	    	foreach($this->getProperties() as $attribute) {
+	    		/* @var $attribute MoufXmlReflectionProperty */
+	    		//if ($attribute->hasAnnotation("Property")) {
+	    		if ($attribute->isPublic() && !$attribute->isStatic()) {
+	    			$propertyDescriptor = new MoufPropertyDescriptor($attribute);
+	    			$moufProperties[$attribute->getName()] = $propertyDescriptor;
+	    		}
+	    		//}
+	    	}
+	    	$this->injectablePropertiesByPublicProperty = $moufProperties;
+    	}
+    	return $this->injectablePropertiesByPublicProperty;
+    }
+    
+    /**
+     * Returns a Mouf property descriptor for the public property whose name is $name.
+     * 
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyByPublicProperty($name) {
+    	$properties = $this->getInjectablePropertiesByPublicProperty();
+    	return $properties[$name];
+    }
+    
+    /**
+     * @var MoufPropertyDescriptor[]
+     */
+    private $injectablePropertiesBySetter;
+    
+    /**
+     * Returns the list of MoufPropertyDescriptor that can be injected via a setter of the class.
+     *
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the method name.
+     */
+    public function getInjectablePropertiesBySetter() {
+    	if ($this->injectablePropertiesBySetter === null) {
+	    	$moufProperties = array();
+	    	foreach($this->getMethodsByPattern('^set..*') as $method) {
+	    		/* @var $attribute MoufXmlReflectionProperty */
+	    		//if ($method->hasAnnotation("Property")) {
+	    			$propertyDescriptor = new MoufPropertyDescriptor($method);
+	    			$moufProperties[$method->getName()] = $propertyDescriptor;
+	    		//}
+	    	}
+	    	$this->injectablePropertiesBySetter = $moufProperties;
+    	}
+    	return $this->injectablePropertiesBySetter;
+    }
+    
+    /**
+     * Returns a Mouf property descriptor for the setter whose method name is $name.
+     *
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyBySetter($name) {
+    	$properties = $this->getInjectablePropertiesBySetter();
+    	return $properties[$name];
     }
     
     /**

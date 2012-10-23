@@ -1,6 +1,11 @@
-ul, li {
-	list-style: none outside none;
+body {
+	background-color: black;
 }
+
+/*ul, li {
+	list-style: none outside none;
+}*/
+
 
 div.file {
 	min-height: 20px;
@@ -161,7 +166,7 @@ div.directorytitle {
 	background-color: #777777;
 	color: white;
 	padding: 5px 5px 5px 5px;
-	font-family: Rockwell, Georgia, Arial, Verdana, Helvetica, sans-serif;
+	/*font-family: Rockwell, Georgia, Arial, Verdana, Helvetica, sans-serif;*/
 	font-weight: bold;
 	font-size: 14px;
 }
@@ -359,14 +364,14 @@ a.button.modify {
 }
 
 
-div.searchbox input {
+/*div.searchbox input {
 	width: 190px;
 }
 
 div.searchbox button {
 	padding-top: 1px;
 	padding-bottom: 1px;
-}
+}*/
 
 div.package div.packageicon img {
 	float: left;
@@ -404,4 +409,17 @@ div.composersearch input.searchbig.searching {
 
 .hidden {
 	display:none;
+}
+
+/* Settings overriding bootstrap */
+div.topribbonmenu div.submenu_package_detail a {
+    font-size: 12px;
+}
+
+a {
+    color: #A10C27;
+}
+
+a:hover {
+	color: #FF0C27;
 }

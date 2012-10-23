@@ -111,6 +111,9 @@ class InstallUtils {
 	 * @return MoufInstanceDescriptor
 	 */
 	public static function getOrCreateInstance($instanceName, $className, MoufManager $moufManager) {
+		if (strpos($className, "\\") === 0) {
+			$className = substr($className,1);
+		}
 		if ($moufManager->instanceExists($instanceName)) {
 			$instance = $moufManager->getInstanceDescriptor($instanceName);
 			if ($instance->getClassName() != $className) {

@@ -98,6 +98,10 @@ class IncludesAnalyzerController extends Controller {
 		
 		foreach ($allClasses["classes"] as $class) {
 			foreach ($class["methods"] as $method) {
+				if (isset($parameter["classinerror"])) {
+					$this->warnings[$class["name"]][] = $parameter["classinerror"];
+					unset($this->classMap[$class["name"]]);
+				}
 				foreach ($method["parameters"] as $parameter) {
 					if (isset($parameter["classinerror"])) {
 						$this->warnings[$class["name"]][] = $parameter["classinerror"];

@@ -11,9 +11,11 @@
 ?>
 <div class="searchbox">
 <b>Search</b>
-<form action="<?php echo ROOT_URL?>search/">
-	<input type="text" name="query" value="<?php echo plainstring_to_htmlprotected(get("query")); ?>" />
+<form action="<?php echo ROOT_URL?>search/" class="form-search">
+	<div class="input-append">
+		<input type="text" name="query" value="<?php echo plainstring_to_htmlprotected(get("query")); ?>" class="input-medium search-query" placeholder="Search" />
+		<button type="submit" class="btn btn-danger">Go</button>
+	</div>
 	<input type="hidden" name="selfedit" value="<?php echo plainstring_to_htmlprotected(get("selfedit")); ?>" />
-	<button type="submit">Go</button>
 </form>
 </div>

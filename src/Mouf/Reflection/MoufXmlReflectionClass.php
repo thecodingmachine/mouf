@@ -273,7 +273,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
      * 
      * @return array<string, MoufPropertyDescriptor> An array containing MoufXmlReflectionProperty objects.
      */
-    public function getMoufProperties() {
+    /*public function getMoufProperties() {
     	require_once dirname(__FILE__)."/MoufReflectionHelper.php";
     	 
     	if ($this->moufProperties === null) {
@@ -281,7 +281,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
     	}
     	
     	return $this->moufProperties;
-    }
+    }*/
     
     /**
      * Returns the Mouf property whose name is $name

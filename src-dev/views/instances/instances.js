@@ -451,7 +451,7 @@ var MoufInstanceManager = (function () {
 		newInstance : function(classDescriptor, instanceName, isAnonymous) {
 			
 			var properties = {};
-			_.each(classDescriptor.getMoufProperties(), function(property) {
+			_.each(classDescriptor.getInjectableProperties(), function(property) {
 				if (property instanceof MoufProperty) {
 					if (property.hasDefault()) {
 						properties[property.getName()] = {
@@ -521,10 +521,20 @@ var MoufInstanceManager = (function () {
  */
 var MoufInstance = function(json) {
 	this.json = json;
-	this.properties = {};
+	this.constructorArguments = {};
+	this.publicProperties = {};
+	this.setters = {};
+	var jsonConstructorArguments = this.json["constructorArguments"];
+	for (var propertyName in jsonConstructorArguments) {
+		this.constructorArguments[propertyName] = new MoufInstanceProperty("constructor", propertyName, jsonConstructorArguments[propertyName], this);
+	}
 	var jsonProperties = this.json["properties"];
 	for (var propertyName in jsonProperties) {
-		this.properties[propertyName] = new MoufInstanceProperty(propertyName, jsonProperties[propertyName], this);
+		this.publicProperties[propertyName] = new MoufInstanceProperty("property", propertyName, jsonProperties[propertyName], this);
+	}
+	var jsonSetters = this.json["setters"];
+	for (var propertyName in jsonSetters) {
+		this.setters[propertyName] = new MoufInstanceProperty("setter", propertyName, jsonSetters[propertyName], this);
 	}
 }
 
@@ -553,15 +563,43 @@ MoufInstance.prototype.isAnonymous = function() {
 /**
  * Returns an array of objects of type MoufInstanceProperty that represents the property of this instance.
  */
-MoufInstance.prototype.getProperties = function() {
-	return this.properties;
+MoufInstance.prototype.getPublicProperties = function() {
+	return this.publicProperties;
 }
 
 /**
  * Returns an object of type MoufInstanceProperty that represents the property of this instance.
  */
-MoufInstance.prototype.getProperty = function(propertyName) {
-	return this.properties[propertyName];
+MoufInstance.prototype.getPublicProperty = function(propertyName) {
+	return this.publicProperties[propertyName];
+}
+
+/**
+ * Returns an array of objects of type MoufInstanceProperty that represents a constructor arguments of this instance.
+ */
+MoufInstance.prototype.getConstructorArguments = function() {
+	return this.constructorArguments;
+}
+
+/**
+ * Returns an object of type MoufInstanceProperty that represents the constructor arguments of this instance.
+ */
+MoufInstance.prototype.getConstructorArgument = function(propertyName) {
+	return this.constructorArguments[propertyName];
+}
+
+/**
+ * Returns an array of objects of type MoufInstanceProperty that represents the setters of this instance.
+ */
+MoufInstance.prototype.getSetters = function() {
+	return this.setters;
+}
+
+/**
+ * Returns an object of type MoufInstanceProperty that represents a setter of this instance.
+ */
+MoufInstance.prototype.getSetter = function(propertyName) {
+	return this.setters[propertyName];
 }
 
 /**
@@ -583,12 +621,14 @@ MoufInstance.prototype.render = function(/*target,*/ rendererName) {
 } 
 
 /**
- * Let's define the MoufInstanceProperty class, that defines the value of a property/method having a @Property annotation.
+ * Let's define the MoufInstanceProperty class, that defines the value of a property/method/constructor argument.
+ * The source can be one of "constructor", "property" or "setter".
  */
-var MoufInstanceProperty = function(propertyName, json, parent) {
+var MoufInstanceProperty = function(source, propertyName, json, parent) {
 	this.name = propertyName;
 	this.json = json;
 	this.parent = parent;
+	this.source = source;
 	
 	var moufProperty = this.getMoufProperty();
 	if (moufProperty.isArray()) {
@@ -610,6 +650,14 @@ var MoufInstanceProperty = function(propertyName, json, parent) {
  */
 MoufInstanceProperty.prototype.getName = function() {
 	return this.name;
+}
+
+/**
+ * Returns the source for this property.
+ * Can be one of "constructor", "property" or "setter".
+ */
+MoufInstanceProperty.prototype.getSource = function() {
+	return this.source;
 }
 
 /**
@@ -651,18 +699,18 @@ MoufInstanceProperty.prototype.getMetaData = function() {
 }
 
 /**
- * Returns a MoufProperty or a MoufMethod object representing the class property/method that holds the @Property annotation.
+ * Returns a MoufProperty or a MoufMethod object or a MoufParameter object representing the property.
  * 
  * @returns MoufProperty
  */
 MoufInstanceProperty.prototype.getMoufProperty = function() {
 	var classDescriptor = MoufInstanceManager.getLocalClass(this.parent.getClassName());
 	var constructor = classDescriptor.getConstructor();
-	if (constructor && constructor.getParameter(this.name) != null) {
+	if (this.source=="constructor" && constructor.getParameter(this.name) != null) {
 		return classDescriptor.getConstructor().getParameter(this.name);
-	} else if (classDescriptor.getProperty(this.name) != null) {
+	} else if (this.source=="property" && classDescriptor.getProperty(this.name) != null) {
 		return classDescriptor.getProperty(this.name);
-	} else if (classDescriptor.getMethod(this.name) != null) {
+	} else if (this.source=="setter" && classDescriptor.getMethod(this.name) != null) {
 		return classDescriptor.getMethod(this.name);
 	} else {
 		throw "Error, unknown mouf property "+this.name;
@@ -905,36 +953,71 @@ MoufClass.prototype.getAnnotations = function() {
 }
 
 /**
- * Returns the list of all Mouf properties (constructor parameters, properties and setters with a @Property annotation)
+ * Returns the list of all injectable properties (constructor parameters, properties and setters)
  */
-MoufClass.prototype.getMoufProperties = function() {
+MoufClass.prototype.getAllInjectableProperties = function() {
+	var moufProperties = this.getInjectableConstructorArguments();
+	moufProperties.concat(this.getInjectableSetters());
+	moufProperties.concat(this.getInjectablePublicProperties());
+	
+
+	return moufProperties;
+}
+
+/**
+ * Returns the list of all setter properties
+ */
+MoufClass.prototype.getInjectableSetters = function() {
+	var moufProperties = [];
+
+	var methods = this.getMethods();
+	for (var i=0; i<methods.length; i++) {
+		var method = methods[i]; 
+		//if (method.hasPropertyAnnotation()) {
+		if (method.getName().indexOf("set") == 0) {
+			moufProperties.push(method);
+		}
+		//}
+	}
+	return moufProperties;
+}
+
+/**
+ * Returns the list of all constructor argument properties
+ */
+MoufClass.prototype.getInjectableConstructorArguments = function() {
 	var moufProperties = [];
 
 	var constructor = this.getConstructor();
 	if (constructor) {
 		var parameters = constructor.getParameters();
-		for (var i=0; i<parameters.length; i++) {
+		/*for (var i=0; i<parameters.length; i++) {
 			moufProperties.push(parameters[i]);
-		}
+		}*/
+		moufProperties = parameters; 
 	}
+
+	return moufProperties;
+}
+
+/**
+ * Returns the list of all public properties
+ */
+MoufClass.prototype.getInjectablePublicProperties = function() {
+	/*var moufProperties = [];
 
 	var properties = this.getProperties();
 	for (var i=0; i<properties.length; i++) {
 		var property = properties[i]; 
-		if (property.hasPropertyAnnotation()) {
+		//if (property.hasPropertyAnnotation()) {
 			moufProperties.push(property);
-		}
+		//}
 	}
 
-	var methods = this.getMethods();
-	for (var i=0; i<methods.length; i++) {
-		var method = methods[i]; 
-		if (method.hasPropertyAnnotation()) {
-			moufProperties.push(method);
-		}
-	}
-	return moufProperties;
+	return moufProperties;*/
+	return this.getProperties();
 }
+
 
 /**
  * Returns true if "className" is a parent class or interface implement by this class.
@@ -1127,14 +1210,14 @@ MoufProperty.prototype.isAssociativeArray = function() {
  * Returns the MoufInstanceProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)
  */
 MoufProperty.prototype.getMoufInstanceProperty = function(instance) {
-	return instance.getProperty(this.json['name']);
+	return instance.getPublicProperty(this.json['name']);
 }
 
 /**
  * Returns the value of a property for the instance passed in parameter (available if this property has a @Property annotation)
  */
 MoufProperty.prototype.getValueForInstance = function(instance) {
-	return instance.getProperty(this.json['name']).getValue();
+	return instance.getPublicProperty(this.json['name']).getValue();
 }
 
 /**
@@ -1275,14 +1358,14 @@ MoufMethod.prototype.getPropertyName = function() {
  * Returns the MoufInstanceProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)
  */
 MoufMethod.prototype.getMoufInstanceProperty = function(instance) {
-	return instance.getProperty(this.json['name']);
+	return instance.getSetter(this.json['name']);
 }
 
 /**
  * Returns the value of a property for the instance passed in parameter (available if this method has a @Property annotation)
  */
 MoufMethod.prototype.getValueForInstance = function(instance) {
-	return instance.getProperty(this.json['name']).getValue();
+	return instance.getSetter(this.json['name']).getValue();
 }
 
 /**
@@ -1375,7 +1458,14 @@ MoufParameter.prototype.getKeyType = function() {
  * Returns the MoufInstanceProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)
  */
 MoufParameter.prototype.getMoufInstanceProperty = function(instance) {
-	return instance.getProperty(this.json['name']);
+	return instance.getConstructorArgument(this.json['name']);
+}
+
+/**
+ * Returns the value of a property for the instance passed in parameter (available if this property has a @Property annotation)
+ */
+MoufParameter.prototype.getValueForInstance = function(instance) {
+	return instance.getConstructorArgument(this.json['name']).getValue();
 }
 
 /**
@@ -1421,7 +1511,8 @@ MoufInstanceSubProperty.prototype.getKey = function() {
 MoufInstanceSubProperty.prototype.setKey = function(key) {
 	this.key = key;
 	// Let's trigger listeners
-	MoufInstanceManager.firePropertyChange(this.getInstance().getProperty(this.getName()));	
+	//MoufInstanceManager.firePropertyChange(this.getInstance().getProperty(this.getName()));	
+	MoufInstanceManager.firePropertyChange(this.parentMoufInstanceProperty);
 }
 
 /**
@@ -1472,7 +1563,9 @@ MoufInstanceSubProperty.prototype.getInstance = function() {
 MoufInstanceSubProperty.prototype.setValue = function(value) {
 	this.value = value;
 	// Let's trigger listeners
-	MoufInstanceManager.firePropertyChange(this.getInstance().getProperty(this.getName()));	
+	//MoufInstanceManager.firePropertyChange(this.getInstance().getProperty(this.getName()));
+	MoufInstanceManager.firePropertyChange(this.parentMoufInstanceProperty);
+	
 }
 
 // TODO: add methods to manage sub-arrays!

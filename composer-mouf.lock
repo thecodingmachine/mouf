@@ -1,5 +1,5 @@
 {
-    "hash": "9de6edd46e75f25390808e7e63baa5dd",
+    "hash": "457e168083c7954d0220e0ce2ea2d105",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -36,11 +36,7 @@
                 "icons",
                 "famfamfam",
                 "silk"
-            ],
-            "support": {
-                "source": "https://github.com/moufmouf/famfamfam/tree/1.3",
-                "issues": "https://github.com/moufmouf/famfamfam/issues"
-            }
+            ]
         },
         {
             "name": "mouf/html.htmlelement",
@@ -86,6 +82,54 @@
             ]
         },
         {
+            "name": "mouf/html.template.bootstrap",
+            "version": "2.1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:thecodingmachine/html.template.bootstrap.git",
+                "reference": "7b79100b8d987e60fed5de9b51c92b4ea120e52d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/html.template.bootstrap/zipball/7b79100b8d987e60fed5de9b51c92b4ea120e52d",
+                "reference": "7b79100b8d987e60fed5de9b51c92b4ea120e52d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
+                "mouf/html.utils.bootstrap": "2.1.*",
+                "mouf/html.widgets.menu": "2.*"
+            },
+            "time": "1350655546",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package contains a Mouf template based on the Twitter Bootstrap HTML/CSS/JS library, along a Mouf installer file to add the template easily in your Mouf project.",
+            "homepage": "http://twitter.github.com/bootstrap/",
+            "keywords": [
+                "javascript",
+                "bootstrap",
+                "template",
+                "mouf"
+            ]
+        },
+        {
             "name": "mouf/html.template.menus.basicmenu",
             "version": "2.0.x-dev",
             "source": {
@@ -124,14 +168,10 @@
             "description": "This package contains a single class in charge of rendering a 'Menu' instance in HTML using the toHtml() method. The rendering is performed using &lt;ul&gt; and &lt;li&gt; tags.",
             "homepage": "https://github.com/thecodingmachine/html.template.menus.basicmenu",
             "keywords": [
-                "mouf",
                 "menu",
+                "mouf",
                 "basicmenu"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.template.menus.basicmenu/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.template.menus.basicmenu/issues"
-            }
+            ]
         },
         {
             "name": "mouf/html.template.menus.topribbonmenu",
@@ -180,15 +220,11 @@
             "description": "This package contains a menu that is displayed as a ribbon at the top of the screen. The class is in charge of rendering a 'Menu' instance in HTML using the toHtml() method.",
             "homepage": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu",
             "keywords": [
-                "mouf",
                 "menu",
+                "mouf",
                 "topribbonmenu",
                 "ribbon"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/issues"
-            }
+            ]
         },
         {
             "name": "mouf/html.template.mouftemplate",
@@ -232,11 +268,7 @@
                 "template",
                 "mouf",
                 "mouftemplate"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.template.mouftemplate/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.template.mouftemplate/issues"
-            }
+            ]
         },
         {
             "name": "mouf/html.template.templateinterface",
@@ -244,19 +276,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.templateinterface.git",
-                "reference": "67e3c1a7cfd8bfd22e3528e3e858c543aa4ff4ca"
+                "reference": "e7f408c2d51e886a79487075beeb737ef6b6c8b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.templateinterface/zipball/67e3c1a7cfd8bfd22e3528e3e858c543aa4ff4ca",
-                "reference": "67e3c1a7cfd8bfd22e3528e3e858c543aa4ff4ca",
+                "url": "https://github.com/thecodingmachine/html.template.templateinterface/zipball/e7f408c2d51e886a79487075beeb737ef6b6c8b5",
+                "reference": "e7f408c2d51e886a79487075beeb737ef6b6c8b5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "time": "1346345609",
+            "time": "1350660527",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -278,13 +310,54 @@
             "homepage": "https://github.com/thecodingmachine/html.template.templateinterface",
             "keywords": [
                 "template",
-                "templateinterface",
-                "interface"
+                "interface",
+                "templateinterface"
+            ]
+        },
+        {
+            "name": "mouf/html.utils.bootstrap",
+            "version": "2.1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:thecodingmachine/html.utils.bootstrap.git",
+                "reference": "ab319b90edb622f895a0f98d309dc8ee024e4f91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/html.utils.bootstrap/zipball/ab319b90edb622f895a0f98d309dc8ee024e4f91",
+                "reference": "ab319b90edb622f895a0f98d309dc8ee024e4f91",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+            },
+            "time": "1350502652",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "license": [
+                "Apache License V2.0"
             ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.template.templateinterface/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.template.templateinterface/issues"
-            }
+            "authors": [
+                {
+                    "name": "Mark Otto"
+                },
+                {
+                    "name": "Billy Gates"
+                }
+            ],
+            "description": "This package contains the Bootstrap HTML/CSS/JS library, along a Mouf installer file to add Bootstrap easily in your Mouf project.",
+            "homepage": "http://twitter.github.com/bootstrap/",
+            "keywords": [
+                "javascript",
+                "bootstrap",
+                "mouf"
+            ]
         },
         {
             "name": "mouf/html.utils.weblibrarymanager",
@@ -332,17 +405,13 @@
             "description": "The Javascript/CSS library manager is a PHP class in charge of keeping track of the JS and CSS files that have been included so far in a web page. Basically, you tell the Javascript/CSS library manager to import a JS/CSS file and it will make sure it is included, only once, and that all dependencies are included as well.",
             "homepage": "https://github.com/thecodingmachine/html.utils.weblibrarymanager",
             "keywords": [
-                "html",
+                "dependency",
                 "javascript",
                 "css",
-                "dependency",
-                "dependencies",
-                "mouf"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/issues"
-            }
+                "html",
+                "mouf",
+                "dependencies"
+            ]
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -383,14 +452,10 @@
             "description": "This package contains objects describing a menu of an application. The menu is described, but this package does not render the menu in any way. You will have to use another package to render the menu in HTML. Usually, templates will provide their own menu renderers.",
             "homepage": "https://github.com/thecodingmachine/html.widgets.menu",
             "keywords": [
-                "mouf",
                 "menu",
-                "template"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/html.widgets.menu/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/html.widgets.menu/issues"
-            }
+                "template",
+                "mouf"
+            ]
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -433,14 +498,10 @@
             "description": "This package contains the JQuery library, along a Mouf installer file to add JQuery easily in your Mouf project.",
             "homepage": "https://github.com/thecodingmachine/javascript.jquery.jquery",
             "keywords": [
+                "jquery",
                 "javascript",
-                "mouf",
-                "jquery"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/javascript.jquery.jquery/tree/1.7.2",
-                "issues": "https://github.com/thecodingmachine/javascript.jquery.jquery/issues"
-            }
+                "mouf"
+            ]
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -483,16 +544,12 @@
             "description": "This package contains the jQuery FileTree library, along a Mouf installer file to add JQuery FileTree easily in your Mouf project.",
             "homepage": "http://www.abeautifulsite.net/blog/2008/03/jquery-file-tree/",
             "keywords": [
+                "jquery",
                 "javascript",
                 "mouf",
-                "jquery",
                 "filetree",
                 "jquery filetree"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/tree/1.01",
-                "issues": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/issues"
-            }
+            ]
         },
         {
             "name": "mouf/javascript.jquery.jquery-ui",
@@ -535,16 +592,12 @@
             "description": "This package contains the JQuery UI library, along a Mouf installer file to add JQuery UI easily in your Mouf project.",
             "homepage": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui",
             "keywords": [
-                "javascript",
-                "mouf",
                 "jquery",
-                "jqueryUI",
-                "jquery-ui"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/tree/1.8.22",
-                "issues": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/issues"
-            }
+                "javascript",
+                "jquery-ui",
+                "jQueryUI",
+                "mouf"
+            ]
         },
         {
             "name": "mouf/javascript.syntaxhighlighter",
@@ -595,11 +648,7 @@
                 "javascript",
                 "mouf",
                 "SyntaxHighlighter"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/tree/3.0.83",
-                "issues": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/issues"
-            }
+            ]
         },
         {
             "name": "mouf/javascript.underscore",
@@ -643,14 +692,10 @@
             "homepage": "https://github.com/thecodingmachine/javascript.underscore",
             "keywords": [
                 "javascript",
-                "mouf",
                 "underscore",
+                "mouf",
                 "underscorejs"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/javascript.underscore/tree/1.3.3",
-                "issues": "https://github.com/thecodingmachine/javascript.underscore/issues"
-            }
+            ]
         },
         {
             "name": "mouf/mvc.splash",
@@ -691,15 +736,11 @@
             "description": "An MVC framework deeply integrated with Mouf.",
             "homepage": "https://github.com/thecodingmachine/mvc.splash",
             "keywords": [
-                "mvc",
                 "framework",
+                "mvc",
                 "mouf",
                 "splash"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/mvc.splash/tree/4.0",
-                "issues": "https://github.com/thecodingmachine/mvc.splash/issues"
-            }
+            ]
         },
         {
             "name": "mouf/mvc.splash-common",
@@ -741,16 +782,12 @@
             "description": "The Core part of Splash (an MVC framework). It is used by Splash itself, but also by Drusplash (the Splash wrapper for Drupal)",
             "homepage": "https://github.com/thecodingmachine/mvc.splash-common",
             "keywords": [
-                "mvc",
                 "framework",
+                "mvc",
                 "mouf",
                 "splash",
                 "splash-common"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/mvc.splash-common/tree/4.0",
-                "issues": "https://github.com/thecodingmachine/mvc.splash-common/issues"
-            }
+            ]
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -794,11 +831,7 @@
                 "security",
                 "login",
                 "mouf"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/security.simplelogincontroller/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/security.simplelogincontroller/issues"
-            }
+            ]
         },
         {
             "name": "mouf/security.userfiledao",
@@ -839,15 +872,11 @@
             "description": "This package contains an implementation of a UserDao, that stores the application users in a simple PHP file. It can be used together with the MoufUserService to provide easy access management to an application. Since the users are stored in a PHP file, this very special DAO does not require a database!",
             "homepage": "https://github.com/thecodingmachine/security.userfiledao",
             "keywords": [
+                "User management",
                 "security",
-                "userdao",
-                "user management",
-                "mouf"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/security.userfiledao/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/security.userfiledao/issues"
-            }
+                "mouf",
+                "userdao"
+            ]
         },
         {
             "name": "mouf/security.userservice",
@@ -889,14 +918,10 @@
             "description": "A set of PHP class to manage log-in and log-out of web applications and that integrates with Mouf.",
             "homepage": "https://github.com/thecodingmachine/security.userservice",
             "keywords": [
+                "User management",
                 "security",
-                "user",
-                "user management"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/security.userservice/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/security.userservice/issues"
-            }
+                "user"
+            ]
         },
         {
             "name": "mouf/utils.cache.cache-interface",
@@ -936,14 +961,10 @@
             "description": "This package only contains the interface that must be implemented by caching classes. Unless you want to implement your own caching method, you should import a cache package that will use this interface. For instance, common.utils.session-cache, or common.utils.file-cache.",
             "homepage": "https://github.com/thecodingmachine/utils.cache.cache-interface",
             "keywords": [
-                "mouf",
                 "cache",
-                "interface"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/utils.cache.cache-interface/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/utils.cache.cache-interface/issues"
-            }
+                "interface",
+                "mouf"
+            ]
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -985,14 +1006,10 @@
             "description": "This package contains a cache mechanism that relies on temporary files.",
             "homepage": "https://github.com/thecodingmachine/utils.cache.file-cache",
             "keywords": [
-                "mouf",
+                "file",
                 "cache",
-                "file"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/utils.cache.file-cache/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/utils.cache.file-cache/issues"
-            }
+                "mouf"
+            ]
         },
         {
             "name": "mouf/utils.common.conditioninterface",
@@ -1075,14 +1092,10 @@
             "description": "This is a legacy non-OO package and should not be used in recent developments. A simple package that provides functions to get the parameters from the request in a consistent way. The varaiables can be rerieved in a way that is independent of the php.ini configuration file. Especially, it can cancel the effect of the dreadful 'magic_quotes' parameter.",
             "homepage": "https://github.com/thecodingmachine/utils.common.getvars",
             "keywords": [
-                "mouf",
                 "request",
+                "mouf",
                 "protect"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/utils.common.getvars/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/utils.common.getvars/issues"
-            }
+            ]
         },
         {
             "name": "mouf/utils.i18n.fine",
@@ -1145,20 +1158,16 @@
             "keywords": [
                 "i18n",
                 "internationalisation",
-                "fine",
-                "mouf"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/utils.i18n.fine/tree/3.0",
-                "issues": "https://github.com/thecodingmachine/utils.i18n.fine/issues"
-            }
+                "mouf",
+                "fine"
+            ]
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
             "version": "2.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger",
+                "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger.git",
                 "reference": "258f20a3cbcd56abfb30ade29148d2d0ee4090fa"
             },
             "dist": {
@@ -1196,13 +1205,8 @@
             "homepage": "https://github.com/thecodingmachine/utils.log.errorlog_logger",
             "keywords": [
                 "log",
-                "logger",
-                "error_log"
-            ],
-            "support": {
-                "source": "https://github.com/thecodingmachine/utils.log.errorlog_logger/tree/2.0",
-                "issues": "https://github.com/thecodingmachine/utils.log.errorlog_logger/issues"
-            }
+                "logger"
+            ]
         },
         {
             "name": "mouf/utils.log.log_interface",
@@ -1265,7 +1269,7 @@
             "require": {
                 "php": ">5.2.0"
             },
-            "time": "2012-09-04 14:29:37",
+            "time": "2012-09-04 11:29:37",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
