@@ -264,6 +264,16 @@ var MoufUI = (function () {
 		renderClassesList : function(options) {
 			var containerDiv = jQuery("<div/>");
 			
+			
+			/*var containerForm = jQuery("<form class='form-inline form-search'>")
+				.submit(function() {return false;})
+				.appendTo(containerDiv);
+			
+			var inputPrependDiv = jQuery("<div class='input-prepend'>").appendTo(containerForm);
+			jQuery('<button type="submit" class="btn" disabled="true">Search</button>').appendTo(inputPrependDiv);
+			jQuery('<input type="text" class="span2 search-query">').appendTo(inputPrependDiv);
+			*/
+			
 			var filterDiv = jQuery("<div/>").addClass("classesFilter").appendTo(containerDiv);
 			jQuery("<label/>").text("Filter:").appendTo(filterDiv);
 			var inputFilter = jQuery("<input/>").appendTo(filterDiv);
@@ -386,6 +396,76 @@ var MoufUI = (function () {
 				return className;
 			}
 			return className.substr(pos+1);
+		},
+		
+		/**
+		 * Displays a popup to rename an instance.
+		 * The MoufInstance object must be passed in parameter.
+		 */
+		renameInstance: function(instance) {
+			var modal = MoufUI.openPopup("Rename instance");
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
+			
+			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
+			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
+			var label = jQuery('<label class="control-label" for="name">').text("New instance name ").appendTo(divControlGroup);
+			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
+			var inputField = jQuery('<input type="text" placeholder="Anonymous instance">')
+				.val(instance.getName())
+				.appendTo(divControlGroup);
+						
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
+			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
+			jQuery("<button/>").addClass("btn btn-primary").text("Save changes").click(function() {
+				instance.rename(inputField.val(), function() {
+					// When save is performed, let's reload the page with the new URL.
+					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(instance.getName())+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
+				});
+			}).appendTo(modalFooter);
+		},
+		
+		/**
+		 * Displays a confirmation popup to delete an instance.
+		 * The MoufInstance object must be passed in parameter.
+		 */
+		deleteInstance: function(instance) {
+			var modal = MoufUI.openPopup("Delete instance");
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
+			modalBody.text("Are you sure you want to delete this instance?");
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
+			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Cancel").appendTo(modalFooter);
+			jQuery("<button/>").addClass("btn btn-danger").text("Yes, delete instance").click(function() {
+				MoufInstanceManager.deleteInstance(instance, function() {
+					window.location.href = MoufInstanceManager.rootUrl+"mouf/?selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
+				});
+			}).appendTo(modalFooter);
+		},
+		
+		/**
+		 * Opens a popup with the title passed in parameter.
+		 * The modal-body and modal-footer section are set in the popup, but empty.
+		 * The modal jQuery object is returned.
+		 */
+		openPopup: function(title) {
+			var modal = jQuery('<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" />');
+			
+			var modalHeader = jQuery('<div class="modal-header"></div>')
+				.appendTo(modal);
+			
+			var closeButton = jQuery('<button type="button" data-dismiss="modal" class="close" aria-hidden="true">×</button>')
+				.appendTo(modalHeader);
+			var title = jQuery('<h3 id="myModalLabel"></h3>').text(title).appendTo(modalHeader);
+						
+			modal.appendTo(jQuery('body'));
+			jQuery(modal).modal();
+			jQuery(modal).bind("hidden", function() {
+				jQuery(this).remove();
+			})
+			return modal;
 		}
 	}
 })();

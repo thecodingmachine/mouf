@@ -23,7 +23,17 @@ var MoufInstanceManager = (function () {
 	 * Event handler triggered each time a new instance is created
 	 */
 	var _newInstanceEventHandler = new Mouf.Observer();
-
+	
+	/**
+	 * Event handler triggered each time an instance is renamed
+	 */
+	var _renameEventHandler = new Mouf.Observer();
+	
+	/**
+	 * Event handler triggered each time an instance is deleted
+	 */
+	var _deleteEventHandler = new Mouf.Observer();
+	
 	var triggerAllCallbacksWhenFilesLoaded = function() {
 		// La condition semble changer la valeur de la variable,c 'est complétement nimp!!!!
 		if (_nbFilesToLoad == 0) {
@@ -451,7 +461,7 @@ var MoufInstanceManager = (function () {
 		newInstance : function(classDescriptor, instanceName, isAnonymous) {
 			
 			var properties = {};
-			_.each(classDescriptor.getInjectableProperties(), function(property) {
+			/*_.each(classDescriptor.getInjectableProperties(), function(property) {
 				if (property instanceof MoufProperty) {
 					if (property.hasDefault()) {
 						properties[property.getName()] = {
@@ -473,7 +483,7 @@ var MoufInstanceManager = (function () {
 						}
 					}
 				}
-			});
+			});*/
 			
 			var instance = new MoufInstance({
 				"name": instanceName,
@@ -485,6 +495,17 @@ var MoufInstanceManager = (function () {
 			
 			_newInstanceEventHandler.fire(instance, instance);
 			return instance;
+		},
+		
+		/**
+		 * Deletes the instance passed in parameter.
+		 * The second instance is a callback called when the delete has been propagated.
+		 */
+		deleteInstance: function(instance, callback) {
+			delete _instances[instance.getName()];
+			
+			// Let's trigger listeners
+			_deleteEventHandler.fire(instance, instance, callback);
 		},
 		
 		/**
@@ -507,6 +528,40 @@ var MoufInstanceManager = (function () {
 		
 		firePropertyChange : function(moufInstanceProperty) {
 			_propertyChangedEventHandler.fire(moufInstanceProperty, moufInstanceProperty);
+		},
+		
+		/**
+		 * Registers a callback called when the MoufInstance::rename method is called.
+		 * If scope is not passed, the default scope (this) is the moufInstanceProperty object.
+		 * The first argument of the callback is also the moufInstance object and the
+		 * second is the previous name of the instance. The third optional parameter is
+		 * a callback called when the rename has been performed.
+		 */
+		onRenameInstance : function(callback, scope) {
+			_renameEventHandler.subscribe(callback, scope);
+		},
+		
+		fireRename : function(moufInstance, oldName, callback) {
+			_renameEventHandler.fire(moufInstance, moufInstance, oldName, callback);
+		},
+		
+		/**
+		 * Registers a callback called when the MoufInstanceManager::deleteInstance method is called.
+		 * If scope is not passed, the default scope (this) is the moufInstanceProperty object.
+		 * The first argument of the callback is also the moufInstance object.The second
+		 * optional parameter is a callback called when the rename has been performed.
+		 */
+		onDeleteInstance : function(callback, scope) {
+			_deleteEventHandler.subscribe(callback, scope);
+		},
+		
+		/**
+		 * _renameInstance must not be directly called.
+		 * It is used by instance.rename internally.
+		 */
+		_renameInstance : function(oldname, newname) {
+			_instances[newname] = _instances[oldname];
+			delete _instances[oldname];
 		}
 
 	};
@@ -603,6 +658,29 @@ MoufInstance.prototype.getSetter = function(propertyName) {
 }
 
 /**
+ * Renames the instance.
+ * newName is the new name for the instance, or empty if it becomes anonymous.
+ * callback is an optionnal callback called when the save is performed.
+ */
+MoufInstance.prototype.rename = function(newName, callback) {
+	var oldName = this.json['name']; 
+	
+	if (newName == "" || newName == null) {
+		this.json["anonymous"] = true;
+	
+		var timestamp = new Date();
+		newName = "__anonymous_"+timestamp.getTime();
+	}
+	
+	this.json['name'] = newName;
+	
+	MoufInstanceManager._renameInstance(oldName, newName);
+	
+	// Let's trigger listeners
+	MoufInstanceManager.fireRename(this, oldName, callback);
+}
+
+/**
  * Renders the instance to the display, and returns that object as an in-memory jQuery object.
  */
 MoufInstance.prototype.render = function(/*target,*/ rendererName) {
@@ -675,12 +753,41 @@ MoufInstanceProperty.prototype.getValue = function() {
 
 /**
  * Sets the value for this property.
- * Note: do not call this method for arrays. It won't work.
+ * Note: do not call this method for setting arrays. It won't work.
  * Use method to manipulate arrays instead!
  */
 MoufInstanceProperty.prototype.setValue = function(value) {
 	this.json['value'] = value;
+	this.json['isset'] = true;
+	
+	var moufProperty = this.getMoufProperty();
+	if (moufProperty.isArray()) {
+		if (value === null) {
+			// Let's empty all the elements:
+			this.moufInstanceSubProperties = [];
+		} else {
+			throw "You cannot call setValue on an array (exept to set it to 'null')";
+		}
+	}
+	
 	// Let's trigger listeners
+	MoufInstanceManager.firePropertyChange(this);
+}
+
+/**
+ * Returns true if the value is set in the DI container.
+ * False otherwise. If no value is set, the default value is used instead.
+ */
+MoufInstanceProperty.prototype.isSet = function() {
+	return this.json['isset'];
+}
+
+/**
+ * Returns true if the value is set in the DI container.
+ * False otherwise. If no value is set, the default value is used instead.
+ */
+MoufInstanceProperty.prototype.unSet = function() {
+	this.json['isset'] = false;
 	MoufInstanceManager.firePropertyChange(this);
 }
 
@@ -731,6 +838,7 @@ MoufInstanceProperty.prototype.getInstance = function() {
  * @return MoufInstanceSubProperty
  */
 MoufInstanceProperty.prototype.addArrayElement = function(key, value) {
+	this.json['isset'] = true;
 	var moufProperty = this.getMoufProperty();
 	if (moufProperty.isAssociativeArray()) {
 		var instanceSubProperty = new MoufInstanceSubProperty(this, key, value);
@@ -1416,7 +1524,14 @@ MoufParameter.prototype.hasDefault = function() {
  * Returns whether the parameter is typed as an array.
  */
 MoufParameter.prototype.isArray = function() {
-	return this.json['isArray'];
+	return (this.json['type'] == 'array');
+}
+
+/**
+ * Returns true if the type of the property is an associative array.
+ */
+MoufParameter.prototype.isAssociativeArray = function() {
+	return (this.json['type'] == 'array' && this.json['keytype']);
 }
 
 /**

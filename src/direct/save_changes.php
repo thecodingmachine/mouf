@@ -49,7 +49,12 @@ function mouf_convert_json_ordered_array_to_php(array $jsonArr, $associativeArra
 			if (isset($value['isNull'])) {
 				$phpArr[$value['key']] = null;
 			} else {
-				$phpArr[$value['key']] = $value['value'];
+				if (isset($value['isBoolean']) && $value['isBoolean'] == 'true') {
+					$val = ($value['value']=="true")?true:false;
+				} else {
+					$val = $value['value'];
+				}
+				$phpArr[$value['key']] = $val;
 			}
 		}
 	} else {
@@ -57,7 +62,12 @@ function mouf_convert_json_ordered_array_to_php(array $jsonArr, $associativeArra
 			if (isset($value['isNull'])) {
 				$phpArr[] = null;
 			} else {
-				$phpArr[] = $value['value'];
+				if (isset($value['isBoolean']) && $value['isBoolean'] == 'true') {
+					$val = ($value['value']=="true")?true:false;
+				} else {
+					$val = $value['value'];
+				}
+				$phpArr[] = $val;
 			}
 		}
 	}
@@ -89,50 +99,61 @@ foreach ($changesList as $command) {
 			
 			$propertyDescriptor = $property->getPropertyDescriptor();
 			
-			if ($command['isNull'] == "true") {
-				$value = null;
+			if ($command['isset'] == "false") {
+				// Let's unset completely the property
+				$property->unsetValue();
 			} else {
-				$value = isset($command['value'])?$command['value']:null;
-				if ($propertyDescriptor->isArray()) {
-					if ($value === null) {
-						$value = array();
-					}
-					if (!$propertyDescriptor->isAssociativeArray()) {
-						$value = mouf_convert_json_ordered_array_to_php($value, false);
+				// Let's set the value
+				if ($command['isNull'] == "true") {
+					$value = null;
+				} else {
+					$value = isset($command['value'])?$command['value']:null;
+					
+					if ($propertyDescriptor->isArray()) {
+						if ($value === null) {
+							$value = array();
+						}
+						if (!$propertyDescriptor->isAssociativeArray()) {
+							$value = mouf_convert_json_ordered_array_to_php($value, false);
+						} else {
+							$value = mouf_convert_json_ordered_array_to_php($value, true);
+						}
 					} else {
-						$value = mouf_convert_json_ordered_array_to_php($value, true);
+						if (isset($command['isBoolean']) && $command['isBoolean'] == 'true') {
+							$value = ($value=="true")?true:false;
+						}
 					}
 				}
-			}
-			
-			// FIXME: do not use setParameter/setParameterViaSetter directly!
-			// use the source!
-			
-			
-			if ($propertyDescriptor->isPrimitiveType() || $propertyDescriptor->isArrayOfPrimitiveTypes()) {
-				$property->setValue($value);
-			} else {
-				if (!is_array($value)) {
-					if ($value != null) {
-						$property->setValue($moufManager->getInstanceDescriptor($value));
-					} else {
-						$property->setValue(null);
-					}
+				
+				// FIXME: do not use setParameter/setParameterViaSetter directly!
+				// use the source!
+				
+				
+				if ($propertyDescriptor->isPrimitiveType() || $propertyDescriptor->isArrayOfPrimitiveTypes()) {
+					$property->setValue($value);
 				} else {
-					$arrayOfString = $value;
-					if ($arrayOfString !== null){
-						$arrayOfDescriptors = array();
-						foreach ($arrayOfString as $key=>$instanceName) {
-							if ($instanceName != null) {
-								$arrayOfDescriptors[$key] = $moufManager->getInstanceDescriptor($instanceName);
-							} else {
-								$arrayOfDescriptors[$key] = null;
-							}
+					if (!is_array($value)) {
+						if ($value != null) {
+							$property->setValue($moufManager->getInstanceDescriptor($value));
+						} else {
+							$property->setValue(null);
 						}
-					}else{
-						$arrayOfDescriptors = null;
+					} else {
+						$arrayOfString = $value;
+						if ($arrayOfString !== null){
+							$arrayOfDescriptors = array();
+							foreach ($arrayOfString as $key=>$instanceName) {
+								if ($instanceName != null) {
+									$arrayOfDescriptors[$key] = $moufManager->getInstanceDescriptor($instanceName);
+								} else {
+									$arrayOfDescriptors[$key] = null;
+								}
+							}
+						}else{
+							$arrayOfDescriptors = null;
+						}
+						$property->setValue($arrayOfDescriptors);
 					}
-					$property->setValue($arrayOfDescriptors);
 				}
 			}
 			break;
@@ -140,6 +161,14 @@ foreach ($changesList as $command) {
 			$instanceDescriptor = $moufManager->createInstance($command['class']);
 			$instanceDescriptor->setName($command['name']);
 			$instanceDescriptor->setInstanceAnonymousness($command['isAnonymous'] == "true");
+			break;
+		case "renameInstance":
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($command['oldname']);
+			$instanceDescriptor->setName($command['newname']);
+			$instanceDescriptor->setInstanceAnonymousness($command['isAnonymous'] == "true");
+			break;
+		case "deleteInstance":
+			$instanceDescriptor = $moufManager->removeComponent($command['name']);
 			break;
 		default:
 			throw new Exception("Unknown command");

@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
 });
 </script>
 
-<form action="registerConstant" method="post">
+<form action="registerConstant" method="post" class="form-horizontal">
 <input type="hidden" name="selfedit" id="selfedit" value="<?php echo $this->selfedit; ?>" />
 <?php 
 if ($this->type == "bool") {
@@ -49,13 +49,16 @@ if ($this->type == "bool") {
 }
 
 ?>
-<div>
-<label>Name:</label>
-<input name="name" value="<?php echo plainstring_to_htmlprotected($this->name); ?>" />
+<div class="control-group">
+<label class="control-label">Name:</label>
+<div class="controls">
+	<input name="name" type="text" value="<?php echo plainstring_to_htmlprotected($this->name); ?>" placeholder="Constant name" />
+</div>
 </div>
 
-<div>
-<label>Type:</label>
+<div class="control-group">
+<label class="control-label">Type:</label>
+<div class="controls">
 <select id="type" name="type">
 	<option value="string" <?php if ($this->type == "string") echo "selected='selected'"; ?>>String</option>
 	<option value="float" <?php if ($this->type == "float") echo "selected='selected'"; ?>>Float</option>
@@ -63,28 +66,37 @@ if ($this->type == "bool") {
 	<option value="bool" <?php if ($this->type == "bool") echo "selected='selected'"; ?>>Boolean</option>
 </select>
 </div>
-
-<div>
-<label>Default value:</label>
-<input id="booldefaultvalue" <?php echo $hideBool ?> type="checkbox" name="defaultvalue" value="true" <?php echo $this->defaultvalue?"checked='checked'":""; ?> />
-<input id="textdefaultvalue" <?php echo $hideText ?> name="defaultvalue" value="<?php echo plainstring_to_htmlprotected($this->defaultvalue); ?>" />
 </div>
 
-<div>
-<label>Value:</label>
-<input id="boolvalue" <?php echo $hideBool ?> type="checkbox" name="value" value="true" <?php echo $this->value?"checked='checked'":""; ?> />
-<input id="textvalue" <?php echo $hideText ?> name="value" value="<?php echo plainstring_to_htmlprotected($this->value); ?>" />
+<div class="control-group">
+<label class="control-label">Default value:</label>
+<div class="controls">
+	<input id="booldefaultvalue" <?php echo $hideBool ?> type="checkbox" name="defaultvalue" value="true" <?php echo $this->defaultvalue?"checked='checked'":""; ?> />
+	<input id="textdefaultvalue" <?php echo $hideText ?> name="defaultvalue" type="text" value="<?php echo plainstring_to_htmlprotected($this->defaultvalue); ?>" />
+</div>
 </div>
 
-<div>
-<label>Comments:</label>
-<textarea name="comment"><?php echo plainstring_to_htmlprotected($this->comment); ?></textarea>
+<div class="control-group">
+<label class="control-label">Value:</label>
+<div class="controls">
+	<input id="boolvalue" <?php echo $hideBool ?> type="checkbox" name="value" value="true" <?php echo $this->value?"checked='checked'":""; ?> />
+	<input id="textvalue" <?php echo $hideText ?> name="value" type="text" value="<?php echo plainstring_to_htmlprotected($this->value); ?>" />
+</div>
+</div>
+
+<div class="control-group">
+<label class="control-label">Comments:</label>
+<div class="controls">
+	<textarea name="comment"><?php echo plainstring_to_htmlprotected($this->comment); ?></textarea>
+</div>
 </div>
 
 <?php // Type ?>
 
-<div>
-<button type="submit">Save</button>
-<a href=".">Cancel</button>
+<div class="control-group">
+<div class="controls">
+<button type="submit" class="btn btn-primary">Save</button>
+<a href="." class="btn">Cancel</a>
+</div>
 </div>
 </form>

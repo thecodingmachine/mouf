@@ -414,6 +414,32 @@ class MoufManager {
 		unset($this->declaredInstances[$instanceName]);
 
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
+			if (isset($declaredInstance["constructor"])) {
+				foreach ($declaredInstance["constructor"] as $index=>$propWrapper) {
+					if ($propWrapper['parametertype'] == 'object') {
+						$properties = $propWrapper['value'];
+						if (is_array($properties)) {
+							// If this is an array of properties
+							$keys_matching = array_keys($properties, $instanceName);
+							if (!empty($keys_matching)) {
+								foreach ($keys_matching as $key) {
+									$properties[$key] = $newInstanceName;
+								}
+								$this->setParameterViaConstructor($declaredInstanceName, $index, $properties, 'object');
+							}
+						} else {
+							// If this is a simple property
+							if ($properties == $instanceName) {
+								$this->setParameterViaConstructor($declaredInstanceName, $index, $properties, 'object');
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["fieldBinds"])) {
 				foreach ($declaredInstance["fieldBinds"] as $paramName=>$properties) {
 					if (is_array($properties)) {
@@ -584,7 +610,11 @@ class MoufManager {
 				if (is_array($value)) {
 					$tmpArray = array();
 					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+						if ($valueInstanceName !== null) {
+							$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+						} else {
+							$tmpArray[$keyInstanceName] = null;
+						}
 					}
 					$object->$key = $tmpArray;
 				} else {
@@ -598,7 +628,11 @@ class MoufManager {
 				if (is_array($value)) {
 					$tmpArray = array();
 					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+						if ($valueInstanceName !== null) {
+							$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+						} else {
+							$tmpArray[$keyInstanceName] = null;
+						}
 					}
 					$object->$key($tmpArray);
 				} else {
@@ -663,10 +697,22 @@ class MoufManager {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
 		}
 
-		$this->declaredInstances[$instanceName]["constructor"][$index]["value"] = $paramValue;
-		$this->declaredInstances[$instanceName]["constructor"][$index]["parametertype"] = $parameterType;
-		$this->declaredInstances[$instanceName]["constructor"][$index]["type"] = $type;
-		$this->declaredInstances[$instanceName]["constructor"][$index]["metadata"] = $metadata;
+		$this->declaredInstances[$instanceName]['constructor'][$index]["value"] = $paramValue;
+		$this->declaredInstances[$instanceName]['constructor'][$index]["parametertype"] = $parameterType;
+		$this->declaredInstances[$instanceName]['constructor'][$index]["type"] = $type;
+		$this->declaredInstances[$instanceName]['constructor'][$index]["metadata"] = $metadata;
+		
+		// Now, let's make sure that all indexes BEFORE ours are set, and let's order everything by key.
+		for ($i=0; $i<$index; $i++) {
+			if (!isset($this->declaredInstances[$instanceName]['constructor'][$i])) {
+				// If the parameter before does not exist, let's set it to null.
+				$this->declaredInstances[$instanceName]['constructor'][$index]["value"] = null;
+				$this->declaredInstances[$instanceName]['constructor'][$index]["parametertype"] = "primitive";
+				$this->declaredInstances[$instanceName]['constructor'][$index]["type"] = "string";
+				$this->declaredInstances[$instanceName]['constructor'][$index]["metadata"] = array();
+			}
+		}
+		ksort($this->declaredInstances[$instanceName]['constructor']);
 	}
 
 
@@ -695,6 +741,29 @@ class MoufManager {
 			return null;
 		}
 	}
+	
+	/**
+	 * Returns true if the value of the given parameter is set.
+	 * False otherwise.
+	 * 
+	 * @param string $instanceName
+	 * @param string $paramName
+	 * @return boolean
+	 */
+	public function isParameterSet($instanceName, $paramName) {
+		return isset($this->declaredInstances[$instanceName]['fieldProperties'][$paramName]) || isset($this->declaredInstances[$instanceName]['fieldBinds'][$paramName]);
+	}
+	
+	/**
+	 * Completely unset this parameter from the DI container.
+	 *
+	 * @param string $instanceName
+	 * @param string $paramName
+	 */
+	public function unsetParameter($instanceName, $paramName) {
+		unset($this->declaredInstances[$instanceName]['fieldProperties'][$paramName]);
+		unset($this->declaredInstances[$instanceName]['fieldBinds'][$paramName]);
+	}
 
 	/**
 	 * Returns the value for the given parameter that has been set using a setter.
@@ -710,6 +779,29 @@ class MoufManager {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns true if the value of the given setter parameter is set.
+	 * False otherwise.
+	 *
+	 * @param string $instanceName
+	 * @param string $setterName
+	 * @return boolean
+	 */
+	public function isParameterSetForSetter($instanceName, $setterName) {
+		return isset($this->declaredInstances[$instanceName]['setterProperties'][$setterName]) || isset($this->declaredInstances[$instanceName]['setterBinds'][$setterName]);
+	}
+	
+	/**
+	 * Completely unset this setter parameter from the DI container.
+	 *
+	 * @param string $instanceName
+	 * @param string $setterName
+	 */
+	public function unsetParameterForSetter($instanceName, $setterName) {
+		unset($this->declaredInstances[$instanceName]['setterProperties'][$setterName]);
+		unset($this->declaredInstances[$instanceName]['setterBinds'][$setterName]);
 	}
 
 	/**
@@ -741,6 +833,28 @@ class MoufManager {
 		}
 	}
 
+	/**
+	 * Returns true if the value of the given constructor parameter is set.
+	 * False otherwise.
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 * @return boolean
+	 */
+	public function isParameterSetForConstructor($instanceName, $index) {
+		return isset($this->declaredInstances[$instanceName]['constructor'][$index]);
+	}
+	
+	/**
+	 * Completely unset this constructor parameter from the DI container.
+	 *
+	 * @param string $instanceName
+	 * @param int $index
+	 */
+	public function unsetParameterForConstructor($instanceName, $index) {
+		unset($this->declaredInstances[$instanceName]['constructor'][$index]);
+	}
+	
 
 	/**
 	 * Returns the type for the given parameter (can be one of "string", "config", "session" or "request")
@@ -1410,6 +1524,24 @@ class MoufManager {
 						}
 					} elseif ($declaredBindProperty == $instanceName) {
 						$instancesList[$scannedInstance] = $scannedInstance;
+					}
+				}
+			}
+		}
+		
+		foreach ($this->declaredInstances as $scannedInstance=>$instanceDesc) {
+			if (isset($instanceDesc['constructor'])) {
+				foreach ($instanceDesc['constructor'] as $declaredConstructorProperty) {
+					if ($declaredConstructorProperty['parametertype']=='object') {
+						$value = $declaredConstructorProperty['value'];
+						if (is_array($value)) {
+							if (array_search($instanceName, $value) !== false) {
+								$instancesList[$scannedInstance] = $scannedInstance;
+								break;
+							}
+						} elseif ($value == $instanceName) {
+							$instancesList[$scannedInstance] = $scannedInstance;
+						}
 					}
 				}
 			}

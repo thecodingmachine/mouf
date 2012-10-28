@@ -21,7 +21,7 @@
 <div class="control-group">
 	<label class="control-label">Class:</label>
 	<div class="controls">
-		<a id="selectaclasslink" href="#">Click here to select a class</a>
+		<a id="selectaclasslink" class="btn btn-primary" href="#">Click here to select a class</a>
 		<div id="selectedclasscontainer"></div>
 	</div>
 </div>

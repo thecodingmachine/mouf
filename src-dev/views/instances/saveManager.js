@@ -50,6 +50,9 @@ var MoufSaveManager = (function () {
 			} else if (value === null) {
 				obj.value = "";
 				obj.isNull = true;
+			} else if (value === true || value === false) {
+				obj.value = value?"true":"false";
+				obj.isBoolean = true;
 			} else {
 				obj.value = value;
 			}
@@ -65,11 +68,17 @@ var MoufSaveManager = (function () {
 		
 		var value = moufInstanceProperty.getValue();
 		
+		var isBoolean = false;
 		var finalValue = null;
 		if (moufInstanceProperty.getMoufProperty().isArray()) {
 			finalValue = _serializeSubProperties(moufInstanceProperty);
 		} else {
-			finalValue = value;
+			if (value === true || value === false) {
+				finalValue = value?"true":"false";
+				isBoolean = true;
+			} else {
+				finalValue = value;
+			}
 		}
 		
 		var command = {
@@ -77,6 +86,8 @@ var MoufSaveManager = (function () {
 			"instance": moufInstanceProperty.getInstance().getName(),
 			"property": moufInstanceProperty.getMoufProperty().getName(),
 			"value": finalValue,
+			"isBoolean": isBoolean,
+			"isset": moufInstanceProperty.isSet(),
 			"source": moufInstanceProperty.getSource(),
 			"isNull": (finalValue === null)
 		};
@@ -97,6 +108,42 @@ var MoufSaveManager = (function () {
 			"isAnonymous": instance.isAnonymous()
 			// Note: we don't need to pass the default values, they will be applied automatically.
 		};
+		
+		_changesList.push(command);
+		_save();
+	}
+	
+	/**
+	 * Callback called when an instance is renamed
+	 */
+	var _onRenameInstance = function(instance, oldName, callback) {
+		
+		var command = {
+			"command": "renameInstance",
+			"newname": instance.getName(),
+			"oldname": oldName,
+			"isAnonymous": instance.isAnonymous()
+		};
+		if (callback) {
+			command.callback = callback;
+		}
+		
+		_changesList.push(command);
+		_save();
+	}
+	
+	/**
+	 * Callback called when an instance is deleted
+	 */
+	var _onDeleteInstance = function(instance, callback) {
+		
+		var command = {
+			"command": "deleteInstance",
+			"name": instance.getName()
+		};
+		if (callback) {
+			command.callback = callback;
+		}
 		
 		_changesList.push(command);
 		_save();
@@ -126,6 +173,8 @@ var MoufSaveManager = (function () {
 	var _sendSaveRequest = function() {
 		_saveInProgress = true;
 		
+		var changes = _changesList;
+		
 		jQuery.ajax(MoufInstanceManager.rootUrl+"src/direct/save_changes.php", {
 			data: {
 				changesList: _changesList,
@@ -144,6 +193,13 @@ var MoufSaveManager = (function () {
 			if (typeof(result) == "string") {
 				addMessage("<pre>"+result+"</pre>", "error");
 				return;
+			} else {
+				// Let's call any callback to say we are complete.
+				_.each(changes, function(command) {
+					if (command.callback) {
+						command.callback();
+					}
+				})
 			}
 			
 			// If more changes have piled up, let's save again. 
@@ -163,6 +219,10 @@ var MoufSaveManager = (function () {
 			MoufInstanceManager.onPropertyChange(_onPropertyChange);
 			// Let's bind the _onNewInstance to the newInstance event.
 			MoufInstanceManager.onNewInstance(_onNewInstance);
+			// Let's bind the _onRenameInstance to the renameInstance event.
+			MoufInstanceManager.onRenameInstance(_onRenameInstance);
+			// Let's bind the _onDeleteInstance to the deleteInstance event.
+			MoufInstanceManager.onDeleteInstance(_onDeleteInstance);
 		},
 		onSaveStatusChange: function(callback, scope) {
 			_saveStatusChangedEventHandler.subscribe(callback, scope);

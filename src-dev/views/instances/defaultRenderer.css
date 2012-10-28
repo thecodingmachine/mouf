@@ -214,6 +214,11 @@ div.fieldContainer > input {
 	display: inline-block;
 }
 
+div.fieldWrapper > div {
+	display: inline-block;
+	vertical-align: top;
+}
+
 div.stringRenderer > div {
 	display: inline-block;
 }
@@ -264,6 +269,11 @@ div.fieldInstanceRenderer > div.instanceReceiver.stateHover {
 }
 
 .classesList div.class {
-	float: left;
+	display: inline-block;
 	margin-right: 2px;
+	vertical-align: top;
+	white-space: nowrap;
+	overflow: hidden;
+	min-width: 200px;
+	width: auto;
 }

@@ -122,7 +122,7 @@ class MoufInstancePropertyDescriptor {
 					}
 					/* @var $item MoufInstanceDescriptor */
 					if ($item != null) {
-						$names[$key] = $item->getName();
+						$names[$key] = $item->getIdentifierName();
 					} else {
 						$names[$key] = null;
 					}
@@ -247,6 +247,42 @@ class MoufInstancePropertyDescriptor {
 	}
 	
 	/**
+	 * Returns true if the value is set in the IOC container.
+	 * If the value is not set, the default PHP value for the property is used (if any).
+	 * 
+	 * @return boolean
+	 */
+	public function isValueSet() {
+		if ($this->propertyDescriptor->isPublicFieldProperty()) {
+			return $this->moufManager->isParameterSet($this->instanceDescriptor->getIdentifierName(), $this->name);
+		} elseif ($this->propertyDescriptor->isSetterProperty()) {
+			return $this->moufManager->isParameterSetForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+		} elseif ($this->propertyDescriptor->isConstructor()) {
+			return $this->moufManager->isParameterSetForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+		} else {
+			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
+		}
+	}
+	
+	/**
+	 * Completely unset this value from the DI container.
+	 * If the value is not set, the default PHP value for the property is used (if any).
+	 *
+	 * @return boolean
+	 */
+	public function unsetValue() {
+		if ($this->propertyDescriptor->isPublicFieldProperty()) {
+			return $this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+		} elseif ($this->propertyDescriptor->isSetterProperty()) {
+			return $this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+		} elseif ($this->propertyDescriptor->isConstructor()) {
+			return $this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+		} else {
+			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
+		}
+	}
+	
+	/**
 	 * Returns metadata for this property
 	 * 
 	 * @param array $array
@@ -320,5 +356,55 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function getPropertyDescriptor() {
 		return $this->propertyDescriptor;
+	}
+	
+	/**
+	 * Serializes the mouf instance property into a PHP array
+	 * @return array
+	 */
+	public function toJson() {
+		$result = array();
+		$value = $this->getValue();
+		if ($value instanceof MoufInstanceDescriptor) {
+			$serializableValue = $value->getIdentifierName();
+		} elseif (is_array($value)) {
+			// We cannot match a PHP array to a JSON array!
+			// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
+			// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
+			$serializableValue = self::arrayToJson($value);
+		} else {
+			$serializableValue = $value;
+		}
+		$result['value'] = $serializableValue;
+		$result['isset'] = $this->isValueSet();
+		$result['origin'] = $this->getOrigin();
+		$result['metadata'] = $this->getMetaData();
+		return $result;
+	}
+	
+	/**
+	 * We cannot match a PHP array to a JSON array!
+	 * The keys in a PHP array are ordered. The key in a JSON array are not ordered!
+	 * Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
+	 *
+	 * @param array $phpArray
+	 */
+	private static function arrayToJson(array $phpArray) {
+		$serializableValue = array();
+		foreach ($phpArray as $key=>$val) {
+			if ($val instanceof MoufInstanceDescriptor) {
+				$value = $val->getIdentifierName();
+			} else if (is_array($val)) {
+				$value = self::arrayToJson($val);
+			} else {
+				$value = $val;
+			}
+				
+			$serializableValue[] = array(
+					"key" => $key,
+					"value" => $value
+			);
+		}
+		return $serializableValue;
 	}
 }

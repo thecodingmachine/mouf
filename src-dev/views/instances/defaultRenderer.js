@@ -82,7 +82,8 @@ var MoufDefaultRenderer = (function () {
 			}
 		})
 		
-		var menu = MoufUI.createMenuIcon([
+		
+		/*var menu = MoufUI.createMenuIcon([
 			{
 				label: "Set to <em>null</em>",
 				click: function() {
@@ -91,11 +92,31 @@ var MoufDefaultRenderer = (function () {
 					moufInstanceProperty.setValue(null);
 				}
 			}
-		]);
+		]);*/
 		
 		elem.appendTo(parentElem);
-		menu.appendTo(parentElem);
+		//menu.appendTo(parentElem);
 		
+		return parentElem;
+	}
+	
+	/**
+	 * Renders a checkbox field, for the instance "instance", and the property moufProperty.
+	 * The "in-memory" jQuery object for the field is returned.
+	 */
+	var renderBoolField = function(moufInstanceProperty) {
+		var name = moufInstanceProperty.getName();
+		var value = moufInstanceProperty.getValue();
+		
+		var parentElem = jQuery('<div/>').addClass("boolRenderer");
+		
+		var elem = jQuery("<input/>").attr("type", "checkbox").attr('name', name)
+			.attr("checked", value)
+			.change(function() {
+				moufInstanceProperty.setValue(jQuery(this).is(':checked'));
+			});
+		
+		elem.appendTo(parentElem);
 		return parentElem;
 	}
 	
@@ -115,14 +136,15 @@ var MoufDefaultRenderer = (function () {
 		if (!moufProperty.isAssociativeArray())  {
 			if (values instanceof Array) {
 				moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
-					var fieldElem = jQuery("<div/>").addClass('fieldContainer clearfix')
+					var fieldElem = jQuery("<div/>").addClass('fieldContainer')
 						.data("key", instanceSubProperty.getKey())
 						.appendTo(sortable);
 						
 					var sortableElem = jQuery("<div/>").addClass('sortable');
 					jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
-					fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
-					var rowElem = fieldRenderer(instanceSubProperty);
+					/*fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
+					var rowElem = fieldRenderer(instanceSubProperty);*/
+					var rowElem = renderField(instanceSubProperty);
 					rowElem.appendTo(fieldElem);
 				});
 			}
@@ -134,18 +156,19 @@ var MoufDefaultRenderer = (function () {
 			var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
 				.appendTo(elem)
 				.click(function() {
-					var renderer = getFieldRenderer(subtype, null, null);
 					// key=null (since we are not an associative array), and we init the value to null too.
 					var moufNewSubInstanceProperty = moufInstanceProperty.addArrayElement(null, null);
 					
-					var fieldElem = jQuery("<div/>").addClass('fieldContainer clearfix')
+					var fieldElem = jQuery("<div/>").addClass('fieldContainer')
 						.data("key", moufNewSubInstanceProperty.getKey())
 						.appendTo(sortable);
 					
 					var sortableElem = jQuery("<div/>").addClass('sortable');
 					jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
 					
-					var rowElem = renderer(moufNewSubInstanceProperty);
+					/*var renderer = getFieldRenderer(subtype, null, null);
+					var rowElem = renderer(moufNewSubInstanceProperty);*/
+					var rowElem = renderField(moufNewSubInstanceProperty);
 					rowElem.appendTo(fieldElem);
 				});
 			
@@ -169,8 +192,9 @@ var MoufDefaultRenderer = (function () {
 						
 					var sortableElem = jQuery("<div/>").addClass('sortable');
 					jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
-					fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
-					var rowElem = fieldRenderer(instanceSubProperty);
+					//fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
+					//var rowElem = fieldRenderer(instanceSubProperty);
+					var rowElem = renderField(instanceSubProperty);
 					
 					jQuery("<input/>")
 						.addClass("key")
@@ -188,10 +212,9 @@ var MoufDefaultRenderer = (function () {
 			var subtype = moufProperty.getSubType();
 			// If this is a known primitive type, let's display a "add a value" button
 			
-			var addDiv = jQuery("<div/>").addClass('addavalue')
+			var addDiv = jQuery("<div/>").addClass('btn btn-mini btn-success')
 				.appendTo(elem)
 				.click(function() {
-					var renderer = getFieldRenderer(subtype, null, null);
 					// key="" (since we are an associative array), and we init the value to null too.
 					var moufNewSubInstanceProperty = moufInstanceProperty.addArrayElement("", null);
 					
@@ -208,14 +231,16 @@ var MoufDefaultRenderer = (function () {
 						});
 						jQuery("<span>=&gt;</span>").appendTo(fieldElem);
 
-					var rowElem = renderer(moufNewSubInstanceProperty);
+					/*var renderer = getFieldRenderer(subtype, null, null);
+					var rowElem = renderer(moufNewSubInstanceProperty);*/
+					var rowElem = renderField(moufNewSubInstanceProperty); 	
 					rowElem.appendTo(fieldElem);
 				});
 			
 			if (fieldsRenderer[subtype]) {
-				addDiv.text("Add a value");
+				addDiv.html("<i class='icon-plus icon-white'></i> Add a value");
 			} else {
-				addDiv.text("Add an instance");
+				addDiv.html("<i class='icon-plus icon-white'></i> Add an instance");
 			}
 		}
 		var _startPosition = null;
@@ -245,6 +270,7 @@ var MoufDefaultRenderer = (function () {
 		
 		return elem;
 	}
+	
 	
 	/**
 	 * Renders a field representing a link to an instance.
@@ -307,15 +333,17 @@ var MoufDefaultRenderer = (function () {
 		} else {
 			MoufInstanceManager.getInstance(value).then(function(instance) {
 				renderInstanceInField(instance);
+			}).onError(function(e) {
+				addMessage("<pre>"+e+"</pre>", "error");
 			})
 		}
 		
-		var menu = MoufUI.createMenuIcon([
+		/*var menu = MoufUI.createMenuIcon([
   			{
   				label: "Set to <em>null</em>",
   				click: setToNull
   			}
-  		]);
+  		]);*/
 		
 		elem.droppable({
 			accept: "."+MoufUI.getCssNameFromType(type),
@@ -348,7 +376,7 @@ var MoufDefaultRenderer = (function () {
 					
 					//moufInstanceProperty.setValue(droppedInstance.getName());
 					elem.html("");
-					// TODO: create a new anonymous instance!
+
 					var timestamp = new Date();
 					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
 					moufInstanceProperty.setValue(newInstance.getName());
@@ -360,7 +388,7 @@ var MoufDefaultRenderer = (function () {
 		
   		
   		elem.appendTo(parentElem);
-  		menu.appendTo(parentElem);
+  		//menu.appendTo(parentElem);
   		
   		return parentElem;
 	}
@@ -371,7 +399,12 @@ var MoufDefaultRenderer = (function () {
 	var fieldsRenderer = {
 		"string" : renderStringField,
 		"int"    : renderStringField,
-		"array"  : renderArrayField
+		"integer"    : renderStringField,
+		"number"    : renderStringField,
+		"float"    : renderStringField,
+		"array"  : renderArrayField,
+		"bool"  : renderBoolField,
+		"boolean"  : renderBoolField
 		// TODO: continue here
 	}
 	
@@ -490,6 +523,93 @@ var MoufDefaultRenderer = (function () {
 
 	}
 	
+	/**
+	 * Renders a field (without the label, just the moufInstanceProperty).
+	 * It will display the moufInstanceProperty using the right field renderer and will render
+	 * the dropdown menu to the right to apply actions (set to null, unset value, etc...)
+	 */
+	var renderField = function(moufInstanceProperty) {
+		var fieldWrapper = jQuery("<div>").addClass('fieldWrapper');
+		
+		var fieldInnerWrapper = jQuery("<div>").addClass('fieldInnerWrapper');
+		fieldInnerWrapper.appendTo(fieldWrapper);
+		
+		var getNullField = function() {
+			var field = jQuery("<button class='btn btn-mini btn-info' rel='tooltip' title='Click to set value'>Null</button>").click(function() {
+				fieldInnerWrapper.empty();
+				var field = renderInnerField(moufInstanceProperty);
+				field.appendTo(fieldInnerWrapper);
+			});
+			return field;
+		}
+		var getNotSetField = function() {
+			var field = jQuery("<button class='btn btn-mini btn-warning' rel='tooltip' title='Click to set value'><em>Default value</em></button>").click(function() {
+				fieldInnerWrapper.empty();
+				var field = renderInnerField(moufInstanceProperty);
+				field.appendTo(fieldInnerWrapper);
+			});
+			return field;
+		}
+		
+		var isSubProperty = moufInstanceProperty instanceof MoufInstanceSubProperty;
+		
+		var field;
+		if (!isSubProperty && !moufInstanceProperty.isSet()) {
+			field = getNotSetField();
+		} else if (moufInstanceProperty.getValue() === null) {
+			field = getNullField();
+		} else {
+			field = renderInnerField(moufInstanceProperty);
+		}
+		field.appendTo(fieldInnerWrapper);
+		
+		var menuDescriptor = [
+                  			{
+                				label: "Set to <em>null</em>",
+                				click: function() {
+                					moufInstanceProperty.setValue(null);
+                					fieldInnerWrapper.empty();
+                					getNullField().appendTo(fieldInnerWrapper);
+                				}
+                			}
+                		];
+		if (!isSubProperty) {
+			menuDescriptor.push({
+				label: "Unset",
+				click: function() {
+					moufInstanceProperty.unSet();
+					fieldInnerWrapper.empty();
+					getNotSetField().appendTo(fieldInnerWrapper);
+				}
+			});
+		}
+		menuDescriptor.push({
+			label: "Use config constant",
+			click: function() {
+				alert("todo");
+			}
+		});
+		
+		var menu = MoufUI.createMenuIcon(menuDescriptor);
+		menu.appendTo(fieldWrapper);
+		
+		return fieldWrapper;
+	}
+	
+	/**
+	 * Renders a field (without the label, just the moufInstanceProperty).
+	 * Does not render the dropdown menu (this is performed by renderField)
+	 * 
+	 * The focus parameter decides if the clicked element should have focus or not.
+	 */
+	var renderInnerField = function(moufInstanceProperty) {
+		var moufProperty = moufInstanceProperty.getMoufProperty();
+		var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
+		
+		var field = fieldRenderer(moufInstanceProperty);
+		return field;
+	}
+	
 	return {
 		/**
 		 * Returns the list of renderers supported by this renderer.
@@ -522,20 +642,23 @@ var MoufDefaultRenderer = (function () {
 						for (var i=0; i<moufProperties.length; i++) {
 							var moufProperty = moufProperties[i];
 							var annotations = moufProperty.getAnnotations();
-							var isImportant = annotations['Important'];
-							if (isImportant) {
-								var fieldGlobalElem = jQuery("<div/>");
-								jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
-								var fieldElem = jQuery("<div/>").addClass('fieldContainer')
-									.data("moufProperty", moufProperty)
-									.appendTo(fieldGlobalElem);
-
-								var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
+							if (annotations) {
+								var isImportant = annotations['Important'];
+								if (isImportant) {
+									var fieldGlobalElem = jQuery("<div/>");
+									jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
+									var fieldElem = jQuery("<div/>").addClass('fieldContainer')
+										.data("moufProperty", moufProperty)
+										.appendTo(fieldGlobalElem);
 	
-								var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-								fieldRenderer(moufInstanceProperty).appendTo(fieldElem);
-								
-								fieldGlobalElem.appendTo(propertiesList);
+									/*var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
+									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+									fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
+									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+									renderField(moufInstanceProperty).appendTo(fieldElem);
+									
+									fieldGlobalElem.appendTo(propertiesList);
+								}
 							}
 
 						}
@@ -552,9 +675,26 @@ var MoufDefaultRenderer = (function () {
 						
 						var wrapper = getInstanceWrapper(instance).addClass("biginstance");
 						
-						var title = jQuery("<h1/>").text('Instance "'+instance.getName()+'"');
+						var title = jQuery("<h1/>")
+						if (!instance.isAnonymous()) {
+							title.text('Instance "'+instance.getName()+'"');
+						} else {
+							title.text('Anonymous instance');
+						}
 						title.appendTo(wrapper);
 						jQuery("<small/>").html(' from class "'+MoufUI.getHtmlClassName(instance.getClassName())+'"').appendTo(title);
+						
+						var btnToolbar = jQuery('<div class="btn-toolbar"/>').appendTo(wrapper);
+						
+						jQuery("<button class='btn btn-info'><i class='icon-pencil icon-white'></i> Rename</button>").appendTo(btnToolbar)
+							.click(function() {
+								MoufUI.renameInstance(instance);
+							});
+						jQuery("<button class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</button>").appendTo(btnToolbar)
+							.click(function() {
+								MoufUI.deleteInstance(instance);
+							});
+						
 						
 						var containerForm = jQuery("<form/>")
 							.submit(function() {return false;})
@@ -572,10 +712,11 @@ var MoufDefaultRenderer = (function () {
 								.data("moufProperty", moufProperty).appendTo(fieldGlobalElem);
 
 							
-							var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
-
+							/*var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
 							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-							fieldRenderer(moufInstanceProperty).appendTo(fieldElem);
+							fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
+							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+							renderField(moufInstanceProperty).appendTo(fieldElem);
 							
 							fieldGlobalElem.appendTo(propertiesList);
 						}

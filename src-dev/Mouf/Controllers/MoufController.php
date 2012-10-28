@@ -149,13 +149,6 @@ class MoufController extends Controller implements MoufSearchable {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		/*$enhancedComponentsList = MoufReflectionProxy::getEnhancedComponentsList($selfedit=="true");
-		// Let's create a list by declaration file:
-		$componentsByFile = array();
-		foreach ($enhancedComponentsList as $name=>$componentDetails) {
-			$componentsByFile[$componentDetails["filename"]][] = $name;
-		}*/
-		
 		foreach ($classMap as $className=>$file) {
 			$componentsByFile[$file][] = $className;
 		}

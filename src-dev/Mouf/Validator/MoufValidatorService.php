@@ -63,18 +63,18 @@ class MoufValidatorService implements HtmlElementInterface {
 						var json = jQuery.parseJSON(text);
 						
 						if (json.code == "ok") {
-							jQuery('#validator'+validatorNb).html("<div class='good'>"+json.html+"</div>");
+							jQuery('#validator'+validatorNb).html("<div class='alert alert-success'>"+json.html+"</div>");
 						} else if (json.code == "warn") {
-							jQuery('#validator'+validatorNb).html("<div class='warning'>"+json.html+"</div>");
+							jQuery('#validator'+validatorNb).html("<div class='alert alert-block'>"+json.html+"</div>");
 						} else {
-							jQuery('#validator'+validatorNb).html("<div class='error'>"+json.html+"</div>");
+							jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>"+json.html+"</div>");
 						}
 					} catch (e) {
-						jQuery('#validator'+validatorNb).html("<div class='error'>Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
+						jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					jQuery('#validator'+validatorNb).html("<div class='error'>Unable to run '"+name+"': "+textStatus+"</div>");
+					jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Unable to run '"+name+"': "+textStatus+"</div>");
 				}
 								
 			});

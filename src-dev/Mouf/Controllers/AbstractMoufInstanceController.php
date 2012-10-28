@@ -137,16 +137,23 @@ abstract class AbstractMoufInstanceController extends Controller {
 		$componentsList = $this->moufManager->getOwnerComponents($this->instanceName);
 		
 		$this->canBeWeak = false;
+		\MoufAdmin::getBlock_left()->addText("<div id='referredInstances'><b>Referred by:</b></div>");
 		if (!empty($componentsList)) {
 			$this->canBeWeak = true;
-			$children = array();
+			//$children = array();
 			foreach ($componentsList as $component) {
-				$child = new MenuItem($component, ROOT_URL.'ajaxinstance/?name='.urlencode($component));
+				/*$child = new MenuItem($component, ROOT_URL.'ajaxinstance/?name='.urlencode($component));
 				$child->setPropagatedUrlParameters(array("selfedit"));
-				$children[] = $child;
+				$children[] = $child;*/
+
+				\MoufAdmin::getBlock_left()->addText("<script>MoufInstanceManager.getInstance('".addslashes($component)."').then(function(instance) { 
+						instance.render().appendTo(jQuery('#referredInstances')).click(function() { window.location.href=MoufInstanceManager.rootUrl+'ajaxinstance/?name='+encodeURIComponent(instance.getName())+'&selfedit='+MoufInstanceManager.selfEdit; }); 
+				});</script>");
+				
 			}
-			$referredByMenuItem = new MenuItem('Referred by instances:', null, $children);
-			\MoufAdmin::getInstanceMenu()->addChild($referredByMenuItem);
+			//$referredByMenuItem = new MenuItem('Referred by instances:', null, $children);
+			//\MoufAdmin::getInstanceMenu()->addChild($referredByMenuItem);
+			
 		}
 	}
 	

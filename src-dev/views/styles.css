@@ -1,6 +1,6 @@
-body {
+/*body {
 	background-color: black;
-}
+}*/
 
 /*ul, li {
 	list-style: none outside none;
@@ -422,4 +422,15 @@ a {
 
 a:hover {
 	color: #FF0C27;
+}
+
+/* Hack to make sure bootstrap and jquery ui play nice together */
+
+.ui-widget .input-prepend input, .ui-widget .input-prepend select, .ui-widget .input-prepend textarea, .ui-widget .input-prepend button {
+    font-family: Arial,Tahoma,Verdana,Arial,sans-serif;
+    font-size: small;
+}
+
+.alert .xdebug-error {
+    text-shadow: none;
 }

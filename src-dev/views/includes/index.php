@@ -18,11 +18,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".showmore").click(function() {
-		$(this).parent().parent().find(".hidden").toggle();
+		var block = $(this).parent().parent().find(".hiddeable");
+		block.toggle();
 		if ($(this).text() == "Hide") {
 			$(this).text("Show more");
+			block.addClass("hidden");
 		} else {
 			$(this).text("Hide");
+			block.removeClass("hidden");
 		}
 		return false;
 	});
@@ -42,9 +45,9 @@ if (empty($this->errors)) {
 } else {
 	foreach ($this->errors as $className=>$errorMsg):
 	?>
-		<div class="error">
+		<div class="alert alert-error">
 			<div>Error while including <strong><?php echo $className; ?></strong>. <a href="#" class="showmore">Show more</a></div>
-			<div class="hidden"><?php echo $errorMsg; ?></div>
+			<div class="hiddeable hidden"><?php echo $errorMsg; ?></div>
 		</div>
 	<?php 
 	endforeach;
@@ -58,9 +61,9 @@ if (empty($this->warnings)) {
 } else {
 	foreach ($this->warnings as $className=>$errorMsgs):
 	?>
-		<div class="warning">
+		<div class="alert alert-block">
 			<div>You might encounter problems while using <strong><?php echo $className; ?></strong>. <a href="#" class="showmore">Show more</a></div>
-			<div class="hidden"><ul><?php 
+			<div class="hiddeable hidden"><ul><?php 
 			foreach ($errorMsgs as $errorMsg) {
 				echo "<li>".$errorMsg."</li>";
 			} ?></ul></div>
@@ -77,7 +80,7 @@ if (empty($this->warnings)) {
 <?php 
 foreach ($this->classMap as $className=>$file):
 ?>
-	<div class="success">
+	<div class="alert alert-success">
 	<?php echo $className; ?>
 	</div>
 <?php 
