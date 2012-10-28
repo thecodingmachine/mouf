@@ -1595,6 +1595,12 @@ MoufParameter.prototype.getAnnotations = function() {
 	return this.parentMethod.getAnnotations(); 
 }
 
+/**
+ * Returns the param comments
+ */
+MoufParameter.prototype.getComment = function() {
+	return this.json["comment"];
+}
 
 
 

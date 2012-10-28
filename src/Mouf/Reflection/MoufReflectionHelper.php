@@ -200,11 +200,14 @@ class MoufReflectionHelper {
 			$result['default'] = $refParameter->getDefaultValue();
 		}
 		$result['isArray'] = $refParameter->isArray();
-
+		
 		try {
 			// Let's export only the type if we are in a constructor... in order to save time.
 			if ($refParameter->getDeclaringFunction()->isConstructor()) {
 				$moufPropertyDescriptor = new MoufPropertyDescriptor($refParameter);
+				
+				$result['comment'] = $moufPropertyDescriptor->getDocCommentWithoutAnnotations();
+				
 				$result['type'] = $moufPropertyDescriptor->getType();
 				if ($moufPropertyDescriptor->isAssociativeArray()) {
 					$result['keytype'] = $moufPropertyDescriptor->getKeyType();

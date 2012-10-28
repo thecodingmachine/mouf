@@ -468,6 +468,30 @@ class ComposerService {
 	
 		return true;
 	}
+	
+	/**
+	 * Returns the list of files to be included in the MoufUI.
+	 * @return array<string>
+	 */
+	public function getAdminFiles() {
+		$composer = $this->getComposer();
+		
+		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$packagesList = $localRepos->getPackages();
+		
+		$files = array();
+		
+		foreach ($packagesList as $package) {
+			/* @var $package Package */
+			$extra = $package->getExtra();
+			if (isset($extra["mouf"]["require-admin"])) {
+				foreach ($extra["mouf"]["require-admin"] as $adminFile) {
+					$files[] = $package->getName().DIRECTORY_SEPARATOR.$adminFile;
+				}
+			}
+		}
+		return $files;
+	}
 }
 
 ?>

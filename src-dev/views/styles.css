@@ -434,3 +434,12 @@ a:hover {
 .alert .xdebug-error {
     text-shadow: none;
 }
+
+div.sidebar div.smallinstance {
+	width: auto;
+}
+
+div.fieldContainer > span.help-block {
+	display: block;
+	margin-top: 0px;
+}

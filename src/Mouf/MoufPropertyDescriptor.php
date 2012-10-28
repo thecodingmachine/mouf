@@ -9,6 +9,8 @@
  */
 namespace Mouf;
 
+use Mouf\Annotations\paramAnnotation;
+
 use Mouf\Reflection\MoufReflectionPropertyInterface;
 use Mouf\Reflection\MoufReflectionMethodInterface;
 use Mouf\Reflection\MoufReflectionParameterInterface;
@@ -40,6 +42,13 @@ class MoufPropertyDescriptor {
 	 * @var MoufReflectionPropertyInterface|MoufReflectionMethodInterface|MoufReflectionParameterInterface
 	 */
 	private $object;
+	
+	/**
+	 * The parameter annotation, only filled if this is a MoufReflectionParameter
+	 * 
+	 * @var paramAnnotation 
+	 */
+	private $paramAnnotation;
 	
 	private $type;
 	private $keyType;
@@ -144,7 +153,7 @@ class MoufPropertyDescriptor {
 				if (count($paramsAnnotations)==1) {
 					// If there is one @param annotation:
 					$paramAnnotation = $paramsAnnotations[0];
-				
+					$this->paramAnnotation = $paramAnnotation;
 					
 					
 					
@@ -299,7 +308,14 @@ class MoufPropertyDescriptor {
 	}
 	
 	public function getDocCommentWithoutAnnotations() {
-		return $this->object->getDocCommentWithoutAnnotations();
+		if ($this->object instanceof MoufReflectionParameterInterface) {
+			if ($this->paramAnnotation == null) {
+				return "";
+			}
+			return $this->paramAnnotation->getComments();
+		} else {
+			return $this->object->getDocCommentWithoutAnnotations();
+		}
 	}
 	
 	public function hasAnnotation($name) {

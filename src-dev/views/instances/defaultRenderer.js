@@ -718,6 +718,8 @@ var MoufDefaultRenderer = (function () {
 							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
 							renderField(moufInstanceProperty).appendTo(fieldElem);
 							
+							jQuery("<span class='help-block'>").html(moufProperty.getComment()).appendTo(fieldElem);
+							
 							fieldGlobalElem.appendTo(propertiesList);
 						}
 						
