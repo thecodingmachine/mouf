@@ -72,6 +72,7 @@ class MoufReflectionHelper {
 			$result['filename'] = null;
 		}
 		$result['startline'] = $refClass->getStartLine();
+		$result['isinstantiable'] = $refClass->isInstantiable();
 		
 		$result['comment'] = $refClass->getMoufDocComment()->getJsonArray();
 		$result['implements'] = array();

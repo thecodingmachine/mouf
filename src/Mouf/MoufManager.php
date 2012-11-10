@@ -1374,10 +1374,7 @@ class MoufManager {
 
 		fwrite($fp3, "// Files declared in the extra:mouf:adminRequire section.\n");
 		foreach ($adminFiles as $fileName) {
-		$package = $packageManager->getPackage($fileName);
-		foreach ($package->getAdminRequiredFiles() as $requiredFile) {
-		fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../vendor/".$filename."';\n");
-		}
+			fwrite($fp3, "require_once dirname(__FILE__).'/".$this->pathToMouf."../vendor/".$fileName."';\n");
 		}
 		fwrite($fp3, "\n");
 

@@ -3713,5 +3713,33 @@ unset($moufManager);
 	 	return MoufManager::getMoufManager()->getInstance('viewDocumentationMenuItemIcon');
 	 }
 
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getUtilsMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('utilsMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getUtilsCacheInterfaceMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('utilsCacheInterfaceMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getUtilsCacheInterfacePurgeAllCachesMenuItem() {
+	 	return MoufManager::getMoufManager()->getInstance('utilsCacheInterfacePurgeAllCachesMenuItem');
+	 }
+
+	/**
+	 * @return Mouf\Utils\Cache\Admin\Controllers\PurgeCacheController
+	 */
+	 public static function getPurgeCaches() {
+	 	return MoufManager::getMoufManager()->getInstance('purgeCaches');
+	 }
+
 }
 ?>

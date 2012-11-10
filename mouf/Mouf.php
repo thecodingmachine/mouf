@@ -30,8 +30,13 @@ define('MOUF_URL', ROOT_URL);
 
 
 // We are part of mouf, let's chain with the main autoloader if it exists.
-if (file_exists(__DIR__.'/../../../vendor/autoload.php')) {
-	require_once __DIR__.'/../../../vendor/autoload.php';
+/*if (file_exists(__DIR__.'/../../../../vendor/autoload.php')) {
+	require_once __DIR__.'/../../../../vendor/autoload.php';
+}*/
+
+// Finally, let's include the MoufUI if it exists.
+if (file_exists(__DIR__.'/../../../../mouf/MoufUI.php')) {
+	require_once __DIR__.'/../../../../mouf/MoufUI.php';
 }
 
 ?>

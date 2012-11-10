@@ -32,7 +32,7 @@ class MoufUtils {
 			return;
 		}
 		
-		$moufManager->declareComponent($instanceName, 'MenuItem', true);
+		$moufManager->declareComponent($instanceName, 'Mouf\\Html\\Widgets\\Menu\\MenuItem', true);
 		$moufManager->setParameterViaSetter($instanceName, 'setLabel', $label);
 		$moufManager->setParameterViaSetter($instanceName, 'setUrl', $url);
 		$moufManager->setParameterViaSetter($instanceName, 'setPriority', $priority);
@@ -64,7 +64,7 @@ class MoufUtils {
 			return;
 		}
 		
-		$moufManager->declareComponent($instanceName, 'MenuItem', true);
+		$moufManager->declareComponent($instanceName, 'Mouf\\Html\\Widgets\\Menu\\MenuItem', true);
 		$moufManager->setParameterViaSetter($instanceName, 'setLabel', $label);
 		$moufManager->setParameterViaSetter($instanceName, 'setUrl', $url);
 		$moufManager->setParameterViaSetter($instanceName, 'setPriority', $priority);
@@ -77,5 +77,42 @@ class MoufUtils {
 		$parentMenuItem = MoufManager::getMoufManager()->getInstance($parentMenuItemName);
 		/* @var $parentMenuItem Menu */
 		$parentMenuItem->addChild(MoufManager::getMoufManager()->getInstance($instanceName));		
+	}
+	
+	/**
+	 * Registers a new menuItem instance to be displayed in Mouf main menu that triggers
+	 * a popup to choose an instance.
+	 *
+	 * @param string $instanceName
+	 * @param string $label
+	 * @param string $url
+	 * @param string $type
+	 * @param string $parentMenuItemName The parent menu item instance name. 'mainMenu' is the main menu item, and 'moufSubMenu' is the 'Mouf' menu
+	 * @param float $priority The position of the menu
+	 */
+	public static function registerChooseInstanceMenuItem($instanceName, $label, $url, $type, $parentMenuItemName = 'moufSubMenu', $priority = 50) {
+		$moufManager = MoufManager::getMoufManager();
+	
+		if ($moufManager->instanceExists($instanceName)) {
+			return;
+		}
+	
+		$moufManager->declareComponent($instanceName, 'Mouf\\Menu\\ChooseInstanceMenuItem', true);
+		$moufManager->setParameterViaSetter($instanceName, 'setLabel', $label);
+		$moufManager->setParameterViaSetter($instanceName, 'setUrl', $url);
+		$moufManager->setParameterViaSetter($instanceName, 'setType', $type);
+		$moufManager->setParameterViaSetter($instanceName, 'setPriority', $priority);
+		
+		$parentMenuItem = MoufManager::getMoufManager()->getInstance($parentMenuItemName);
+		/* @var $parentMenuItem MenuItem */
+		$parentMenuItem->addMenuItem(MoufManager::getMoufManager()->getInstance($instanceName));
+	}
+	
+	/**
+	 * Check rights and exits execution if the user is not logged in Mouf UI.
+	 * This method is very useful in "direct" ajax calls from the Mouf UI.
+	 */
+	public static function checkRights() {
+		include __DIR__."/../direct/utils/check_rights.php";
 	}
 }

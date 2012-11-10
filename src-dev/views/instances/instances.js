@@ -1028,6 +1028,13 @@ MoufClass.prototype.getLocalAnnotations = function() {
 }
 
 /**
+ * Returns whether this class can be instantiated or not (abstract, interface...)
+ */
+MoufClass.prototype.isInstantiable = function() {
+	return this.json['isinstantiable'];
+}
+
+/**
  * Retrieves the annotations of the class, as a JSON object, including the parent classes, and pass those to a callback:
  * {
  * 	"annotationName", [param1, param2....]
@@ -1082,7 +1089,8 @@ MoufClass.prototype.getInjectableSetters = function() {
 	for (var i=0; i<methods.length; i++) {
 		var method = methods[i]; 
 		//if (method.hasPropertyAnnotation()) {
-		if (method.getName().indexOf("set") == 0) {
+		var methodName = method.getName(); 
+		if (methodName.indexOf("set") == 0 && methodName.length > 3) {
 			moufProperties.push(method);
 		}
 		//}

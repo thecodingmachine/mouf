@@ -287,12 +287,14 @@ var MoufUI = (function () {
 			
 			MoufInstanceManager.getComponents().then(function(classes) {
 				_.each(classes, function(classDescriptor) {
-					var classElem = classDescriptor.render().appendTo(classListDiv);
-					if (options) {
-						if (options.onSelect) {
-							classElem.click(function() {
-								options.onSelect(classDescriptor, classElem);
-							})
+					if (classDescriptor.isInstantiable()) {
+						var classElem = classDescriptor.render().appendTo(classListDiv);
+						if (options) {
+							if (options.onSelect) {
+								classElem.click(function() {
+									options.onSelect(classDescriptor, classElem);
+								})
+							}
 						}
 					}
 				});

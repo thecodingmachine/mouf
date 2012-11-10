@@ -7,10 +7,6 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
-/**
- * Returns a serialized string representing an instance.
- */
 
 use Mouf\MoufClassExplorer;
 
@@ -49,10 +45,12 @@ $classList = array();
 
 foreach ($classNameList as $className) {
 	$classDescriptor = $moufManager->getClassDescriptor($className);
-	do {
-		$classList[$classDescriptor->getName()] = $classDescriptor->toJson();
-		$classDescriptor = $classDescriptor->getParentClass();
-	} while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()])); 
+	if ($classDescriptor->isInstantiable()) {
+		do {
+			$classList[$classDescriptor->getName()] = $classDescriptor->toJson();
+			$classDescriptor = $classDescriptor->getParentClass();
+		} while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()]));
+	} 
 }
 
 $response = array();

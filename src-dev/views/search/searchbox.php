@@ -9,10 +9,7 @@
  */
  
 ?>
-<form action="<?php echo ROOT_URL?>search/" class="navbar-form form-search">
-	<div class="input-append pull-right">
-		<input type="text" name="query" value="<?php echo plainstring_to_htmlprotected(get("query")); ?>" class="input-medium search-query" placeholder="Search" />
-		<button type="submit" class="btn btn-danger">Go</button>
-	</div>
+<form action="<?php echo ROOT_URL?>search/" class="navbar-search pull-right">
+	<input type="text" name="query" value="<?php echo plainstring_to_htmlprotected(get("query")); ?>" class="search-query" placeholder="Search" />
 	<input type="hidden" name="selfedit" value="<?php echo plainstring_to_htmlprotected(get("selfedit")); ?>" />
 </form>
