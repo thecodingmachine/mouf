@@ -3735,6 +3735,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Menu\ChooseInstanceMenuItem
+	 */
+	 public static function getUtilsCacheInterfacePurgeOneCacheMenuItem() {
+	 	return MoufManager::getMoufManager()->getInstance('utilsCacheInterfacePurgeOneCacheMenuItem');
+	 }
+
+	/**
 	 * @return Mouf\Utils\Cache\Admin\Controllers\PurgeCacheController
 	 */
 	 public static function getPurgeCaches() {
