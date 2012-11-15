@@ -3,7 +3,7 @@
     "description": "The Mouf PHP framework: an open-source PHP framework providing an easy way to download, install, use and reuse components, with a graphical user interface.",
     "keywords": ["mouf", "dependency injection", "DI", "IOC", "inversion of control", "framework"],
     "homepage": "http://mouf-php.com",
-    "type": "library",
+    "type": "mouf-framework",
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-    	"php": ">=5.3.0"
+    	"php": ">=5.3.0",
+    	"mouf/mouf-installer": ">=2.0.0-dev"
     },
     "autoload": {
         "psr-0": {
