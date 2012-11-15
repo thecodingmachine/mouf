@@ -11,7 +11,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/moufmouf/famfamfam/zipball/30730b2268dd0adc775f95d7eb9ae8962b491221",
+                "url": "https://github.com/moufmouf/famfamfam/archive/30730b2268dd0adc775f95d7eb9ae8962b491221.zip",
                 "reference": "30730b2268dd0adc775f95d7eb9ae8962b491221",
                 "shasum": ""
             },
@@ -183,7 +183,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/zipball/1fb6434175678df39091e4a908da248a9c17b90c",
+                "url": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/archive/1fb6434175678df39091e4a908da248a9c17b90c.zip",
                 "reference": "1fb6434175678df39091e4a908da248a9c17b90c",
                 "shasum": ""
             },
@@ -364,7 +364,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/zipball/d2de65bc08e3777855dee9b09d82cbfb795cb03c",
+                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/archive/d2de65bc08e3777855dee9b09d82cbfb795cb03c.zip",
                 "reference": "d2de65bc08e3777855dee9b09d82cbfb795cb03c",
                 "shasum": ""
             },
@@ -462,7 +462,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/zipball/b586d543ee769144e4e430a70e89066c8c9a0603",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/b586d543ee769144e4e430a70e89066c8c9a0603.zip",
                 "reference": "b586d543ee769144e4e430a70e89066c8c9a0603",
                 "shasum": ""
             },
@@ -508,7 +508,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/zipball/984d8509df74f48d88c3c81ad2c8ee28c4005742",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/984d8509df74f48d88c3c81ad2c8ee28c4005742.zip",
                 "reference": "984d8509df74f48d88c3c81ad2c8ee28c4005742",
                 "shasum": ""
             },
@@ -556,7 +556,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/zipball/9932c0a45607c9451590181f0f5406a501a9d36f",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/9932c0a45607c9451590181f0f5406a501a9d36f.zip",
                 "reference": "9932c0a45607c9451590181f0f5406a501a9d36f",
                 "shasum": ""
             },
@@ -604,7 +604,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/zipball/e23256f83f85c111496d974af216a033a474aecc",
+                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/e23256f83f85c111496d974af216a033a474aecc.zip",
                 "reference": "e23256f83f85c111496d974af216a033a474aecc",
                 "shasum": ""
             },
@@ -655,7 +655,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/zipball/98cdc51a5ae42552a245892f2c83f55ff8617927",
+                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/98cdc51a5ae42552a245892f2c83f55ff8617927.zip",
                 "reference": "98cdc51a5ae42552a245892f2c83f55ff8617927",
                 "shasum": ""
             },
@@ -794,7 +794,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/zipball/15744c1001f0070a76a986c8d4b373a6216f5ebb",
+                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/15744c1001f0070a76a986c8d4b373a6216f5ebb.zip",
                 "reference": "15744c1001f0070a76a986c8d4b373a6216f5ebb",
                 "shasum": ""
             },
@@ -978,7 +978,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/zipball/c6b44ebf9b7aefeb229fe83d01bd442982e14ed3",
+                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/c6b44ebf9b7aefeb229fe83d01bd442982e14ed3.zip",
                 "reference": "c6b44ebf9b7aefeb229fe83d01bd442982e14ed3",
                 "shasum": ""
             },
@@ -1023,7 +1023,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/zipball/1a381ed8bd3bc26e0f1a29a9478848ecb99c3255",
+                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/archive/1a381ed8bd3bc26e0f1a29a9478848ecb99c3255.zip",
                 "reference": "1a381ed8bd3bc26e0f1a29a9478848ecb99c3255",
                 "shasum": ""
             },
@@ -1065,7 +1065,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/zipball/4c5d644de5ecec8389f817b3511de7f350421ca2",
+                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/4c5d644de5ecec8389f817b3511de7f350421ca2.zip",
                 "reference": "4c5d644de5ecec8389f817b3511de7f350421ca2",
                 "shasum": ""
             },
@@ -1109,7 +1109,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine/zipball/bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f",
+                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f.zip",
                 "reference": "bec3b357d321d2a5e6f4b7c0ea3ea7f1435dcf2f",
                 "shasum": ""
             },

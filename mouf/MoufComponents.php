@@ -635,15 +635,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'downloadPackageAction' => 
-  array (
-    'class' => 'Mouf\\Actions\\DownloadPackageAction',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'packageDownloadService' => 'packageDownloadService',
-    ),
-  ),
   'downloadPackages2MenuItem' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
@@ -839,11 +830,6 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
-  ),
-  'enablePackageAction' => 
-  array (
-    'class' => 'Mouf\\Actions\\EnablePackageAction',
-    'external' => false,
   ),
   'errorLogger' => 
   array (
@@ -3182,13 +3168,6 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Actions\DownloadPackageAction
-	 */
-	 public static function getDownloadPackageAction() {
-	 	return MoufManager::getMoufManager()->getInstance('downloadPackageAction');
-	 }
-
-	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getDownloadPackages2MenuItem() {
@@ -3214,13 +3193,6 @@ unset($moufManager);
 	 */
 	 public static function getEditConfigurationMenuItemIcon() {
 	 	return MoufManager::getMoufManager()->getInstance('editConfigurationMenuItemIcon');
-	 }
-
-	/**
-	 * @return Mouf\Actions\EnablePackageAction
-	 */
-	 public static function getEnablePackageAction() {
-	 	return MoufManager::getMoufManager()->getInstance('enablePackageAction');
 	 }
 
 	/**

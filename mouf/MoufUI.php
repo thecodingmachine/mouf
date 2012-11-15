@@ -4,5 +4,6 @@
  */
 
 // Files declared in the extra:mouf:adminRequire section.
+require_once dirname(__FILE__).'/../vendor/mouf/utils.cache.cache-interface/CacheAdmin.php';
 
 ?>

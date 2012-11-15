@@ -33,7 +33,7 @@ class RedirectAction implements MoufActionProviderInterface {
 	 * @param MoufActionDescriptor $actionDescriptor
 	 */
 	public function getName(MoufActionDescriptor $actionDescriptor) {
-		return "Installation process for package ".$actionDescriptor->params['packageFile'].".";
+		return "Installation process for package ".$actionDescriptor->params['packageName'].".";
 	}
 	
 }
