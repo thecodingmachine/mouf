@@ -18,6 +18,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "1348065644",
             "type": "library",
             "installation-source": "source",
             "license": [
@@ -35,8 +36,7 @@
                 "icons",
                 "famfamfam",
                 "silk"
-            ],
-            "time": "1348065644"
+            ]
         },
         {
             "name": "mouf/html.htmlelement",
@@ -192,6 +192,7 @@
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
                 "mouf/html.widgets.menu": "2.*"
             },
+            "time": "1348696552",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -223,8 +224,7 @@
                 "mouf",
                 "topribbonmenu",
                 "ribbon"
-            ],
-            "time": "1348696552"
+            ]
         },
         {
             "name": "mouf/html.template.mouftemplate",
@@ -372,6 +372,7 @@
                 "php": ">=5.3.0",
                 "mouf/html.htmlelement": ">=2.0-dev,<3.0"
             },
+            "time": "1348696270",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -405,8 +406,7 @@
                 "html",
                 "mouf",
                 "dependencies"
-            ],
-            "time": "1348696270"
+            ]
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -470,6 +470,7 @@
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
+            "time": "1348695573",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -495,8 +496,7 @@
                 "jquery",
                 "javascript",
                 "mouf"
-            ],
-            "time": "1348695573"
+            ]
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -516,6 +516,7 @@
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0"
             },
+            "time": "1348695626",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -543,8 +544,7 @@
                 "mouf",
                 "filetree",
                 "jquery filetree"
-            ],
-            "time": "1348695626"
+            ]
         },
         {
             "name": "mouf/javascript.jquery.jquery-ui",
@@ -564,6 +564,7 @@
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0"
             },
+            "time": "1348695664",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -591,8 +592,7 @@
                 "jquery-ui",
                 "jQueryUI",
                 "mouf"
-            ],
-            "time": "1348695664"
+            ]
         },
         {
             "name": "mouf/javascript.syntaxhighlighter",
@@ -612,6 +612,7 @@
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2"
             },
+            "time": "1348695694",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -642,8 +643,7 @@
                 "javascript",
                 "mouf",
                 "SyntaxHighlighter"
-            ],
-            "time": "1348695694"
+            ]
         },
         {
             "name": "mouf/javascript.underscore",
@@ -663,6 +663,7 @@
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
+            "time": "1348695719",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -689,8 +690,7 @@
                 "underscore",
                 "mouf",
                 "underscorejs"
-            ],
-            "time": "1348695719"
+            ]
         },
         {
             "name": "mouf/mvc.splash",
@@ -802,6 +802,7 @@
                 "php": ">=5.3.0",
                 "mouf/security.userservice": "2.*"
             },
+            "time": "1347182900",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -825,8 +826,7 @@
                 "security",
                 "login",
                 "mouf"
-            ],
-            "time": "1347182900"
+            ]
         },
         {
             "name": "mouf/security.userfiledao",
@@ -987,6 +987,7 @@
                 "mouf/utils.cache.cache-interface": "2.*",
                 "mouf/utils.log.log_interface": "2.*"
             },
+            "time": "1347296994",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1010,8 +1011,7 @@
                 "file",
                 "cache",
                 "mouf"
-            ],
-            "time": "1347296994"
+            ]
         },
         {
             "name": "mouf/utils.common.conditioninterface",
@@ -1030,6 +1030,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "1345745387",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1052,8 +1053,7 @@
             "keywords": [
                 "interface",
                 "condition"
-            ],
-            "time": "1345745387"
+            ]
         },
         {
             "name": "mouf/utils.common.getvars",
@@ -1072,6 +1072,7 @@
             "require": {
                 "php": ">=5.2.0"
             },
+            "time": "1347820840",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1096,8 +1097,7 @@
                 "request",
                 "mouf",
                 "protect"
-            ],
-            "time": "1347820840"
+            ]
         },
         {
             "name": "mouf/utils.i18n.fine",
@@ -1117,6 +1117,7 @@
                 "php": ">=5.3.0",
                 "phpexcel/phpexcel": ">=1.7.6, <2.0.0"
             },
+            "time": "1348696332",
             "type": "library",
             "extra": {
                 "mouf": {
@@ -1161,8 +1162,7 @@
                 "internationalisation",
                 "mouf",
                 "fine"
-            ],
-            "time": "1348696332"
+            ]
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
