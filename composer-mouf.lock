@@ -87,12 +87,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.bootstrap.git",
-                "reference": "9fde55de2f73d06512d0ca43737e683d0610b691"
+                "reference": "d64be600424335a6abfe3d3a7e849dd2fdf34eb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.bootstrap/archive/9fde55de2f73d06512d0ca43737e683d0610b691.zip",
-                "reference": "9fde55de2f73d06512d0ca43737e683d0610b691",
+                "url": "https://github.com/thecodingmachine/html.template.bootstrap/archive/d64be600424335a6abfe3d3a7e849dd2fdf34eb8.zip",
+                "reference": "d64be600424335a6abfe3d3a7e849dd2fdf34eb8",
                 "shasum": ""
             },
             "require": {
@@ -102,7 +102,7 @@
                 "mouf/html.utils.bootstrap": "2.1.*",
                 "mouf/html.widgets.menu": "2.*"
             },
-            "time": "1352569193",
+            "time": "1353077117",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -698,18 +698,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "4235344c10be22bdf33afe5372bc5c9440a96a50"
+                "reference": "c8fcde5fc0eb47052374de4b1094ebd81b8c0355"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/4235344c10be22bdf33afe5372bc5c9440a96a50.zip",
-                "reference": "4235344c10be22bdf33afe5372bc5c9440a96a50",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/c8fcde5fc0eb47052374de4b1094ebd81b8c0355.zip",
+                "reference": "c8fcde5fc0eb47052374de4b1094ebd81b8c0355",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1353014000",
+            "time": "1353079377",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -1218,23 +1218,23 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger.git",
-                "reference": "141fed0f7d7c96db45e92345732b5a7bd3d07b00"
+                "reference": "ed2a0d83c09ac284cf2a36827afd6650a8a6be12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/141fed0f7d7c96db45e92345732b5a7bd3d07b00.zip",
-                "reference": "141fed0f7d7c96db45e92345732b5a7bd3d07b00",
+                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/ed2a0d83c09ac284cf2a36827afd6650a8a6be12.zip",
+                "reference": "ed2a0d83c09ac284cf2a36827afd6650a8a6be12",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/utils.log.log_interface": ">=2.0-dev,<3.0",
-                "mouf/mouf": ">=2.0"
+                "mouf/mouf-installer": ">=2.0-dev,<3.0"
             },
             "provide": {
                 "mouf/utils.log.logger": "1.0"
             },
-            "time": "1353010992",
+            "time": "1353079415",
             "type": "mouf-library",
             "extra": {
                 "install": [
