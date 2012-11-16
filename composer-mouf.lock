@@ -1,5 +1,5 @@
 {
-    "hash": "457e168083c7954d0220e0ce2ea2d105",
+    "hash": "755ca95d6c91a5cad852e016732600a0",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -693,6 +693,54 @@
             ]
         },
         {
+            "name": "mouf/mouf-installer",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:thecodingmachine/mouf-installer.git",
+                "reference": "4235344c10be22bdf33afe5372bc5c9440a96a50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/4235344c10be22bdf33afe5372bc5c9440a96a50.zip",
+                "reference": "4235344c10be22bdf33afe5372bc5c9440a96a50",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "1353014000",
+            "type": "composer-installer",
+            "extra": {
+                "class": [
+                    "Mouf\\Installer\\MoufLibraryInstaller",
+                    "Mouf\\Installer\\MoufFrameworkInstaller"
+                ]
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "The Mouf-installer package is a composer in charge of installing any package with the 'mouf-library' type.",
+            "homepage": "http://mouf-php.com",
+            "keywords": [
+                "install",
+                "mouf"
+            ]
+        },
+        {
             "name": "mouf/mvc.splash",
             "version": "4.0.x-dev",
             "source": {
@@ -1170,23 +1218,32 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger.git",
-                "reference": "f6ae4582f773873bb3c911d8aa27d44c48b60f3b"
+                "reference": "141fed0f7d7c96db45e92345732b5a7bd3d07b00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/f6ae4582f773873bb3c911d8aa27d44c48b60f3b.zip",
-                "reference": "f6ae4582f773873bb3c911d8aa27d44c48b60f3b",
+                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/141fed0f7d7c96db45e92345732b5a7bd3d07b00.zip",
+                "reference": "141fed0f7d7c96db45e92345732b5a7bd3d07b00",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "mouf/utils.log.log_interface": ">=2.0-dev,<3.0"
+                "mouf/utils.log.log_interface": ">=2.0-dev,<3.0",
+                "mouf/mouf": ">=2.0"
             },
             "provide": {
                 "mouf/utils.log.logger": "1.0"
             },
-            "time": "1351456677",
-            "type": "library",
+            "time": "1353010992",
+            "type": "mouf-library",
+            "extra": {
+                "install": [
+                    {
+                        "type": "file",
+                        "file": "src/install.php"
+                    }
+                ]
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1297,6 +1354,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "mouf/mouf-installer": 20,
         "mouf/html.template.mouftemplate": 20,
         "mouf/utils.i18n.fine": 20,
         "mouf/mvc.splash": 20,

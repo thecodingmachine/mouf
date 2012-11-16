@@ -1,5 +1,6 @@
 {
     "require": {
+        "mouf/mouf-installer": ">=2.0-dev",
         "mouf/html.template.mouftemplate": ">=2.0-dev",
         "mouf/html.template.bootstrap": "2.1.*",
         "mouf/utils.i18n.fine": ">=3.0-dev",
