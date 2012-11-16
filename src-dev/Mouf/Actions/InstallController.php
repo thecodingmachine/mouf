@@ -35,6 +35,15 @@ class InstallController extends Controller {
 	public $template;
 	
 	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @Property
+	 * @Compulsory
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
+	
+	/**
 	 * 
 	 * @var array<MoufActionDescriptor>
 	 */
@@ -63,6 +72,11 @@ class InstallController extends Controller {
 	 */
 	public function defaultAction($selfedit = "false") {
 		$this->selfedit = $selfedit;
+		if ($selfedit == "true") {
+			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+		} else {
+			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+		}
 		$this->actionsList = $this->multiStepActionService->getActionsList();
 		$this->contentBlock->addFile(__DIR__."/../../views/install/install.php", $this);
 		$this->template->toHtml();
@@ -77,6 +91,13 @@ class InstallController extends Controller {
 	public function nextstep($selfedit = "false") {
 		// FIXME: we should take into account the $selfEdit variable!!!!
 		// TODO: first, we should receive the selfedit variable!!!!
+		
+		if ($selfedit == "true") {
+			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+		} else {
+			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+		}
+		
 		$this->done = false;
 		$actionResult =  null;
 		$html = "";
@@ -95,7 +116,7 @@ class InstallController extends Controller {
 		
 		$redirect = null;
 		if ($actionResult && $actionResult->getStatus() == "redirect") {
-			$redirect = $actionResult->getRedirectUrl();
+			$redirect = ROOT_URL.$actionResult->getRedirectUrl();
 		}
 		
 		if ($this->done) {
@@ -128,6 +149,12 @@ class InstallController extends Controller {
 	 * @param string $selfedit 
 	 */
 	public function installStepDone($selfedit = "false") {
+		if ($selfedit == "true") {
+			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+		} else {
+			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+		}
+		
 		$this->multiStepActionService->validateCurrentAction();
 		header("Location: .?selfedit=".$selfedit);
 	}

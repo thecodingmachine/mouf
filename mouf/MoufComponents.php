@@ -1708,7 +1708,7 @@ $moufManager->addComponentInstances(array (
   ),
   'moufInstallTemplate' => 
   array (
-    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
     'external' => false,
     'setterBinds' => 
     array (

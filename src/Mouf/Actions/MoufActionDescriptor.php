@@ -9,6 +9,8 @@
  */
 namespace Mouf\Actions;
 
+use Mouf\MoufManager;
+
 /**
  * A simple object describing an action to be executed by the MultiStepActionService.
  * 
