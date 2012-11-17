@@ -116,7 +116,11 @@ class InstallController extends Controller {
 		
 		$redirect = null;
 		if ($actionResult && $actionResult->getStatus() == "redirect") {
-			$redirect = ROOT_URL.$actionResult->getRedirectUrl();
+			if ($selfedit == 'true') {
+				$redirect = ROOT_URL.$actionResult->getRedirectUrl();
+			} else {
+				$redirect = ROOT_URL."../../../".$actionResult->getRedirectUrl();
+			}
 		}
 		
 		if ($this->done) {
