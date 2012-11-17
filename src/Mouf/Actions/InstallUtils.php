@@ -72,7 +72,9 @@ class InstallUtils {
 	 * Therefore, to be effective, nothing should have been outputed.
 	 */
 	public static function continueInstall($selfEdit = false) {
-		header("Location: ".ROOT_URL."install/installStepDone?selfedit=".(($selfEdit)?"true":"false"));
+		// Let's try to get the URL right based on the context.
+		
+		header("Location: ".MOUF_URL."install/installStepDone?selfedit=".(($selfEdit)?"true":"false"));
 	}
 	
 	public static function massCreate($classes, $moufManager){
