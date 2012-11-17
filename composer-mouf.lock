@@ -698,18 +698,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "c8fcde5fc0eb47052374de4b1094ebd81b8c0355"
+                "reference": "52b5674e514330b292b02fc3a42c2534758e78a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/c8fcde5fc0eb47052374de4b1094ebd81b8c0355.zip",
-                "reference": "c8fcde5fc0eb47052374de4b1094ebd81b8c0355",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/52b5674e514330b292b02fc3a42c2534758e78a0.zip",
+                "reference": "52b5674e514330b292b02fc3a42c2534758e78a0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1353079377",
+            "time": "1353166866",
             "type": "composer-installer",
             "extra": {
                 "class": [
