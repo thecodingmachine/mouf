@@ -20,12 +20,6 @@ error_reporting(E_ERROR | error_reporting());
 
 require_once '../../mouf/Mouf.php';
 
-if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
-	$selfEdit = false;
-} else {
-	$selfEdit = true;
-}
-
 /*	require_once '../../MoufComponents.php';
 	require_once '../MoufManager.php';
 	MoufManager::initMoufManager();
@@ -44,7 +38,13 @@ $moufManager = MoufManager::getMoufManager();
 $multiStepActionService = $moufManager->getInstance('installService');
 /* @var $multiStepActionService MultiStepActionService */
 
-
+if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	$selfEdit = false;
+	$multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+} else {
+	$selfEdit = true;
+	$multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+}
 
 $jsonObj = array();
 if (!$multiStepActionService->hasRemainingAction()) {
