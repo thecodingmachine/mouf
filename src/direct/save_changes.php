@@ -99,10 +99,15 @@ foreach ($changesList as $command) {
 			
 			$propertyDescriptor = $property->getPropertyDescriptor();
 			
-			if ($command['isset'] == "false") {
+			if ($command['origin'] == 'config') {
+				$property->setOrigin('config');
+				$property->setValue($command['value']);
+			} else if ($command['isset'] == "false") {
 				// Let's unset completely the property
+				$property->setOrigin('string');
 				$property->unsetValue();
 			} else {
+				$property->setOrigin('string');
 				// Let's set the value
 				if ($command['isNull'] == "true") {
 					$value = null;

@@ -429,6 +429,45 @@ var MoufUI = (function () {
 		},
 		
 		/**
+		 * Displays a popup to rename an instance.
+		 * The MoufInstance object must be passed in parameter.
+		 */
+		chooseConfigConstant: function(callback, selfedit) {
+			var modal = MoufUI.openPopup("Choose a config constant");
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
+			
+			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
+			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
+			var label = jQuery('<label class="control-label" for="name">').text("Config constant ").appendTo(divControlGroup);
+			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
+			var selectField = jQuery('<select>').appendTo(divControlGroup);
+			
+			
+			if (typeof definedConstants == 'undefined') {
+				jQuery.getJSON(MoufInstanceManager.rootUrl+"src/direct/get_defined_constants.php",{encode:"json", selfedit:selfedit, ajax: 'true'}, function(msg){
+					definedConstants = msg;
+				    var options = '';
+				    for (var key in msg) {
+				    	jQuery('<option/>').attr('value', key).text(key).appendTo(selectField);
+				    }
+				}).fail(function(msg) {
+					addMessage("<pre>"+msg.responseText+"</pre>", "error");
+				});
+			} else {
+				for (var key in definedConstants) {
+			    	jQuery('<option/>').attr('value', 'key').text(key).appendTo(selectField);
+			    }
+			}
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
+			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Cancel").appendTo(modalFooter);
+			jQuery("<button/>").addClass("btn btn-primary").attr("data-dismiss", "modal").text("Ok").click(function() {
+				callback(selectField.val());
+			}).appendTo(modalFooter);
+		},
+		
+		/**
 		 * Displays a confirmation popup to delete an instance.
 		 * The MoufInstance object must be passed in parameter.
 		 */

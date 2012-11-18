@@ -550,11 +550,28 @@ var MoufDefaultRenderer = (function () {
 			});
 			return field;
 		}
+		var getConfigConstantField = function() {
+			var field = jQuery("<button class='btn btn-mini btn-info' rel='tooltip' title='Click to set value'></button>").text(moufInstanceProperty.getValue()).click(function() {
+				MoufUI.chooseConfigConstant(function(constant) {
+					moufInstanceProperty.setValue(constant, 'config');
+					
+					fieldInnerWrapper.empty();
+					var field = getConfigConstantField();
+					field.appendTo(fieldInnerWrapper);
+				}, MoufInstanceManager.selfEdit);
+				/*fieldInnerWrapper.empty();
+				var field = renderInnerField(moufInstanceProperty);
+				field.appendTo(fieldInnerWrapper);*/
+			});
+			return field;
+		}
 		
 		var isSubProperty = moufInstanceProperty instanceof MoufInstanceSubProperty;
 		
 		var field;
-		if (!isSubProperty && !moufInstanceProperty.isSet()) {
+		if (moufInstanceProperty.getOrigin() == 'config') {
+			field = getConfigConstantField();
+		} else if (!isSubProperty && !moufInstanceProperty.isSet()) {
 			field = getNotSetField();
 		} else if (moufInstanceProperty.getValue() === null) {
 			field = getNullField();
@@ -582,13 +599,20 @@ var MoufDefaultRenderer = (function () {
 					getNotSetField().appendTo(fieldInnerWrapper);
 				}
 			});
+			menuDescriptor.push({
+				label: "Use config constant",
+				click: function() {
+					MoufUI.chooseConfigConstant(function(constant) {
+						moufInstanceProperty.setValue(constant, 'config');
+
+						fieldInnerWrapper.empty();
+						var field = getConfigConstantField();
+						field.appendTo(fieldInnerWrapper);
+					}, MoufInstanceManager.selfEdit);
+				}
+			});
 		}
-		menuDescriptor.push({
-			label: "Use config constant",
-			click: function() {
-				alert("todo");
-			}
-		});
+		
 		
 		var menu = MoufUI.createMenuIcon(menuDescriptor);
 		menu.appendTo(fieldWrapper);

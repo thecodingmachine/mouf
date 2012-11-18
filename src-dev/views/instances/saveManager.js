@@ -87,6 +87,7 @@ var MoufSaveManager = (function () {
 			"property": moufInstanceProperty.getMoufProperty().getName(),
 			"value": finalValue,
 			"isBoolean": isBoolean,
+			"origin": moufInstanceProperty.getOrigin(),
 			"isset": moufInstanceProperty.isSet(),
 			"source": moufInstanceProperty.getSource(),
 			"isNull": (finalValue === null)

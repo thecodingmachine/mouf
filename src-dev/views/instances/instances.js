@@ -756,7 +756,13 @@ MoufInstanceProperty.prototype.getValue = function() {
  * Note: do not call this method for setting arrays. It won't work.
  * Use method to manipulate arrays instead!
  */
-MoufInstanceProperty.prototype.setValue = function(value) {
+MoufInstanceProperty.prototype.setValue = function(value, origin) {
+	if (origin) {
+		this.json['origin'] = origin;
+	} else {
+		this.json['origin'] = 'string';
+	}
+	
 	this.json['value'] = value;
 	this.json['isset'] = true;
 	
@@ -766,7 +772,7 @@ MoufInstanceProperty.prototype.setValue = function(value) {
 			// Let's empty all the elements:
 			this.moufInstanceSubProperties = [];
 		} else {
-			throw "You cannot call setValue on an array (exept to set it to 'null')";
+			throw "You cannot call setValue on an array (except to set it to 'null')";
 		}
 	}
 	
@@ -788,6 +794,8 @@ MoufInstanceProperty.prototype.isSet = function() {
  */
 MoufInstanceProperty.prototype.unSet = function() {
 	this.json['isset'] = false;
+	this.json['origin'] = 'string';
+	
 	MoufInstanceManager.firePropertyChange(this);
 }
 
@@ -797,6 +805,7 @@ MoufInstanceProperty.prototype.unSet = function() {
 MoufInstanceProperty.prototype.getOrigin = function() {
 	return this.json['origin'];
 }
+
 
 /**
  * Returns the metadata for this property.

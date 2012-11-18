@@ -89,12 +89,13 @@ class MoufInstancePropertyDescriptor {
 			if (($value instanceof MoufInstanceDescriptor) || is_array($value)) {
 				throw new MoufException("You passed an array or a MoufInstanceDescriptor to MoufInstanceProperty::setValue, but the property '{$this->name}' instance '".$this->instanceDescriptor->getIdentifierName()."' of class '".$this->instanceDescriptor->getClassName()."' is supposed to take a primitive type in argument.");
 			}
+			$origin = $this->getOrigin();
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
-				$this->moufManager->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $value);
+				$this->moufManager->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $value, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
-				$this->moufManager->setParameterViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $value);
+				$this->moufManager->setParameterViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $value, $origin);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
-				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $value, "primitive");
+				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $value, "primitive", $origin);
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
