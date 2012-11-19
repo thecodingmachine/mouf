@@ -1100,7 +1100,18 @@ MoufClass.prototype.getInjectableSetters = function() {
 		//if (method.hasPropertyAnnotation()) {
 		var methodName = method.getName(); 
 		if (methodName.indexOf("set") == 0 && methodName.length > 3) {
-			moufProperties.push(method);
+			var parameters = method.getParameters();
+			
+			if (parameters>=1) {
+				var ko=false;
+				for (var i=1; i<parameters.length; i++) {
+					if (!parameters[i].hasDefault()) {
+						ko = true;
+						break;
+					}
+				}
+				moufProperties.push(method);
+			}
 		}
 		//}
 	}
