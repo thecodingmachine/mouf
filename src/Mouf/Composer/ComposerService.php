@@ -81,7 +81,7 @@ class ComposerService {
 		$packageMap = $autoloadGenerator->buildPackageMap($installationManager, $package, $localRepos->getPackages());
 		
 		//var_dump($packageMap);
-		$autoloads = $autoloadGenerator->parseAutoloads($packageMap);
+		$autoloads = $autoloadGenerator->parseAutoloads($packageMap, $package);
 		
 		
 		

@@ -124,22 +124,22 @@ class MoufJsComposerIO implements IOInterface {
 	}
 	
 	
-	protected $authorizations = array();
+	protected $authentications = array();
 	
 	/**
      * {@inheritDoc}
      */
-    public function getAuthorizations()
+    public function getAuthentications()
     {
-        return $this->authorizations;
+        return $this->authentications;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function hasAuthorization($repositoryName)
+    public function hasAuthentication($repositoryName)
     {
-        $auths = $this->getAuthorizations();
+        $auths = $this->getAuthentications();
 
         return isset($auths[$repositoryName]);
     }
@@ -147,9 +147,9 @@ class MoufJsComposerIO implements IOInterface {
     /**
      * {@inheritDoc}
      */
-    public function getAuthorization($repositoryName)
+    public function getAuthentication($repositoryName)
     {
-        $auths = $this->getAuthorizations();
+        $auths = $this->getAuthentications();
 
         return isset($auths[$repositoryName]) ? $auths[$repositoryName] : array('username' => null, 'password' => null);
     }
@@ -157,8 +157,8 @@ class MoufJsComposerIO implements IOInterface {
     /**
      * {@inheritDoc}
      */
-    public function setAuthorization($repositoryName, $username, $password = null)
+    public function setAuthentication($repositoryName, $username, $password = null)
     {
-        $this->authorizations[$repositoryName] = array('username' => $username, 'password' => $password);
+        $this->authentications[$repositoryName] = array('username' => $username, 'password' => $password);
     }
 }

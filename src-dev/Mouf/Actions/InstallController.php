@@ -71,6 +71,9 @@ class InstallController extends Controller {
 	 * @param string $selfedit 
 	 */
 	public function defaultAction($selfedit = "false") {
+		// Let's start by purging the Splash cache. Since we are in an install process, new controllers might have emerged!
+		// FIXME: todo (and first, of course, we must add a cache!)
+		
 		$this->selfedit = $selfedit;
 		if ($selfedit == "true") {
 			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
@@ -116,11 +119,7 @@ class InstallController extends Controller {
 		
 		$redirect = null;
 		if ($actionResult && $actionResult->getStatus() == "redirect") {
-			if ($selfedit == 'true') {
-				$redirect = ROOT_URL.$actionResult->getRedirectUrl();
-			} else {
-				$redirect = ROOT_URL."../../../".$actionResult->getRedirectUrl();
-			}
+			$redirect = ROOT_URL.$actionResult->getRedirectUrl()."?selfedit=".$selfedit;
 		}
 		
 		if ($this->done) {

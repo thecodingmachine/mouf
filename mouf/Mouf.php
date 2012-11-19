@@ -10,7 +10,29 @@
 
 use Mouf\MoufManager;
 
-require_once __DIR__.'/../vendor/autoload.php';
+//require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../../../../vendor/autoload.php';
+
+//////////////// The autoloader for Mouf //////////////////:
+
+// Let's add to the project's autoloader with Mouf classes.
+// Mouf classes will overwrite the projet's classes.
+$loader = ComposerAutoloaderInit::getLoader(); 
+$map = require __DIR__ . '/../vendor/composer/autoload_namespaces.php';
+foreach ($map as $namespace => $path) {
+	$loader->add($namespace, $path);
+}
+
+$classMap = require __DIR__ . '/../vendor/composer/autoload_classmap.php';
+if ($classMap) {
+	$loader->addClassMap($classMap);
+}
+
+require  __DIR__ . '/../vendor/mouf/utils.i18n.fine/src/msgFunctions.php';
+require  __DIR__ . '/../vendor/mouf/utils.common.getvars/src/tcm_utils.php';
+require  __DIR__ . '/../vendor/mouf/utils.common.getvars/src/TcmUtilsException.php';
+
+//////////////// End of the autoloader for Mouf //////////////////:
 
 require_once __DIR__.'/../../../../mouf/MoufComponents.php';
 
