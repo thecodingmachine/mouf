@@ -90,6 +90,9 @@ class MoufInstancePropertyDescriptor {
 				throw new MoufException("You passed an array or a MoufInstanceDescriptor to MoufInstanceProperty::setValue, but the property '{$this->name}' instance '".$this->instanceDescriptor->getIdentifierName()."' of class '".$this->instanceDescriptor->getClassName()."' is supposed to take a primitive type in argument.");
 			}
 			$origin = $this->getOrigin();
+			if (empty($origin)) {
+				$origin = "string";
+			}
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
 				$this->moufManager->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $value, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
