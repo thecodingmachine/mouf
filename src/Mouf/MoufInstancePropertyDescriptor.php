@@ -323,14 +323,18 @@ class MoufInstancePropertyDescriptor {
 	 * @return MoufInstancePropertyDescriptor Returns $this for chaining.
 	 */
 	public function setOrigin($origin) {
-		if ($this->propertyDescriptor->isPublicFieldProperty()) {
-			$this->moufManager->setParameterType($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
-		} elseif ($this->propertyDescriptor->isSetterProperty()) {
-			$this->moufManager->setParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
-		} elseif ($this->propertyDescriptor->isConstructor()) {
-			$this->moufManager->setParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $origin);
+		if ($this->propertyDescriptor->isPrimitiveType()) {
+			if ($this->propertyDescriptor->isPublicFieldProperty()) {
+				$this->moufManager->setParameterType($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
+			} elseif ($this->propertyDescriptor->isSetterProperty()) {
+				$this->moufManager->setParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
+			} elseif ($this->propertyDescriptor->isConstructor()) {
+				$this->moufManager->setParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $origin);
+			} else {
+				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
+			}
 		} else {
-			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
+			// FIXME: TODO: support origin for binds
 		}
 		return $this;
 	}

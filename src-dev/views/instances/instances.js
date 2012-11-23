@@ -1102,10 +1102,10 @@ MoufClass.prototype.getInjectableSetters = function() {
 		if (methodName.indexOf("set") == 0 && methodName.length > 3) {
 			var parameters = method.getParameters();
 			
-			if (parameters>=1) {
+			if (parameters.length>=1) {
 				var ko=false;
-				for (var i=1; i<parameters.length; i++) {
-					if (!parameters[i].hasDefault()) {
+				for (var j=1; j<parameters.length; j++) {
+					if (!parameters[j].hasDefault()) {
 						ko = true;
 						break;
 					}
