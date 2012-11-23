@@ -1136,19 +1136,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.i18n.fine.git",
-                "reference": "c6b76eb3550e732d4074beefb6b83ea66b2b2442"
+                "reference": "74c7b6a69310b85cacb610c7eecf783943612ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/c6b76eb3550e732d4074beefb6b83ea66b2b2442.zip",
-                "reference": "c6b76eb3550e732d4074beefb6b83ea66b2b2442",
+                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/74c7b6a69310b85cacb610c7eecf783943612ffd.zip",
+                "reference": "74c7b6a69310b85cacb610c7eecf783943612ffd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "phpexcel/phpexcel": ">=1.7.6, <2.0.0"
             },
-            "time": "2012-11-23 13:50:01",
+            "time": "2012-11-23 14:27:06",
             "type": "library",
             "extra": {
                 "mouf": {

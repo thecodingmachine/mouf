@@ -28,9 +28,9 @@ if ($classMap) {
 	$loader->addClassMap($classMap);
 }
 
-require  __DIR__ . '/../vendor/mouf/utils.i18n.fine/src/msgFunctions.php';
-require  __DIR__ . '/../vendor/mouf/utils.common.getvars/src/tcm_utils.php';
-require  __DIR__ . '/../vendor/mouf/utils.common.getvars/src/TcmUtilsException.php';
+require_once  __DIR__ . '/../vendor/mouf/utils.i18n.fine/src/msgFunctions.php';
+require_once  __DIR__ . '/../vendor/mouf/utils.common.getvars/src/tcm_utils.php';
+require_once __DIR__ . '/../vendor/mouf/utils.common.getvars/src/TcmUtilsException.php';
 
 //////////////// End of the autoloader for Mouf //////////////////:
 
