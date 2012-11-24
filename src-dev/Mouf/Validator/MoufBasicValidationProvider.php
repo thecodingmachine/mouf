@@ -29,7 +29,7 @@ class MoufBasicValidationProvider implements MoufValidationProviderInterface {
 	public $name;
 	
 	/**
-	 * The url of the validator
+	 * The url of the validator, relative to the MOUF_URL
 	 * 
 	 * @Property
 	 * @Compulsory

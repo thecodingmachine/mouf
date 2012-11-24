@@ -50,11 +50,6 @@ class MoufValidatorService implements HtmlElementInterface {
 			var validatorNb = window.moufNbValidators;
 			jQuery('#validators').append("<div id='validator"+validatorNb+"' class='validator'><div class='loading'>Running "+name+"</div></div>");
 
-
-			jQuery(".seeErrorDetails").live("click", function(evt) {
-				jQuery(evt.target).parent().find("pre").toggle();
-			});
-
 			jQuery.ajax({
 				url: "<?php echo ROOT_URL ?>"+url,
 				success: function(text){
@@ -81,6 +76,10 @@ class MoufValidatorService implements HtmlElementInterface {
 			
 		}
 		jQuery(document).ready(function() {
+			jQuery(".seeErrorDetails").live("click", function(evt) {
+				jQuery(evt.target).parent().find("pre").toggle();
+			});
+			
 <?php 
 
 

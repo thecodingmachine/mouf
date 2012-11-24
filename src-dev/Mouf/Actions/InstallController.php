@@ -101,6 +101,9 @@ class InstallController extends Controller {
 			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
 		}
 		
+		$this->multiStepActionService->setFinalUrlRedirect("../");
+		$this->multiStepActionService->setConfirmationMessage("Your packages have been successfully installed");
+		
 		$this->done = false;
 		$actionResult =  null;
 		$html = "";
