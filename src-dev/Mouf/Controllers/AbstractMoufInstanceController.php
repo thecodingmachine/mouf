@@ -113,11 +113,11 @@ abstract class AbstractMoufInstanceController extends Controller {
 			//$this->template->addRightHtmlElement($menuItems);	
 		}
 		
-		$viewPropertiesMenuItem = new MenuItem("View properties", ROOT_URL."mouf/instance/");
+		$viewPropertiesMenuItem = new MenuItem("View properties", ROOT_URL."ajaxinstance/");
 		$viewPropertiesMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));
-		$viewDependencyGraphMenuItem = new MenuItem("View dependency graph", "mouf/displayGraph/");
-		$viewDependencyGraphMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));
-		$commonMenuItem = new MenuItem("Common", null, array($viewPropertiesMenuItem, $viewDependencyGraphMenuItem));
+		/*$viewDependencyGraphMenuItem = new MenuItem("View dependency graph", "mouf/displayGraph/");
+		$viewDependencyGraphMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));*/
+		$commonMenuItem = new MenuItem("Common", null, array($viewPropertiesMenuItem/*, $viewDependencyGraphMenuItem*/));
 		\MoufAdmin::getInstanceMenu()->addChild($commonMenuItem);
 		/*$this->template->addRightHtmlElement(new SplashMenu(
 			array(
