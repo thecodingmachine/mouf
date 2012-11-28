@@ -24,7 +24,7 @@ if (!$this->ajax && !empty($this->inErrorInstances)) {
 	echo "<div class='error'>";
 	echo "The following instances are erroneous. They are pointing to a class that no longer exist. You should delete those to avoid any problem.<br/><ul>";
 	foreach ($this->inErrorInstances as $instanceName=>$className) {
-		echo "<li>".$instanceName." - class not found: ".$className." : <a href='".ROOT_URL."mouf/instance/saveComponent?originalInstanceName=".plainstring_to_htmlprotected($instanceName)."&instanceName=&delete=true&selfedit=".$this->selfedit."'>Delete</a></li>";
+		echo "<li>".$instanceName." - class not found: ".$className." : <a href='".ROOT_URL."mouf/deleteInstance?instanceName=".plainstring_to_htmlprotected($instanceName)."&selfedit=".$this->selfedit."'>Delete</a></li>";
 	}
 	echo "</ul>";
 	echo "</div>";

@@ -718,6 +718,23 @@ var MoufDefaultRenderer = (function () {
 							.click(function() {
 								MoufUI.deleteInstance(instance);
 							});
+						// Let's find any extended action
+						var annotations = classDescriptor.getAnnotations();
+						var extendedActions = annotations['ExtendedAction'];
+						if (extendedActions) {
+							for (var i=0; i<extendedActions.length; i++) {
+								var extendedActionStr = extendedActions[i];
+								var extendedAction = jQuery.parseJSON(extendedActionStr);
+								var actionname = extendedAction.name;
+								var actionurl = extendedAction.url;
+								
+								jQuery("<button class='btn btn-success' />").html(actionname).appendTo(btnToolbar)
+								.click(function() {
+									window.location.href = MoufInstanceManager.rootUrl + actionurl + "?name=" + instance.getName();
+								});
+								
+							}
+						}
 						
 						
 						var containerForm = jQuery("<form/>")
