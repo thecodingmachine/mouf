@@ -1406,6 +1406,7 @@ $moufManager->addComponentInstances(array (
     array (
       'template' => 'moufLoginTemplate',
       'userService' => 'userService',
+      'contentBlock' => 'block.content',
       'contentBeforeLoginBox' => 
       array (
         0 => 'loginWelcomeMessage',
@@ -1415,7 +1416,7 @@ $moufManager->addComponentInstances(array (
     array (
       'defaultRedirectUrl' => 
       array (
-        'value' => 'mouf/',
+        'value' => '',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1423,7 +1424,7 @@ $moufManager->addComponentInstances(array (
       ),
       'logoutRedirectUrl' => 
       array (
-        'value' => 'mouf/login/',
+        'value' => 'login/',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1780,27 +1781,19 @@ $moufManager->addComponentInstances(array (
   ),
   'moufLoginTemplate' => 
   array (
-    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
+    'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
     'external' => false,
+    'weak' => false,
     'setterBinds' => 
     array (
-      'setHeader' => 'block.header',
+      'setWebLibraryManager' => 'defaultWebLibraryManager',
       'setFooter' => 'block.footer',
       'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
     ),
-    'weak' => false,
     'fieldProperties' => 
     array (
-      'favIconUrl' => 
-      array (
-        'value' => 'plugins/html/template/MoufTemplate/1.0/images/favicon.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
       'logoImg' => 
       array (
         'value' => 'src-dev/views/images/MoufLogo.png',
@@ -1817,12 +1810,52 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'css_files' => 
+      'enableResponsiveDesign' => 
       array (
-        'value' => 
+        'value' => true,
+        'type' => 'string',
+        'metadata' => 
         array (
-          0 => 'src-dev/views/styles.css',
         ),
+      ),
+    ),
+    'setterProperties' => 
+    array (
+      'setLeftColumnSize' => 
+      array (
+        'value' => '3',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setRightColumnSize' => 
+      array (
+        'value' => '2',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setTitle' => 
+      array (
+        'value' => 'Mouf - Build your website',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setWrapLeftSideBarInWell' => 
+      array (
+        'value' => true,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'setWrapRightSideBarInWell' => 
+      array (
+        'value' => false,
         'type' => 'string',
         'metadata' => 
         array (
@@ -2688,7 +2721,7 @@ $moufManager->addComponentInstances(array (
     array (
       'userFile' => 
       array (
-        'value' => 'MoufUsers.php',
+        'value' => '../../../mouf/MoufUsers.php',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2709,7 +2742,7 @@ $moufManager->addComponentInstances(array (
     array (
       'loginPageUrl' => 
       array (
-        'value' => 'mouf/login/',
+        'value' => 'login/',
         'type' => 'string',
         'metadata' => 
         array (
