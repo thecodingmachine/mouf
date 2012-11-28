@@ -38,30 +38,9 @@ class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 	public function index($name, $selfedit = false) {
 		$this->initController($name, $selfedit);
 
-		/*$this->template->addCssFile("src-dev/views/instances/defaultRenderer.css");
-		
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/messages.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/utils.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/instances.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/defaultRenderer.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/moufui.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/saveManager.js");
-		$this->template->addJsFile(ROOT_URL."src-dev/views/instances/jquery.scrollintoview.js");*/
-		
-		//$this->template->addContentFunction(array($this, "displayComponentView"));
 		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/viewInstance.php", $this);
 		$this->rightBlock->addText("<div id='instanceList'></div>");
 		$this->template->toHtml();	
-	}
-	
-	/**
-	 * Displays the "create a new instance" page
-	 * 
-	 * @Action
-	 * @Logged
-	 */
-	public function create__GET() {
-		
 	}
 }
 ?>

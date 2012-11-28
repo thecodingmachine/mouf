@@ -12,27 +12,7 @@
 
 ?>
 
-<style>
-div.editInstance {
-	float: right;
-}
-
-div.classComment {
-	word-wrap: pre;
-}
-
-</style>
-
-<div id="messages"></div>
-
-
 <div id="renderedInstance"></div>
-
-<div>
-<button onclick="MoufUI.showSourceFile('src/Mouf/Test.php',6);return false;">Show PHP file</button>
-</div>
-
-
 
 <script type="text/javascript">
 

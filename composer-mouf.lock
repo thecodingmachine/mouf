@@ -655,18 +655,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "59ee4ed5eef554009b0ab39e5245bae41ef6a988"
+                "reference": "e7cecec08a9dbe8d77d2be73d3013067fabbbd9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/59ee4ed5eef554009b0ab39e5245bae41ef6a988.zip",
-                "reference": "59ee4ed5eef554009b0ab39e5245bae41ef6a988",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/e7cecec08a9dbe8d77d2be73d3013067fabbbd9f.zip",
+                "reference": "e7cecec08a9dbe8d77d2be73d3013067fabbbd9f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-28 15:25:47",
+            "time": "2012-11-28 15:34:33",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -1090,18 +1090,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.common.getvars.git",
-                "reference": "f803147c98827d35bb341f8867b82729a1f70bfa"
+                "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f803147c98827d35bb341f8867b82729a1f70bfa.zip",
-                "reference": "f803147c98827d35bb341f8867b82729a1f70bfa",
+                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
+                "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
             },
-            "time": "2012-11-24 11:47:40",
+            "time": "2012-11-28 16:10:18",
             "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
