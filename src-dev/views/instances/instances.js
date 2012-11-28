@@ -670,6 +670,8 @@ MoufInstance.prototype.rename = function(newName, callback) {
 	
 		var timestamp = new Date();
 		newName = "__anonymous_"+timestamp.getTime();
+	} else {
+		this.json["anonymous"] = false;
 	}
 	
 	this.json['name'] = newName;
