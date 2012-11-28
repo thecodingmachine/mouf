@@ -12,6 +12,7 @@
 
 ?>
 
+<<<<<<< HEAD
 <style>
 div.editInstance {
 	float: right;
@@ -34,6 +35,10 @@ div.classComment {
 
 
 
+=======
+<div id="renderedInstance"></div>
+
+>>>>>>> 2bd2962e578651194158c58784ae073c42fc2abf
 <script type="text/javascript">
 
 MoufInstanceManager.getInstance(<?php echo json_encode($this->instanceName) ?>).then(function(instance) {

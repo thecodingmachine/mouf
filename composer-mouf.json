@@ -11,7 +11,6 @@
         "mouf/javascript.jquery.jquery-filetree" : ">=1.01-dev",
         "mouf/javascript.syntaxhighlighter" : ">=3.0.83-dev",
         "mouf/html.widgets.menu" : ">=2.0-dev",
-        "mouf/html.template.menus.topribbonmenu" : ">=2.0-dev",
         "mouf/security.simplelogincontroller" : "2.*",
         "mouf/security.userfiledao" : "2.*",
         "mouf/utils.cache.file-cache" : "2.*",

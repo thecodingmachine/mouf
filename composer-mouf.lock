@@ -1,5 +1,5 @@
 {
-    "hash": "755ca95d6c91a5cad852e016732600a0",
+    "hash": "e35f80a3632328881a81addabf750fd8",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -18,6 +18,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "2012-09-19 07:40:44",
             "type": "library",
             "installation-source": "source",
             "license": [
@@ -43,19 +44,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.html_element.git",
-                "reference": "0a731fb245efb6198c0c75b2a57ddbc7182ed44f"
+                "reference": "f821c3aeaa8585005ae4efb1d007348f8abb439b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.html_element/archive/0a731fb245efb6198c0c75b2a57ddbc7182ed44f.zip",
-                "reference": "0a731fb245efb6198c0c75b2a57ddbc7182ed44f",
+                "url": "https://github.com/thecodingmachine/html.html_element/archive/f821c3aeaa8585005ae4efb1d007348f8abb439b.zip",
+                "reference": "f821c3aeaa8585005ae4efb1d007348f8abb439b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "9188-11-23 13:52:56",
-            "type": "library",
+            "time": "2012-11-24 11:46:12",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -86,12 +87,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.bootstrap.git",
-                "reference": "d64be600424335a6abfe3d3a7e849dd2fdf34eb8"
+                "reference": "0278b17a520f1c672e0cc4e15cc5ebf26d52f5bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.bootstrap/archive/d64be600424335a6abfe3d3a7e849dd2fdf34eb8.zip",
-                "reference": "d64be600424335a6abfe3d3a7e849dd2fdf34eb8",
+                "url": "https://github.com/thecodingmachine/html.template.bootstrap/archive/0278b17a520f1c672e0cc4e15cc5ebf26d52f5bf.zip",
+                "reference": "0278b17a520f1c672e0cc4e15cc5ebf26d52f5bf",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +102,8 @@
                 "mouf/html.utils.bootstrap": "2.1.*",
                 "mouf/html.widgets.menu": "2.*"
             },
-            "type": "library",
+            "time": "2012-11-27 18:02:36",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -133,20 +135,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.menus.basicmenu.git",
-                "reference": "7b9de5c56d6c4f82a6f75f2a8a62730c00a926ca"
+                "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/7b9de5c56d6c4f82a6f75f2a8a62730c00a926ca.zip",
-                "reference": "7b9de5c56d6c4f82a6f75f2a8a62730c00a926ca",
+                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/e90932ba56d44a1e17e24de5cadafcc51751fd37.zip",
+                "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.widgets.menu": "2.*"
             },
-            "time": "5823-11-23 13:51:45",
-            "type": "library",
+            "time": "2012-11-24 11:46:21",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -172,76 +174,25 @@
             ]
         },
         {
-            "name": "mouf/html.template.menus.topribbonmenu",
-            "version": "2.0.x-dev",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:thecodingmachine/html.template.menus.topribbonmenu.git",
-                "reference": "1fb6434175678df39091e4a908da248a9c17b90c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu/archive/1fb6434175678df39091e4a908da248a9c17b90c.zip",
-                "reference": "1fb6434175678df39091e4a908da248a9c17b90c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
-                "mouf/html.widgets.menu": "2.*"
-            },
-            "type": "library",
-            "extra": {
-                "mouf": {
-                    "install": {
-                        "install.php": "file"
-                    }
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains a menu that is displayed as a ribbon at the top of the screen. The class is in charge of rendering a 'Menu' instance in HTML using the toHtml() method.",
-            "homepage": "https://github.com/thecodingmachine/html.template.menus.topribbonmenu",
-            "keywords": [
-                "menu",
-                "mouf",
-                "topribbonmenu",
-                "ribbon"
-            ]
-        },
-        {
             "name": "mouf/html.template.mouftemplate",
             "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.mouftemplate",
-                "reference": "a5ac1a1d5b320f33a3c38486f52ecca366d92781"
+                "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/a5ac1a1d5b320f33a3c38486f52ecca366d92781.zip",
-                "reference": "a5ac1a1d5b320f33a3c38486f52ecca366d92781",
+                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/d402437cbd3d2e6de3727622af9875ed4eaa2fd2.zip",
+                "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.template.templateinterface": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-24 11:46:29",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -272,19 +223,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.templateinterface.git",
-                "reference": "9190706487ead923dbd2b6de62f963c8f2e19223"
+                "reference": "663da85f7e97354f8488bf11faea597641b6323c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.templateinterface/archive/9190706487ead923dbd2b6de62f963c8f2e19223.zip",
-                "reference": "9190706487ead923dbd2b6de62f963c8f2e19223",
+                "url": "https://github.com/thecodingmachine/html.template.templateinterface/archive/663da85f7e97354f8488bf11faea597641b6323c.zip",
+                "reference": "663da85f7e97354f8488bf11faea597641b6323c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-24 11:46:33",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -315,19 +267,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.utils.bootstrap.git",
-                "reference": "697a340ae23b35560902de53f9a1601bfe730221"
+                "reference": "01e981784de5a5f129ddefb05536cf49f6d21798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.bootstrap/archive/697a340ae23b35560902de53f9a1601bfe730221.zip",
-                "reference": "697a340ae23b35560902de53f9a1601bfe730221",
+                "url": "https://github.com/thecodingmachine/html.utils.bootstrap/archive/01e981784de5a5f129ddefb05536cf49f6d21798.zip",
+                "reference": "01e981784de5a5f129ddefb05536cf49f6d21798",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-24 11:46:37",
+            "type": "mouf-library",
             "installation-source": "source",
             "license": [
                 "Apache License V2.0"
@@ -354,24 +307,28 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "d2de65bc08e3777855dee9b09d82cbfb795cb03c"
+                "reference": "92784769cab9fdbe3d2655a7281e5a80a0d9b9f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/archive/d2de65bc08e3777855dee9b09d82cbfb795cb03c.zip",
-                "reference": "d2de65bc08e3777855dee9b09d82cbfb795cb03c",
+                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/archive/92784769cab9fdbe3d2655a7281e5a80a0d9b9f6.zip",
+                "reference": "92784769cab9fdbe3d2655a7281e5a80a0d9b9f6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.htmlelement": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-28 13:52:19",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": {
-                        "install.php": "file"
-                    }
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "install.php"
+                        }
+                    ]
                 }
             },
             "installation-source": "source",
@@ -407,20 +364,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.widgets.menu.git",
-                "reference": "8c7f974b684e42edf79627becff8b396a0b2fece"
+                "reference": "f87686ec9f05aea70274ef0c2caa3669420af20f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.menu/archive/8c7f974b684e42edf79627becff8b396a0b2fece.zip",
-                "reference": "8c7f974b684e42edf79627becff8b396a0b2fece",
+                "url": "https://github.com/thecodingmachine/html.widgets.menu/archive/f87686ec9f05aea70274ef0c2caa3669420af20f.zip",
+                "reference": "f87686ec9f05aea70274ef0c2caa3669420af20f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/utils.i18n.fine": "3.*"
             },
-            "time": "5840-11-23 13:51:45",
-            "type": "library",
+            "time": "2012-11-24 11:46:44",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -451,24 +408,28 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "b586d543ee769144e4e430a70e89066c8c9a0603"
+                "reference": "fec76bef510b71d8954d44bbd866b49b39efddc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/b586d543ee769144e4e430a70e89066c8c9a0603.zip",
-                "reference": "b586d543ee769144e4e430a70e89066c8c9a0603",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/fec76bef510b71d8954d44bbd866b49b39efddc0.zip",
+                "reference": "fec76bef510b71d8954d44bbd866b49b39efddc0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-27 09:30:55",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": {
-                        "install.php": "file"
-                    }
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "install.php"
+                        }
+                    ]
                 }
             },
             "installation-source": "source",
@@ -496,23 +457,25 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-filetree.git",
-                "reference": "984d8509df74f48d88c3c81ad2c8ee28c4005742"
+                "reference": "5f6d836fdc9e5f9ea83db6aba6a443e747a37e3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/984d8509df74f48d88c3c81ad2c8ee28c4005742.zip",
-                "reference": "984d8509df74f48d88c3c81ad2c8ee28c4005742",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/5f6d836fdc9e5f9ea83db6aba6a443e747a37e3b.zip",
+                "reference": "5f6d836fdc9e5f9ea83db6aba6a443e747a37e3b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0"
             },
-            "type": "library",
+            "time": "2012-11-28 14:01:03",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": {
-                        "install.php": "file"
+                        "type": "file",
+                        "file": "install.php"
                     }
                 }
             },
@@ -543,23 +506,25 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git",
-                "reference": "9932c0a45607c9451590181f0f5406a501a9d36f"
+                "reference": "74e98066445636d6b82f8bc78cc576772dd0225d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/9932c0a45607c9451590181f0f5406a501a9d36f.zip",
-                "reference": "9932c0a45607c9451590181f0f5406a501a9d36f",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/74e98066445636d6b82f8bc78cc576772dd0225d.zip",
+                "reference": "74e98066445636d6b82f8bc78cc576772dd0225d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0"
             },
-            "type": "library",
+            "time": "2012-11-28 13:55:49",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": {
-                        "install.php": "file"
+                        "type": "file",
+                        "file": "install.php"
                     }
                 }
             },
@@ -590,23 +555,25 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.syntaxhighlighter.git",
-                "reference": "e23256f83f85c111496d974af216a033a474aecc"
+                "reference": "7cf3a0cfd43f3d60a75afd5069ff772221d8b7d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/e23256f83f85c111496d974af216a033a474aecc.zip",
-                "reference": "e23256f83f85c111496d974af216a033a474aecc",
+                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/7cf3a0cfd43f3d60a75afd5069ff772221d8b7d2.zip",
+                "reference": "7cf3a0cfd43f3d60a75afd5069ff772221d8b7d2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2"
             },
-            "type": "library",
+            "time": "2012-11-28 13:57:03",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": {
-                        "install.php": "file"
+                        "type": "file",
+                        "file": "install.php"
                     }
                 }
             },
@@ -640,23 +607,25 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.underscore.git",
-                "reference": "98cdc51a5ae42552a245892f2c83f55ff8617927"
+                "reference": "0058611c1e7558c81cfb593586212c0d0809b41f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/98cdc51a5ae42552a245892f2c83f55ff8617927.zip",
-                "reference": "98cdc51a5ae42552a245892f2c83f55ff8617927",
+                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/0058611c1e7558c81cfb593586212c0d0809b41f.zip",
+                "reference": "0058611c1e7558c81cfb593586212c0d0809b41f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "type": "library",
+            "time": "2012-11-28 13:52:56",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": {
-                        "install.php": "file"
+                        "type": "file",
+                        "file": "install.php"
                     }
                 }
             },
@@ -686,18 +655,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "b1516450300fcd5a29bc39f0c8ab332e75fee8e6"
+                "reference": "e7cecec08a9dbe8d77d2be73d3013067fabbbd9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/b1516450300fcd5a29bc39f0c8ab332e75fee8e6.zip",
-                "reference": "b1516450300fcd5a29bc39f0c8ab332e75fee8e6",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/e7cecec08a9dbe8d77d2be73d3013067fabbbd9f.zip",
+                "reference": "e7cecec08a9dbe8d77d2be73d3013067fabbbd9f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-23 13:08:09",
+            "time": "2012-11-28 15:34:33",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -734,19 +703,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "9be92be20055fca12df9f1f1d1b8b695f1ac8720"
+                "reference": "bab3b6a3856b3dc7ccb2ff535b572854eaba0391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/9be92be20055fca12df9f1f1d1b8b695f1ac8720.zip",
-                "reference": "9be92be20055fca12df9f1f1d1b8b695f1ac8720",
+                "url": "https://github.com/thecodingmachine/mvc.splash/archive/bab3b6a3856b3dc7ccb2ff535b572854eaba0391.zip",
+                "reference": "bab3b6a3856b3dc7ccb2ff535b572854eaba0391",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "mouf/mvc.splash-common": "4.0.*"
+                "mouf/mvc.splash-common": "4.0.*",
+                "mouf/html.template.bootstrap": "2.1.*"
             },
-            "time": "2012-11-23 13:53:14",
+            "time": "2012-11-23 14:39:07",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -779,12 +749,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common",
-                "reference": "6be9ea5387b52abc0e2d5101ed004194f0c5b9ff"
+                "reference": "d87d284402de2bcad9275f33bed89399625ad1bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/6be9ea5387b52abc0e2d5101ed004194f0c5b9ff.zip",
-                "reference": "6be9ea5387b52abc0e2d5101ed004194f0c5b9ff",
+                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/d87d284402de2bcad9275f33bed89399625ad1bc.zip",
+                "reference": "d87d284402de2bcad9275f33bed89399625ad1bc",
                 "shasum": ""
             },
             "require": {
@@ -792,7 +762,8 @@
                 "mouf/html.htmlelement": "2.*",
                 "mouf/utils.i18n.fine": "3.*"
             },
-            "type": "library",
+            "time": "2012-11-24 11:47:14",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -825,19 +796,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/security.simplelogincontroller.git",
-                "reference": "15744c1001f0070a76a986c8d4b373a6216f5ebb"
+                "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/15744c1001f0070a76a986c8d4b373a6216f5ebb.zip",
-                "reference": "15744c1001f0070a76a986c8d4b373a6216f5ebb",
+                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/4c719e7e102b08065eaa4dcd378e3cab80b60311.zip",
+                "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/security.userservice": "2.*"
             },
-            "type": "library",
+            "time": "2012-11-28 12:18:56",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -868,20 +840,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/security.userfiledao.git",
-                "reference": "f6b7897e078a86ed16d27d63d10fac800dfbd985"
+                "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/f6b7897e078a86ed16d27d63d10fac800dfbd985.zip",
-                "reference": "f6b7897e078a86ed16d27d63d10fac800dfbd985",
+                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c.zip",
+                "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/security.userservice": "2.*"
             },
-            "time": "5866-11-23 13:51:45",
-            "type": "library",
+            "time": "2012-11-24 11:47:22",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -913,12 +885,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/security.userservice.git",
-                "reference": "0822bb1d82124338d5211cc6a815d357b4aaebdc"
+                "reference": "258d29984ea0631ddd21700818aeb968725cc5b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userservice/archive/0822bb1d82124338d5211cc6a815d357b4aaebdc.zip",
-                "reference": "0822bb1d82124338d5211cc6a815d357b4aaebdc",
+                "url": "https://github.com/thecodingmachine/security.userservice/archive/258d29984ea0631ddd21700818aeb968725cc5b9.zip",
+                "reference": "258d29984ea0631ddd21700818aeb968725cc5b9",
                 "shasum": ""
             },
             "require": {
@@ -926,8 +898,21 @@
                 "mouf/utils.common.conditioninterface": "2.*",
                 "mouf/utils.log.log_interface": "2.*"
             },
-            "time": "5869-11-23 13:51:45",
-            "type": "library",
+            "time": "2012-11-28 12:13:42",
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/install.php"
+                        }
+                    ],
+                    "require-admin": [
+                        "src/MoufUserServiceValidators.php"
+                    ]
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -958,19 +943,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.cache-interface.git",
-                "reference": "a05b50d7bbf122df33c393ed1dfb4e1d83cab4dc"
+                "reference": "530923d1756242dfb551f040ee7c77410ec015ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.cache-interface/archive/a05b50d7bbf122df33c393ed1dfb4e1d83cab4dc.zip",
-                "reference": "a05b50d7bbf122df33c393ed1dfb4e1d83cab4dc",
+                "url": "https://github.com/thecodingmachine/utils.cache.cache-interface/archive/530923d1756242dfb551f040ee7c77410ec015ed.zip",
+                "reference": "530923d1756242dfb551f040ee7c77410ec015ed",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "5985-11-23 13:52:56",
-            "type": "library",
+            "time": "2012-11-24 11:47:29",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "require-admin": [
@@ -1008,12 +993,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.file-cache.git",
-                "reference": "c6b44ebf9b7aefeb229fe83d01bd442982e14ed3"
+                "reference": "6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/c6b44ebf9b7aefeb229fe83d01bd442982e14ed3.zip",
-                "reference": "c6b44ebf9b7aefeb229fe83d01bd442982e14ed3",
+                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256.zip",
+                "reference": "6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256",
                 "shasum": ""
             },
             "require": {
@@ -1021,7 +1006,18 @@
                 "mouf/utils.cache.cache-interface": "2.*",
                 "mouf/utils.log.log_interface": "2.*"
             },
-            "type": "library",
+            "time": "2012-11-24 11:47:33",
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/install.php"
+                        }
+                    ]
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1052,18 +1048,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.common.conditioninterface.git",
-                "reference": "1a381ed8bd3bc26e0f1a29a9478848ecb99c3255"
+                "reference": "77cea9572876de02af2bdfa66b6e90451e8ea485"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/archive/1a381ed8bd3bc26e0f1a29a9478848ecb99c3255.zip",
-                "reference": "1a381ed8bd3bc26e0f1a29a9478848ecb99c3255",
+                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/archive/77cea9572876de02af2bdfa66b6e90451e8ea485.zip",
+                "reference": "77cea9572876de02af2bdfa66b6e90451e8ea485",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "type": "library",
+            "time": "2012-11-24 11:47:37",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1093,18 +1090,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.common.getvars.git",
-                "reference": "4c5d644de5ecec8389f817b3511de7f350421ca2"
+                "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/4c5d644de5ecec8389f817b3511de7f350421ca2.zip",
-                "reference": "4c5d644de5ecec8389f817b3511de7f350421ca2",
+                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
+                "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
             },
-            "type": "library",
+            "time": "2012-11-28 16:10:18",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "files": [
@@ -1136,25 +1134,29 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.i18n.fine.git",
-                "reference": "74c7b6a69310b85cacb610c7eecf783943612ffd"
+                "reference": "010edae206ce5631b00a7f036705a9bab3aeab80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/74c7b6a69310b85cacb610c7eecf783943612ffd.zip",
-                "reference": "74c7b6a69310b85cacb610c7eecf783943612ffd",
+                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/010edae206ce5631b00a7f036705a9bab3aeab80.zip",
+                "reference": "010edae206ce5631b00a7f036705a9bab3aeab80",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "phpexcel/phpexcel": ">=1.7.6, <2.0.0"
+                "phpexcel/phpexcel": ">=1.7.6, <2.0.0",
+                "mouf/mouf-installer": ">=2.0,<3.0"
             },
-            "time": "2012-11-23 14:27:06",
-            "type": "library",
+            "time": "2012-11-28 15:14:06",
+            "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": {
-                        "mouf/install.php": "file"
-                    },
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/install.php"
+                        }
+                    ],
                     "doc": {
                         "using_fine.html": "Using FINE",
                         "date_functions.html": "Date functions",
@@ -1201,22 +1203,23 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.log.errorlog_logger.git",
-                "reference": "d36d57646560ab3d29c1fac06b4062ada0a6ae7a"
+                "reference": "d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/d36d57646560ab3d29c1fac06b4062ada0a6ae7a.zip",
-                "reference": "d36d57646560ab3d29c1fac06b4062ada0a6ae7a",
+                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a.zip",
+                "reference": "d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/utils.log.log_interface": ">=2.0-dev,<3.0",
-                "mouf/mouf-installer": ">=2.0-dev,<3.0"
+                "mouf/mouf-installer": ">=2.0,<3.0"
             },
             "provide": {
                 "mouf/utils.log.logger": "1.0"
             },
+            "time": "2012-11-28 15:16:09",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1258,19 +1261,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.log.log_interface.git",
-                "reference": "4b35d3e554a9d1cb1624a191611f0609d91de3c8"
+                "reference": "97085d196987feeddf9ac6feba31068d10a54c3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.log_interface/archive/4b35d3e554a9d1cb1624a191611f0609d91de3c8.zip",
-                "reference": "4b35d3e554a9d1cb1624a191611f0609d91de3c8",
+                "url": "https://github.com/thecodingmachine/utils.log.log_interface/archive/97085d196987feeddf9ac6feba31068d10a54c3b.zip",
+                "reference": "97085d196987feeddf9ac6feba31068d10a54c3b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/utils.log.logger": "1.*"
             },
-            "type": "library",
+            "time": "2012-11-24 11:47:50",
+            "type": "mouf-library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1345,7 +1349,6 @@
         "mouf/javascript.underscore": 20,
         "mouf/javascript.jquery.jquery-filetree": 20,
         "mouf/javascript.syntaxhighlighter": 20,
-        "mouf/html.widgets.menu": 20,
-        "mouf/html.template.menus.topribbonmenu": 20
+        "mouf/html.widgets.menu": 20
     }
 }
