@@ -347,6 +347,32 @@ class MoufManager {
 	public function removeComponent($instanceName) {
 		unset($this->instanceDescriptors[$instanceName]);
 		unset($this->declaredInstances[$instanceName]);
+		
+		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
+			if (isset($declaredInstance["constructor"])) {
+				foreach ($declaredInstance["constructor"] as $index=>$propWrapper) {
+					if ($propWrapper['parametertype'] == 'object') {
+						$properties = $propWrapper['value'];
+						if (is_array($properties)) {
+							// If this is an array of properties
+							$keys_matching = array_keys($properties, $instanceName);
+							if (!empty($keys_matching)) {
+								foreach ($keys_matching as $key) {
+									unset($properties[$key]);
+								}
+								$this->setParameterViaConstructor($declaredInstanceName, $index, $properties, 'object');
+							}
+						} else {
+							// If this is a simple property
+							if ($properties == $instanceName) {
+								$this->setParameterViaConstructor($declaredInstanceName, $index, null, 'object');
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["fieldBinds"])) {
 				foreach ($declaredInstance["fieldBinds"] as $paramName=>$properties) {
