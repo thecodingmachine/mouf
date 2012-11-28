@@ -1,0 +1,61 @@
+{
+    "hash": "3620bfb732d0e04fddc744a081f50cd0",
+    "packages": [
+        {
+            "name": "mouf/mouf-installer",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:thecodingmachine/mouf-installer.git",
+                "reference": "4b5c2e85d24363ea29c4ef8378a2956af4d3eb19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/4b5c2e85d24363ea29c4ef8378a2956af4d3eb19.zip",
+                "reference": "4b5c2e85d24363ea29c4ef8378a2956af4d3eb19",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "2012-11-26 19:34:01",
+            "type": "composer-installer",
+            "extra": {
+                "class": [
+                    "Mouf\\Installer\\MoufLibraryInstaller",
+                    "Mouf\\Installer\\MoufFrameworkInstaller"
+                ]
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "The Mouf-installer package is a composer in charge of installing any package with the 'mouf-library' type.",
+            "homepage": "http://mouf-php.com",
+            "keywords": [
+                "install",
+                "mouf"
+            ]
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "mouf/mouf-installer": 20
+    }
+}
