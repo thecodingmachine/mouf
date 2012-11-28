@@ -1110,7 +1110,9 @@ MoufClass.prototype.getInjectableSetters = function() {
 						break;
 					}
 				}
-				moufProperties.push(method);
+				if (!ko) {
+					moufProperties.push(method);
+				}
 			}
 		}
 		//}
