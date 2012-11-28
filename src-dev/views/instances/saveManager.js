@@ -35,6 +35,11 @@ var MoufSaveManager = (function () {
 	 */
 	var _changesList = [];
 	
+	/**
+	 * The list of callbacks to be called after the save is successfull.
+	 */
+	var _callbackList = [];
+	
 	var _serializeSubProperties = function(moufInstanceProperty) {
 		
 		var serializedArray = [];
@@ -94,6 +99,7 @@ var MoufSaveManager = (function () {
 		};
 				
 		_changesList.push(command);
+				
 		_save();
 	}
 	
@@ -126,7 +132,7 @@ var MoufSaveManager = (function () {
 			"isAnonymous": instance.isAnonymous()
 		};
 		if (callback) {
-			command.callback = callback;
+			_callbackList.push(callback);
 		}
 		
 		_changesList.push(command);
@@ -143,7 +149,7 @@ var MoufSaveManager = (function () {
 			"name": instance.getName()
 		};
 		if (callback) {
-			command.callback = callback;
+			_callbackList.push(callback);
 		}
 		
 		_changesList.push(command);
@@ -175,6 +181,7 @@ var MoufSaveManager = (function () {
 		_saveInProgress = true;
 		
 		var changes = _changesList;
+		var callbacks = _callbackList;
 		
 		jQuery.ajax(MoufInstanceManager.rootUrl+"src/direct/save_changes.php", {
 			data: {
@@ -196,10 +203,8 @@ var MoufSaveManager = (function () {
 				return;
 			} else {
 				// Let's call any callback to say we are complete.
-				_.each(changes, function(command) {
-					if (command.callback) {
-						command.callback();
-					}
+				_.each(callbacks, function(callback) {
+					callback();
 				})
 			}
 			
@@ -211,6 +216,7 @@ var MoufSaveManager = (function () {
 			}
 		});
 		_changesList = [];
+		_callbackList = [];
 
 	}
 	

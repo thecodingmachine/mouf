@@ -31,8 +31,8 @@ class MoufLoginController extends SimpleLoginController {
 	 * @param string $redirecturl The URL to redirect to when login is done. If not specified, the default login URL defined in the controller will be used instead.
 	 */
 	public function defaultAction($login = null, $redirect = null) {
-		if (!file_exists(ROOT_PATH."MoufUsers.php")) {
-			$this->contentBlock->addFile(dirname(__FILE__)."/../views/missing_password_file.php", $this);
+		if (!file_exists(ROOT_PATH."../../../mouf/MoufUsers.php")) {
+			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/missing_password_file.php", $this);
 			$this->template->toHtml();
 			return;
 		}

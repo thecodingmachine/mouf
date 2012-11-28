@@ -425,6 +425,7 @@ var MoufUI = (function () {
 					// When save is performed, let's reload the page with the new URL.
 					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(instance.getName())+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
 				});
+				return false;
 			}).appendTo(modalFooter);
 		},
 		
