@@ -255,28 +255,7 @@ class MoufInstanceDescriptor {
 		$instanceArray['name'] = $this->name;
 		$instanceArray['class'] = $this->getClassName();
 		$instanceArray['anonymous'] = $this->isAnonymous();
-		//$instanceArray['properties'] = array();
-		//$moufProperties = $classDescriptor->getMoufProperties();
-		//foreach ($moufProperties as $propertyName=>$moufProperty) {
-			/* @var $moufProperty MoufPropertyDescriptor */
-		//	$instanceArray['properties'][$propertyName] = array();
-		//	//$instanceArray['properties'][$propertyName]['source'] = $moufProperty->getSource();
-		//	$property = $this->getProperty($propertyName);
-		//	$value = $property->getValue();
-		//	if ($value instanceof MoufInstanceDescriptor) {
-		//		$serializableValue = $value->getIdentifierName();
-		//	} elseif (is_array($value)) {
-		//		// We cannot match a PHP array to a JSON array!
-		//		// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
-		//		// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
-		//		$serializableValue = self::arrayToJson($value);
-		//	} else {
-		//		$serializableValue = $value;
-		//	}
-		//	$instanceArray['properties'][$propertyName]['value'] = $serializableValue;
-		//	$instanceArray['properties'][$propertyName]['origin'] = $property->getOrigin();
-		//	$instanceArray['properties'][$propertyName]['metadata'] = $property->getMetaData();
-		//}
+		
 		$instanceArray['constructorArguments'] = array();
 		foreach ($classDescriptor->getInjectablePropertiesByConstructor() as $propertyName=>$moufProperty) {
 			$instanceArray['constructorArguments'][$propertyName] = $this->getConstructorArgumentProperty($propertyName)->toJson();
