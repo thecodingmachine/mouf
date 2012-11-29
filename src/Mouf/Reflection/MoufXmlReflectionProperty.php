@@ -51,6 +51,18 @@ class MoufXmlReflectionProperty implements MoufReflectionPropertyInterface
 	 * @var MoufPhpDocComment
 	 */
 	private $docComment;
+	
+	/**
+	 * Whether the property is public, private or protected
+	 * @var string
+	 */
+	private $modifier;
+	
+	/**
+	 * Tells if the property is static
+	 * @var unknown
+	 */
+	private $isStatic;
     /**
      * constructor
      *
@@ -65,6 +77,9 @@ class MoufXmlReflectionProperty implements MoufReflectionPropertyInterface
         } else {
             $this->className = $class;
         }
+        
+        $this->modifier = (string)($xmlElem['modifier']);
+        $this->isStatic = ((string)($xmlElem['is_static'])) == "true";
         
         $this->xmlElem = $xmlElem;
         $this->propertyName = (string)($xmlElem['name']);
@@ -194,6 +209,34 @@ class MoufXmlReflectionProperty implements MoufReflectionPropertyInterface
     public function getDeclaringClass()
     {
         return $this->refClass;
+    }
+    
+    /**
+     * Tells if the property is a public one
+     */
+    public function isPublic(){
+    	return $this->modifier == 'public';
+    }
+    
+    /**
+     * Tells if the property is a private one
+     */
+    public function isPrivate(){
+    	return $this->modifier == 'private';
+    }
+    
+    /**
+     * Tells if the protected is a public one
+     */
+    public function isProtected(){
+    	return $this->modifier == 'protected';
+    }
+    
+    /**
+     * Tells if the property is static
+     */
+    public function isStatic(){
+    	return $this->isStatic;
     }
     
 }

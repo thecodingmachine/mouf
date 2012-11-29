@@ -103,4 +103,34 @@ interface MoufReflectionClassInterface {
 	 */
 	public function getUseNamespaces();
 	
+	
+	/**
+	 * Returns the list of MoufPropertyDescriptor that can be injected via the constructor.
+	 *
+	 * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+	 */
+	public function getInjectablePropertiesByConstructor();
+	
+	/**
+	 * Returns the list of MoufPropertyDescriptor that can be injected via a setter of the class.
+	 *
+	 * @return MoufPropertyDescriptor[] An associative array. The key is the name of the method name.
+	 */
+	public function getInjectablePropertiesBySetter();
+	
+	/**
+	 * Returns the list of MoufPropertyDescriptor that can be injected via a public property of the class.
+	 *
+	 * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+	 */
+	public function getInjectablePropertiesByPublicProperty();
+	
+	/**
+	 * Returns a Mouf property descriptor for the public property whose name is $name.
+	 *
+	 * @param string $name
+	 * @return MoufPropertyDescriptor
+	 */
+	public function getInjectablePropertyByPublicProperty($name);
+	
 }

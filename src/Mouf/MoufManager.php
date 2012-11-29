@@ -1965,7 +1965,7 @@ class MoufManager {
 	 * @return MoufInstanceDescriptor
 	 */
 	public function createInstance($className, $mode = self::DECLARE_ON_EXIST_EXCEPTION) {
-		
+		$className = ltrim($className, "\\");
 		$name = $this->getFreeAnonymousName();
 		$this->declareComponent($name, $className, false, $mode);
 		$this->setInstanceAnonymousness($name, true);

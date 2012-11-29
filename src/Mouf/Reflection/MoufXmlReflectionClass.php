@@ -9,6 +9,7 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
 /**
  * This class behaves like MoufReflectionClass, except it is completely based on a Xml message.
  * It does not try to access the real class.
@@ -31,6 +32,21 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
 	 * @var MoufPhpDocComment
 	 */
 	private $docComment;
+	
+	/**
+	 * @var MoufPropertyDescriptor[]
+	 */
+	private $injectablePropertiesByConstructor;
+	
+	/**
+	 * @var MoufPropertyDescriptor[]
+	 */
+	private $injectablePropertiesBySetter;
+	
+	/**
+	 * @var MoufPropertyDescriptor[]
+	 */
+	private $injectablePropertiesByPublicProperty;
 	
 	/**
 	 * Default constructor
@@ -397,5 +413,95 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
         return $moufRefExtension;
     }*/
     
+	/**
+     * Returns the list of MoufPropertyDescriptor that can be injected via the constructor.
+     * 
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+     */
+    public function getInjectablePropertiesByConstructor() {
+    	if ($this->injectablePropertiesByConstructor === null) {
+	    	$moufProperties = array();
+	    	$constructor = $this->getConstructor();
+	    	if ($constructor != null) {
+	    		foreach($constructor->getParameters() as $parameter) {
+	    			$propertyDescriptor = new MoufPropertyDescriptor($parameter);
+	    			$moufProperties[$propertyDescriptor->getName()] = $propertyDescriptor;
+	    		}
+	    	}
+	    	$this->injectablePropertiesByConstructor = $moufProperties;
+    	}
+    	return $this->injectablePropertiesByConstructor;
+    }
+    
+    /**
+     * Returns the list of MoufPropertyDescriptor that can be injected via a setter of the class.
+     *
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the method name.
+     */
+    public function getInjectablePropertiesBySetter() {
+    	if ($this->injectablePropertiesBySetter === null) {
+    		$moufProperties = array();
+    		foreach($this->getMethodsByPattern('^set..*') as $method) {
+    			/* @var $attribute MoufXmlReflectionProperty */
+    			//if ($method->hasAnnotation("Property")) {
+    	   
+    			$parameters = $method->getParameters();
+    			if (count($parameters) == 0) {
+    				continue;
+    			}
+    			if (count($parameters)>1) {
+    				$ko = false;
+    				for ($i=1, $count=count($parameters); $i<$count; $i++) {
+    					$param = $parameters[$i];
+    					if (!$param->isDefaultValueAvailable()) {
+    						$ko = true;
+    					}
+    				}
+    				if ($ko) {
+    					continue;
+    				}
+    			}
+    	   
+    			$propertyDescriptor = new MoufPropertyDescriptor($method);
+    			$moufProperties[$method->getName()] = $propertyDescriptor;
+    			//}
+    		}
+    		$this->injectablePropertiesBySetter = $moufProperties;
+    	}
+    	return $this->injectablePropertiesBySetter;
+    }
+    
+    /**
+     * Returns the list of MoufPropertyDescriptor that can be injected via a public property of the class.
+     *
+     * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
+     */
+    public function getInjectablePropertiesByPublicProperty() {
+    	if ($this->injectablePropertiesByPublicProperty === null) {
+    		$moufProperties = array();
+    		foreach($this->getProperties() as $attribute) {
+    			/* @var $attribute MoufXmlReflectionProperty */
+    			//if ($attribute->hasAnnotation("Property")) {
+    			if ($attribute->isPublic() && !$attribute->isStatic()) {
+    				$propertyDescriptor = new MoufPropertyDescriptor($attribute);
+    				$moufProperties[$attribute->getName()] = $propertyDescriptor;
+    			}
+    			//}
+    		}
+    		$this->injectablePropertiesByPublicProperty = $moufProperties;
+    	}
+    	return $this->injectablePropertiesByPublicProperty;
+    }
+    
+    /**
+     * Returns a Mouf property descriptor for the public property whose name is $name.
+     *
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyByPublicProperty($name) {
+    	$properties = $this->getInjectablePropertiesByPublicProperty();
+    	return $properties[$name];
+    }
 }
 ?>

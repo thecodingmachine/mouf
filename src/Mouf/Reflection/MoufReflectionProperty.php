@@ -191,7 +191,10 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	$propertyNode = $root->addChild("property");
     	$propertyNode->addAttribute("name", $this->getName());
     	$propertyNode->addChild("comment", $this->getDocComment());
-
+		$propertyNode->addAttribute("modifier", $this->isPrivate() ? 'private' : $this->isProtected() ? "protected" : "public");
+		$propertyNode->addAttribute("is_static", $this->isStatic() ? "true" : "false");
+		
+    	
     	if ($this->isPublic() && !$this->isStatic()) {
 	    	// Default value
 	    	$className = $this->refClass->getName();

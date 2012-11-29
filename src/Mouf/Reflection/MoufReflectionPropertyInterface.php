@@ -75,4 +75,24 @@ interface MoufReflectionPropertyInterface {
 	 * @return MoufReflectionClassInterface
 	 */
 	public function getDeclaringClass();
+	
+	/**
+	 * Tells if the property is a public one
+	 */
+	public function isPublic();
+	
+	/**
+	 * Tells if the property is a private one
+	 */
+	public function isPrivate();
+	
+	/**
+	 * Tells if the protected is a public one
+	 */
+	public function isProtected();
+	
+	/**
+	 * Tells if the property is static
+	 */
+	public function isStatic();
 }

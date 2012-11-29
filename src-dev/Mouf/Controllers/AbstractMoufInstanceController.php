@@ -1,4 +1,5 @@
 <?php
+namespace Mouf\Controllers;
 /*
  * This file is part of the Mouf core package.
  *
@@ -7,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
-namespace Mouf\Controllers;
 
 use Mouf\Html\Widgets\Menu\MenuItem;
 
