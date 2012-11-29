@@ -503,5 +503,16 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
     	$properties = $this->getInjectablePropertiesByPublicProperty();
     	return $properties[$name];
     }
+    
+    /**
+     * Returns a Mouf property descriptor for the setter whose method name is $name.
+     *
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyBySetter($name) {
+    	$properties = $this->getInjectablePropertiesBySetter();
+    	return $properties[$name];
+    }
 }
 ?>

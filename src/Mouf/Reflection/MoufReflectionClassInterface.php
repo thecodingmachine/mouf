@@ -133,4 +133,11 @@ interface MoufReflectionClassInterface {
 	 */
 	public function getInjectablePropertyByPublicProperty($name);
 	
+	/**
+	 * Returns a Mouf property descriptor for the setter whose method name is $name.
+	 *
+	 * @param string $name
+	 * @return MoufPropertyDescriptor
+	 */
+	public function getInjectablePropertyBySetter($name);
 }
