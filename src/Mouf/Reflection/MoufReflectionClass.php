@@ -405,36 +405,48 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      */
     public function getInjectablePropertiesBySetter() {
     	if ($this->injectablePropertiesBySetter === null) {
-	    	$moufProperties = array();
-	    	foreach($this->getMethodsByPattern('^set..*') as $method) {
-	    		/* @var $attribute MoufXmlReflectionProperty */
-	    		//if ($method->hasAnnotation("Property")) {
-	    		
-	    		$parameters = $method->getParameters();
-	    		if (count($parameters) == 0) {
-	    			continue;
-	    		}
-	    		if (count($parameters)>1) {
-	    			$ko = false;
-	    			for ($i=1, $count=count($parameters); $i<$count; $i++) {
-	    				$param = $parameters[$i];
-	    				if (!$param->isDefaultValueAvailable()) {
-	    					$ko = true;
-	    				}
-	    			}
-	    			if ($ko) {
-	    				continue;
-	    			}
-	    		}
-	    		
-    			$propertyDescriptor = new MoufPropertyDescriptor($method);
-    			$moufProperties[$method->getName()] = $propertyDescriptor;
-	    		//}
-	    	}
-	    	$this->injectablePropertiesBySetter = $moufProperties;
+    		$this->injectablePropertiesBySetter = self::staticGetInjectablePropertiesBySetter($this);
     	}
     	return $this->injectablePropertiesBySetter;
     }
+
+    /**
+     * We need this static method because we cannot use traits for PHP 5.3 that would have been useful
+     * to provide those methods to both MoufReflectionClass and MoufXMLReflectionClass.
+     * 
+     * @param MoufReflectionClassInterface $refClass
+     * @return multitype:\Mouf\MoufPropertyDescriptor
+     */
+    public static function staticGetInjectablePropertiesBySetter(MoufReflectionClassInterface $refClass) {
+    	$moufProperties = array();
+    	foreach($refClass->getMethodsByPattern('^set..*') as $method) {
+    		/* @var $attribute MoufXmlReflectionProperty */
+    		//if ($method->hasAnnotation("Property")) {
+    		 
+    		$parameters = $method->getParameters();
+    		if (count($parameters) == 0) {
+    			continue;
+    		}
+    		if (count($parameters)>1) {
+    			$ko = false;
+    			for ($i=1, $count=count($parameters); $i<$count; $i++) {
+    				$param = $parameters[$i];
+    				if (!$param->isDefaultValueAvailable()) {
+    					$ko = true;
+    				}
+    			}
+    			if ($ko) {
+    				continue;
+    			}
+    		}
+    		 
+    		$propertyDescriptor = new MoufPropertyDescriptor($method);
+    		$moufProperties[$method->getName()] = $propertyDescriptor;
+    		//}
+    	}
+    	return $moufProperties;
+    }
+    
     
     /**
      * Returns a Mouf property descriptor for the setter whose method name is $name.

@@ -440,33 +440,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
      */
     public function getInjectablePropertiesBySetter() {
     	if ($this->injectablePropertiesBySetter === null) {
-    		$moufProperties = array();
-    		foreach($this->getMethodsByPattern('^set..*') as $method) {
-    			/* @var $attribute MoufXmlReflectionProperty */
-    			//if ($method->hasAnnotation("Property")) {
-    	   
-    			$parameters = $method->getParameters();
-    			if (count($parameters) == 0) {
-    				continue;
-    			}
-    			if (count($parameters)>1) {
-    				$ko = false;
-    				for ($i=1, $count=count($parameters); $i<$count; $i++) {
-    					$param = $parameters[$i];
-    					if (!$param->isDefaultValueAvailable()) {
-    						$ko = true;
-    					}
-    				}
-    				if ($ko) {
-    					continue;
-    				}
-    			}
-    	   
-    			$propertyDescriptor = new MoufPropertyDescriptor($method);
-    			$moufProperties[$method->getName()] = $propertyDescriptor;
-    			//}
-    		}
-    		$this->injectablePropertiesBySetter = $moufProperties;
+    		$this->injectablePropertiesBySetter = MoufReflectionClass::staticGetInjectablePropertiesBySetter($this);
     	}
     	return $this->injectablePropertiesBySetter;
     }
