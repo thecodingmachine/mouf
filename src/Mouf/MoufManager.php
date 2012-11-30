@@ -1111,7 +1111,7 @@ class MoufManager {
 	 * @param string $autoload
 	 */
 	public function registerComponent($fileName, $autoload = 'auto') {
-		$this->registeredComponents[$fileName] = array('name' => $fileName, 'autoload' => $autoload);
+		//$this->registeredComponents[$fileName] = array('name' => $fileName, 'autoload' => $autoload);
 	}
 
 	/**

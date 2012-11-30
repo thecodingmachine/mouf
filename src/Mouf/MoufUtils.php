@@ -115,4 +115,72 @@ class MoufUtils {
 	public static function checkRights() {
 		include __DIR__."/../direct/utils/check_rights.php";
 	}
+	
+	/**
+	 * Returns the list of all autoloaded namespaces:
+	 * 
+	 * [
+	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
+	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
+	 * ]
+	 * 
+	 * @return array<int, array<string, string>>
+	 */
+	public static function getAutoloadNamespaces() {
+		$composer = json_decode(file_get_contents(__DIR__."/../../../../../composer.json"), true);
+		
+		if (isset($composer["autoload"]["psr-0"])) {
+			$autoload = $composer["autoload"]["psr-0"];
+		}
+		
+		if (self::isAssoc($autoload)) {
+			return self::unfactorizeAutoload(array($autoload));
+		} else {
+			return self::unfactorizeAutoload($autoload);
+		}		
+	}
+	
+	/**
+	 * Takes in parameter an array like 
+	 * [{ "Mouf": "src/" }] or [{ "Mouf": ["src/", "src2/"] }] .
+	 * returns
+	 * [
+	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
+	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
+	 * ]
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	private static function unfactorizeAutoload($autoload) {
+		$result  = array();
+		foreach ($autoload as $namespaceItem) {
+			foreach ($namespaceItem as $namespace => $directories) {
+				if (!is_array($directories)) {
+					$result[] = array(
+						"namespace" => $namespace,
+						"directory" => trim($directories, '/\\').'/'
+					);
+				} else {
+					foreach ($directories as $dir) {
+						$result[] = array(
+								"namespace" => $namespace,
+								"directory" => trim($dir, '/').'/'
+						);
+					}
+				}
+			}
+		}
+		return $result;
+	} 
+	
+	/**
+	 * Returns if an array is associative or not.
+	 *
+	 * @param array $arr
+	 * @return boolean
+	 */
+	private static function isAssoc($arr)
+	{
+		return array_keys($arr) !== range(0, count($arr) - 1);
+	}
 }
