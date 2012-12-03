@@ -40,10 +40,10 @@ $multiStepActionService = $moufManager->getInstance('installService');
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	$selfEdit = false;
-	$multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+	$multiStepActionService->actionsStoreFile = ROOT_PATH."../../../moufRunningActions.php";
 } else {
 	$selfEdit = true;
-	$multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+	$multiStepActionService->actionsStoreFile = ROOT_PATH."moufRunningActions.php";
 }
 
 $jsonObj = array();

@@ -50,7 +50,7 @@ if (empty($missingDefinedConstants) && empty($missingAvailableConstants)) {
 } else {
 	if (empty($constants)) {
 		$jsonObj['code'] = "warn";
-		$jsonObj['html'] = "Your <code>config.php</code> is empty. Please <a href='".ROOT_URL."mouf/config/?selfedit=".$selfEdit."'>configure your application</a>.";
+		$jsonObj['html'] = "Your <code>config.php</code> is empty. Please <a href='".MOUF_URL."config/?selfedit=".$selfEdit."'>configure your application</a>.";
 	} else {
 		
 		$msg = "";
@@ -60,7 +60,7 @@ if (empty($missingDefinedConstants) && empty($missingAvailableConstants)) {
 			It is important to define these parameters, so that you will be reminded to create them in other environments when you deploy your application.
 			<ul>";
 			foreach ($missingAvailableConstants as $missingAvailableConstant) {
-				$msg .= "<li><a href='".ROOT_URL."mouf/config/register?name=".urlencode($missingAvailableConstant)."&value=".urlencode($constants[$missingAvailableConstant])."&defaultvalue=".urlencode($constants[$missingAvailableConstant])."&selfedit=".$selfEdit."'>Define parameter ".$missingAvailableConstant."</a></li>";
+				$msg .= "<li><a href='".MOUF_URL."config/register?name=".urlencode($missingAvailableConstant)."&value=".urlencode($constants[$missingAvailableConstant])."&defaultvalue=".urlencode($constants[$missingAvailableConstant])."&selfedit=".$selfEdit."'>Define parameter ".$missingAvailableConstant."</a></li>";
 			}
 			$msg .= "</ul><br/> ";
 		}
@@ -72,7 +72,7 @@ if (empty($missingDefinedConstants) && empty($missingAvailableConstants)) {
 				$msg .= "<li>".$missingDefinedConstant."</li>";
 			}
 			$msg .= "</ul>
-			<a href='".ROOT_URL."mouf/config/?selfedit=".$selfEdit."'>Configure those parameters.</a>";
+			<a href='".MOUF_URL."config/?selfedit=".$selfEdit."'>Configure those parameters.</a>";
 		}
 		$jsonObj['html'] = $msg;
 	}

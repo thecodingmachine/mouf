@@ -76,10 +76,11 @@ class InstallController extends Controller {
 		
 		$this->selfedit = $selfedit;
 		if ($selfedit == "true") {
-			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."moufRunningActions.php";
 		} else {
-			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."../../../moufRunningActions.php";
 		}
+		
 		$this->actionsList = $this->multiStepActionService->getActionsList();
 		$this->contentBlock->addFile(__DIR__."/../../views/install/install.php", $this);
 		$this->template->toHtml();
@@ -96,9 +97,9 @@ class InstallController extends Controller {
 		// TODO: first, we should receive the selfedit variable!!!!
 		
 		if ($selfedit == "true") {
-			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."moufRunningActions.php";
 		} else {
-			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."../../../moufRunningActions.php";
 		}
 		
 		$this->multiStepActionService->setFinalUrlRedirect("../");
@@ -156,9 +157,9 @@ class InstallController extends Controller {
 	 */
 	public function installStepDone($selfedit = "false") {
 		if ($selfedit == "true") {
-			$this->multiStepActionService->actionsStoreFile = "moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."moufRunningActions.php";
 		} else {
-			$this->multiStepActionService->actionsStoreFile = "../../../moufRunningActions.php";
+			$this->multiStepActionService->actionsStoreFile = ROOT_PATH."../../../moufRunningActions.php";
 		}
 		
 		$this->multiStepActionService->validateCurrentAction();
