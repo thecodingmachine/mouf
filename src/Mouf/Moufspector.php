@@ -22,10 +22,10 @@ use Mouf\Reflection\MoufReflectionClass;
 class Moufspector {
 	
 	/**
-	 * Returns a list of all the classes that have the @Component attribute, or only classes extending the @Component attribute AND inheriting the passed
-	 * class or interface.  Abstract classes are excluded from the list.
+	 * Returns a list of all the classes, or only classes inheriting the passed
+	 * class or interface.  Classes that can't be instanciated are excluded from the list.
 	 *
-	 * @type string the class or interface the @component must inherit to be part of the list. If not passed, all @component classes are returned.
+	 * @type string the class or interface the class must inherit to be part of the list. If not passed, all classes are returned.
 	 * @return array<string>
 	 */
 	public static function getComponentsList($type = null, $selfEdit = false) {
@@ -38,7 +38,7 @@ class Moufspector {
 		
 		foreach ($classesList as $className) {
 			$refClass = new MoufReflectionClass($className);
-			if (!$refClass->isAbstract() && $refClass->hasAnnotation("Component")) {
+			if ($refClass->isInstantiable()) {
 				if ($type == null) {
 					$componentsList[] = $className;
 				} else {
