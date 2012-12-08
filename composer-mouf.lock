@@ -1,5 +1,5 @@
 {
-    "hash": "e35f80a3632328881a81addabf750fd8",
+    "hash": "58ad6093965b074eda47a127b6d4fc3d",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -419,19 +419,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "fec76bef510b71d8954d44bbd866b49b39efddc0"
+                "reference": "4f07be5afa598f52c97b48cb963aa04e92a94b90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/fec76bef510b71d8954d44bbd866b49b39efddc0.zip",
-                "reference": "fec76bef510b71d8954d44bbd866b49b39efddc0",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/4f07be5afa598f52c97b48cb963aa04e92a94b90.zip",
+                "reference": "4f07be5afa598f52c97b48cb963aa04e92a94b90",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
             },
-            "time": "2012-11-27 09:30:55",
+            "time": "2012-12-06 09:35:44",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -519,19 +519,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git",
-                "reference": "4d0e27fba25d5ac67a39fc88a6e3ab060ebeaacf"
+                "reference": "0e5ff5702e73486a535546cf758c3bde03a09f0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/4d0e27fba25d5ac67a39fc88a6e3ab060ebeaacf.zip",
-                "reference": "4d0e27fba25d5ac67a39fc88a6e3ab060ebeaacf",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/0e5ff5702e73486a535546cf758c3bde03a09f0f.zip",
+                "reference": "0e5ff5702e73486a535546cf758c3bde03a09f0f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0"
             },
-            "time": "2012-12-03 09:02:26",
+            "time": "2012-12-06 09:36:36",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -722,12 +722,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "d5df9cd15f77c37c0f527c49fd5d646327804e11"
+                "reference": "5019554667db34d966f6072bc60fa11f8135cb10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/d5df9cd15f77c37c0f527c49fd5d646327804e11.zip",
-                "reference": "d5df9cd15f77c37c0f527c49fd5d646327804e11",
+                "url": "https://github.com/thecodingmachine/mvc.splash/archive/5019554667db34d966f6072bc60fa11f8135cb10.zip",
+                "reference": "5019554667db34d966f6072bc60fa11f8135cb10",
                 "shasum": ""
             },
             "require": {
@@ -738,7 +738,7 @@
                 "mouf/utils.cache.file-cache": "2.0.*",
                 "mouf/utils.cache.no-cache": "2.0.*"
             },
-            "time": "2012-12-03 10:52:20",
+            "time": "2012-12-07 15:47:06",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1446,6 +1446,58 @@
                 "log",
                 "logger",
                 "interface"
+            ]
+        },
+        {
+            "name": "mouf/utils.session.session-manager",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:thecodingmachine/utils.session.session-manager.git",
+                "reference": "a006a75b63c6d12a80e157dc1e80770bd28cf853"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/utils.session.session-manager/archive/a006a75b63c6d12a80e157dc1e80770bd28cf853.zip",
+                "reference": "a006a75b63c6d12a80e157dc1e80770bd28cf853",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "2012-12-07 14:34:33",
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/install.php"
+                        }
+                    ]
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package is used to manage sessions. It provides a DefaultSessionManager class that you can use to configure your PHP sessions, and a SessionManagerInterface that you can implement if you want to provide your own session management.",
+            "homepage": "https://github.com/thecodingmachine/utils.session.session-manager",
+            "keywords": [
+                "session",
+                "mouf"
             ]
         },
         {
