@@ -261,6 +261,44 @@ class MoufReflectionProxy {
 		return $response;
 	}
 	
+	/**
+	 * Performs a curl request, same as performRequest, but  without using the session nore the cookies... 
+	 * @param string $url
+	 * @param array<string, mixed> $post
+	 * @throws \Exception
+	 * @return mixed
+	 */
+	public static function performRequestWithoutSession($url, $post = array()) {
+		// preparation de l'envoi
+		$ch = curl_init();
+	
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		if($post) {
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+		} else {
+			curl_setopt($ch, CURLOPT_POST, false);
+		}
+			
+		if (isset($_SERVER['HTTPS'])) {
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		}
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:')); //Fixes the HTTP/1.1 417 Expectation Failed Bug
+	
+	
+		$response = curl_exec($ch );
+	
+		if( curl_error($ch) ) {
+			throw new \Exception("An error occured: ".curl_error($ch));
+		}
+		curl_close( $ch );
+	
+		return $response;
+	}
+	
 	public static function getLocalUrlToProject(){
 		if (isset($_SERVER['HTTPS'])) {
 			$url = "https://".$_SERVER['SERVER_NAME'].MOUF_URL;
