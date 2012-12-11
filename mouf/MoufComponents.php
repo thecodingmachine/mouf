@@ -2209,6 +2209,16 @@ $moufManager->addComponentInstances(array (
       'multiStepActionService' => 'installService',
     ),
   ),
+  'installer' => 
+  array (
+    'class' => 'Mouf\\Controllers\\InstallController',
+    'external' => false,
+    'fieldBinds' => 
+    array (
+      'template' => 'moufTemplate',
+      'contentBlock' => 'block.content',
+    ),
+  ),
   'packagesService' => 
   array (
     'class' => 'Mouf\\Controllers\\PackageServiceController',

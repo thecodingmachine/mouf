@@ -35,4 +35,19 @@ class ClassInstallTask extends AbstractInstallTask {
 	{
 	  $this->className = $value;
 	}
+	
+	/**
+	 * Returns an array representation of this object.
+	 * The array representation is used to store anything that can help reference the object + the status of the task.
+	 * 
+	 * @return array
+	 */
+	public function toArray() {
+		return array(
+			"status"=>$this->getStatus(),
+			"type"=>"class",
+			"class"=>$this->getClassName(),
+			"package"=>$this->package->getName()
+		);
+	}
 }

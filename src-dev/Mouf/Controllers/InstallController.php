@@ -58,6 +58,7 @@ class InstallController extends Controller {
 	 * @param string $selfedit If true, we are in self-edit mode 
 	 */
 	public function index($selfedit = false) {
+		$this->installService = new ComposerInstaller($selfedit == 'true');
 		$installs = $this->installService->getInstalls();
 		var_dump($installs);exit;
 
