@@ -135,4 +135,13 @@ abstract class AbstractInstallTask {
 	 * The array representation is used to store anything that can help reference the object + the status of the task.
 	 */
 	abstract public function toArray();
+	
+	/**
+	 * Returns true if the array passed in parameter (generated with "toArray"), matches this package.
+	 *
+	 * @param array $array
+	 * @return bool
+	 */
+	abstract public function matchesPackage(array $array);
+	
 }

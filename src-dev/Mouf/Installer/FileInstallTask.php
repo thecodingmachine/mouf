@@ -50,4 +50,20 @@ class FileInstallTask extends AbstractInstallTask {
 				"package"=>$this->package->getName()
 		);
 	}
+	
+	/**
+	 * Returns true if the array passed in parameter (generated with "toArray"), matches this package.
+	 *
+	 * @param array $array
+	 * @return bool
+	 */
+	public function matchesPackage(array $array) {
+		if (isset($array['package']) && $array['package'] == $this->package->getName()
+				&& isset($array['file']) && $array['file'] == $this->getFile()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

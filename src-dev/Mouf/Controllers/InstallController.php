@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Installer\AbstractInstallTask;
+
 use Mouf\Installer\ComposerInstaller;
 
 use Mouf\Html\HtmlElement\HtmlBlock;
@@ -50,6 +52,12 @@ class InstallController extends Controller {
 	public $installService;
 	
 	/**
+	 * 
+	 * @var AbstractInstallTask[]
+	 */
+	protected $installs;
+	
+	/**
 	 * Displays the page to install packages
 	 * 
 	 * @Action
@@ -59,10 +67,10 @@ class InstallController extends Controller {
 	 */
 	public function index($selfedit = false) {
 		$this->installService = new ComposerInstaller($selfedit == 'true');
-		$installs = $this->installService->getInstalls();
-		var_dump($installs);exit;
+		$this->installs = $this->installService->getInstallTasks();
+		//var_dump($this->installs);exit;
 
-		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/viewInstance.php", $this);
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/installer/installTasksList.php", $this);
 		$this->template->toHtml();	
 	}
 }
