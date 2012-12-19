@@ -144,4 +144,11 @@ abstract class AbstractInstallTask {
 	 */
 	abstract public function matchesPackage(array $array);
 	
+	/**
+	 * Returns the URL that can be used to install this package.
+	 * 
+	 * @param bool $selfEdit
+	 * @return string
+	 */
+	abstract public function getRedirectUrl($selfEdit);
 }

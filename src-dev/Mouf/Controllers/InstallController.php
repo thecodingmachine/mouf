@@ -73,5 +73,84 @@ class InstallController extends Controller {
 		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/installer/installTasksList.php", $this);
 		$this->template->toHtml();	
 	}
+	
+	protected $selfedit;
+	
+	/**
+	 * This page starts the install proces of one task or all tasks in "todo" state.
+	 * 
+	 * @Action
+	 * @Logged
+	 *
+	 * @param string $selfedit If true, we are in self-edit mode 
+	 */
+	public function install($selfedit = 'false', $task = null) {
+		$this->selfedit = $selfedit;
+		$this->installService = new ComposerInstaller($selfedit == 'true');
+		
+		if ($task !== null) {
+			$taskArray = unserialize($task);
+		} else {
+			$taskArray = null;
+		}
+		
+		if ($taskArray == null) {
+			$this->installService->installAll();
+		} else {
+			$this->installService->install($taskArray);
+		}
+		// The call to install or installAll redirects to printInstallationScreen.
+	}
+	
+	/**
+	 * Installation screen is displayed and the user is directly redirected via Javascript to the install page.
+	 * 
+	 * @Action
+	 * @param string $selfedit
+	 */
+	public function printInstallationScreen($selfedit = 'false') {
+		$this->selfedit = $selfedit;
+		$this->installService = new ComposerInstaller($selfedit == 'true');
+		$this->installs = $this->installService->getInstallTasks();
+		
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/installer/processing.php", $this);
+		$this->template->toHtml();
+	}
+	
+	/**
+	 * Starts the installation process for one package registered with install or installAll.
+	 * 
+	 * @Action
+	 * @param string $selfedit
+	 */
+	public function processInstall($selfedit = 'false') {
+		// Let's process install now by redirecting HERE!
+		$this->selfedit = $selfedit;
+		$this->installService = new ComposerInstaller($selfedit == 'true');
+		$installTask = $this->installService->getNextInstallTask();
+		
+		header("Location: ".MOUF_URL.$installTask->getRedirectUrl($selfedit == 'true'));
+	}
+	
+	/**
+	 * Action called when a full install step has completed.
+	 * 
+	 * @Action
+	 * @param string $selfedit
+	 */
+	public function installTaskDone($selfedit = 'false') {
+		$this->selfedit = $selfedit;
+		$this->installService = new ComposerInstaller($selfedit == 'true');
+		$this->installService->validateCurrentInstall();
+		
+		$installTask = $this->installService->getNextInstallTask();
+		if ($installTask) {
+			$this->printInstallationScreen($selfedit);
+		} else {
+			echo "Installation process succeeded!";
+		}
+		
+		
+	}
 }
 ?>

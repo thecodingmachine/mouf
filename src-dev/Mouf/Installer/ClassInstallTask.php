@@ -65,4 +65,14 @@ class ClassInstallTask extends AbstractInstallTask {
 			return false;
 		}
 	}
+	
+	/**
+	 * Returns the URL that can be used to install this package.
+	 *
+	 * @param bool $selfEdit
+	 * @return string
+	 */
+	public function getRedirectUrl($selfEdit) {
+		return "src/direct/run_install_class.php?class=".urlencode($this->getClassName())."&selfedit=".($selfEdit?"true":"false");
+	}
 }

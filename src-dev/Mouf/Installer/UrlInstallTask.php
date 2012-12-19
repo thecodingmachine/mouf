@@ -66,4 +66,19 @@ class UrlInstallTask extends AbstractInstallTask {
 		}
 	}
 	
+	/**
+	 * Returns the URL that can be used to install this package.
+	 *
+	 * @param bool $selfEdit
+	 * @return string
+	 */
+	public function getRedirectUrl($selfEdit) {
+		$url = $this->getUrl();
+		if (strpos($url, "?") !== false) {
+			$url .= "&selfedit=".($selfEdit?"true":"false");
+		} else {
+			$url .= "?selfedit=".($selfEdit?"true":"false");
+		}
+		return $url;
+	}
 }

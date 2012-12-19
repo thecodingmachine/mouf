@@ -66,4 +66,17 @@ class FileInstallTask extends AbstractInstallTask {
 		}
 	}
 	
+	/**
+	 * Returns the URL that can be used to install this package.
+	 *
+	 * @param bool $selfEdit
+	 * @return string
+	 */
+	public function getRedirectUrl($selfEdit) {
+		if ($selfEdit) {
+			return "vendor/".$this->getPackage()->getName()."/".$this->getFile();
+		} else {
+			return "../../".$this->getPackage()->getName()."/".$this->getFile();
+		}
+	}
 }

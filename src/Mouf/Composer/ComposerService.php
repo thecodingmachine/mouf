@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Composer;
 
+use Composer\Package\Link;
+
 use Symfony\Component\Console\Application as BaseApplication;
 use Composer\Repository\PlatformRepository;
 use Symfony\Component\Console\Input\InputInterface;
@@ -254,6 +256,65 @@ class ComposerService {
 		$packagesList[] = $package;
 		
 		return $packagesList;
+	}
+	
+	/**
+	 * Method: go through the tree, loading child first.
+	 * Each time we go through a package, lets ensure the package is not already part of the packages to install.
+	 * If so, ignore.
+	 */
+	public function getLocalPackagesOrderedByDependencies() {
+		$unorderedPackagesList = $this->getLocalPackages();
+		
+		
+		$orderedPackagesList = array();
+		foreach ($unorderedPackagesList as $package) {
+			$orderedPackagesList = $this->walkPackagesList($package, $orderedPackagesList, $unorderedPackagesList);
+		}
+
+		return $orderedPackagesList;
+	}
+	
+	/**
+	 * Function used to sort packages by dependencies (packages depending from no other package in front of others)
+	 * Invariant hypothesis for this function: $orderedPackagesList is already ordered and the package we add
+	 * has all its dependencies already accounted for. If not, we add the dependencies first.
+	 * 
+	 * @param PackageInterface $package
+	 * @param PackageInterface[] $orderedPackagesList The list of sorted packages
+	 * @param PackageInterface[] $availablePackages The list of all packages not yet sorted
+	 * @return PackageInterface[]
+	 */
+	private function walkPackagesList(PackageInterface $package, array $orderedPackagesList, array &$availablePackages) {
+		// First, let's check that the package we want to add is not already in our list.
+		foreach ($orderedPackagesList as $includedPackage) {
+			if ($includedPackage->equals($package)) {
+				return $orderedPackagesList;
+			}
+		}
+		
+		// We need to make sure there is no loop (if a package A requires a package B that requires the package A)...
+		// We do that by removing the package from the list of all available packages.
+		$key = array_search($package, $availablePackages);
+		unset($availablePackages[$key]);
+		
+		// Now, let's see if there are dependencies.
+		foreach ($package->getRequires() as $require) {
+			/* @var $require Link */
+			foreach ($availablePackages as $iterPackage) {
+				if ($iterPackage->getName() == $require->getTarget()) {
+					$orderedPackagesList = $this->walkPackagesList($iterPackage, $orderedPackagesList, $availablePackages);
+					break;
+				}
+			}
+		}	
+		
+		// FIXME: manage dev-requires and "provides"
+		
+		// Finally, let's add the package once all dependencies have been added.
+		$orderedPackagesList[] = $package;
+		
+		return $orderedPackagesList;
 	}
 	
 	protected $onlyName;
