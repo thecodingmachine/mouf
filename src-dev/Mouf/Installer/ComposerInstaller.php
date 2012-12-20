@@ -37,13 +37,13 @@ class ComposerInstaller {
 		$this->composerService = new ComposerService($selfEdit);
 
 		if ($this->selfEdit == false) {
-			$this->globalInstallFile = __DIR__."/../../../../../mouf/installs_app.php";
-			$this->localInstallFile = __DIR__."/../../../../../mouf/no_commit/local_installs_app.php";
-			$this->installStatusFile = __DIR__."/../../../../../mouf/no_commit/install_status.json";
+			$this->globalInstallFile = __DIR__."/../../../../../../mouf/installs_app.php";
+			$this->localInstallFile = __DIR__."/../../../../../../mouf/no_commit/local_installs_app.php";
+			$this->installStatusFile = __DIR__."/../../../../../../mouf/no_commit/install_status.json";
 		} else {
-			$this->globalInstallFile = __DIR__."/../../../../../mouf/installs_moufui.php";
-			$this->localInstallFile = __DIR__."/../../../../../mouf/no_commit/local_installs_moufui.php";
-			$this->installStatusFile = __DIR__."/../../../../../mouf/no_commit/install_status_moufui.json";
+			$this->globalInstallFile = __DIR__."/../../../../../../mouf/installs_moufui.php";
+			$this->localInstallFile = __DIR__."/../../../../../../mouf/no_commit/local_installs_moufui.php";
+			$this->installStatusFile = __DIR__."/../../../../../../mouf/no_commit/install_status_moufui.json";
 		}
 	}
 	
@@ -78,13 +78,14 @@ class ComposerInstaller {
 		foreach ($this->installTasks as $task) {
 			switch ($task->getScope()) {
 				case AbstractInstallTask::SCOPE_GLOBAL:
+				case '':
 					$globalInstalls[] = $task->toArray();
 					break;
 				case AbstractInstallTask::SCOPE_LOCAL:
 					$localInstalls[] = $task->toArray();
 					break;
 				default:
-					throw new MoufException("Unknown install task scope.");
+					throw new MoufException("Unknown install task scope '".$task->getScope()."'.");
 			}
 		}
 		
@@ -98,7 +99,7 @@ class ComposerInstaller {
 		fwrite($fp, " * This file contains the status of all Mouf global installation processes for packages you have installed.\n");
 		fwrite($fp, " * If you are working with a source repository, this file should be commited.\n");
 		fwrite($fp, " */\n");
-		fwrite($fp, "return ".var_export($globalInstalls, true));
+		fwrite($fp, "return ".var_export($globalInstalls, true).";");
 		fclose($fp);		
 		
 		$fp = fopen($this->localInstallFile, "w");
@@ -108,7 +109,7 @@ class ComposerInstaller {
 		fwrite($fp, " * This file contains the status of all Mouf local installation processes for packages you have installed.\n");
 		fwrite($fp, " * If you are working with a source repository, this file should NOT be commited.\n");
 		fwrite($fp, " */\n");
-		fwrite($fp, "return ".var_export($localInstalls, true));
+		fwrite($fp, "return ".var_export($localInstalls, true).";");
 		fclose($fp);		
 	}
 	

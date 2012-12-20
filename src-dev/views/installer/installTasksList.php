@@ -46,14 +46,18 @@ $(document).ready(function() {
 		<form action="install" method="post" style="margin: 0px">
 		<input type="hidden" id="selfedit" name="selfedit" value="<?php echo plainstring_to_htmlprotected($this->selfedit) ?>" />
 		<input type="hidden" name="task" value="<?php echo plainstring_to_htmlprotected(serialize($installTask->toArray())); ?>">
-		<button class="btn btn-success"><i class="icon-white icon-chevron-right"></i> 
+		 
 		<?php 
-		if ($installTask->getStatus()=="todo") { 
-			echo "Manual install";  
+		if ($installTask->getStatus()=="todo") {
+		?>
+			<button class="btn btn-info"><i class="icon-white icon-chevron-right"></i> Manual install</button>
+		<?php   
 		} else {
-			echo "Reinstall";
+		?>
+			<button class="btn btn-danger"><i class="icon-white icon-chevron-right"></i> Reinstall</button>
+		<?php   
 		}
-		?></button>
+		?>
 		</form>
 		</td>
 	</tr>
