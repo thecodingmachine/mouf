@@ -892,17 +892,6 @@ $moufManager->addComponentInstances(array (
       'contentBlock' => 'block.content',
     ),
   ),
-  'install' => 
-  array (
-    'class' => 'Mouf\\Actions\\InstallController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'multiStepActionService' => 'installService',
-      'template' => 'moufInstallTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
   'installProcessValidator' => 
   array (
     'class' => 'Mouf\\Validator\\MoufBasicValidationProvider',
@@ -931,22 +920,6 @@ $moufManager->addComponentInstances(array (
         array (
           0 => 'selfedit',
         ),
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
-  'installService' => 
-  array (
-    'class' => 'Mouf\\Actions\\MultiStepActionService',
-    'external' => false,
-    'fieldProperties' => 
-    array (
-      'actionsStoreFile' => 
-      array (
-        'value' => 'moufRunningActions.php',
         'type' => 'string',
         'metadata' => 
         array (
@@ -2319,17 +2292,6 @@ $moufManager->addComponentInstances(array (
       'cacheService' => 'repositoryCache',
     ),
   ),
-  'packages' => 
-  array (
-    'class' => 'Mouf\\Controllers\\PackageController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-      'multiStepActionService' => 'installService',
-    ),
-  ),
   'packagesService' => 
   array (
     'class' => 'Mouf\\Controllers\\PackageServiceController',
@@ -2598,11 +2560,6 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
-  ),
-  'redirectAction' => 
-  array (
-    'class' => 'Mouf\\Actions\\RedirectAction',
-    'external' => false,
   ),
   'repositories' => 
   array (
@@ -3358,13 +3315,6 @@ unset($moufManager);
 	 */
 	 public static function getInstallProcessValidator() {
 	 	return MoufManager::getMoufManager()->getInstance('installProcessValidator');
-	 }
-
-	/**
-	 * @return Mouf\Actions\MultiStepActionService
-	 */
-	 public static function getInstallService() {
-	 	return MoufManager::getMoufManager()->getInstance('installService');
 	 }
 
 	/**

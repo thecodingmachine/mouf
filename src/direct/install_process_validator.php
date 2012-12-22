@@ -1,4 +1,8 @@
 <?php
+use Mouf\Installer\AbstractInstallTask;
+
+use Mouf\Installer\ComposerInstaller;
+
 use Mouf\MoufManager;
 
 /*
@@ -20,39 +24,34 @@ error_reporting(E_ERROR | error_reporting());
 
 require_once '../../mouf/Mouf.php';
 
-/*	require_once '../../MoufComponents.php';
-	require_once '../MoufManager.php';
-	MoufManager::initMoufManager();
-	require_once '../../MoufUniversalParameters.php';
-	MoufManager::switchToHidden();
-	require_once '../MoufAdmin.php';
-	$selfEdit = "true";*/
-
 // Note: checking rights is done after loading the required files because we need to open the session
 // and only after can we check if it was not loaded before loading it ourselves...
 //require_once 'utils/check_rights.php';
 MoufUtils::checkRights();
 
-$moufManager = MoufManager::getMoufManager();
-
-$multiStepActionService = $moufManager->getInstance('installService');
-/* @var $multiStepActionService MultiStepActionService */
-
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	$selfEdit = false;
-	$multiStepActionService->actionsStoreFile = ROOT_PATH."../../../moufRunningActions.php";
 } else {
 	$selfEdit = true;
-	$multiStepActionService->actionsStoreFile = ROOT_PATH."moufRunningActions.php";
+}
+
+$installService = new ComposerInstaller($selfEdit == 'true');
+$installs = $installService->getInstallTasks();
+//var_dump($installs);exit;
+$countNbTodo = 0;
+foreach ($installs as $installTask) {
+	if ($installTask->getStatus() == AbstractInstallTask::STATUS_TODO) {
+		$countNbTodo++;
+	}
 }
 
 $jsonObj = array();
-if (!$multiStepActionService->hasRemainingAction()) {
+if ($countNbTodo == 0) {
 	$jsonObj['code'] = "ok";
-	$jsonObj['html'] = "No pending install actions to execute.";
+	$jsonObj['html'] = "No pending install tasks to execute.";
 } else {
 	$jsonObj['code'] = "warn";
-	$jsonObj['html'] = "An installation process did not complete. Please <a href='".ROOT_URL."install/?selfedit=".json_encode($selfEdit)."'>resume the install process</a>.";
+	$jsonObj['html'] = "<p>$countNbTodo pending install action(s) detected.</p><p><a href='".ROOT_URL."installer/?selfedit=".json_encode($selfEdit)."' class='btn btn-success btn-large'>Run install tasks</a></p>";
 }
 
 echo json_encode($jsonObj);
