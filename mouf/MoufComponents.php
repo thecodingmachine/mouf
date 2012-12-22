@@ -193,6 +193,13 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
     'weak' => false,
+    'fieldBinds' => 
+    array (
+      'children' => 
+      array (
+        0 => 'messageWidget',
+      ),
+    ),
   ),
   'block.footer' => 
   array (
@@ -3304,13 +3311,6 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Actions\InstallController
-	 */
-	 public static function getInstall() {
-	 	return MoufManager::getMoufManager()->getInstance('install');
-	 }
-
-	/**
 	 * @return Mouf\Validator\MoufBasicValidationProvider
 	 */
 	 public static function getInstallProcessValidator() {
@@ -3584,13 +3584,6 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Controllers\PackageController
-	 */
-	 public static function getPackages() {
-	 	return MoufManager::getMoufManager()->getInstance('packages');
-	 }
-
-	/**
 	 * @return Mouf\Controllers\PackageServiceController
 	 */
 	 public static function getPackagesService() {
@@ -3630,13 +3623,6 @@ unset($moufManager);
 	 */
 	 public static function getProjectSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('projectSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Actions\RedirectAction
-	 */
-	 public static function getRedirectAction() {
-	 	return MoufManager::getMoufManager()->getInstance('redirectAction');
 	 }
 
 	/**

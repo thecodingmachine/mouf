@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Html\Widgets\MessageService\Service\UserMessageInterface;
+
 use Mouf\Installer\AbstractInstallTask;
 
 use Mouf\Installer\ComposerInstaller;
@@ -155,7 +157,8 @@ class InstallController extends Controller {
 		if ($installTask) {
 			$this->printInstallationScreen($selfedit);
 		} else {
-			echo "Installation process succeeded!";
+			set_user_message("Installation process succeeded!", UserMessageInterface::SUCCESS);
+			header("Location: .?selfedit=".$selfedit);
 		}
 		
 		
