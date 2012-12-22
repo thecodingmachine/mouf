@@ -419,12 +419,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "815db39ddeb8673b5cfdb104d002ecbde3d9ba30"
+                "reference": "945a036db14bcd56426476a80bba990de64f359e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/815db39ddeb8673b5cfdb104d002ecbde3d9ba30.zip",
-                "reference": "815db39ddeb8673b5cfdb104d002ecbde3d9ba30",
+                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/945a036db14bcd56426476a80bba990de64f359e.zip",
+                "reference": "945a036db14bcd56426476a80bba990de64f359e",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +433,7 @@
                 "mouf/html.utils.weblibrarymanager": ">=2.0,<3.0",
                 "mouf/utils.session.session-manager": ">=2.0,<3.0"
             },
-            "time": "2012-12-22 14:41:02",
+            "time": "2012-12-22 15:18:50",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -783,12 +783,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "5019554667db34d966f6072bc60fa11f8135cb10"
+                "reference": "b7e589e9a7efa385f29686a8579176e62337f32a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/5019554667db34d966f6072bc60fa11f8135cb10.zip",
-                "reference": "5019554667db34d966f6072bc60fa11f8135cb10",
+                "url": "https://github.com/thecodingmachine/mvc.splash/archive/b7e589e9a7efa385f29686a8579176e62337f32a.zip",
+                "reference": "b7e589e9a7efa385f29686a8579176e62337f32a",
                 "shasum": ""
             },
             "require": {
@@ -799,7 +799,7 @@
                 "mouf/utils.cache.file-cache": "2.0.*",
                 "mouf/utils.cache.no-cache": "2.0.*"
             },
-            "time": "2012-12-07 15:47:06",
+            "time": "2012-12-22 16:48:19",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
