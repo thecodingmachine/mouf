@@ -43,4 +43,7 @@ if (file_exists(__DIR__.'/../../../../mouf/MoufUI.php')) {
 	require_once __DIR__.'/../../../../mouf/MoufUI.php';
 }
 
+
+// And let's start the session
+MoufAdmin::getSessionManager()->start();
 ?>

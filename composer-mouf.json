@@ -20,7 +20,7 @@
         "mouf/html.template.menus.basicmenu" : "2.*",
         "mouf/html.utils.bootstrap" : "2.1.*",
         "mouf/utils.session.session-manager" : "~2.0",
-        "mouf/html.widgets.messageservice": "~2.0.0"
+        "mouf/html.widgets.messageservice": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

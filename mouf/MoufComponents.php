@@ -2701,6 +2701,11 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'sessionManager' => 
+  array (
+    'class' => 'Mouf\\Utils\\Sesssion\\SessionManager\\DefaultSessionManager',
+    'external' => false,
+  ),
   'setRootUrlJsBlock' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\InlineWebLibrary',
@@ -2819,6 +2824,10 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\MessageService\\Service\\SessionMessageService',
     'external' => false,
+    'fieldBinds' => 
+    array (
+      'sessionManager' => 'sessionManager',
+    ),
   ),
   'userService' => 
   array (
@@ -2876,9 +2885,8 @@ $moufManager->addComponentInstances(array (
     array (
       'validators' => 
       array (
-        0 => 'requiredFilesValidator',
+        0 => 'installProcessValidator',
         1 => 'configCompleteValidator',
-        2 => 'installProcessValidator',
       ),
     ),
   ),
@@ -3672,6 +3680,13 @@ unset($moufManager);
 	 */
 	 public static function getSearchService() {
 	 	return MoufManager::getMoufManager()->getInstance('searchService');
+	 }
+
+	/**
+	 * @return Mouf\Utils\Sesssion\SessionManager\DefaultSessionManager
+	 */
+	 public static function getSessionManager() {
+	 	return MoufManager::getMoufManager()->getInstance('sessionManager');
 	 }
 
 	/**

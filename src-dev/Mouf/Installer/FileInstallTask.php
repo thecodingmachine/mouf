@@ -74,9 +74,9 @@ class FileInstallTask extends AbstractInstallTask {
 	 */
 	public function getRedirectUrl($selfEdit) {
 		if ($selfEdit) {
-			return "vendor/".$this->getPackage()->getName()."/".$this->getFile();
+			return "vendor/".$this->getPackage()->getName()."/".$this->getFile()."?selfedit=".json_encode($selfEdit);
 		} else {
-			return "../../".$this->getPackage()->getName()."/".$this->getFile();
+			return "../../".$this->getPackage()->getName()."/".$this->getFile()."?selfedit=".json_encode($selfEdit);
 		}
 	}
 }
