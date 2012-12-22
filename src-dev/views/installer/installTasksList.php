@@ -13,11 +13,18 @@ $(document).ready(function() {
 
 <h1>Install tasks</h1>
 
-<?php if ($this->installs) { ?>
+<?php if ($this->installs) { 
+	if ($this->countNbTodo) {
+	?>
+
+
 <form action="install" method="post">
 	<input type="hidden" id="selfedit" name="selfedit" value="<?php echo plainstring_to_htmlprotected($this->selfedit) ?>" />
-	<button class="btn btn-success btn-large"><i class="icon-white icon-chevron-right"></i> Run all install processes</button>
+	<button class="btn btn-success btn-large"><i class="icon-white icon-chevron-right"></i> Run the <?php echo $this->countNbTodo ?> pending install task<?php echo ($this->countNbTodo==1?"":"s") ?></button>
 </form>
+<?php } else {?>
+<div class="alert alert-success">All install tasks have been executed.</div>
+<?php }?>
 
 <table class="table">
 	<tr>
@@ -65,5 +72,5 @@ $(document).ready(function() {
 </table>
 
 <?php } else { ?>
-	No installed packages have install processes
+	<div class="alert alert-success">No installed packages have install processes</div>
 <?php } ?>

@@ -57,6 +57,8 @@ class InstallController extends Controller {
 	 */
 	protected $installs;
 	
+	protected $countNbTodo;
+	
 	/**
 	 * Displays the page to install packages
 	 * 
@@ -69,6 +71,12 @@ class InstallController extends Controller {
 		$this->installService = new ComposerInstaller($selfedit == 'true');
 		$this->installs = $this->installService->getInstallTasks();
 		//var_dump($this->installs);exit;
+		$this->countNbTodo = 0;
+		foreach ($this->installs as $installTask) {
+			if ($installTask->getStatus() == AbstractInstallTask::STATUS_TODO) {
+				$this->countNbTodo++;
+			}
+		}
 
 		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/installer/installTasksList.php", $this);
 		$this->template->toHtml();	

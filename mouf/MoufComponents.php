@@ -71,6 +71,24 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  '__anonymous_1356167917517' => 
+  array (
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+    'external' => false,
+    'weak' => true,
+    'anonymous' => true,
+    'setterProperties' => 
+    array (
+      'setUrl' => 
+      array (
+        'type' => 'string',
+        'value' => 'vendor/mouf/famfamfam/icons/drive_go.png',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'ajaxinstance' => 
   array (
     'class' => 'Mouf\\Controllers\\MoufAjaxInstanceController',
@@ -418,6 +436,7 @@ $moufManager->addComponentInstances(array (
         9 => 'css.moufCssStyles',
         10 => 'javascript.chooseInstancePopupJs',
         11 => 'javascript.jquery-filetree',
+        12 => 'messageServiceLibrary',
       ),
     ),
   ),
@@ -935,6 +954,54 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'installTasksMenuItem' => 
+  array (
+    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'type' => 'string',
+        'value' => 'Installation tasks',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'type' => 'string',
+        'value' => 'installer/',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterProperties' => 
+    array (
+      'setPropagatedUrlParameters' => 
+      array (
+        'value' => 
+        array (
+          0 => 'selfedit',
+        ),
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterBinds' => 
+    array (
+      'setAdditionalStyles' => 
+      array (
+        0 => '__anonymous_1356167917517',
+      ),
+    ),
+  ),
   'installTemplate' => 
   array (
     'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
@@ -973,6 +1040,16 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Controllers\\Composer\\InstalledPackagesController',
     'external' => false,
     'weak' => false,
+    'fieldBinds' => 
+    array (
+      'template' => 'moufTemplate',
+      'contentBlock' => 'block.content',
+    ),
+  ),
+  'installer' => 
+  array (
+    'class' => 'Mouf\\Controllers\\InstallController',
+    'external' => false,
     'fieldBinds' => 
     array (
       'template' => 'moufTemplate',
@@ -1625,6 +1702,50 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'messageServiceLibrary' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'value' => 
+        array (
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'value' => 
+        array (
+          0 => 'vendor/mouf/html.widgets.messageservice/messages.css',
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'setterBinds' => 
+    array (
+      'setRenderer' => 'defaultWebLibraryRenderer',
+    ),
+  ),
+  'messageWidget' => 
+  array (
+    'class' => 'Mouf\\Html\\Widgets\\MessageService\\Widget\\MessageWidget',
+    'external' => false,
+    'fieldBinds' => 
+    array (
+      'messageProvider' => 'userMessageService',
+    ),
+  ),
   'miscellaneousSubMenu' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
@@ -2209,16 +2330,6 @@ $moufManager->addComponentInstances(array (
       'multiStepActionService' => 'installService',
     ),
   ),
-  'installer' => 
-  array (
-    'class' => 'Mouf\\Controllers\\InstallController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
   'packagesService' => 
   array (
     'class' => 'Mouf\\Controllers\\PackageServiceController',
@@ -2307,7 +2418,8 @@ $moufManager->addComponentInstances(array (
         'value' => 
         array (
           0 => 'downloadPackages2MenuItem',
-          1 => 'viewDocumentationMenuItem',
+          1 => 'installTasksMenuItem',
+          2 => 'viewDocumentationMenuItem',
         ),
         'parametertype' => 'object',
         'type' => 'string',
@@ -2739,6 +2851,11 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'userMessageService' => 
+  array (
+    'class' => 'Mouf\\Html\\Widgets\\MessageService\\Service\\SessionMessageService',
+    'external' => false,
+  ),
   'userService' => 
   array (
     'class' => 'Mouf\\Security\\UserService\\UserService',
@@ -2996,43 +3113,6 @@ $moufManager->addComponentInstances(array (
   ),
 ));
 
-$moufManager->registerComponent('validator/MoufValidatorService.php', 'auto');
-$moufManager->registerComponent('validator/MoufBasicValidationProvider.php', 'auto');
-$moufManager->registerComponent('controllers/DisplayPackageListInterface.php', 'auto');
-$moufManager->registerComponent('MoufSearchable.php', 'auto');
-$moufManager->registerComponent('MoufSearchService.php', 'auto');
-$moufManager->registerComponent('actions/MoufActionDescriptor.php', 'auto');
-$moufManager->registerComponent('actions/MoufActionProvider.php', 'auto');
-$moufManager->registerComponent('actions/DownloadPackageAction.php', 'auto');
-$moufManager->registerComponent('actions/EnablePackageAction.php', 'auto');
-$moufManager->registerComponent('actions/RedirectAction.php', 'auto');
-$moufManager->registerComponent('actions/MultiStepActionService.php', 'auto');
-$moufManager->registerComponent('actions/InstallController.php', 'auto');
-$moufManager->registerComponent('actions/MoufActionResultInterface.php', 'auto');
-$moufManager->registerComponent('actions/MoufActionRedirectResult.php', 'auto');
-$moufManager->registerComponent('actions/MoufActionDoneResult.php', 'auto');
-$moufManager->registerComponent('controllers/MoufController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufRootController.php', 'auto');
-$moufManager->registerComponent('controllers/ComponentsController.php', 'auto');
-$moufManager->registerComponent('controllers/PackageController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufInstanceController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufAjaxInstanceController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufDisplayGraphController.php', 'auto');
-$moufManager->registerComponent('controllers/ConfigController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufValidatorController.php', 'auto');
-$moufManager->registerComponent('controllers/MoufLoginController.php', 'auto');
-$moufManager->registerComponent('controllers/PackageServiceController.php', 'auto');
-$moufManager->registerComponent('controllers/RepositorySourceController.php', 'auto');
-$moufManager->registerComponent('controllers/PackageDownloadController.php', 'auto');
-$moufManager->registerComponent('controllers/DocumentationController.php', 'auto');
-$moufManager->registerComponent('MoufPackageDownloadService.php', 'auto');
-$moufManager->registerComponent('MoufNetworkException.php', 'auto');
-$moufManager->registerComponent('MoufRepository.php', 'auto');
-$moufManager->registerComponent('MoufUtils.php', 'auto');
-$moufManager->registerComponent('controllers/PhpInfoController.php', 'auto');
-$moufManager->registerComponent('controllers/SearchController.php', 'auto');
-$moufManager->registerComponent('actions/InstallUtils.php', 'auto');
-$moufManager->registerComponent('load.php', 'auto');
 
 unset($moufManager);
 
@@ -3054,6 +3134,13 @@ unset($moufManager);
 	 */
 	 public static function get__anonymous_1351271292292() {
 	 	return MoufManager::getMoufManager()->getInstance('__anonymous_1351271292292');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItemStyleIcon
+	 */
+	 public static function get__anonymous_1356167917517() {
+	 	return MoufManager::getMoufManager()->getInstance('__anonymous_1356167917517');
 	 }
 
 	/**
@@ -3281,6 +3368,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getInstallTasksMenuItem() {
+	 	return MoufManager::getMoufManager()->getInstance('installTasksMenuItem');
+	 }
+
+	/**
 	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
 	 */
 	 public static function getInstallTemplate() {
@@ -3292,6 +3386,13 @@ unset($moufManager);
 	 */
 	 public static function getInstalledPackagesController() {
 	 	return MoufManager::getMoufManager()->getInstance('installedPackagesController');
+	 }
+
+	/**
+	 * @return Mouf\Controllers\InstallController
+	 */
+	 public static function getInstaller() {
+	 	return MoufManager::getMoufManager()->getInstance('installer');
 	 }
 
 	/**
@@ -3435,6 +3536,20 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getMessageServiceLibrary() {
+	 	return MoufManager::getMoufManager()->getInstance('messageServiceLibrary');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\MessageService\Widget\MessageWidget
+	 */
+	 public static function getMessageWidget() {
+	 	return MoufManager::getMoufManager()->getInstance('messageWidget');
+	 }
+
+	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getMiscellaneousSubMenu() {
@@ -3449,7 +3564,7 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\BootstrapTemplate
 	 */
 	 public static function getMoufInstallTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufInstallTemplate');
@@ -3463,7 +3578,7 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Html\Template\MoufTemplate\MoufTemplate
+	 * @return Mouf\Html\Template\BootstrapTemplate
 	 */
 	 public static function getMoufLoginTemplate() {
 	 	return MoufManager::getMoufManager()->getInstance('moufLoginTemplate');
@@ -3680,6 +3795,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Widgets\MessageService\Service\SessionMessageService
+	 */
+	 public static function getUserMessageService() {
+	 	return MoufManager::getMoufManager()->getInstance('userMessageService');
+	 }
+
+	/**
 	 * @return Mouf\Security\UserService\UserService
 	 */
 	 public static function getUserService() {
@@ -3761,6 +3883,118 @@ unset($moufManager);
 	 */
 	 public static function getPurgeCaches() {
 	 	return MoufManager::getMoufManager()->getInstance('purgeCaches');
+	 }
+
+	/**
+	 * @return Mouf\Database\DBConnection\Controllers\MySqlConnectionEditController
+	 */
+	 public static function getMysqlconnectionedit() {
+	 	return MoufManager::getMoufManager()->getInstance('mysqlconnectionedit');
+	 }
+
+	/**
+	 * @return Mouf\Database\DBConnection\Controllers\DbConnectionInstallController
+	 */
+	 public static function getDbconnectioninstall() {
+	 	return MoufManager::getMoufManager()->getInstance('dbconnectioninstall');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\SplashGenerateService
+	 */
+	 public static function getSplashGenerateService() {
+	 	return MoufManager::getMoufManager()->getInstance('splashGenerateService');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\Admin\SplashAdminApacheConfigureController
+	 */
+	 public static function getSplashApacheConfig() {
+	 	return MoufManager::getMoufManager()->getInstance('splashApacheConfig');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\Admin\SplashInstallController
+	 */
+	 public static function getSplashinstall() {
+	 	return MoufManager::getMoufManager()->getInstance('splashinstall');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\Admin\SplashPurgeCacheController
+	 */
+	 public static function getSplashpurgecache() {
+	 	return MoufManager::getMoufManager()->getInstance('splashpurgecache');
+	 }
+
+	/**
+	 * @return Mouf\Validator\MoufBasicValidationProvider
+	 */
+	 public static function getSplashHtaccessValidator() {
+	 	return MoufManager::getMoufManager()->getInstance('splashHtaccessValidator');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashPurgeCacheItem() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashPurgeCacheItem');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashAdminApacheConfig2Item() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashAdminApacheConfig2Item');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbTDBMAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Menu\ChooseInstanceMenuItem
+	 */
+	 public static function getDbTDBMGenereateDAOAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMGenereateDAOAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmController
+	 */
+	 public static function getTdbmadmin() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbmadmin');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmInstallController
+	 */
+	 public static function getTdbminstall() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
 	 }
 
 }

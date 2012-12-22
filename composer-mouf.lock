@@ -1,5 +1,5 @@
 {
-    "hash": "58ad6093965b074eda47a127b6d4fc3d",
+    "hash": "fc40b032598edce267af04efb0a94573",
     "packages": [
         {
             "name": "mouf/famfamfam",
@@ -411,6 +411,66 @@
                 "menu",
                 "template",
                 "mouf"
+            ]
+        },
+        {
+            "name": "mouf/html.widgets.messageservice",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
+                "reference": "de3a051e811957dba90e5558fc85165a91a7ce7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/de3a051e811957dba90e5558fc85165a91a7ce7f.zip",
+                "reference": "de3a051e811957dba90e5558fc85165a91a7ce7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "mouf/html.htmlelement": "2.*",
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+            },
+            "time": "2012-12-06 09:34:57",
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/install.php"
+                        }
+                    ]
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                },
+                "files": [
+                    "src/common_functions.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "Use this package to display info/warning/error messages to the user on a web page. Using the SessionMessageService class, you register messages to be displayed. Using the MessageWidget class, you display the error messages in your templates.",
+            "homepage": "https://github.com/thecodingmachine/html.widgets.messageservice",
+            "keywords": [
+                "message",
+                "widget",
+                "mouf",
+                "widgets",
+                "messageservice"
             ]
         },
         {
