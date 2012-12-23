@@ -517,7 +517,7 @@ var MoufDefaultRenderer = (function () {
 		var renderer = getRendererAnnotation(classDescriptor);
 		if (renderer != null) {
 			if (renderer.smallLogo != null) {
-				wrapper.css("background-image", "url("+MoufInstanceManager.rootUrl+"../"+renderer.smallLogo+")");
+				wrapper.css("background-image", "url("+MoufInstanceManager.rootUrl+"../../../"+renderer.smallLogo+")");
 			}
 		}
 
