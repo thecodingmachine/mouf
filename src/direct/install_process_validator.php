@@ -13,7 +13,7 @@ use Mouf\MoufManager;
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 // This validator checks that no installation step is pending.
 use Mouf\MoufUtils;
 
@@ -28,6 +28,9 @@ require_once '../../mouf/Mouf.php';
 // and only after can we check if it was not loaded before loading it ourselves...
 //require_once 'utils/check_rights.php';
 MoufUtils::checkRights();
+
+MoufAdmin::getSessionManager()->write_close();
+
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	$selfEdit = false;
