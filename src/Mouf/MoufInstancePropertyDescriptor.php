@@ -85,7 +85,7 @@ class MoufInstancePropertyDescriptor {
 	 * @param mixed $value
 	 */
 	public function setValue($value) {
-		if ($this->propertyDescriptor->isPrimitiveType()) {
+		if ($this->propertyDescriptor->isPrimitiveType() || $this->propertyDescriptor->getType() == null) {
 			if (($value instanceof MoufInstanceDescriptor) || is_array($value)) {
 				throw new MoufException("You passed an array or a MoufInstanceDescriptor to MoufInstanceProperty::setValue, but the property '{$this->name}' instance '".$this->instanceDescriptor->getIdentifierName()."' of class '".$this->instanceDescriptor->getClassName()."' is supposed to take a primitive type in argument.");
 			}
