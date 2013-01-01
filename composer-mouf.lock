@@ -419,12 +419,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "945a036db14bcd56426476a80bba990de64f359e"
+                "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/945a036db14bcd56426476a80bba990de64f359e.zip",
-                "reference": "945a036db14bcd56426476a80bba990de64f359e",
+                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842.zip",
+                "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +433,7 @@
                 "mouf/html.utils.weblibrarymanager": ">=2.0,<3.0",
                 "mouf/utils.session.session-manager": ">=2.0,<3.0"
             },
-            "time": "2012-12-22 15:18:50",
+            "time": "2012-12-26 11:50:42",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -783,12 +783,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "b7e589e9a7efa385f29686a8579176e62337f32a"
+                "reference": "9263c1a98d80d87b640619e68076ec6065c02846"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/b7e589e9a7efa385f29686a8579176e62337f32a.zip",
-                "reference": "b7e589e9a7efa385f29686a8579176e62337f32a",
+                "url": "https://github.com/thecodingmachine/mvc.splash/archive/9263c1a98d80d87b640619e68076ec6065c02846.zip",
+                "reference": "9263c1a98d80d87b640619e68076ec6065c02846",
                 "shasum": ""
             },
             "require": {
@@ -799,14 +799,22 @@
                 "mouf/utils.cache.file-cache": "2.0.*",
                 "mouf/utils.cache.no-cache": "2.0.*"
             },
-            "time": "2012-12-22 16:48:19",
+            "time": "2013-01-01 15:27:13",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": [
                         {
                             "type": "url",
-                            "url": "splashinstall/"
+                            "url": "splashinstall/",
+                            "scope": "global",
+                            "description": "Create RootController and root view."
+                        },
+                        {
+                            "type": "url",
+                            "url": "splashinstall/writeHtAccess",
+                            "scope": "local",
+                            "description": "Write .htaccess file."
                         }
                     ],
                     "require-admin": [
@@ -849,12 +857,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common",
-                "reference": "59e3d92977e9c3cf384b8528686c57523e99dc4d"
+                "reference": "058ac047aee5c74ed9bb71c235c7e18365ea7a72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/59e3d92977e9c3cf384b8528686c57523e99dc4d.zip",
-                "reference": "59e3d92977e9c3cf384b8528686c57523e99dc4d",
+                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/058ac047aee5c74ed9bb71c235c7e18365ea7a72.zip",
+                "reference": "058ac047aee5c74ed9bb71c235c7e18365ea7a72",
                 "shasum": ""
             },
             "require": {
@@ -862,8 +870,21 @@
                 "mouf/html.htmlelement": "2.*",
                 "mouf/utils.i18n.fine": "3.*"
             },
-            "time": "2012-11-29 09:44:19",
+            "time": "2012-12-27 22:03:55",
             "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "file",
+                            "file": "src/splashCommonInstall.php"
+                        }
+                    ],
+                    "require-admin": [
+                        "src/SplashCommonAdmin.php"
+                    ]
+                }
+            },
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
@@ -1515,18 +1536,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.session.session-manager.git",
-                "reference": "a006a75b63c6d12a80e157dc1e80770bd28cf853"
+                "reference": "aed703aca227676b950fd474e0af6e9405519198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.session.session-manager/archive/a006a75b63c6d12a80e157dc1e80770bd28cf853.zip",
-                "reference": "a006a75b63c6d12a80e157dc1e80770bd28cf853",
+                "url": "https://github.com/thecodingmachine/utils.session.session-manager/archive/aed703aca227676b950fd474e0af6e9405519198.zip",
+                "reference": "aed703aca227676b950fd474e0af6e9405519198",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-07 14:34:33",
+            "time": "2012-12-22 15:19:32",
             "type": "mouf-library",
             "extra": {
                 "mouf": {

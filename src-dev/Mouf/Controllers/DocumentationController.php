@@ -11,7 +11,7 @@ namespace Mouf\Controllers;
 
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
-
+use MoufAdmin;
 use Mouf\MoufManager;
 
 use Mouf\MoufDocumentationPageDescriptor;
@@ -108,7 +108,7 @@ class DocumentationController extends Controller {
 	/**
 	 * Action that is run to view a documentation page.
 	 *
-	 * @Action
+	 * @URL doc/view/*
 	 * @Logged
 	 * @param string $selfedit
 	 */
@@ -121,9 +121,11 @@ class DocumentationController extends Controller {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 
-		// TODO: ADD support for @URL doc/view/*
+		$composerService = new ComposerService($this->selfedit == "true");
 		
-		$this->packageManager = new MoufPackageManager();
+		$this->packageList = $composerService->getLocalPackages();
+		
+		//$this->packageManager = new MoufPackageManager();
 		
 		// TODO
 		
@@ -131,102 +133,46 @@ class DocumentationController extends Controller {
 
 		$pos = strpos($redirect_uri, ROOT_URL);
 		if ($pos === FALSE) {
-			throw new Exception('Error: the prefix of the web application "'.$this->splashUrlPrefix.'" was not found in the URL. The application must be misconfigured. Check the ROOT_URL parameter in your MoufUniversalParameters.php file at the root of your project.');
+			throw new \Exception('Error: the prefix of the web application "'.$this->splashUrlPrefix.'" was not found in the URL. The application must be misconfigured. Check the ROOT_URL parameter in your MoufUniversalParameters.php file at the root of your project.');
 		}
 
 		$tailing_url = substr($redirect_uri, $pos+strlen(ROOT_URL));
 		$args = explode("/", $tailing_url);
-		// We remove the first 3 parts of the URL (mouf/doc/view)
+		// We remove the first 2 parts of the URL (mouf/doc/view)
 		array_shift($args);
 		array_shift($args);
-		array_shift($args);
 		
-		$oldDir = getcwd();
-		
-		chdir(ROOT_PATH."plugins");
-		
-		$group = $this->packageManager->getOrderedPackagesList();
-		
-		$dirToPackage = "";
-		$packageContainer = null;
-		while ($args) {
-			$dir = array_shift($args);
-			
-			if ($group->hasSubgroup($dir)) {
-				$group = $group->getGroup($dir);
-				$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-			} elseif ($group->hasPackageContainer($dir)) {
-				$packageContainer = $group->getPackageContainer($dir);
-				$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-				break;
-			} else {
-				Controller::FourOFour("Page not found", false);
-				return;
-			}
-		}
-		
-		if ($packageContainer == null) {
-			Controller::FourOFour("Page not found", false);
-			return;
-		}
-		
-		$dir = array_shift($args);
-		
-		if ($dir != "latest") {
-			$this->package = $packageContainer->getPackage($dir);
-			if ($this->package == null) {
-				Controller::FourOFour("Page not found", false);
-				return;
-			}
-			$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-		} else {
-			// Let's find the latest version!
-			$packages = $packageContainer->getOrderedList();
-			$this->package = array_pop($packages);
-			$dirToPackage .= $this->package->getDescriptor()->getVersion().DIRECTORY_SEPARATOR;
-		}
-		
-		
-		/*$dirToPackage = "";
-		$found = false;
-		while ($args) {
-			if (file_exists("package.xml")) {
-				$found = true;
-				break;
-			}
-			
-			$dir = array_shift($args);
-			if (!file_exists($dir) || !is_dir($dir)) {
-				if ($dir == "latest") {
-					// If the user decides to write "latest" instead of the version, let's find the latest version for him.
-					
-					$dir = "TODO: find the latest version!";
-				} else {
-					Controller::FourOFour("Page not found", false);
-					return;
-				}
-			}
-			chdir($dir);
-			$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-		}
-		
-		chdir($oldDir);
-		*/
+		$groupName = array_shift($args);
+		$packageName = array_shift($args);
 		
 		
 		//$this->package = $this->packageManager->getPackage($dirToPackage."package.xml");
+		foreach ($this->packageList as $package) {
+			if ($package->getName() == $groupName.'/'.$packageName) {
+				$this->package = $package;
+				break;
+			}
+		}
+		
+		if ($this->package == null) {
+			MoufAdmin::getSplash()->print404("No package with this name");
+			return;
+		}
 		
 		$docPath = implode("/", $args);
 
-		$filename = ROOT_PATH."plugins/".$dirToPackage.$this->package->getDocumentationRootDirectory().DIRECTORY_SEPARATOR.$docPath;
+		// Let's find the doc directory
+		$docDirectory = "doc";
+		// TODO: decide for a parameter in extra->mouf
+		
+		$filename = ROOT_PATH."vendor/".$groupName."/".$packageName."/".$docDirectory."/".$docPath;
 			
-
 		if (!file_exists($filename)) {
-			Controller::FourOFour("Documentation page does not exist", false);
+			MoufAdmin::getSplash()->print404("Documentation page does not exist");
 			return;
 		}
 		if (!is_readable($filename)) {
-			Controller::FourOFour("Page not found", false);
+			MoufAdmin::getSplash()->print404("Page not found");
 			return;
 		}
 
@@ -237,7 +183,7 @@ class DocumentationController extends Controller {
 
 			$bodyStart = strpos($fileStr, "<body");
 			if ($bodyStart === false) {
-				$this->template->addContentText('<div class="staticwebsite">'.$fileStr.'</div>');
+				$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
 				$this->template->toHtml();
 			} else {
 				$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
@@ -250,12 +196,12 @@ class DocumentationController extends Controller {
 				}
 				$body = substr($partBody, 0, $bodyEndTag);
 	
-				$this->template->addContentText('<div class="staticwebsite">'.$body.'</div>');
+				$this->contentBlock->addText('<div class="staticwebsite">'.$body.'</div>');
 				$this->template->toHtml();
 			}
 		} elseif (strripos($filename, ".php") !== false) {
 			// PHP files are not accessible
-			Controller::FourOFour("Cannot access PHP file through doc", false);
+			MoufAdmin::getSplash()->print404("Cannot access PHP file through doc");
 			return;
 		} else {
 			readfile($filename);
