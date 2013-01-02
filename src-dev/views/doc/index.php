@@ -21,8 +21,7 @@ foreach ($this->packageList as $package):
 	/* @var $package PackageInterface */
 	$docPages = $this->getDocPages($package);
 	if ($docPages) {
-		?><h2><?php echo $package->getPrettyName() ?></h2>
-		<p>Package <?php echo $package->getName()." ".$package->getVersion() ?></p>
+		?><h2><?php echo $package->getPrettyName() ?> <small><?php echo $package->getVersion() ?></small></h2>
 		<?php 
 		$this->displayDocDirectory($docPages, $package->getName());
 	}
