@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use dflydev\markdown\MarkdownExtraParser;
+
 use Mouf\Html\Widgets\Menu\MenuItem;
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
@@ -169,10 +171,18 @@ class DocumentationController extends Controller {
 			return;
 		}
 
-		if (strripos($filename, ".html") !== false || strripos($filename, "README") !== false) {
+
+		if (strripos($filename, ".html") !== false || strripos($filename, ".md") !== false || strripos($filename, "README") !== false) {
 			$this->addMenu();
 			
 			$fileStr = file_get_contents($filename);
+			
+			if (strripos($filename, ".md") !== false) {
+				$markdownParser = new MarkdownExtraParser();
+				
+				// Let's parse and transform markdown format in HTML
+				$fileStr = $markdownParser->transformMarkdown($fileStr);
+			}
 
 			$bodyStart = strpos($fileStr, "<body");
 			if ($bodyStart === false) {
