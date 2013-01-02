@@ -20,12 +20,21 @@ foreach ($this->packageList as $package):
 //var_export($package->getExtra());echo "<br/>";echo "<br/>";
 	/* @var $package PackageInterface */
 	$docPages = $this->getDocPages($package);
+<<<<<<< HEAD
 	?><h2><?php echo $package->getPrettyName() ?></h2>
 	<p>Package <?php echo $package->getName()." ".$package->getVersion() ?></p>
 	<?php 
 	$this->displayDocDirectory($docPages, $package->getName());
 	?>
 	<?php
+=======
+	if ($docPages) {
+		?><h2><?php echo $package->getPrettyName() ?></h2>
+		<p>Package <?php echo $package->getName()." ".$package->getVersion() ?></p>
+		<?php 
+		$this->displayDocDirectory($docPages, $package->getName());
+	}
+>>>>>>> 8e099ad3a0b8f8a2b34b5a3e2a03e3f82366a2b9
 
 endforeach;
 ?>

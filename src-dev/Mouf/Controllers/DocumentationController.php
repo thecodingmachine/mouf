@@ -10,7 +10,6 @@
 namespace Mouf\Controllers;
 
 use Mouf\Html\Widgets\Menu\MenuItem;
-
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
 use MoufAdmin;
@@ -240,7 +239,7 @@ class DocumentationController extends Controller {
 	 *  
 	 * @param \Composer\Package\PackageInterface $package
 	 */
-	private function getDocPages(\Composer\Package\PackageInterface $package) {
+	protected function getDocPages(\Composer\Package\PackageInterface $package) {
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
 			return $extra['mouf']['doc'];
