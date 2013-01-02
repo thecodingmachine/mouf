@@ -126,10 +126,6 @@ class DocumentationController extends Controller {
 		
 		$this->packageList = $composerService->getLocalPackages();
 		
-		//$this->packageManager = new MoufPackageManager();
-		
-		// TODO
-		
 		$redirect_uri = $_SERVER['REDIRECT_URL'];
 
 		$pos = strpos($redirect_uri, ROOT_URL);
@@ -161,12 +157,8 @@ class DocumentationController extends Controller {
 		}
 		
 		$docPath = implode("/", $args);
-
-		// Let's find the doc directory
-		$docDirectory = "doc";
-		// TODO: decide for a parameter in extra->mouf
 		
-		$filename = ROOT_PATH."vendor/".$groupName."/".$packageName."/".$docDirectory."/".$docPath;
+		$filename = ROOT_PATH."vendor/".$groupName."/".$packageName."/".$docPath;
 			
 		if (!file_exists($filename)) {
 			MoufAdmin::getSplash()->print404("Documentation page does not exist");
@@ -177,7 +169,7 @@ class DocumentationController extends Controller {
 			return;
 		}
 
-		if (strripos($filename, ".html") !== false) {
+		if (strripos($filename, ".html") !== false || strripos($filename, "README") !== false) {
 			$this->addMenu();
 			
 			$fileStr = file_get_contents($filename);
@@ -241,11 +233,36 @@ class DocumentationController extends Controller {
 	 */
 	protected function getDocPages(\Composer\Package\PackageInterface $package) {
 		$extra = $package->getExtra();
-		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
-			return $extra['mouf']['doc'];
-		} else {
-			return array();
+		
+		$docArray = array();
+		
+		// Let's find if there is a README file.
+		$packagePath = ROOT_PATH."vendor/".$package->getName()."/";
+		if (file_exists($packagePath."README")) {
+			$docArray[] = array("title"=> "Read me",
+						"url"=>"README"
+			);
 		}
+		if (file_exists($packagePath."README.md")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.md"
+			);
+		}
+		if (file_exists($packagePath."README.html")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.html"
+			);
+		}
+		if (file_exists($packagePath."README.txt")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.txt"
+			);
+		}
+		
+		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
+			$docArray = array_merge($docArray, $extra['mouf']['doc']);
+		}
+		return $docArray;
 	}
 	
 	
