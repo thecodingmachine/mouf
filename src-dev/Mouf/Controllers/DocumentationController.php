@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Html\Widgets\Menu\MenuItem;
+
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
 use MoufAdmin;
@@ -212,23 +214,61 @@ class DocumentationController extends Controller {
 	}
 	
 	protected function addMenu() {
-		$docPages = $this->package->getDocPages();
+		$docPages = $this->getDocPages($this->package);
 		
-		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getDisplayName());
+		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getPrettyName());
 		$this->fillMenu($documentationMenuMainItem, $docPages);
 		$this->documentationMenu->addChild($documentationMenuMainItem);
 	}
+	
+	/**
+	 * Returns an array of doc pages with the format:
+	 * 	[
+	 *   		{
+	 *   			"title": "Using FINE",
+	 *   			"url": "using_fine.html"
+	 *   		},
+	 *   		{
+	 *   			"title": "Date functions",
+	 *   			"url": "date_functions.html"
+	 *   		},
+	 *   		{
+	 *   			"title": "Currency functions",
+	 *   			"url": "currency_functions.html"
+	 *   		}
+	 *   	]
+	 *  
+	 * @param \Composer\Package\PackageInterface $package
+	 */
+	protected function getDocPages(\Composer\Package\PackageInterface $package) {
+		$extra = $package->getExtra();
+		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
+			return $extra['mouf']['doc'];
+		} else {
+			return array();
+		}
+	}
+	
+	
 	
 	private function fillMenu($menu, array $docPages) {
 		$children = array();
 		foreach ($docPages as $docPage) {
 			/* @var $docPage MoufDocumentationPageDescriptor */
+			
+			if (!isset($docPage['title'])) {
+				continue;
+			}
+			
 			$menuItem = new MenuItem();
-			$menuItem->setLabel($docPage->getTitle());
-			$menuItem->setUrl(ROOT_URL."mouf/doc/view/".$this->package->getDescriptor()->getGroup()."/".$this->package->getDescriptor()->getName()."/".$this->package->getDescriptor()->getVersion()."/".$docPage->getURL());
+			$menuItem->setLabel($docPage['title']);
+			if (isset($docPage['url'])) {
+				$menuItem->setUrl(ROOT_URL."mouf/doc/view/".$this->package->getName()."/".$docPage['url']);
+			}
 			$children[] = $menuItem;
-			if ($docPage->getChildren()) {
-				$this->fillMenu($menuItem, $menuItem->getChildren());
+			
+			if ($docPage['children']) {
+				$this->fillMenu($menuItem, $docPage['children']);
 			}
 		}
 		$menu->setChildren($children);
@@ -256,12 +296,14 @@ class DocumentationController extends Controller {
 		?>
 		<ul>
 		<?php 
-		foreach ($docPages as $url=>$title):
+		foreach ($docPages as $docPage):
+			$url = $docPage['url'];
+			$title = $docPage['title'];
 			?>
 			<li>
 			<?php 
 			if ($url) {
-				echo "<a href='".$packageName."/doc/".$url."'>";
+				echo "<a href='view/".$packageName."/".$url."'>";
 			}
 			echo $title;
 			if ($url) {
