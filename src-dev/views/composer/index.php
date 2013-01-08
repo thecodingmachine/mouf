@@ -50,7 +50,7 @@ $(document).ready(function() {
 <label>Version:</label><select id="packageversiondropdown" name="versiondropdown"></select>
 </div>
 <div id="manualselectdiv" class="hidden">
-<label>Version requirements:</label><input id="packageversionmanual" name="versionmanual"></select>
+<label>Version requirements:</label><input id="packageversionmanual" name="versionmanual" />
 </div>
 <div>
 <input type="checkbox" name="fromsource" id="packagefromsource" />Download from source
