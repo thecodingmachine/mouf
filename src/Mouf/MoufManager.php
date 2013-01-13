@@ -1981,7 +1981,6 @@ class MoufManager {
 
 	/**
 	 * Returns an object describing the class passed in parameter.
-	 * The class must be included by Mouf (using the "include PHP files" features, or be part of an enabled package)
 	 * This method should only be called in the context of the Mouf administration UI.
 	 *
 	 * @param string $className The name of the class to import

@@ -21,6 +21,7 @@
         "mouf/html.utils.bootstrap" : "2.1.*",
         "mouf/utils.session.session-manager" : "~2.0",
         "mouf/html.widgets.messageservice": "~2.0",
+        "mouf/utils.cache.apc-cache": "~2.0",
         "dflydev/markdown": "~1.0.2"
     },
     "require-dev": {

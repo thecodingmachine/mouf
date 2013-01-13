@@ -188,6 +188,27 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'apcCacheService' => 
+  array (
+    'class' => 'Mouf\\Utils\\Cache\\ApcCache',
+    'external' => false,
+    'weak' => false,
+    'fieldProperties' => 
+    array (
+      'defaultTimeToLive' => 
+      array (
+        'value' => 3600,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'fieldBinds' => 
+    array (
+      'fallback' => 'fileCacheService',
+    ),
+  ),
   'block.content' => 
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
@@ -867,6 +888,39 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => '4',
         'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
+  'fileCacheService' => 
+  array (
+    'class' => 'Mouf\\Utils\\Cache\\FileCache',
+    'external' => false,
+    'weak' => false,
+    'fieldProperties' => 
+    array (
+      'defaultTimeToLive' => 
+      array (
+        'value' => 3600,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'relativeToSystemTempDirectory' => 
+      array (
+        'type' => 'string',
+        'value' => true,
+        'metadata' => 
+        array (
+        ),
+      ),
+      'cacheDirectory' => 
+      array (
+        'type' => 'string',
+        'value' => 'mouf_cache',
         'metadata' => 
         array (
         ),
@@ -3130,6 +3184,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Utils\Cache\ApcCache
+	 */
+	 public static function getApcCacheService() {
+	 	return MoufManager::getMoufManager()->getInstance('apcCacheService');
+	 }
+
+	/**
 	 * @return Mouf\Html\HtmlElement\HtmlBlock
 	 */
 	 public static function getBlock_content() {
@@ -3302,6 +3363,13 @@ unset($moufManager);
 	 */
 	 public static function getErrorLogger() {
 	 	return MoufManager::getMoufManager()->getInstance('errorLogger');
+	 }
+
+	/**
+	 * @return Mouf\Utils\Cache\FileCache
+	 */
+	 public static function getFileCacheService() {
+	 	return MoufManager::getMoufManager()->getInstance('fileCacheService');
 	 }
 
 	/**
@@ -3837,6 +3905,41 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbTDBMAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Menu\ChooseInstanceMenuItem
+	 */
+	 public static function getDbTDBMGenereateDAOAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMGenereateDAOAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmController
+	 */
+	 public static function getTdbmadmin() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbmadmin');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmInstallController
+	 */
+	 public static function getTdbminstall() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
+	 }
+
+	/**
 	 * @return Mouf\Database\DBConnection\Controllers\MySqlConnectionEditController
 	 */
 	 public static function getMysqlconnectionedit() {
@@ -3848,6 +3951,34 @@ unset($moufManager);
 	 */
 	 public static function getDbconnectioninstall() {
 	 	return MoufManager::getMoufManager()->getInstance('dbconnectioninstall');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashAdminUrlsListMenuItem() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashAdminUrlsListMenuItem');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\Admin\SplashViewUrlsController
+	 */
+	 public static function getSplashViewUrls() {
+	 	return MoufManager::getMoufManager()->getInstance('splashViewUrls');
 	 }
 
 	/**
@@ -3888,20 +4019,6 @@ unset($moufManager);
 	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
-	 public static function getMvcMainMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getMvcSplashSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('mvcSplashSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
 	 public static function getMvcSplashPurgeCacheItem() {
 	 	return MoufManager::getMoufManager()->getInstance('mvcSplashPurgeCacheItem');
 	 }
@@ -3911,41 +4028,6 @@ unset($moufManager);
 	 */
 	 public static function getMvcSplashAdminApacheConfig2Item() {
 	 	return MoufManager::getMoufManager()->getInstance('mvcSplashAdminApacheConfig2Item');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getDbMainMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbMainMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getDbTDBMAdminSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbTDBMAdminSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Menu\ChooseInstanceMenuItem
-	 */
-	 public static function getDbTDBMGenereateDAOAdminSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbTDBMGenereateDAOAdminSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Database\TDBM\Controllers\TdbmController
-	 */
-	 public static function getTdbmadmin() {
-	 	return MoufManager::getMoufManager()->getInstance('tdbmadmin');
-	 }
-
-	/**
-	 * @return Mouf\Database\TDBM\Controllers\TdbmInstallController
-	 */
-	 public static function getTdbminstall() {
-	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
 	 }
 
 }

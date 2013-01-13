@@ -9,6 +9,9 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufCache;
+
+use Mouf\Utils\Cache\CacheInterface;
 use Mouf\MoufPropertyDescriptor;
 
 /**
@@ -25,12 +28,20 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	private $docComment;
 	
 	/**
+	 * The cache service used to store data hard to analyze.
+	 * 
+	 * @var CacheInterface
+	 */
+	private $cacheService;
+	
+	/**
 	 * Default constructor
 	 *
 	 * @param string $className The name of the class to analyse.
 	 */
 	public function __construct($className) {
 		parent::__construct($className);
+		$this->cacheService = new MoufCache();
 	}
 	
 	/**
@@ -498,9 +509,32 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      * @return array
      */
     public function toJson() {
-    	require_once dirname(__FILE__)."/MoufReflectionHelper.php";
-    	
-    	return MoufReflectionHelper::classToJson($this);
+    	if ($this->cacheService) {
+    		// We store in cache the result array, along with the filename and the last date the file has been modified.
+    		// Both must match for cache to be served.
+    		$resultArray = $this->cacheService->get("mouf_class_json_".$this->getName());
+    		if ($resultArray) {
+    			if ($resultArray['filename'] == $this->getFileName()) {
+    				$lastModificationTime = filemtime($resultArray['filename']);
+    				if ($resultArray['modificationdate'] == $lastModificationTime) {
+    					return $resultArray['json'];
+    				}
+    			}	
+    		}
+    		$jsonArray = MoufReflectionHelper::classToJson($this);
+    		
+    		$this->cacheService->set("mouf_class_json_".$this->getName(),
+    				array(
+    						'filename'=>$this->getFileName(),
+    						'modificationdate'=>filemtime($this->getFileName()),
+    						'json'=>$jsonArray
+    					)
+    				);
+    		
+    		return $jsonArray;
+    	} else {
+    		return MoufReflectionHelper::classToJson($this);
+    	}
     }
 
     private $useNamespaces;
@@ -517,7 +551,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      * Similarly, if you have only
      * 	use Mouf\Mvc\Splash\Controller
      * 
-     * the key will be "Controllers" and the value "Mouf\Mvc\Splash\Controller"
+     * the key will be "Controller" and the value "Mouf\Mvc\Splash\Controller"
      * 
      * @return array<string, string>
      */
@@ -526,6 +560,12 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		$this->useNamespaces = array();
     		
     		$contents = file_get_contents($this->getFileName());
+    		
+    		// Optim to avoid doing the token_get_all think that is costly.
+    		if (strpos($contents, 'use ') === false) {
+    			return array();
+    		}
+    		
    			$tokens   = token_get_all($contents);
     		
     		$classes = array();
@@ -542,36 +582,31 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		
     			$path = '';
     			
-    			switch ($token[0]) {
-    				case T_USE;
-	    				while (($t = $tokens[++$i]) && is_array($t)) {
-	    					if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
-	    						$path .= $t[1];
-	    						if ($t[0] == T_STRING) {
-	    							$as = $t[1];
-	    						} 
-	    					}
+    			if ($token[0] == T_USE) {
+	    			while (($t = $tokens[++$i]) && is_array($t)) {
+	    				//if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+	    				$type = $t[0];
+	    				if ($type == T_STRING || $type == T_NS_SEPARATOR) {
+	    					$path .= $t[1];
+	    					if ($type == T_STRING) {
+	    						$as = $t[1];
+	    					} 
 	    				}
-	    				$nextToken = $tokens[$i+1];
-	    				if ($nextToken[0] === T_AS) {
-	    					$as = $tokens[$i+2][1];
-	    				}
-	    				$path = ltrim($path, '\\');
-	    				$this->useNamespaces[$as] = $path;
-    				
-    				/*case T_NAMESPACE:
-    					$namespace = '';
-    					// If there is a namespace, extract it
-    					while (($t = $tokens[++$i]) && is_array($t)) {
-    						if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
-    							$namespace .= $t[1];
-    						}
-    					}
-    					$namespace .= '\\';
-    					break;*/
-    				
-    				default:
-    					break;
+	    			}
+	    				
+	    			if (empty($path)) {
+	    				// Path can be empty if the USE statement is not at the beginning of the file but part of a closure
+	    				//		(function() use ($var))
+	    				continue;
+	    			}
+	    				
+    				$nextToken = $tokens[$i+1];
+    				if ($nextToken[0] === T_AS) {
+    					$as = $tokens[$i+2][1];
+    				}
+    				$path = ltrim($path, '\\');
+	    				
+	    			$this->useNamespaces[$as] = $path;
     			}
     		}
     		
