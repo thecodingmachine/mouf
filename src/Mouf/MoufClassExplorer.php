@@ -51,10 +51,13 @@ class MoufClassExplorer {
 		
 		$classMap = MoufReflectionProxy::getClassMap($this->selfEdit);
 		
-		$notYetAnalysedClassMap = $classMap;
+		$endFileReached = false;
 		
-		while (!empty($notYetAnalysedClassMap)) {
-			$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
+		while (!$endFileReached) {
+			// Note: each time there is an error, we must restart from the very beginning, as including one class
+			// can have impact on including others (if the class file is performing some requires on the first class)
+			// It's a shame because its a performance killer, but we have no choice.
+			$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $classMap);
 			
 			$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
 			if ($startupPos === false) {
@@ -68,6 +71,7 @@ class MoufClassExplorer {
 				$beginMarker = $this->trimLine();
 				if ($beginMarker == "SQDSG4FDSE3234JK_ENDFILE") {
 					// We are finished analysing the file! Yeah!
+					$endFileReached = true;
 					break;
 				} elseif ($beginMarker != "X4EVDX4SEVX5_BEFOREINCLUDE") {
 					//echo $beginMarker."\n".$this->analysisResponse;
@@ -83,16 +87,20 @@ class MoufClassExplorer {
 					if ($endMarkerPos === false) {
 						// An error occured:
 						$this->forbiddenClasses[$analyzedClassName] = $this->analysisResponse;
-						unset($notYetAnalysedClassMap[$analyzedClassName]);
+						unset($classMap[$analyzedClassName]);
 						break;
 					} else {
 						$this->forbiddenClasses[$analyzedClassName] = substr($this->analysisResponse, 0, $endMarkerPos);
 						$this->analysisResponse = substr($this->analysisResponse, $endMarkerPos);
+						
+						// Even if we have just a warning, we forbid the class. Therefore, we stop analysing and
+						// we start again without the class (because a subclass might trigger the loading
+						// of the class and therefore trigger a warning too.
+						//unset($classMap[$analyzedClassName]);
+						//break;
 					}
 				}
 				$this->trimLine();
-				
-				unset($notYetAnalysedClassMap[$analyzedClassName]);
 				
 			}
 			
@@ -118,6 +126,9 @@ class MoufClassExplorer {
 	 */
 	private function trimLine() {
 		$newLinePos = strpos($this->analysisResponse, "\n");
+		if ($newLinePos === false) {
+			throw new \Exception("End of file!");
+		}
 		
 		$line = substr($this->analysisResponse, 0, $newLinePos);
 		$this->analysisResponse = substr($this->analysisResponse, $newLinePos + 1);
