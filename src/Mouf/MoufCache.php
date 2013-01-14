@@ -247,11 +247,7 @@ class MoufCache {
 	
 	private function getFileName($key) {
 		// Remove any "/" and ":" from the name, and replace those with "_" ...
-		// Note: this is not perfect as some keys might return the result from other keys...
-		$key = str_replace("/", "_", $key);
-		$key = str_replace(":", "_", $key);
-		//$key = str_replace("/", "\\/", $key);
-		//$key = str_replace(":", "\\:", $key);
+		$key = str_replace(array("/", "\\", ":", "_"), array("_s_", "_b_", "_d_", "___"), $key);
 	
 		return $this->getDirectory().$key.".cache";
 	}
