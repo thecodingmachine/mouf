@@ -51,12 +51,12 @@ class MoufClassExplorer {
 		
 		$classMap = MoufReflectionProxy::getClassMap($this->selfEdit);
 		
-		$notYetAnalysedClassMap = $classMap;
-		
 		do {
+			$notYetAnalysedClassMap = $classMap;
 			$nbRun = 0;
 			while (!empty($notYetAnalysedClassMap)) {
 				$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
+				$nbRun++;
 				
 				$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
 				if ($startupPos === false) {
@@ -97,11 +97,9 @@ class MoufClassExplorer {
 					unset($notYetAnalysedClassMap[$analyzedClassName]);
 					
 				}
-				
-				$nbRun++;
 			}
 			
-			if ($nbRun == 0) {
+			if ($nbRun <= 1) {
 				break;
 			}
 			
@@ -117,10 +115,7 @@ class MoufClassExplorer {
 		
 		// Let's remove from the classmap any class in error.
 		$this->classMap = $classMap;
-		foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
-			unset($this->classMap[$badClass]);
-		}
-
+		
 		$this->dataAvailable = true;
 	}
 	
