@@ -51,60 +51,69 @@ class MoufClassExplorer {
 		
 		$classMap = MoufReflectionProxy::getClassMap($this->selfEdit);
 		
-		$endFileReached = false;
+		$notYetAnalysedClassMap = $classMap;
 		
-		while (!$endFileReached) {
-			// Note: each time there is an error, we must restart from the very beginning, as including one class
-			// can have impact on including others (if the class file is performing some requires on the first class)
-			// It's a shame because its a performance killer, but we have no choice.
-			$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $classMap);
-			
-			$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
-			if ($startupPos === false) {
-				// It seems there is a problem running the script, let's throw an exception
-				throw new MoufException("Error while running classes analysis: ".$this->analysisResponse);
-			}
-			
-			$this->analysisResponse = substr($this->analysisResponse, $startupPos+18);
-			//echo($this->analysisResponse);exit;
-			while (true) {
-				$beginMarker = $this->trimLine();
-				if ($beginMarker == "SQDSG4FDSE3234JK_ENDFILE") {
-					// We are finished analysing the file! Yeah!
-					$endFileReached = true;
-					break;
-				} elseif ($beginMarker != "X4EVDX4SEVX5_BEFOREINCLUDE") {
-					//echo $beginMarker."\n".$this->analysisResponse;
-					throw new \Exception("Strange behaviour while importing classes. Begin marker: ".$beginMarker);
-				}
-
-				$analyzedClassName = $this->trimLine();
+		do {
+			$nbRun = 0;
+			while (!empty($notYetAnalysedClassMap)) {
+				$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
 				
-				// Now, let's see if the end marker is right after the begin marker...
-				$endMarkerPos = strpos($this->analysisResponse, "DSQRZREZRZER__AFTERINCLUDE\n");
-				if ($endMarkerPos !== 0) {
-					// There is a problem...
-					if ($endMarkerPos === false) {
-						// An error occured:
-						$this->forbiddenClasses[$analyzedClassName] = $this->analysisResponse;
-						unset($classMap[$analyzedClassName]);
+				$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
+				if ($startupPos === false) {
+					// It seems there is a problem running the script, let's throw an exception
+					throw new MoufException("Error while running classes analysis: ".$this->analysisResponse);
+				}
+				
+				$this->analysisResponse = substr($this->analysisResponse, $startupPos+18);
+				//echo($this->analysisResponse);exit;
+				while (true) {
+					$beginMarker = $this->trimLine();
+					if ($beginMarker == "SQDSG4FDSE3234JK_ENDFILE") {
+						// We are finished analysing the file! Yeah!
 						break;
-					} else {
-						$this->forbiddenClasses[$analyzedClassName] = substr($this->analysisResponse, 0, $endMarkerPos);
-						$this->analysisResponse = substr($this->analysisResponse, $endMarkerPos);
-						
-						// Even if we have just a warning, we forbid the class. Therefore, we stop analysing and
-						// we start again without the class (because a subclass might trigger the loading
-						// of the class and therefore trigger a warning too.
-						//unset($classMap[$analyzedClassName]);
-						//break;
+					} elseif ($beginMarker != "X4EVDX4SEVX5_BEFOREINCLUDE") {
+						//echo $beginMarker."\n".$this->analysisResponse;
+						throw new \Exception("Strange behaviour while importing classes. Begin marker: ".$beginMarker);
 					}
+	
+					$analyzedClassName = $this->trimLine();
+					
+					// Now, let's see if the end marker is right after the begin marker...
+					$endMarkerPos = strpos($this->analysisResponse, "DSQRZREZRZER__AFTERINCLUDE\n");
+					if ($endMarkerPos !== 0) {
+						// There is a problem...
+						if ($endMarkerPos === false) {
+							// An error occured:
+							$this->forbiddenClasses[$analyzedClassName] = $this->analysisResponse;
+							unset($notYetAnalysedClassMap[$analyzedClassName]);
+							break;
+						} else {
+							$this->forbiddenClasses[$analyzedClassName] = substr($this->analysisResponse, 0, $endMarkerPos);
+							$this->analysisResponse = substr($this->analysisResponse, $endMarkerPos);
+						}
+					}
+					$this->trimLine();
+					
+					unset($notYetAnalysedClassMap[$analyzedClassName]);
+					
 				}
-				$this->trimLine();
 				
+				$nbRun++;
 			}
 			
-		}
+			if ($nbRun == 0) {
+				break;
+			}
+			
+			// If we arrive here, we managed to detect a number of files to exclude.
+			// BUT, the complete list of file has never been tested together.
+			// and sometimes, a class included can trigger errors if another class is included at the same time
+			// (most of the time, when a require is performed on a file already loaded, triggering a "class already defined" error.
+			foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
+				unset($classMap[$badClass]);
+			}
+			
+		} while (true);
 		
 		// Let's remove from the classmap any class in error.
 		$this->classMap = $classMap;
@@ -126,8 +135,9 @@ class MoufClassExplorer {
 	 */
 	private function trimLine() {
 		$newLinePos = strpos($this->analysisResponse, "\n");
+		
 		if ($newLinePos === false) {
-			throw new \Exception("End of file!");
+			throw new \Exception("End of file reached!");
 		}
 		
 		$line = substr($this->analysisResponse, 0, $newLinePos);
