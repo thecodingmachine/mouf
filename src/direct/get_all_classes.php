@@ -46,10 +46,10 @@ $classList = array();
 foreach ($classNameList as $className) {
 	$classDescriptor = $moufManager->getClassDescriptor($className);
 	if ($classDescriptor->isInstantiable()) {
-		do {
+		while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()])) {
 			$classList[$classDescriptor->getName()] = $classDescriptor->toJson();
 			$classDescriptor = $classDescriptor->getParentClass();
-		} while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()]));
+		}
 	} 
 }
 
