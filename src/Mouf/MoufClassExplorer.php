@@ -99,6 +99,10 @@ class MoufClassExplorer {
 				}
 			}
 			
+			foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
+				unset($classMap[$badClass]);
+			}
+			
 			if ($nbRun <= 1) {
 				break;
 			}
@@ -107,10 +111,8 @@ class MoufClassExplorer {
 			// BUT, the complete list of file has never been tested together.
 			// and sometimes, a class included can trigger errors if another class is included at the same time
 			// (most of the time, when a require is performed on a file already loaded, triggering a "class already defined" error.
-			foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
-				unset($classMap[$badClass]);
-			}
 			
+						
 		} while (true);
 		
 		// Let's remove from the classmap any class in error.
