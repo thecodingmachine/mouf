@@ -40,8 +40,8 @@ class MoufReflectionProxy {
 	 * @param boolean $selfEdit
 	 * @return MoufXmlReflectionClass[]
 	 */
-	public static function getAllClasses($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_all_classes.php?selfedit=".(($selfEdit)?"true":"false");
+	public static function getAllClasses($selfEdit, $exportMode = MoufReflectionClass::EXPORT_ALL) {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_all_classes.php?selfedit=".(($selfEdit)?"true":"false")."&export_mode=".$exportMode;
 	
 		$response = self::performRequest($url);
 	

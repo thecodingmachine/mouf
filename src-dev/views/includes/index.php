@@ -78,7 +78,7 @@ if (empty($this->warnings)) {
 <h2>Included classes</h2>
 
 <?php 
-foreach ($this->classMap as $className=>$file):
+foreach ($this->classList as $className):
 ?>
 	<div class="alert alert-success">
 	<?php echo $className; ?>

@@ -349,7 +349,8 @@ var MoufInstanceManager = (function () {
 			jQuery.ajax(this.rootUrl+"src/direct/get_all_classes.php", {
 				data: {
 					encode: "json",
-					selfedit: this.selfEdit?"true":"false"
+					selfedit: this.selfEdit?"true":"false",
+					export_mode: "tiny"
 				}
 			}).fail(function(e) {
 				var msg = e;
@@ -973,20 +974,23 @@ var MoufClass = function(json) {
 
 	this.properties = [];
 	this.propertiesByName = {};
-	var jsonProperties = this.json["properties"];
-	for (var i=0; i<jsonProperties.length; i++) {
-		var moufProperty = new MoufProperty(jsonProperties[i]);
-		this.properties.push(moufProperty);
-		this.propertiesByName[moufProperty.getName()] = moufProperty;
-	}
-
-	this.methods = [];
-	this.methodsByName = {};
-	var jsonMethods = this.json["methods"];
-	for (var i=0; i<jsonMethods.length; i++) {
-		var moufMethod = new MoufMethod(jsonMethods[i]);
-		this.methods.push(moufMethod);
-		this.methodsByName[moufMethod.getName()] = moufMethod;
+	
+	if (this.getExportMode() != 'tiny') {
+		var jsonProperties = this.json["properties"];
+		for (var i=0; i<jsonProperties.length; i++) {
+			var moufProperty = new MoufProperty(jsonProperties[i]);
+			this.properties.push(moufProperty);
+			this.propertiesByName[moufProperty.getName()] = moufProperty;
+		}
+	
+		this.methods = [];
+		this.methodsByName = {};
+		var jsonMethods = this.json["methods"];
+		for (var i=0; i<jsonMethods.length; i++) {
+			var moufMethod = new MoufMethod(jsonMethods[i]);
+			this.methods.push(moufMethod);
+			this.methodsByName[moufMethod.getName()] = moufMethod;
+		}
 	}
 	
 	this.subclassOf = null;
@@ -999,6 +1003,13 @@ var MoufClass = function(json) {
  */
 MoufClass.prototype.getName = function() {
 	return this.json['name'];
+}
+
+/**
+ * Returns the name of the class.
+ */
+MoufClass.prototype.getExportMode = function() {
+	return this.json['exportmode'];
 }
 
 /**

@@ -21,6 +21,24 @@ use Mouf\MoufPropertyDescriptor;
 class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClassInterface {
 	
 	/**
+	 * Export neither fields nor methods on a toJson() call.
+	 * @var string
+	 */
+	const EXPORT_TINY = "tiny";
+	
+	/**
+	 * Export constructor, public fields and setters on a to toJson() call.
+	 * @var string
+	 */
+	const EXPORT_PROPERTIES = "properties";
+	
+	/**
+	 * Export all fields and methods on a to toJson() call.
+	 * @var string
+	 */
+	const EXPORT_ALL = "all";
+	
+	/**
 	 * The phpDocComment we will use to access annotations.
 	 *
 	 * @var MoufPhpDocComment
@@ -504,29 +522,46 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     }
     
     /**
+     * Returns the last modification date of this file or one of the parent classes of this file.
+     * This return actually the last modification date of this file and all parents classes.
+     * 
+     * This is useful to discard cache records if this file or one of its parents is updated.
+     * 
+     * TODO: take traits into account.
+     */
+    protected function getLastModificationDate() {
+    	$parent = $this->getParentClass();
+    	if ($parent != null) {
+    		return max(filemtime($this->getFileName()), $parent->getLastModificationDate());
+    	} else {
+    		return filemtime($this->getFileName());
+    	}
+    }
+    
+    /**
      * Returns a PHP array representing the class.
      * 
-     * @return array
+     * @param string $exportMode Decide what to export. Defaults to ALL.
+     * @return string
      */
-    public function toJson() {
+    public function toJson($exportMode = self::EXPORT_ALL) {
     	if ($this->cacheService) {
     		// We store in cache the result array, along with the filename and the last date the file has been modified.
     		// Both must match for cache to be served.
-    		$resultArray = $this->cacheService->get("mouf_class_json_".$this->getName());
+    		$resultArray = $this->cacheService->get("mouf_class_json_".$this->getName()."/".$exportMode);
     		if ($resultArray) {
     			if ($resultArray['filename'] == $this->getFileName()) {
-    				$lastModificationTime = filemtime($resultArray['filename']);
-    				if ($resultArray['modificationdate'] == $lastModificationTime) {
+    				if ($resultArray['modificationdate'] == $this->getLastModificationDate()) {
     					return $resultArray['json'];
     				}
     			}	
     		}
-    		$jsonArray = MoufReflectionHelper::classToJson($this);
+    		$jsonArray = MoufReflectionHelper::classToJson($this, $exportMode);
     		
-    		$this->cacheService->set("mouf_class_json_".$this->getName(),
+    		$this->cacheService->set("mouf_class_json_".$this->getName()."/".$exportMode,
     				array(
     						'filename'=>$this->getFileName(),
-    						'modificationdate'=>filemtime($this->getFileName()),
+    						'modificationdate'=>$this->getLastModificationDate(),
     						'json'=>$jsonArray
     					)
     				);
