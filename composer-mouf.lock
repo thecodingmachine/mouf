@@ -1,5 +1,5 @@
 {
-    "hash": "d9c6f9128d5ca2d1bd7de58ca9e1c8f1",
+    "hash": "a24fa0f9d92ff9d60b0a61be0b4d9c05",
     "packages": [
         {
             "name": "dflydev/markdown",
@@ -175,6 +175,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -398,6 +399,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -705,6 +707,7 @@
                     "Mouf": "php/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -778,18 +781,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "64c5ef7745b11c5698010f8c46adbb5212314afa"
+                "reference": "bb7c6cd1acb98a6a557028d6cc5ee716ee635767"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/64c5ef7745b11c5698010f8c46adbb5212314afa.zip",
-                "reference": "64c5ef7745b11c5698010f8c46adbb5212314afa",
+                "url": "https://github.com/thecodingmachine/mouf-installer/archive/bb7c6cd1acb98a6a557028d6cc5ee716ee635767.zip",
+                "reference": "bb7c6cd1acb98a6a557028d6cc5ee716ee635767",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-08 18:22:59",
+            "time": "2013-01-15 16:01:06",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -802,6 +805,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1101,12 +1105,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.apc-cache.git",
-                "reference": "1b8dfd358e8c59409b922420be9a952108946fa2"
+                "reference": "91ea87b28952a99b898f4170545f0459306e660f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.apc-cache/archive/1b8dfd358e8c59409b922420be9a952108946fa2.zip",
-                "reference": "1b8dfd358e8c59409b922420be9a952108946fa2",
+                "url": "https://github.com/thecodingmachine/utils.cache.apc-cache/archive/91ea87b28952a99b898f4170545f0459306e660f.zip",
+                "reference": "91ea87b28952a99b898f4170545f0459306e660f",
                 "shasum": ""
             },
             "require": {
@@ -1114,7 +1118,7 @@
                 "mouf/utils.cache.cache-interface": "2.*",
                 "mouf/utils.log.errorlog_logger": "2.*"
             },
-            "time": "2012-11-24 11:49:48",
+            "time": "2013-01-15 15:39:39",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1131,6 +1135,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1204,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.file-cache.git",
-                "reference": "6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256"
+                "reference": "d47758c13b0c8b17f88e729deafdad1ab7c60fdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256.zip",
-                "reference": "6cdf27a94b3b6ebc302bfaca4be45a6fb8aab256",
+                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/d47758c13b0c8b17f88e729deafdad1ab7c60fdf.zip",
+                "reference": "d47758c13b0c8b17f88e729deafdad1ab7c60fdf",
                 "shasum": ""
             },
             "require": {
@@ -1217,7 +1222,7 @@
                 "mouf/utils.cache.cache-interface": "2.*",
                 "mouf/utils.log.log_interface": "2.*"
             },
-            "time": "2012-11-24 11:47:33",
+            "time": "2013-01-14 17:11:02",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1234,6 +1239,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1372,7 +1378,6 @@
                     "src/TcmUtilsException.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
