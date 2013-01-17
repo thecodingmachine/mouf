@@ -350,7 +350,7 @@ var MoufDefaultRenderer = (function () {
 			activeClass: "stateActive",
 			hoverClass: "stateHover",
 			greedy: true,
-			tolerance: "touch",
+			tolerance: "intersect",
 			drop: function( event, ui ) {
 				var droppedInstance = jQuery( ui.draggable ).data("instance");
 				
