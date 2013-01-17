@@ -2287,6 +2287,7 @@ $moufManager->addComponentInstances(array (
           0 => 'navBarMenuRenderer',
           1 => '__anonymous_1351271275513',
           2 => 'searchBox',
+          3 => 'purgeCodeCacheButton',
         ),
         'parametertype' => 'object',
         'type' => 'string',
@@ -2295,7 +2296,7 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
-    'anonymous' => true,
+    'anonymous' => false,
   ),
   'navBarMenuRenderer' => 
   array (
@@ -2616,6 +2617,33 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => false,
         'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
+  'purgeCodeCacheButton' => 
+  array (
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlFromFile',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'type' => 'string',
+        'value' => 'src-dev/views/codeCacheButton.php',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'type' => 'string',
+        'value' => true,
+        'parametertype' => 'primitive',
         'metadata' => 
         array (
         ),
@@ -3699,6 +3727,13 @@ unset($moufManager);
 	 */
 	 public static function getProjectSubMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('projectSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\HtmlElement\HtmlFromFile
+	 */
+	 public static function getPurgeCodeCacheButton() {
+	 	return MoufManager::getMoufManager()->getInstance('purgeCodeCacheButton');
 	 }
 
 	/**
