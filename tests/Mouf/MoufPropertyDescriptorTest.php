@@ -102,7 +102,8 @@ class MoufPropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(null, $subtype, "Testing \$setSetterProperty2 property subtype");
 		$this->assertEquals(null, $keytype, "Testing \$setSetterProperty2 property keytype");
 		
-		$property = $moufReflectionClass->getConstructor()->getParameters()[0];
+		$property = $moufReflectionClass->getConstructor()->getParameters();
+		$property = $property[0];
 		$moufPropertyDescriptor = new MoufPropertyDescriptor($property);
 		$type = $moufPropertyDescriptor->getType();
 		$subtype = $moufPropertyDescriptor->getSubType();
@@ -111,7 +112,8 @@ class MoufPropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(null, $subtype, "Testing \$constructorParamA property subtype");
 		$this->assertEquals(null, $keytype, "Testing \$constructorParamA property keytype");
 		
-		$property = $moufReflectionClass->getConstructor()->getParameters()[1];
+		$property = $moufReflectionClass->getConstructor()->getParameters();
+		$property = $property[1];
 		$moufPropertyDescriptor = new MoufPropertyDescriptor($property);
 		$type = $moufPropertyDescriptor->getType();
 		$subtype = $moufPropertyDescriptor->getSubType();
@@ -120,7 +122,8 @@ class MoufPropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(null, $subtype, "Testing \$constructorParamB property subtype");
 		$this->assertEquals(null, $keytype, "Testing \$constructorParamB property keytype");
 		
-		$property = $moufReflectionClass->getConstructor()->getParameters()[2];
+		$property = $moufReflectionClass->getConstructor()->getParameters();
+		$property = $property[2];
 		$moufPropertyDescriptor = new MoufPropertyDescriptor($property);
 		$type = $moufPropertyDescriptor->getType();
 		$subtype = $moufPropertyDescriptor->getSubType();
