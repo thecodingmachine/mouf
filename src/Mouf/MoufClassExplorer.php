@@ -40,11 +40,24 @@ class MoufClassExplorer {
 	
 	private $dataAvailable = false;
 	
+	private $useCache = true;
+	
+	private $cacheService;
+	
 	public function __construct($selfEdit = false) {
 		$this->selfEdit = $selfEdit;
+		$this->cacheService = new MoufCache();
 	}
 	
-	private function analyze() {
+	/**
+	 * 
+	 * @param bool $useCache
+	 */
+	public function setUseCache($useCache) {
+		$this->useCache = $useCache;
+	}
+	
+	private function analyze() {		
 		if ($this->dataAvailable) {
 			return;
 		}
@@ -118,6 +131,12 @@ class MoufClassExplorer {
 		// Let's remove from the classmap any class in error.
 		$this->classMap = $classMap;
 		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->cacheService->set("mouf.classMap.".__DIR__."/".json_encode($this->selfEdit), $this->classMap, 30*60);
+			$this->cacheService->set("forbidden.classes.".__DIR__."/".json_encode($this->selfEdit), $this->forbiddenClasses, 30*60);
+		}
+		
 		$this->dataAvailable = true;
 	}
 	
@@ -147,6 +166,18 @@ class MoufClassExplorer {
 	 * @return array<string, string>
 	 */
 	public function getClassMap() {
+		if ($this->classMap) {
+			return $this->classMap;
+		}
+		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->classMap = $this->cacheService->get("mouf.classMap.".__DIR__."/".json_encode($this->selfEdit));
+			if ($this->classMap != null) {
+				return $this->classMap;
+			}
+		}
+		
 		$this->analyze();
 		return $this->classMap;
 	}
@@ -157,6 +188,18 @@ class MoufClassExplorer {
 	 * @return array<string, string>
 	 */
 	public function getErrors() {
+		if ($this->forbiddenClasses) {
+			return $this->forbiddenClasses;
+		}
+		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->forbiddenClasses = $this->cacheService->get("forbidden.classes.".__DIR__."/".json_encode($this->selfEdit));
+			if ($this->forbiddenClasses != null) {
+				return $this->forbiddenClasses;
+			}
+		}
+		
 		$this->analyze();
 		return $this->forbiddenClasses;
 	}
