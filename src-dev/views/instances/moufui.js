@@ -44,9 +44,68 @@ $.fn.fixedFromPos = function ( ) {
 
 // Enable Bootstrap tooltips by default.
 $(document).ready(function() {
-	$('body').tooltip({
+	/*$('body').tooltip({
 	    selector: '[rel=tooltip]'
+	});*/
+	
+	/* Now, let's correct an enoying tooltip bug:
+		When the container element is destroyed,
+		the tooltip stays forever (because the mouseleave event
+		of the container is never triggered.
+		Let's solve this with timeouts */
+	
+	/*$('[rel=tooltip]').live('mouseenter', function() {
+		var parentElem = $(this);
+		parentElem.tooltip('show')
+		var deleteTimer = setInterval(function() {
+			if (parentElem.is(':hidden')) {
+				parentElem.tooltip('hide');
+				clearInterval(deleteTimer);
+			}
+		}, 2000);
+		
+		$(this).mouseleave(function() {
+			clearInterval(deleteTimer);
+		})
+	});*/
+	
+	$('[rel=tooltip]').live('mouseenter', function() {
+		// If the tooltip was already created, let's quit.
+		var api = $(this).data('qtip');
+		if (api) {
+			return;
+		}
+		
+		$(this).qtip({
+			hide: {
+				fixed: true,
+				delay: 200
+			},
+			position: {
+				my: 'bottom center',
+				at: 'top center'
+			},
+			style: {
+				classes: 'qtip-dark qtip-rounded qtip-shadow'
+			}
+		});
+		var api = $(this).data('qtip');
+		api.show();
+		
+		/*var parentElem = $(this);
+		parentElem.tooltip('show')
+		var deleteTimer = setInterval(function() {
+			if (parentElem.is(':hidden')) {
+				parentElem.tooltip('hide');
+				clearInterval(deleteTimer);
+			}
+		}, 2000);
+		
+		$(this).mouseleave(function() {
+			clearInterval(deleteTimer);
+		})*/
 	});
+	
 })
 
 /**

@@ -1093,11 +1093,11 @@ MoufClass.prototype.getAnnotations = function() {
  * Returns the list of all injectable properties (constructor parameters, properties and setters)
  */
 MoufClass.prototype.getAllInjectableProperties = function() {
-	var moufProperties = this.getInjectableConstructorArguments();
-	moufProperties.concat(this.getInjectableSetters());
-	moufProperties.concat(this.getInjectablePublicProperties());
+	var moufProperties = this.getInjectableConstructorArguments().concat(
+			this.getInjectableSetters(),
+			this.getInjectablePublicProperties()
+	);
 	
-
 	return moufProperties;
 }
 

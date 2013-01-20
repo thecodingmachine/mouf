@@ -465,6 +465,7 @@ $moufManager->addComponentInstances(array (
         10 => 'javascript.chooseInstancePopupJs',
         11 => 'javascript.jquery-filetree',
         12 => 'messageServiceLibrary',
+        13 => 'weblibrary.qtip2',
       ),
     ),
   ),
@@ -3165,6 +3166,39 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'weblibrary.qtip2' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/javascript/qtip/jquery.qtip.js',
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/javascript/qtip/jquery.qtip.css',
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
 ));
 
 
@@ -3905,6 +3939,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getWeblibrary_qtip2() {
+	 	return MoufManager::getMoufManager()->getInstance('weblibrary.qtip2');
+	 }
+
+	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getUtilsMainMenu() {
@@ -3940,6 +3981,20 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Database\DBConnection\Controllers\MySqlConnectionEditController
+	 */
+	 public static function getMysqlconnectionedit() {
+	 	return MoufManager::getMoufManager()->getInstance('mysqlconnectionedit');
+	 }
+
+	/**
+	 * @return Mouf\Database\DBConnection\Controllers\DbConnectionInstallController
+	 */
+	 public static function getDbconnectioninstall() {
+	 	return MoufManager::getMoufManager()->getInstance('dbconnectioninstall');
+	 }
+
+	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getDbMainMenu() {
@@ -3972,20 +4027,6 @@ unset($moufManager);
 	 */
 	 public static function getTdbminstall() {
 	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
-	 }
-
-	/**
-	 * @return Mouf\Database\DBConnection\Controllers\MySqlConnectionEditController
-	 */
-	 public static function getMysqlconnectionedit() {
-	 	return MoufManager::getMoufManager()->getInstance('mysqlconnectionedit');
-	 }
-
-	/**
-	 * @return Mouf\Database\DBConnection\Controllers\DbConnectionInstallController
-	 */
-	 public static function getDbconnectioninstall() {
-	 	return MoufManager::getMoufManager()->getInstance('dbconnectioninstall');
 	 }
 
 	/**
