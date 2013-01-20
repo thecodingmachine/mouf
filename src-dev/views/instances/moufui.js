@@ -10,6 +10,38 @@
    };
 }(jQuery));
 
+/**
+ * A simple Javascript plugin that puts an element in fixed position, but only when starting scrolling below
+ * its first position.
+ */
+$.fn.fixedFromPos = function ( ) {
+    var $this = this,
+        $window = $(window);
+
+    var topPos = $this.position().top;
+    
+    var repos = function(e){
+        if ($window.scrollTop() <= topPos) {
+            $this.css({
+                "margin-top": 0,
+                height: $window.height() - topPos + $window.scrollTop() - 5,
+                "overflow-y": "auto",
+                "background-color":"white"
+            });
+        } else {
+            $this.css({
+                "margin-top": $window.scrollTop() - topPos,
+                height: $window.height() -5,
+                "overflow-y": "auto",
+                "background-color":"white"
+            });
+        }
+    }
+    
+    $window.scroll(repos);
+    $window.resize(repos);
+};
+
 // Enable Bootstrap tooltips by default.
 $(document).ready(function() {
 	$('body').tooltip({

@@ -22,4 +22,9 @@ MoufInstanceManager.getInstance(<?php echo json_encode($this->instanceName) ?>).
 	addMessage("<pre>"+e+"</pre>", "error");
 });
 
+
+$(document).ready(function() {
+	$('#instanceList').fixedFromPos();
+});
+
 </script>

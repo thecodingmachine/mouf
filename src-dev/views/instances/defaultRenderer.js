@@ -539,6 +539,8 @@ var MoufDefaultRenderer = (function () {
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
+				// Triggers a click on the link to display the instances in the right column.
+				field.find('a').trigger('click');
 			});
 			return field;
 		}
@@ -547,6 +549,8 @@ var MoufDefaultRenderer = (function () {
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
+				// Triggers a click on the link to display the instances in the right column.
+				field.find('a').trigger('click');
 			});
 			return field;
 		}
@@ -632,7 +636,8 @@ var MoufDefaultRenderer = (function () {
 		
 		var field = fieldRenderer(moufInstanceProperty);
 		return field;
-	}
+	}	
+
 	
 	return {
 		/**
