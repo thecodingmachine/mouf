@@ -43,15 +43,13 @@ if (!file_exists("../../../../mouf")) {
 // Write Mouf.php:
 if (!file_exists("../../../../mouf/Mouf.php")) {
 	$moufStr = "<?php
+define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
+require_once __DIR__.'/../config.php';
+define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
+			
 require_once __DIR__.'/../vendor/autoload.php';
 
 require_once 'MoufComponents.php';
-
-define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
-
-require_once __DIR__.'/../config.php';
-
-define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
 ?>";
 	
 	file_put_contents("../../../../mouf/Mouf.php", $moufStr);
