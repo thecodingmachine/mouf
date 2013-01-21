@@ -59,8 +59,15 @@ define('MOUF_URL', ROOT_URL);
 }*/
 
 // Finally, let's include the MoufUI if it exists.
-if (file_exists(__DIR__.'/../../../../mouf/MoufUI.php')) {
-	require_once __DIR__.'/../../../../mouf/MoufUI.php';
+// Note: acting on the _REQUEST is not the cleanest thing to do!!!
+if (isset($_REQUEST['selfedit']) && $_REQUEST['selfedit'] == 'true') {
+	if (file_exists(__DIR__.'/MoufUI.php')) {
+		require_once __DIR__.'/MoufUI.php';
+	}
+} else {
+	if (file_exists(__DIR__.'/../../../../mouf/MoufUI.php')) {
+		require_once __DIR__.'/../../../../mouf/MoufUI.php';
+	}
 }
 
 
