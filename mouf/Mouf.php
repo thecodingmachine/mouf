@@ -11,10 +11,30 @@
 use Mouf\MoufManager;
 
 // Let's add to the project's autoloader to the Mouf classes.
-// Mouf classes will be detected before the projet's classes.
-require_once __DIR__.'/../../../../vendor/autoload.php';
-require_once __DIR__.'/../vendor/autoload.php';
+// For Mouf classes to be detected before the projet's classes, projects classes must be autoloaded first.
+if (!class_exists('Composer\\Autoload\\ClassLoader')) {
+	require __DIR__.'/../vendor/composer/ClassLoader.php';
+}
 
+$loader = new \Composer\Autoload\ClassLoader();
+if (file_exists(__DIR__ . '/../../../composer/autoload_namespaces.php')) {
+	$map = require __DIR__ . '/../../../composer/autoload_namespaces.php';
+	foreach ($map as $namespace => $path) {
+		$loader->add($namespace, $path);
+	}
+}
+
+if (file_exists(__DIR__ . '/../../../composer/autoload_classmap.php')) {
+	$classMap = require __DIR__ . '/../../../composer/autoload_classmap.php';
+	if ($classMap) {
+		$loader->addClassMap($classMap);
+	}
+}
+$loader->register(true);
+
+
+// Now, let's use Mouf autoloader.
+require_once __DIR__.'/../vendor/autoload.php';
 
 require_once __DIR__.'/../../../../mouf/MoufComponents.php';
 

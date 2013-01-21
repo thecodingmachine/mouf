@@ -6,8 +6,8 @@
 // Files declared in the extra:mouf:adminRequire section.
 require_once __DIR__.'/../vendor/mouf/utils.cache.cache-interface/CacheAdmin.php';
 require_once __DIR__.'/../vendor/mouf/security.userservice/src/MoufUserServiceValidators.php';
-require_once __DIR__.'/../vendor/mouf/mvc.splash-common/src/SplashCommonAdmin.php';
 require_once __DIR__.'/../vendor/mouf/utils.cache.apc-cache/src/declareApcValidator.php';
+require_once __DIR__.'/../vendor/mouf/mvc.splash-common/src/SplashCommonAdmin.php';
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/SplashAdmin.php';
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/SplashGenerateService.php';
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/Controllers/Admin/SplashPurgeCacheController.php';
