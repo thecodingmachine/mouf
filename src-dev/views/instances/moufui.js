@@ -268,7 +268,7 @@ var MoufUI = (function () {
 		 *  	}
 		 *  ]);
 		 */
-		createMenuIcon: function(items) {
+		createMenuIcon: function(items, bindTo) {
 			/*var div = jQuery("<div/>").addClass("inlinemenuicon");
 			// Sadly, we cannot pass UL the in the same HTML block because the containing block might be "overflow: hidden" 
 			// and that would propagate to our element. So let's put the UL at the top of the document, and let's position it
@@ -304,9 +304,9 @@ var MoufUI = (function () {
 			
 			return div;*/
 			
-			var div = jQuery("<div/>").addClass("btn-group");
+			var div = jQuery("<div/>").addClass("btn-group").css({"visibility": "hidden"});
 			
-			var buttonDropdownToggle = jQuery("<button><span class='caret'></span></button>").addClass("btn btn-mini dropdown-toggle").attr("data-toggle", "dropdown").appendTo(div);
+			var buttonDropdownToggle = jQuery("<button><i class='icon-wrench'></i></span></button>").addClass("btn btn-mini dropdown-toggle").attr("data-toggle", "dropdown").appendTo(div);
 			var ul = jQuery("<ul/>").addClass("dropdown-menu").appendTo(div);
 			_.each(items, function(item) {
 				var li = jQuery("<li/>")
@@ -322,6 +322,25 @@ var MoufUI = (function () {
 				}
 				li.appendTo(ul);
 			});
+			
+			$(bindTo).mouseenter(function() {
+				div.css({"visibility": "visible"});
+			});
+			$(bindTo).mouseleave(function() {
+				div.css({"visibility": "hidden"});
+			});
+			// Let's make a glow arround the targetted elements
+			div.mouseenter(function() {
+				div.siblings().first().css({
+					"transition": "all 0.25s ease-in-out",
+					"box-shadow": "0 0 5px rgba(100, 100, 255, 1)"
+				});
+			})
+			div.mouseleave(function() {
+				div.siblings().first().css({
+					"box-shadow": "none"
+				});
+			})
 			
 			return div;
 		    /*<div class="btn-group">

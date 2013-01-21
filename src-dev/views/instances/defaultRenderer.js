@@ -545,7 +545,7 @@ var MoufDefaultRenderer = (function () {
 			return field;
 		}
 		var getNotSetField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-warning' rel='tooltip' title='Click to set value'><em>Default value</em></button>").click(function() {
+			var field = jQuery("<button class='btn btn-mini btn-warning'><em>Click to set value</em></button>").click(function() {
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
@@ -618,7 +618,7 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		
-		var menu = MoufUI.createMenuIcon(menuDescriptor);
+		var menu = MoufUI.createMenuIcon(menuDescriptor, fieldWrapper);
 		menu.appendTo(fieldWrapper);
 		
 		return fieldWrapper;
