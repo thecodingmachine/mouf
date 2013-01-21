@@ -1,5 +1,5 @@
 {
-    "hash": "d9c6f9128d5ca2d1bd7de58ca9e1c8f1",
+    "hash": "a24fa0f9d92ff9d60b0a61be0b4d9c05",
     "packages": [
         {
             "name": "dflydev/markdown",
@@ -176,6 +176,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -718,6 +719,7 @@
                     "Mouf": "php/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -839,12 +841,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "5e3ecde6a680027727006f719734d956b334fd96"
+                "reference": "f81f41cc5265b62680af43e8d941909558217d4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/5e3ecde6a680027727006f719734d956b334fd96.zip",
-                "reference": "5e3ecde6a680027727006f719734d956b334fd96",
+                "url": "https://github.com/thecodingmachine/mvc.splash/archive/f81f41cc5265b62680af43e8d941909558217d4d.zip",
+                "reference": "f81f41cc5265b62680af43e8d941909558217d4d",
                 "shasum": ""
             },
             "require": {
@@ -855,7 +857,7 @@
                 "mouf/utils.cache.file-cache": "2.0.*",
                 "mouf/utils.cache.no-cache": "2.0.*"
             },
-            "time": "2013-01-21 13:01:15",
+            "time": "2013-01-21 18:31:20",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1117,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.apc-cache.git",
-                "reference": "7c978cfa89d68c4ac50223a00be6088dacc28675"
+                "reference": "81d28ddd4eaf7578aae378da5eed24a09a4cc1ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.apc-cache/archive/7c978cfa89d68c4ac50223a00be6088dacc28675.zip",
-                "reference": "7c978cfa89d68c4ac50223a00be6088dacc28675",
+                "url": "https://github.com/thecodingmachine/utils.cache.apc-cache/archive/81d28ddd4eaf7578aae378da5eed24a09a4cc1ee.zip",
+                "reference": "81d28ddd4eaf7578aae378da5eed24a09a4cc1ee",
                 "shasum": ""
             },
             "require": {
@@ -1131,7 +1133,7 @@
                 "mouf/utils.log.errorlog_logger": "2.*",
                 "mouf/utils.cache.file-cache": "2.*"
             },
-            "time": "2013-01-21 13:14:10",
+            "time": "2013-01-21 18:30:20",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1394,7 +1396,6 @@
                     "src/TcmUtilsException.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
