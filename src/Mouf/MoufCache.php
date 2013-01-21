@@ -226,6 +226,7 @@ class MoufCache {
 			foreach ($files as $filename) {
 				unlink($filename);
 			}
+			return;
 		}
 		
 		apc_clear_cache('user');
