@@ -10,10 +10,10 @@
 
 use Mouf\MoufManager;
 
-require_once __DIR__.'/../vendor/autoload.php';
 // Let's add to the project's autoloader to the Mouf classes.
 // Mouf classes will be detected before the projet's classes.
 require_once __DIR__.'/../../../../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 
 require_once __DIR__.'/../../../../mouf/MoufComponents.php';

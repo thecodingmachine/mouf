@@ -2640,15 +2640,6 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      1 => 
-      array (
-        'type' => 'string',
-        'value' => true,
-        'parametertype' => 'primitive',
-        'metadata' => 
-        array (
-        ),
-      ),
     ),
   ),
   'repositories' => 
@@ -2737,6 +2728,24 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Controllers\\MoufRootController',
     'external' => false,
   ),
+  'rootUrlJsFile' => 
+  array (
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlFromFile',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'type' => 'string',
+        'value' => 'src-dev/views/instances/setRootUrlBlock.php',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'search' => 
   array (
     'class' => 'Mouf\\Controllers\\SearchController',
@@ -2794,17 +2803,10 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\InlineWebLibrary',
     'external' => false,
     'weak' => false,
-    'fieldProperties' => 
-    array (
-      'additionalPhpFile' => 
-      array (
-        'value' => 'src-dev/views/instances/setRootUrlBlock.php',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+	'fieldBinds' =>
+		array (
+			'additionalElement' => "rootUrlJsFile"
+		),
   ),
   'specialActionsMenu' => 
   array (
@@ -3799,6 +3801,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\HtmlElement\HtmlFromFile
+	 */
+	 public static function getRootUrlJsFile() {
+	 	return MoufManager::getMoufManager()->getInstance('rootUrlJsFile');
+	 }
+
+	/**
 	 * @return Mouf\Controllers\SearchController
 	 */
 	 public static function getSearch() {
@@ -3997,41 +4006,6 @@ unset($moufManager);
 	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
-	 public static function getDbMainMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbMainMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getDbTDBMAdminSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbTDBMAdminSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Menu\ChooseInstanceMenuItem
-	 */
-	 public static function getDbTDBMGenereateDAOAdminSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('dbTDBMGenereateDAOAdminSubMenu');
-	 }
-
-	/**
-	 * @return Mouf\Database\TDBM\Controllers\TdbmController
-	 */
-	 public static function getTdbmadmin() {
-	 	return MoufManager::getMoufManager()->getInstance('tdbmadmin');
-	 }
-
-	/**
-	 * @return Mouf\Database\TDBM\Controllers\TdbmInstallController
-	 */
-	 public static function getTdbminstall() {
-	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
 	 public static function getMvcMainMenu() {
 	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
 	 }
@@ -4104,6 +4078,48 @@ unset($moufManager);
 	 */
 	 public static function getMvcSplashAdminApacheConfig2Item() {
 	 	return MoufManager::getMoufManager()->getInstance('mvcSplashAdminApacheConfig2Item');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getDbTDBMAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Menu\ChooseInstanceMenuItem
+	 */
+	 public static function getDbTDBMGenereateDAOAdminSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('dbTDBMGenereateDAOAdminSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmController
+	 */
+	 public static function getTdbmadmin() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbmadmin');
+	 }
+
+	/**
+	 * @return Mouf\Database\TDBM\Controllers\TdbmInstallController
+	 */
+	 public static function getTdbminstall() {
+	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
+	 }
+
+	/**
+	 * @return Mouf\MVC\BCE\controllers\BceConfigController
+	 */
+	 public static function getBceadmin() {
+	 	return MoufManager::getMoufManager()->getInstance('bceadmin');
 	 }
 
 }
