@@ -38,6 +38,11 @@ $(document).ready(function() {
 <p>There is one strong requirement to be able to use a class in Mouf: when the class file is included,
 there should be no output (so no errors, no HTML, ...). Any class trigerring some output will be reported below.</p>
 
+<form method="post" action="refresh">
+	<input type="hidden" name="selfedit" id="selfedit" value="<?php echo $this->selfedit; ?>" />
+	<button class="btn btn-success"><i class="icon-white icon-refresh"></i> Purge code cache and refresh</button>
+</form>
+
 <h2>Classes that trigger errors</h2>
 <?php 
 if (empty($this->errors)) {
