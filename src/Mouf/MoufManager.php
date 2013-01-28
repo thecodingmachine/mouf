@@ -734,10 +734,10 @@ class MoufManager {
 		for ($i=0; $i<$index; $i++) {
 			if (!isset($this->declaredInstances[$instanceName]['constructor'][$i])) {
 				// If the parameter before does not exist, let's set it to null.
-				$this->declaredInstances[$instanceName]['constructor'][$index]["value"] = null;
-				$this->declaredInstances[$instanceName]['constructor'][$index]["parametertype"] = "primitive";
-				$this->declaredInstances[$instanceName]['constructor'][$index]["type"] = "string";
-				$this->declaredInstances[$instanceName]['constructor'][$index]["metadata"] = array();
+				$this->declaredInstances[$instanceName]['constructor'][$i]["value"] = null;
+				$this->declaredInstances[$instanceName]['constructor'][$i]["parametertype"] = "primitive";
+				$this->declaredInstances[$instanceName]['constructor'][$i]["type"] = "string";
+				$this->declaredInstances[$instanceName]['constructor'][$i]["metadata"] = array();
 			}
 		}
 		ksort($this->declaredInstances[$instanceName]['constructor']);
