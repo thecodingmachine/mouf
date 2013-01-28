@@ -24,14 +24,14 @@ $.fn.fixedFromPos = function ( ) {
         if ($window.scrollTop() <= topPos) {
             $this.css({
                 "margin-top": 0,
-                height: $window.height() - topPos + $window.scrollTop() - 5,
+                height: $window.height() - topPos + $window.scrollTop() - 10,
                 "overflow-y": "auto",
                 "background-color":"white"
             });
         } else {
             $this.css({
                 "margin-top": $window.scrollTop() - topPos,
-                height: $window.height() -5,
+                height: $window.height() - 10,
                 "overflow-y": "auto",
                 "background-color":"white"
             });

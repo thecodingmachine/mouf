@@ -191,7 +191,7 @@ class MoufInstanceDescriptor {
 			return $this->getPublicFieldProperty($name);
 		}
 		
-		throw new MoufException("Unable to find a property names ".$name." for instance ".$this->getName()." from class ".$this->getClassName());
+		throw new MoufException("Unable to find a property named ".$name." for instance ".$this->getName()." from class ".$this->getClassName());
 	}
 
 	/**
