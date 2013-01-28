@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\MoufCache;
+
 use Mouf\Reflection\MoufReflectionProxy;
 
 use Mouf\MoufManager;
@@ -114,6 +116,6 @@ class IncludesAnalyzerController extends Controller {
 		
 		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/includes/index.php", $this);
 		$this->template->toHtml();	
-	}	
+	}
 }
 ?>
