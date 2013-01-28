@@ -116,6 +116,22 @@ class IncludesAnalyzerController extends Controller {
 		
 		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/includes/index.php", $this);
 		$this->template->toHtml();	
+	}	
+	
+	/**
+	 * Purge cache and redirects to analysis page.
+	 *
+	 * @Action
+	 * @Logged
+	 * @param string $selfedit
+	 */
+	public function refresh($selfedit = "false") {
+		$this->selfedit = $selfedit;
+		
+		$moufCache = new MoufCache();
+		$moufCache->purgeAll();
+		
+		header("Location: .?selfedit=".$selfedit);
 	}
 }
 ?>
