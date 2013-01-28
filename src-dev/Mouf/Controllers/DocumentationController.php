@@ -185,6 +185,8 @@ class DocumentationController extends Controller {
 				
 				$markdownParser = new MarkdownExtra();
 				
+				$fileStr = str_replace('```', '~~~', $fileStr);
+				
 				// Let's parse and transform markdown format in HTML
 				$fileStr = $markdownParser->transform($fileStr);
 				
