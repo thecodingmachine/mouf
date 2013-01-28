@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Michelf\MarkdownExtra;
+
 use dflydev\markdown\MarkdownExtraParser;
 
 use Mouf\Html\Widgets\Menu\MenuItem;
@@ -178,29 +180,35 @@ class DocumentationController extends Controller {
 			$fileStr = file_get_contents($filename);
 			
 			if (strripos($filename, ".md") !== false) {
-				$markdownParser = new MarkdownExtraParser();
+				// The line below is a workaround around a bug in markdown implementation.
+				$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
+				
+				$markdownParser = new MarkdownExtra();
 				
 				// Let's parse and transform markdown format in HTML
-				$fileStr = $markdownParser->transformMarkdown($fileStr);
-			}
-
-			$bodyStart = strpos($fileStr, "<body");
-			if ($bodyStart === false) {
+				$fileStr = $markdownParser->transform($fileStr);
+				
 				$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
 				$this->template->toHtml();
 			} else {
-				$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
-	
-				$partBody = substr($fileStr, $bodyOpenTagEnd+1);
-	
-				$bodyEndTag = strpos($partBody, "</body>");
-				if ($bodyEndTag === false) {
-					return '<div class="staticwebsite">'.$partBody.'</div>';
+				$bodyStart = strpos($fileStr, "<body");
+				if ($bodyStart === false) {
+					$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
+					$this->template->toHtml();
+				} else {
+					$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
+		
+					$partBody = substr($fileStr, $bodyOpenTagEnd+1);
+		
+					$bodyEndTag = strpos($partBody, "</body>");
+					if ($bodyEndTag === false) {
+						return '<div class="staticwebsite">'.$partBody.'</div>';
+					}
+					$body = substr($partBody, 0, $bodyEndTag);
+		
+					$this->contentBlock->addText('<div class="staticwebsite">'.$body.'</div>');
+					$this->template->toHtml();
 				}
-				$body = substr($partBody, 0, $bodyEndTag);
-	
-				$this->contentBlock->addText('<div class="staticwebsite">'.$body.'</div>');
-				$this->template->toHtml();
 			}
 		} elseif (strripos($filename, ".php") !== false) {
 			// PHP files are not accessible

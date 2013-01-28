@@ -22,7 +22,7 @@
         "mouf/utils.session.session-manager" : "~2.0",
         "mouf/html.widgets.messageservice": "~2.0",
         "mouf/utils.cache.apc-cache": "~2.0",
-        "dflydev/markdown": "~1.0.2"
+        "michelf/php-markdown": "~1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
