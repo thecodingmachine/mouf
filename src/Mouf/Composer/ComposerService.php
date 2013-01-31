@@ -281,19 +281,26 @@ class ComposerService {
 	 * Returns a list of packages matching the search query.
 	 * 
 	 * @param string $text
-	 * @return PackageInterface[]
+	 * @param OnPackageFoundInterface $callback
+	 * @param bool $onlyName
 	 */
-	public function searchPackages($text, OnPackageFoundInterface $callback) {
+	public function searchPackages($text, OnPackageFoundInterface $callback, $onlyName = false, $includeLocal = true) {
 		$this->onPackageFoundCallback = $callback;
 		$composer = $this->getComposer();
 		$platformRepo = new PlatformRepository;
 
-		$localRepo = $composer->getRepositoryManager()->getLocalRepository();
-		$installedRepo = new CompositeRepository(array($localRepo, $platformRepo));
+		$searched = array();
+		
+		if ($includeLocal) {
+			$localRepo = $composer->getRepositoryManager()->getLocalRepository();
+			$searched[] = $localRepo;
+		}
+		$searched[] = $platformRepo;
+		$installedRepo = new CompositeRepository($searched);
 		$repos = new CompositeRepository(array_merge(array($installedRepo), $composer->getRepositoryManager()->getRepositories()));
 		
 		//$this->onlyName = $input->getOption('only-name');
-		$this->onlyName = false;
+		$this->onlyName = $onlyName;
 		//$this->tokens = $input->getArgument('tokens');
 		$this->tokens = explode(" ", $text);
 		
