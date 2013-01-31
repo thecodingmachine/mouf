@@ -181,7 +181,7 @@ class DocumentationController extends Controller {
 			
 			if (strripos($filename, ".md") !== false) {
 				// The line below is a workaround around a bug in markdown implementation.
-				$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
+				//$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
 				
 				$markdownParser = new MarkdownExtra();
 				
@@ -258,6 +258,11 @@ class DocumentationController extends Controller {
 		
 		// Let's find if there is a README file.
 		$packagePath = ROOT_PATH."vendor/".$package->getName()."/";
+		if (file_exists($packagePath."index.md")) {
+			$docArray[] = array("title"=> "Start page",
+						"url"=>"index.md"
+			);
+		}
 		if (file_exists($packagePath."README")) {
 			$docArray[] = array("title"=> "Read me",
 						"url"=>"README"
