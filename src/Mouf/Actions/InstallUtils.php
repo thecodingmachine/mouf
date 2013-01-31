@@ -135,10 +135,9 @@ class InstallUtils {
 	}
 	
 	public static function getInstanceName($class, $moufManager, $adds = ""){
-		$index = strrpos($name, "\\");
-		$name = substr($name, $index + 1);
-		
-		$name = lcfirst($class).$adds;
+		$index = strrpos($class, '\\');
+		$name = substr($class, $index + 1);
+		$name = lcfirst($name).$adds;
 		$instanceName = $name;
 		$i = 2;
 		while($moufManager->instanceExists($instanceName)){
