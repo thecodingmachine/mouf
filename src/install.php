@@ -28,7 +28,7 @@ RewriteBase $uri
 RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule mouf\\/doc\\/view\\/ vendor/mouf/mvc.splash/src/splash.php
+RewriteRule doc\\/view\\/ vendor/mouf/mvc.splash/src/splash.php
 RewriteRule !((\\.(js|ico|gif|jpg|png|css)$)|^vendor|^src/direct/) vendor/mouf/mvc.splash/src/splash.php";
 
 file_put_contents("../.htaccess", $str);

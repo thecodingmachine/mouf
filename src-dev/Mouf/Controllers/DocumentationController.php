@@ -84,6 +84,8 @@ class DocumentationController extends Controller {
 	 */
 	protected $package;
 	
+	protected $rootPath;
+	
 	/**
 	 * Displays the list of doc files from the packages
 	 * 
@@ -98,8 +100,10 @@ class DocumentationController extends Controller {
 		
 		if ($selfedit == "true") {
 			$this->moufManager = MoufManager::getMoufManager();
+			$this->rootPath = ROOT_PATH;
 		} else {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
+			$this->rootPath = ROOT_PATH.'../../../';
 		}
 		
 		$composerService = new ComposerService($this->selfedit == "true");
@@ -122,8 +126,10 @@ class DocumentationController extends Controller {
 		$this->selfedit = $selfedit;
 		if ($selfedit == "true") {
 			$this->moufManager = MoufManager::getMoufManager();
+			$this->rootPath = ROOT_PATH;
 		} else {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
+			$this->rootPath = ROOT_PATH.'../../../';
 		}
 
 		$composerService = new ComposerService($this->selfedit == "true");
@@ -162,7 +168,7 @@ class DocumentationController extends Controller {
 		
 		$docPath = implode("/", $args);
 		
-		$filename = ROOT_PATH."vendor/".$groupName."/".$packageName."/".$docPath;
+		$filename = $this->rootPath."vendor/".$groupName."/".$packageName."/".$docPath;
 			
 		if (!file_exists($filename)) {
 			MoufAdmin::getSplash()->print404("Documentation page does not exist");
@@ -181,7 +187,7 @@ class DocumentationController extends Controller {
 			
 			if (strripos($filename, ".md") !== false) {
 				// The line below is a workaround around a bug in markdown implementation.
-				//$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
+				$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
 				
 				$markdownParser = new MarkdownExtra();
 				
@@ -257,7 +263,7 @@ class DocumentationController extends Controller {
 		$docArray = array();
 		
 		// Let's find if there is a README file.
-		$packagePath = ROOT_PATH."vendor/".$package->getName()."/";
+		$packagePath = $this->rootPath."vendor/".$package->getName()."/";
 		if (file_exists($packagePath."index.md")) {
 			$docArray[] = array("title"=> "Start page",
 						"url"=>"index.md"
