@@ -567,7 +567,7 @@ var MoufUI = (function () {
 				});
 			} else {
 				for (var key in definedConstants) {
-			    	jQuery('<option/>').attr('value', 'key').text(key).appendTo(selectField);
+			    	jQuery('<option/>').attr('value', key).text(key).appendTo(selectField);
 			    }
 			}
 			

@@ -416,13 +416,14 @@ class MoufPropertyDescriptor {
 	 * It will return false if this is an array or an object.
 	 * 
 	 * Accepted primitive types: string, char, bool, boolean, int, integer, double, float, real, mixed
+	 * No type (empty type) is considered primitive type.
 	 * 
 	 * @param string $type
 	 * @return bool
 	 */
 	private static function isPrimitiveTypeStatic($type) {
  		$lowerVarType = strtolower($type);
-		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
+		return in_array($lowerVarType, array('', 'string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
 	}
 	
 	/**
