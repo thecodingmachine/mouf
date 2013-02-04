@@ -423,7 +423,7 @@ class MoufPropertyDescriptor {
 	 */
 	private static function isPrimitiveTypeStatic($type) {
  		$lowerVarType = strtolower($type);
-		return in_array($lowerVarType, array('', 'string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
+		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
 	}
 	
 	/**
@@ -433,6 +433,9 @@ class MoufPropertyDescriptor {
 	 * @return bool
 	 */
 	public function isPrimitiveType() {
+		if ($this->getType() == null) {
+			return true;
+		}
 		return self::isPrimitiveTypeStatic($this->getType());
 	}
 	
