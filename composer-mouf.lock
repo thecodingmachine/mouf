@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "2993fbc030396cb4bd96bbee6bdbca65d9b0a9f8"
+                "reference": "1.3-beta5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/michelf/php-markdown/archive/2993fbc030396cb4bd96bbee6bdbca65d9b0a9f8.zip",
-                "reference": "2993fbc030396cb4bd96bbee6bdbca65d9b0a9f8",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/1.3-beta5",
+                "reference": "1.3-beta5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-24 19:06:42",
+            "time": "2013-02-03 21:14:12",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -62,7 +62,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/moufmouf/famfamfam/archive/30730b2268dd0adc775f95d7eb9ae8962b491221.zip",
+                "url": "https://api.github.com/repos/moufmouf/famfamfam/zipball/30730b2268dd0adc775f95d7eb9ae8962b491221",
                 "reference": "30730b2268dd0adc775f95d7eb9ae8962b491221",
                 "shasum": ""
             },
@@ -71,6 +71,7 @@
             },
             "time": "2012-09-19 14:40:44",
             "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Creative Commons Attribution 2.5 License"
             ],
@@ -83,8 +84,8 @@
             "description": "This is the Famfamfam silk icon set, wrapped into an easy to use PHP composer package.",
             "homepage": "http://www.famfamfam.com/",
             "keywords": [
-                "icons",
                 "famfamfam",
+                "icons",
                 "silk"
             ]
         },
@@ -98,7 +99,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.html_element/archive/e9d2c74c8155e1cecb71fa5da7458e81919126d2.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/e9d2c74c8155e1cecb71fa5da7458e81919126d2",
                 "reference": "e9d2c74c8155e1cecb71fa5da7458e81919126d2",
                 "shasum": ""
             },
@@ -141,16 +142,16 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.bootstrap/archive/74db9bb3aa140f72cc775e064238e350f8cbec5f.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/74db9bb3aa140f72cc775e064238e350f8cbec5f",
                 "reference": "74db9bb3aa140f72cc775e064238e350f8cbec5f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
                 "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
                 "mouf/html.utils.bootstrap": "2.1.*",
-                "mouf/html.widgets.menu": "2.*"
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "mouf/html.widgets.menu": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2013-01-26 10:58:50",
             "type": "mouf-library",
@@ -183,10 +184,10 @@
             "description": "This package contains a Mouf template based on the Twitter Bootstrap HTML/CSS/JS library, along a Mouf installer file to add the template easily in your Mouf project.",
             "homepage": "http://twitter.github.com/bootstrap/",
             "keywords": [
-                "javascript",
                 "bootstrap",
-                "template",
-                "mouf"
+                "javascript",
+                "mouf",
+                "template"
             ]
         },
         {
@@ -199,13 +200,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/e90932ba56d44a1e17e24de5cadafcc51751fd37.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.widgets.menu": "2.*"
+                "mouf/html.widgets.menu": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-24 11:46:21",
             "type": "mouf-library",
@@ -214,6 +215,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -227,9 +229,9 @@
             "description": "This package contains a single class in charge of rendering a 'Menu' instance in HTML using the toHtml() method. The rendering is performed using &lt;ul&gt; and &lt;li&gt; tags.",
             "homepage": "https://github.com/thecodingmachine/html.template.menus.basicmenu",
             "keywords": [
+                "basicmenu",
                 "menu",
-                "mouf",
-                "basicmenu"
+                "mouf"
             ]
         },
         {
@@ -242,13 +244,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/d402437cbd3d2e6de3727622af9875ed4eaa2fd2.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.template.templateinterface": ">=2.0-dev,<3.0"
+                "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-24 11:46:29",
             "type": "mouf-library",
@@ -257,6 +259,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -270,9 +273,9 @@
             "description": "This package contains a template for the Mouf administration interface. The content is automatically adjusted to the website page to use all the width. Anyway, you can use this component as a model if you like.",
             "homepage": "https://github.com/thecodingmachine/html.template.mouftemplate",
             "keywords": [
-                "template",
                 "mouf",
-                "mouftemplate"
+                "mouftemplate",
+                "template"
             ]
         },
         {
@@ -281,19 +284,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.template.templateinterface.git",
-                "reference": "d72b784ebef76aff75bf83f3015376f0fc2a442d"
+                "reference": "9815bb353f0f998df29985027eba9d155f2ebc50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.templateinterface/archive/d72b784ebef76aff75bf83f3015376f0fc2a442d.zip",
-                "reference": "d72b784ebef76aff75bf83f3015376f0fc2a442d",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.templateinterface/zipball/9815bb353f0f998df29985027eba9d155f2ebc50",
+                "reference": "9815bb353f0f998df29985027eba9d155f2ebc50",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-23 16:58:26",
+            "time": "2013-01-31 15:55:41",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -314,8 +317,8 @@
             "description": "This package contains the definition of an HTML template (the TemplateInterface interface) and an helper class to build HTML templates easily (the BaseTemplate class).",
             "homepage": "https://github.com/thecodingmachine/html.template.templateinterface",
             "keywords": [
-                "template",
                 "interface",
+                "template",
                 "templateinterface"
             ]
         },
@@ -325,19 +328,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.utils.bootstrap.git",
-                "reference": "ceac7210f5d0aaf7110c4d56f7b1ebfeb27f65f2"
+                "reference": "09a8e412784d30677d0877e2485307fe50ed2488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.bootstrap/archive/ceac7210f5d0aaf7110c4d56f7b1ebfeb27f65f2.zip",
-                "reference": "ceac7210f5d0aaf7110c4d56f7b1ebfeb27f65f2",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.bootstrap/zipball/09a8e412784d30677d0877e2485307fe50ed2488",
+                "reference": "09a8e412784d30677d0877e2485307fe50ed2488",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+                "mouf/javascript.jquery.jquery": ">=1.7,<2.0",
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-21 14:58:37",
+            "time": "2013-01-28 11:25:15",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -364,8 +367,8 @@
             "description": "This package contains the Bootstrap HTML/CSS/JS library, along a Mouf installer file to add Bootstrap easily in your Mouf project.",
             "homepage": "http://twitter.github.com/bootstrap/",
             "keywords": [
-                "javascript",
                 "bootstrap",
+                "javascript",
                 "mouf"
             ]
         },
@@ -375,20 +378,20 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "d92280ed4c3610d588a47797c8ab641c938313d5"
+                "reference": "e80524fdcd140e07d305093e040e8faf834f4047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager/archive/d92280ed4c3610d588a47797c8ab641c938313d5.zip",
-                "reference": "d92280ed4c3610d588a47797c8ab641c938313d5",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/e80524fdcd140e07d305093e040e8faf834f4047",
+                "reference": "e80524fdcd140e07d305093e040e8faf834f4047",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
+                "mouf/html.htmlelement": ">=2.0,<3.0",
                 "mouf/mouf-installer": ">=2.0,<3.0",
-                "mouf/html.htmlelement": ">=2.0,<3.0"
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-21 16:55:25",
+            "time": "2013-02-04 15:48:46",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -419,12 +422,12 @@
             "description": "The Javascript/CSS library manager is a PHP class in charge of keeping track of the JS and CSS files that have been included so far in a web page. Basically, you tell the Javascript/CSS library manager to import a JS/CSS file and it will make sure it is included, only once, and that all dependencies are included as well.",
             "homepage": "https://github.com/thecodingmachine/html.utils.weblibrarymanager",
             "keywords": [
-                "dependency",
-                "javascript",
                 "css",
+                "dependencies",
+                "dependency",
                 "html",
-                "mouf",
-                "dependencies"
+                "javascript",
+                "mouf"
             ]
         },
         {
@@ -433,19 +436,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/html.widgets.menu.git",
-                "reference": "7c933bd67cecacf142cb0793425b7833f01c571c"
+                "reference": "eb6d7ab53320362a701c71482f7506788f0f9e33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.menu/archive/7c933bd67cecacf142cb0793425b7833f01c571c.zip",
-                "reference": "7c933bd67cecacf142cb0793425b7833f01c571c",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.menu/zipball/eb6d7ab53320362a701c71482f7506788f0f9e33",
+                "reference": "eb6d7ab53320362a701c71482f7506788f0f9e33",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/utils.i18n.fine": "3.*"
+                "mouf/utils.i18n.fine": "3.*",
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-28 09:43:26",
+            "time": "2013-02-06 09:58:36",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -467,8 +470,8 @@
             "homepage": "https://github.com/thecodingmachine/html.widgets.menu",
             "keywords": [
                 "menu",
-                "template",
-                "mouf"
+                "mouf",
+                "template"
             ]
         },
         {
@@ -481,15 +484,15 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
                 "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/html.htmlelement": ">=2.0,<3.0",
                 "mouf/html.utils.weblibrarymanager": ">=2.0,<3.0",
-                "mouf/utils.session.session-manager": ">=2.0,<3.0"
+                "mouf/utils.session.session-manager": ">=2.0,<3.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-12-26 11:50:42",
             "type": "mouf-library",
@@ -511,6 +514,7 @@
                     "src/common_functions.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -525,10 +529,10 @@
             "homepage": "https://github.com/thecodingmachine/html.widgets.messageservice",
             "keywords": [
                 "message",
-                "widget",
+                "messageservice",
                 "mouf",
-                "widgets",
-                "messageservice"
+                "widget",
+                "widgets"
             ]
         },
         {
@@ -541,13 +545,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/4f07be5afa598f52c97b48cb963aa04e92a94b90.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/4f07be5afa598f52c97b48cb963aa04e92a94b90",
                 "reference": "4f07be5afa598f52c97b48cb963aa04e92a94b90",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-12-06 09:35:44",
             "type": "mouf-library",
@@ -561,6 +565,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -574,8 +579,8 @@
             "description": "This package contains the JQuery library, along a Mouf installer file to add JQuery easily in your Mouf project.",
             "homepage": "https://github.com/thecodingmachine/javascript.jquery.jquery",
             "keywords": [
-                "jquery",
                 "javascript",
+                "jquery",
                 "mouf"
             ]
         },
@@ -589,13 +594,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/cd54be33ad6cb667c116394d35c5bef37ac1a502.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0"
+                "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-12-03 09:16:06",
             "type": "mouf-library",
@@ -609,6 +614,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -622,11 +628,11 @@
             "description": "This package contains the jQuery FileTree library, along a Mouf installer file to add JQuery FileTree easily in your Mouf project.",
             "homepage": "http://www.abeautifulsite.net/blog/2008/03/jquery-file-tree/",
             "keywords": [
-                "jquery",
-                "javascript",
-                "mouf",
                 "filetree",
-                "jquery filetree"
+                "javascript",
+                "jquery",
+                "jquery filetree",
+                "mouf"
             ]
         },
         {
@@ -639,13 +645,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui/archive/0e5ff5702e73486a535546cf758c3bde03a09f0f.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-ui/zipball/0e5ff5702e73486a535546cf758c3bde03a09f0f",
                 "reference": "0e5ff5702e73486a535546cf758c3bde03a09f0f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0"
+                "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-12-06 09:36:36",
             "type": "mouf-library",
@@ -659,6 +665,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -672,10 +679,10 @@
             "description": "This package contains the JQuery UI library, along a Mouf installer file to add JQuery UI easily in your Mouf project.",
             "homepage": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui",
             "keywords": [
-                "jquery",
-                "javascript",
-                "jquery-ui",
                 "jQueryUI",
+                "javascript",
+                "jquery",
+                "jquery-ui",
                 "mouf"
             ]
         },
@@ -689,13 +696,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/javascript.jquery.jquery": ">=1.7.2"
+                "mouf/javascript.jquery.jquery": ">=1.7.2",
+                "php": ">=5.3.0"
             },
             "time": "2013-01-14 15:04:52",
             "type": "mouf-library",
@@ -728,9 +735,9 @@
             "description": "This package contains the SyntaxHighlighter javascript library, along a Mouf installer file to add SyntaxHighlighter easily in your Mouf project.",
             "homepage": "http://alexgorbatchev.com/SyntaxHighlighter/",
             "keywords": [
+                "SyntaxHighlighter",
                 "javascript",
-                "mouf",
-                "SyntaxHighlighter"
+                "mouf"
             ]
         },
         {
@@ -743,13 +750,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/9eae854caf24a9be83a055d08af05559088e744f.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/9eae854caf24a9be83a055d08af05559088e744f",
                 "reference": "9eae854caf24a9be83a055d08af05559088e744f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0"
+                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "php": ">=5.3.0"
             },
             "time": "2012-12-03 09:12:06",
             "type": "mouf-library",
@@ -763,6 +770,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -777,8 +785,8 @@
             "homepage": "https://github.com/thecodingmachine/javascript.underscore",
             "keywords": [
                 "javascript",
-                "underscore",
                 "mouf",
+                "underscore",
                 "underscorejs"
             ]
         },
@@ -788,18 +796,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "bb7c6cd1acb98a6a557028d6cc5ee716ee635767"
+                "reference": "d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/bb7c6cd1acb98a6a557028d6cc5ee716ee635767.zip",
-                "reference": "bb7c6cd1acb98a6a557028d6cc5ee716ee635767",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58",
+                "reference": "d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-15 16:01:06",
+            "time": "2013-02-05 10:46:25",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -836,23 +844,23 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mvc.splash.git",
-                "reference": "9881dc0b99301b9076d19cc6c27313bf946d611e"
+                "reference": "e2200652fae3a5a22a77883516eb7c8c06430c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash/archive/9881dc0b99301b9076d19cc6c27313bf946d611e.zip",
-                "reference": "9881dc0b99301b9076d19cc6c27313bf946d611e",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/e2200652fae3a5a22a77883516eb7c8c06430c6d",
+                "reference": "e2200652fae3a5a22a77883516eb7c8c06430c6d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/mvc.splash-common": "4.0.*",
                 "mouf/html.template.bootstrap": "2.1.*",
-                "mouf/utils.cache.apc-cache": "2.0.*",
-                "mouf/utils.cache.file-cache": "2.0.*",
-                "mouf/utils.cache.no-cache": "2.0.*"
+                "mouf/mvc.splash-common": "4.0.*",
+                "mouf/utils.cache.apc-cache": ">=2.1,<3.0",
+                "mouf/utils.cache.file-cache": ">=2.1,<3.0",
+                "mouf/utils.cache.no-cache": "2.0.*",
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-28 09:44:06",
+            "time": "2013-02-05 10:15:56",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -918,11 +926,11 @@
                 }
             ],
             "description": "An MVC framework deeply integrated with Mouf.",
-            "homepage": "https://github.com/thecodingmachine/mvc.splash",
+            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash/",
             "keywords": [
                 "framework",
-                "mvc",
                 "mouf",
+                "mvc",
                 "splash"
             ]
         },
@@ -936,14 +944,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/0790978c138e02a2611a3dc69ca6c4c2e2eb8084.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
                 "reference": "0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/html.htmlelement": "2.*",
-                "mouf/utils.i18n.fine": "3.*"
+                "mouf/utils.i18n.fine": "3.*",
+                "php": ">=5.3.0"
             },
             "time": "2013-01-28 09:27:48",
             "type": "mouf-library",
@@ -980,8 +988,8 @@
             "homepage": "https://github.com/thecodingmachine/mvc.splash-common",
             "keywords": [
                 "framework",
-                "mvc",
                 "mouf",
+                "mvc",
                 "splash",
                 "splash-common"
             ]
@@ -996,13 +1004,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/4c719e7e102b08065eaa4dcd378e3cab80b60311.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/security.userservice": "2.*"
+                "mouf/security.userservice": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-28 12:18:56",
             "type": "mouf-library",
@@ -1011,6 +1019,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1024,9 +1033,9 @@
             "description": "This package contains a simple Splash controller to log into an application. The controller can display a simple form with username/password choice, and has actions to login/logout the application.",
             "homepage": "https://github.com/thecodingmachine/security.simplelogincontroller",
             "keywords": [
-                "security",
                 "login",
-                "mouf"
+                "mouf",
+                "security"
             ]
         },
         {
@@ -1039,13 +1048,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/security.userservice": "2.*"
+                "mouf/security.userservice": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-24 11:47:22",
             "type": "mouf-library",
@@ -1054,6 +1063,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1068,8 +1078,8 @@
             "homepage": "https://github.com/thecodingmachine/security.userfiledao",
             "keywords": [
                 "User management",
-                "security",
                 "mouf",
+                "security",
                 "userdao"
             ]
         },
@@ -1083,14 +1093,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userservice/archive/258d29984ea0631ddd21700818aeb968725cc5b9.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/258d29984ea0631ddd21700818aeb968725cc5b9",
                 "reference": "258d29984ea0631ddd21700818aeb968725cc5b9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/utils.common.conditioninterface": "2.*",
-                "mouf/utils.log.log_interface": "2.*"
+                "mouf/utils.log.log_interface": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-28 12:13:42",
             "type": "mouf-library",
@@ -1112,6 +1122,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1132,25 +1143,25 @@
         },
         {
             "name": "mouf/utils.cache.apc-cache",
-            "version": "2.0.x-dev",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.apc-cache.git",
-                "reference": "81d28ddd4eaf7578aae378da5eed24a09a4cc1ee"
+                "reference": "814ed17cf05710dc5134f63e03c8e48460b75d7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.apc-cache/archive/81d28ddd4eaf7578aae378da5eed24a09a4cc1ee.zip",
-                "reference": "81d28ddd4eaf7578aae378da5eed24a09a4cc1ee",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.apc-cache/zipball/814ed17cf05710dc5134f63e03c8e48460b75d7e",
+                "reference": "814ed17cf05710dc5134f63e03c8e48460b75d7e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/utils.cache.cache-interface": "2.*",
+                "mouf/utils.cache.file-cache": "2.*",
                 "mouf/utils.log.errorlog_logger": "2.*",
-                "mouf/utils.cache.file-cache": "2.*"
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-21 18:30:20",
+            "time": "2013-01-31 15:53:41",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1184,8 +1195,8 @@
             "description": "This package contains a cache mechanism that relies on the APC caching system. For this cache to work, the APC Pecl package must be enabled.",
             "homepage": "https://github.com/thecodingmachine/utils.cache.apc-cache",
             "keywords": [
-                "cache",
                 "apc",
+                "cache",
                 "mouf"
             ]
         },
@@ -1199,7 +1210,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.cache-interface/archive/530923d1756242dfb551f040ee7c77410ec015ed.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/530923d1756242dfb551f040ee7c77410ec015ed",
                 "reference": "530923d1756242dfb551f040ee7c77410ec015ed",
                 "shasum": ""
             },
@@ -1220,6 +1231,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1240,24 +1252,24 @@
         },
         {
             "name": "mouf/utils.cache.file-cache",
-            "version": "2.0.x-dev",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.cache.file-cache.git",
-                "reference": "7aeeb77c898d21e9e5153c56a01e7a442b391e0a"
+                "reference": "e90f1a0e51470967d4f89044356318ae124820c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.file-cache/archive/7aeeb77c898d21e9e5153c56a01e7a442b391e0a.zip",
-                "reference": "7aeeb77c898d21e9e5153c56a01e7a442b391e0a",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.file-cache/zipball/e90f1a0e51470967d4f89044356318ae124820c1",
+                "reference": "e90f1a0e51470967d4f89044356318ae124820c1",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/utils.cache.cache-interface": "2.*",
-                "mouf/utils.log.log_interface": "2.*"
+                "mouf/utils.log.log_interface": "2.*",
+                "php": ">=5.3.0"
             },
-            "time": "2013-01-21 15:26:09",
+            "time": "2013-02-05 16:57:34",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1288,8 +1300,8 @@
             "description": "This package contains a cache mechanism that relies on temporary files.",
             "homepage": "https://github.com/thecodingmachine/utils.cache.file-cache",
             "keywords": [
-                "file",
                 "cache",
+                "file",
                 "mouf"
             ]
         },
@@ -1303,14 +1315,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.no-cache/archive/e431eebfad39516d3c352b6798aab4dc87b67c70.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.no-cache/zipball/e431eebfad39516d3c352b6798aab4dc87b67c70",
                 "reference": "e431eebfad39516d3c352b6798aab4dc87b67c70",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "mouf/utils.cache.cache-interface": "2.*",
-                "mouf/utils.log.log_interface": "2.*"
+                "mouf/utils.log.log_interface": "2.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-24 11:46:45",
             "type": "mouf-library",
@@ -1329,6 +1341,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1357,7 +1370,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/archive/77cea9572876de02af2bdfa66b6e90451e8ea485.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/77cea9572876de02af2bdfa66b6e90451e8ea485",
                 "reference": "77cea9572876de02af2bdfa66b6e90451e8ea485",
                 "shasum": ""
             },
@@ -1371,6 +1384,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1384,8 +1398,8 @@
             "description": "This package contains one interface for condition, and a few classes that implement it. For instance, AndCondition that requires all conditions to be met, and OrCondition that requires at least one condition to be met. A condition is a class that possesses an 'isOk' method. The condition returns true if the condition is met, and false otherwise.",
             "homepage": "https://github.com/thecodingmachine/utils.common.conditioninterface",
             "keywords": [
-                "interface",
-                "condition"
+                "condition",
+                "interface"
             ]
         },
         {
@@ -1398,7 +1412,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
@@ -1413,6 +1427,7 @@
                     "src/TcmUtilsException.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1426,9 +1441,9 @@
             "description": "This is a legacy non-OO package and should not be used in recent developments. A simple package that provides functions to get the parameters from the request in a consistent way. The varaiables can be rerieved in a way that is independent of the php.ini configuration file. Especially, it can cancel the effect of the dreadful 'magic_quotes' parameter.",
             "homepage": "https://github.com/thecodingmachine/utils.common.getvars",
             "keywords": [
-                "request",
                 "mouf",
-                "protect"
+                "protect",
+                "request"
             ]
         },
         {
@@ -1441,14 +1456,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine/archive/7b000607886ab8c2fb030fe1fe9e86742ed0dbc4.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/7b000607886ab8c2fb030fe1fe9e86742ed0dbc4",
                 "reference": "7b000607886ab8c2fb030fe1fe9e86742ed0dbc4",
                 "shasum": ""
             },
             "require": {
+                "mouf/mouf-installer": ">=2.0,<3.0",
                 "php": ">=5.3.0",
-                "phpexcel/phpexcel": ">=1.7.6, <2.0.0",
-                "mouf/mouf-installer": ">=2.0,<3.0"
+                "phpexcel/phpexcel": ">=1.7.6, <2.0.0"
             },
             "time": "2013-01-02 17:36:23",
             "type": "mouf-library",
@@ -1484,6 +1499,7 @@
                     "src/msgFunctions.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1502,10 +1518,10 @@
             "description": "Fine is a PHP internationalisation package. It will help you provide applications that support several languages. FINE means: Fine is not english :). Translation is performed using PHP mapping files, but you will have a nice graphical interface in the Mouf framework to write your own translated messages.",
             "homepage": "https://github.com/thecodingmachine/utils.i18n.fine",
             "keywords": [
+                "fine",
                 "i18n",
                 "internationalisation",
-                "mouf",
-                "fine"
+                "mouf"
             ]
         },
         {
@@ -1518,14 +1534,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.errorlog_logger/zipball/d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a",
                 "reference": "d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
+                "mouf/mouf-installer": ">=2.0,<3.0",
                 "mouf/utils.log.log_interface": ">=2.0-dev,<3.0",
-                "mouf/mouf-installer": ">=2.0,<3.0"
+                "php": ">=5.3.0"
             },
             "provide": {
                 "mouf/utils.log.logger": "1.0"
@@ -1547,6 +1563,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1560,9 +1577,9 @@
             "description": "This package contains a logger that logs messages directly to the PHP error log (using the error_log PHP function)",
             "homepage": "https://github.com/thecodingmachine/utils.log.errorlog_logger",
             "keywords": [
+                "error_log",
                 "log",
-                "logger",
-                "error_log"
+                "logger"
             ]
         },
         {
@@ -1575,13 +1592,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.log_interface/archive/97085d196987feeddf9ac6feba31068d10a54c3b.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.log_interface/zipball/97085d196987feeddf9ac6feba31068d10a54c3b",
                 "reference": "97085d196987feeddf9ac6feba31068d10a54c3b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "mouf/utils.log.logger": "1.*"
+                "mouf/utils.log.logger": "1.*",
+                "php": ">=5.3.0"
             },
             "time": "2012-11-24 11:47:50",
             "type": "mouf-library",
@@ -1590,6 +1607,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1603,9 +1621,9 @@
             "description": "This package contains an interface used by many components to log messages. Please download a logger package that implements this interface (like the utils.log.errorlog_logger package)",
             "homepage": "https://github.com/thecodingmachine/utils.log.log_interface",
             "keywords": [
+                "interface",
                 "log",
-                "logger",
-                "interface"
+                "logger"
             ]
         },
         {
@@ -1614,18 +1632,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.session.session-manager.git",
-                "reference": "aed703aca227676b950fd474e0af6e9405519198"
+                "reference": "7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.session.session-manager/archive/aed703aca227676b950fd474e0af6e9405519198.zip",
-                "reference": "aed703aca227676b950fd474e0af6e9405519198",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8",
+                "reference": "7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-22 15:19:32",
+            "time": "2013-01-28 14:39:51",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1642,6 +1660,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1655,8 +1674,8 @@
             "description": "This package is used to manage sessions. It provides a DefaultSessionManager class that you can use to configure your PHP sessions, and a SessionManagerInterface that you can implement if you want to provide your own session management.",
             "homepage": "https://github.com/thecodingmachine/utils.session.session-manager",
             "keywords": [
-                "session",
-                "mouf"
+                "mouf",
+                "session"
             ]
         },
         {
@@ -1683,6 +1702,7 @@
                     "PHPExcel": "Classes"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GNU"
             ],
