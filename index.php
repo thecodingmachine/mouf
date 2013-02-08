@@ -46,7 +46,7 @@ if (!extension_loaded("curl")) {
 	exit();
 }
 
-if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/..")) {
+if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/../../..")) {
 ?>
 
 		<h1>Web directory must be writable for the Apache user</h1>
