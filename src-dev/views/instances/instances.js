@@ -462,8 +462,8 @@ var MoufInstanceManager = (function () {
 		newInstance : function(classDescriptor, instanceName, isAnonymous) {
 			
 			var properties = {};
-			/*_.each(classDescriptor.getInjectableProperties(), function(property) {
-				if (property instanceof MoufProperty) {
+			_.each(classDescriptor.getAllInjectableProperties(), function(property) {
+				if (property instanceof MoufProperty || property instanceof MoufParameter) {
 					if (property.hasDefault()) {
 						properties[property.getName()] = {
 								value: property.getDefault(),
@@ -484,7 +484,7 @@ var MoufInstanceManager = (function () {
 						}
 					}
 				}
-			});*/
+			});
 			
 			var instance = new MoufInstance({
 				"name": instanceName,
@@ -872,6 +872,14 @@ MoufInstanceProperty.prototype.addArrayElement = function(key, value) {
 		throw "Unable to add an array element to a property that is not an array";
 	}
 	MoufInstanceManager.firePropertyChange(this);
+}
+
+/**
+ * Returns the size of the array
+ * @return int
+ */
+MoufInstanceProperty.prototype.arraySize = function() {
+	return this.moufInstanceSubProperties.length;
 }
 
 /**
@@ -1356,6 +1364,12 @@ MoufProperty.prototype.isAssociativeArray = function() {
 	return (this.json['type'] == 'array' && this.json['keytype']);
 }
 
+/**
+ * Returns null (a property has no parent, only sub-properties have parents).
+ */
+MoufProperty.prototype.getParent = function() {
+	return null;
+}
 
 /**
  * Returns the MoufInstanceProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)
@@ -1841,6 +1855,12 @@ MoufSubProperty.prototype.isAssociativeArray = function() {
 	return false;
 }
 
+/**
+ * Returns the parent property of this sub-property.
+ */
+MoufSubProperty.prototype.getParent = function() {
+	return this.parentMoufProperty;
+}
 
 /**
  * Returns the MoufInstanceSubProperty of a property for the instance passed in parameter (available if this property has a @Property annotation)

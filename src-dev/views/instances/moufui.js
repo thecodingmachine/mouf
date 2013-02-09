@@ -90,7 +90,11 @@ $(document).ready(function() {
 			}
 		});
 		var api = $(this).data('qtip');
-		api.show();
+		// It might sound surprising, but "api" can actually be null, especially
+		// during jQuery drag'n'drops
+		if (api) {
+			api.show();
+		}
 		
 		/*var parentElem = $(this);
 		parentElem.tooltip('show')
@@ -166,8 +170,8 @@ var MoufUI = (function () {
 						revert: "invalid", // when not dropped, the item will revert back to its initial position
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
-						cursor: "move" /*,
-						connectToSortable: ".todo"*/
+						cursor: "move",
+						connectToSortable: "."+MoufUI.getCssNameFromType(instance.getClassName())
 					}).appendTo(instanceListDiv);
 				}
 				jQuery("<h3/>").text("Classes").appendTo(targetSelector);
@@ -178,8 +182,8 @@ var MoufUI = (function () {
 						revert: "invalid", // when not dropped, the item will revert back to its initial position
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
-						cursor: "move" /*,
-						connectToSortable: ".todo"*/
+						cursor: "move",
+						connectToSortable: "."+MoufUI.getCssNameFromType(classDescriptor.getName())
 					}).appendTo(classListDiv);
 				}
 				
