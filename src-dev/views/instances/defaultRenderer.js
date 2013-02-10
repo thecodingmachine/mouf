@@ -393,13 +393,9 @@ var MoufDefaultRenderer = (function () {
 						containment: "window",
 						start: function(event, ui) { 
 							MoufUI.onDroppedInBin(function() {
-								//setToNull();
-								//elem.find("*").remove();
 								moufInstanceProperty.setValue(null);
 								// Let's redraw the elem.
-								var parent = parentElem.closest(".fieldWrapper");
-								parent.empty();
-								renderField(moufInstanceProperty).appendTo(parent);
+								refreshField(moufInstanceProperty);
 								
 								MoufUI.hideBin();
 							});
@@ -569,24 +565,39 @@ var MoufDefaultRenderer = (function () {
 	 * the dropdown menu to the right to apply actions (set to null, unset value, etc...)
 	 */
 	var renderField = function(moufInstanceProperty) {
-		
-		// TODO
-		// TODO
-		// TODO
-		// TODO CODE IS TOO COMPLEX!!!
-		// TODO Let's invent a "refresh" method that can refresh a moufInstanceProperty or a moufInstanceSubProperty
-		// TODO it should be able to find the property wherever it is on the page, remove old HTML
-		// TODO and redraw!
-		// For this, we need to store in "data" the moufInstanceProperty related to a DIV element
-		// And we need to be able to find that element very quickly (by marking it with a class!)
-		
-		
-		
-		
 		var fieldWrapper = jQuery("<div>").addClass('fieldWrapper');
+		fieldWrapper.data('moufInstanceProperty', moufInstanceProperty);
 		
+		refreshField(moufInstanceProperty, fieldWrapper);
+		
+		return fieldWrapper;
+	}
+	
+	/**
+	 * Refreshes the HTML matching the moufInstanceProperty.
+	 * Very useful to refresh display when property has been updated.
+	 * 
+	 * If target is not passed, we will search on the whole page.
+	 */
+	var refreshField = function(moufInstanceProperty, target) {
+		if (target == null) {
+			// Let's find our target
+			$('.fieldWrapper').each(function(index, elem) {
+				var $elem = $(elem);
+				var elemMoufInstanceProperty = $elem.data('moufInstanceProperty');
+				if (elemMoufInstanceProperty == moufInstanceProperty) {
+					target = $elem;
+				}
+			})
+			if (target != null) {
+				target.empty();
+			} else {
+				throw "Unable to find matching HTML element for this moufInstanceProperty";
+			}
+		}		
+
 		var fieldInnerWrapper = jQuery("<div>").addClass('fieldInnerWrapper');
-		fieldInnerWrapper.appendTo(fieldWrapper);
+		fieldInnerWrapper.appendTo(target);
 		
 		var moufProperty = moufInstanceProperty.getMoufProperty();
 		
@@ -605,24 +616,16 @@ var MoufDefaultRenderer = (function () {
 					if (droppedInstance) {
 						// If an instance was dropped
 						moufInstanceProperty.setValue(droppedInstance.getName());
-						elem.html("");
-						renderInstanceInField(droppedInstance);
-						
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
-						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						refreshField(moufInstanceProperty);
 						
 						// Also, if this comes from a drag'n'drop from another property of the class,
 						// let's perform a "move" by setting to "null".
 						// But let's do this in a setTimeout, so the stop draggable event can be triggered
+						var originalMoufInstanceProperty = ui.draggable.closest(".fieldWrapper").data('moufInstanceProperty');
+						
 						setTimeout(function() {
-							var setToNull = jQuery( ui.draggable ).data('originalElemSetToNull');
-							if (setToNull != null) {
-								setToNull();
-							}
+							originalMoufInstanceProperty.setValue(null);
+							refreshField(originalMoufInstanceProperty);
 						}, 0);
 					} else {
 						// If not, it's a class that has been dropped
@@ -638,7 +641,7 @@ var MoufDefaultRenderer = (function () {
 						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
 						moufInstanceProperty.setValue(newInstance.getName());
 						
-						renderInstanceInField(newInstance);
+						refreshField(moufInstanceProperty);
 					}
 				}
 			});
@@ -668,7 +671,7 @@ var MoufDefaultRenderer = (function () {
 					var field = renderInnerField(moufInstanceProperty);
 					field.appendTo(fieldInnerWrapper);
 				}
-			}).appendTo(field);;
+			}).appendTo(field);
 			// Droppable if related to an object and that object is not in a "sortable".
 			if (isDroppable) {
 				makeDroppable(button);
@@ -699,9 +702,6 @@ var MoufDefaultRenderer = (function () {
 					var field = getConfigConstantField();
 					field.appendTo(fieldInnerWrapper);
 				}, MoufInstanceManager.selfEdit);
-				/*fieldInnerWrapper.empty();
-				var field = renderInnerField(moufInstanceProperty);
-				field.appendTo(fieldInnerWrapper);*/
 			});
 			return field;
 		}
@@ -754,18 +754,8 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		
-		var menu = MoufUI.createMenuIcon(menuDescriptor, fieldWrapper);
-		menu.appendTo(fieldWrapper);
-		
-		return fieldWrapper;
-	}
-	
-	/**
-	 * Refreshes the HTML matching the moufInstanceProperty.
-	 * Very useful to refresh display when property has been updated.
-	 */
-	var refreshField = function(moufInstanceProperty) {
-		
+		var menu = MoufUI.createMenuIcon(menuDescriptor, target);
+		menu.appendTo(target);
 	}
 	
 	/**
