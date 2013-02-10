@@ -158,7 +158,12 @@ var MoufUI = (function () {
 		 * are a subtype of "type"
 		 */
 		displayInstanceOfType : function(targetSelector, type, displayInstances, displayClasses) {
+			$(targetSelector).empty();
+			$("<div/>").addClass('loading').text("Loading").appendTo($(targetSelector));
+			
 			MoufInstanceManager.getInstanceListByType(type).then(function(instances, classes) {
+				$(targetSelector).empty();
+				
 				jQuery("<h2/>").html("Type "+MoufUI.getHtmlClassName(type)).appendTo(targetSelector);
 				var divFilter = jQuery("<div>Filter: </div>").appendTo(targetSelector);
 				var inputFilter = jQuery("<input/>").addClass("instanceFilter").appendTo(divFilter);

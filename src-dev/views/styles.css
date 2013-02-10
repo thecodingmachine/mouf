@@ -448,3 +448,67 @@ div.fieldContainer > span.help-block {
 div.sidebar input.instanceFilter {
 	width: 95%;	
 }
+
+button.nullValue {
+}
+
+
+@keyframes nullPulse {
+	from, to {
+		box-shadow: 0 0 9px #333;
+		background-color: #59BFDD;
+		background-image: linear-gradient(center top , #6BD0EE, #3FA6C4);
+	}
+	50% { 
+		background-color: #49AFCD;
+		background-image: linear-gradient(center top , #5BC0DE, #2F96B4);
+		box-shadow: 0 0 18px #49AFCD; 
+	}
+}
+
+div.stateActive > button.nullValue {
+	animation: nullPulse 2s infinite;
+}
+
+button.nullValue.stateActive {
+	animation: nullPulse 2s infinite;
+}
+
+button.nullValue:focus { 
+    outline: none; 
+}
+
+@keyframes defaultPulse {
+	from, to {
+		box-shadow: 0 0 9px #A33;
+		background-color: #FAA732;
+		background-image: linear-gradient(center top , #FBB450, #F89406);
+	}
+	50% { 
+		background-color: #FFB742;
+		background-image: linear-gradient(center top , #FFC460, #FFA416);
+		box-shadow: 0 0 18px #FFB742; 
+	}
+}
+
+div.stateActive > button.defaultValue {
+	animation: defaultPulse 2s infinite;
+}
+
+button.defaultValue.stateActive {
+	animation: defaultPulse 2s infinite;
+}
+
+button.defaultValue:focus { 
+    outline: none; 
+}
+
+div.array:empty {
+	min-height: 20px;
+	background-color: #eee;
+}
+
+div.array:empty:before {
+	content: "Empty array";
+	font-style: italic;
+}

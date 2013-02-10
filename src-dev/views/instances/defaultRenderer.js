@@ -159,8 +159,7 @@ var MoufDefaultRenderer = (function () {
 						rowElem.appendTo(fieldElem);
 					});
 				}
-				
-				
+								
 				//var addDiv = jQuery("<div/>").addClass('addavalue')
 				var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
 					.appendTo(elem)
@@ -189,38 +188,27 @@ var MoufDefaultRenderer = (function () {
 				// This is an object, in a non associative array.
 				// Let's display an optimized drag'n'drop strategy.
 
+				sortable.addClass("nonassociativearray");
+				
 				// First, let's make sure we can drag directly in the sortable.
 				MoufInstanceManager.getClass(subtype).then(function(classDescriptor) {
 					sortable.addClass(getCssClassFromClassDescriptor(classDescriptor));
 					
 					if (values instanceof Array) {
 						moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
+							//cnt++;
 							var rowElem = renderField(instanceSubProperty).data("key", instanceSubProperty.getKey());
 							rowElem.appendTo(sortable);
 						});
 					}
 					
-					
 					//var addDiv = jQuery("<div/>").addClass('addavalue')
 					var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
+						.html("<i class='icon-plus icon-white'></i> Add an instance")
 						.appendTo(elem)
 						.click(function() {
-							// key=null (since we are not an associative array), and we init the value to null too.
-							var moufNewSubInstanceProperty = moufInstanceProperty.addArrayElement(null, null);
-							
-							var fieldElem = jQuery("<div/>").addClass('fieldContainer')
-								.data("key", moufNewSubInstanceProperty.getKey())
-								.appendTo(sortable);
-							
-							/*var renderer = getFieldRenderer(subtype, null, null);
-							var rowElem = renderer(moufNewSubInstanceProperty);*/
-							var rowElem = renderField(moufNewSubInstanceProperty);
-							rowElem.appendTo(fieldElem);
+							MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
 						});
-					
-
-					
-					addDiv.html("<i class='icon-plus icon-white'></i> Add an instance");
 					
 				})
 				
@@ -370,7 +358,6 @@ var MoufDefaultRenderer = (function () {
 		return elem;
 	}
 	
-	
 	/**
 	 * Renders a field representing a link to an instance.
 	 * The "in-memory" jQuery object for the field is returned.
@@ -380,28 +367,9 @@ var MoufDefaultRenderer = (function () {
 		var value = moufInstanceProperty.getValue();
 		var type = moufInstanceProperty.getMoufProperty().getType();
 	
-		var parentElem = jQuery('<div/>').addClass("fieldInstanceRenderer");
-				
-		var elem = jQuery("<div/>").addClass('instanceReceiver');
+		var parentElem = jQuery('<div/>');
 		
-		// An element containing the text to display when the value is null
-		var nullElem = jQuery("<div/>");
-		nullElem.addClass("null");
-		jQuery("<a href='#'>Drop here a <em>"+MoufUI.getHtmlClassName(type)+"</em> instance</a>").click(function() {
-			jQuery("#instanceList").empty();
-			MoufUI.displayInstanceOfType("#instanceList", type, true, true);
-			jQuery("#instanceList").scrollintoview({duration: "slow", direction: "y"});
-			
-			return false;
-		}).appendTo(nullElem);
-		
-		var setToNull = function() {
-			elem.find("*").remove();
-			nullElem.appendTo(elem);
-			moufInstanceProperty.setValue(null);
-		}
-	
-		var renderInstanceInField = function(instance) {
+		MoufInstanceManager.getInstance(value).then(function(instance) {
 			// Let's do that in a setTimeout.
 			// This way, we can be sure other instances are already in the DOM before displaying our instance.
 			
@@ -417,7 +385,7 @@ var MoufDefaultRenderer = (function () {
 					drag = false;
 				}
 				
-				var renderedInstance = instance.render(displayType).appendTo(elem).data('originalElemSetToNull', setToNull);
+				var renderedInstance = instance.render(displayType).appendTo(parentElem);
 				
 				if (drag) {
 					renderedInstance.draggable({
@@ -425,7 +393,14 @@ var MoufDefaultRenderer = (function () {
 						containment: "window",
 						start: function(event, ui) { 
 							MoufUI.onDroppedInBin(function() {
-								setToNull();
+								//setToNull();
+								//elem.find("*").remove();
+								moufInstanceProperty.setValue(null);
+								// Let's redraw the elem.
+								var parent = parentElem.closest(".fieldWrapper");
+								parent.empty();
+								renderField(moufInstanceProperty).appendTo(parent);
+								
 								MoufUI.hideBin();
 							});
 							MoufUI.showBin();
@@ -436,68 +411,12 @@ var MoufDefaultRenderer = (function () {
 					})
 				}
 			}, 0);
-		}
+		}).onError(function(e) {
+			addMessage("<pre>"+e+"</pre>", "error");
+		})
 		
-		
-		if (value === null) {
-			nullElem.appendTo(elem);
-		} else {
-			MoufInstanceManager.getInstance(value).then(function(instance) {
-				renderInstanceInField(instance);
-			}).onError(function(e) {
-				addMessage("<pre>"+e+"</pre>", "error");
-			})
-		}
-		
-		// TODO: move this in renderField
-		elem.droppable({
-			accept: "."+MoufUI.getCssNameFromType(type),
-			activeClass: "stateActive",
-			hoverClass: "stateHover",
-			greedy: true,
-			tolerance: "intersect",
-			drop: function( event, ui ) {
-				var droppedInstance = jQuery( ui.draggable ).data("instance");
-				
-				
-				if (droppedInstance) {
-					// If an instance was dropped
-					moufInstanceProperty.setValue(droppedInstance.getName());
-					elem.html("");
-					renderInstanceInField(droppedInstance);
-					
-					// Also, if this comes from a drag'n'drop from another property of the class,
-					// let's perform a "move" by setting to "null".
-					// But let's do this in a setTimeout, so the stop draggable event can be triggered
-					setTimeout(function() {
-						var setToNull = jQuery( ui.draggable ).data('originalElemSetToNull');
-						if (setToNull != null) {
-							setToNull();
-						}
-					}, 0);
-				} else {
-					// If not, it's a class that has been dropped
-					var droppedClass = jQuery( ui.draggable ).data("class");
-					
-					//moufInstanceProperty.setValue(droppedInstance.getName());
-					elem.html("");
-
-					var timestamp = new Date();
-					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
-					moufInstanceProperty.setValue(newInstance.getName());
-					
-					renderInstanceInField(newInstance);
-				}
-			}
-		});
-		
-  		
-  		elem.appendTo(parentElem);
-  		//menu.appendTo(parentElem);
-  		
   		return parentElem;
 	}
-	
 	
 	/**
 	 * A list of primitive type fields that can be renderered.
@@ -526,6 +445,21 @@ var MoufDefaultRenderer = (function () {
 			// TODO: manage subtype and keytype
 			// TODO: default should be to display the corresponding renderer.
 			return renderInstanceField;
+		}
+	}
+	
+	/**
+	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an object
+	 * (i.e. it is not a primitive nor an array type).
+	 */
+	var isObjectType = function(moufProperty) {
+		var type = moufProperty.getType();
+		if (type == null) {
+			return false;
+		} else if (fieldsRenderer[type]) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	
@@ -635,29 +569,125 @@ var MoufDefaultRenderer = (function () {
 	 * the dropdown menu to the right to apply actions (set to null, unset value, etc...)
 	 */
 	var renderField = function(moufInstanceProperty) {
+		
+		// TODO
+		// TODO
+		// TODO
+		// TODO CODE IS TOO COMPLEX!!!
+		// TODO Let's invent a "refresh" method that can refresh a moufInstanceProperty or a moufInstanceSubProperty
+		// TODO it should be able to find the property wherever it is on the page, remove old HTML
+		// TODO and redraw!
+		// For this, we need to store in "data" the moufInstanceProperty related to a DIV element
+		// And we need to be able to find that element very quickly (by marking it with a class!)
+		
+		
+		
+		
 		var fieldWrapper = jQuery("<div>").addClass('fieldWrapper');
 		
 		var fieldInnerWrapper = jQuery("<div>").addClass('fieldInnerWrapper');
 		fieldInnerWrapper.appendTo(fieldWrapper);
 		
-		var getNullField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-info' rel='tooltip' title='Click to set value'>Null</button>").click(function() {
-				fieldInnerWrapper.empty();
-				var field = renderInnerField(moufInstanceProperty);
-				field.appendTo(fieldInnerWrapper);
-				// Triggers a click on the link to display the instances in the right column.
-				field.find('a').trigger('click');
+		var moufProperty = moufInstanceProperty.getMoufProperty();
+		
+		var makeDroppable = function(elem) {
+			var type = moufProperty.getType();
+			elem.droppable({
+				accept: "."+MoufUI.getCssNameFromType(type),
+				activeClass: "stateActive",
+				hoverClass: "stateHover",
+				greedy: true,
+				tolerance: "intersect",
+				drop: function( event, ui ) {
+					var droppedInstance = jQuery( ui.draggable ).data("instance");
+					
+					
+					if (droppedInstance) {
+						// If an instance was dropped
+						moufInstanceProperty.setValue(droppedInstance.getName());
+						elem.html("");
+						renderInstanceInField(droppedInstance);
+						
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						// TODO REPLACE THIS WITH A REFRESH WHEN IT IS CODED
+						
+						// Also, if this comes from a drag'n'drop from another property of the class,
+						// let's perform a "move" by setting to "null".
+						// But let's do this in a setTimeout, so the stop draggable event can be triggered
+						setTimeout(function() {
+							var setToNull = jQuery( ui.draggable ).data('originalElemSetToNull');
+							if (setToNull != null) {
+								setToNull();
+							}
+						}, 0);
+					} else {
+						// If not, it's a class that has been dropped
+						var droppedClass = jQuery( ui.draggable ).data("class");
+						
+						if (droppedClass == null) {
+							throw "Error! The dropped item is neither an instance nor a class!";
+						}
+						//moufInstanceProperty.setValue(droppedInstance.getName());
+						elem.html("");
+	
+						var timestamp = new Date();
+						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+						moufInstanceProperty.setValue(newInstance.getName());
+						
+						renderInstanceInField(newInstance);
+					}
+				}
 			});
+		}
+		
+		// Let's check if we can drop something in the "null" or "default" buttons of this property.
+		var isDroppable = isObjectType(moufProperty);
+		var isPartOfNonAssociativeObjectArray = false;
+		var parentProperty = moufProperty.getParent();
+		if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray() && isObjectType(moufProperty)) {
+			isDroppable = false;
+			isPartOfNonAssociativeObjectArray = true;
+		}
+		
+		var getNullField = function() {
+			var field = jQuery("<div/>");
+			if (isPartOfNonAssociativeObjectArray) {
+				var moveable = jQuery("<div class='moveable' />").appendTo(field);
+			}
+			var button = jQuery("<button class='btn btn-mini btn-info nullValue' rel='tooltip' title='Click to set value'>Null</button>").click(function() {
+				if (isObjectType(moufProperty)) {
+					// Null field for an object
+					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
+				} else {
+					// Null field for a primitive type / array
+					fieldInnerWrapper.empty();
+					var field = renderInnerField(moufInstanceProperty);
+					field.appendTo(fieldInnerWrapper);
+				}
+			}).appendTo(field);;
+			// Droppable if related to an object and that object is not in a "sortable".
+			if (isDroppable) {
+				makeDroppable(button);
+			}
 			return field;
 		}
 		var getNotSetField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-warning'><em>Click to set value</em></button>").click(function() {
-				fieldInnerWrapper.empty();
-				var field = renderInnerField(moufInstanceProperty);
-				field.appendTo(fieldInnerWrapper);
-				// Triggers a click on the link to display the instances in the right column.
-				field.find('a').trigger('click');
+			var field = jQuery("<button class='btn btn-mini btn-warning defaultValue'><em>Click to set value</em></button>").click(function() {
+				if (isObjectType(moufProperty)) {
+					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
+				} else {
+					fieldInnerWrapper.empty();
+					var field = renderInnerField(moufInstanceProperty);
+					field.appendTo(fieldInnerWrapper);
+				}
 			});
+			if (isDroppable) {
+				makeDroppable(fieldInnerWrapper);
+			}
 			return field;
 		}
 		var getConfigConstantField = function() {
@@ -728,6 +758,14 @@ var MoufDefaultRenderer = (function () {
 		menu.appendTo(fieldWrapper);
 		
 		return fieldWrapper;
+	}
+	
+	/**
+	 * Refreshes the HTML matching the moufInstanceProperty.
+	 * Very useful to refresh display when property has been updated.
+	 */
+	var refreshField = function(moufInstanceProperty) {
+		
 	}
 	
 	/**

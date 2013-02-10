@@ -851,6 +851,10 @@ MoufInstanceProperty.prototype.getInstance = function() {
  */
 MoufInstanceProperty.prototype.addArrayElement = function(key, value) {
 	this.json['isset'] = true;
+	
+	// Just to be sure it's not empty, some functions rely on that.
+	this.json['value'] = [];
+	
 	var moufProperty = this.getMoufProperty();
 	if (moufProperty.isAssociativeArray()) {
 		var instanceSubProperty = new MoufInstanceSubProperty(this, key, value);
@@ -903,6 +907,10 @@ MoufInstanceProperty.prototype.forEachArrayElement = function(callback) {
  * This will trigger a remote save on the server.
  */
 MoufInstanceProperty.prototype.reorderArrayElement = function(i, j) {
+	if (i==j) {
+		return;
+	}
+	
 	var moufProperty = this.getMoufProperty();
 	if (!moufProperty.isArray()) {
 		throw "Error, the '"+moufProperty.getName()+"' property is not an array.";
@@ -1503,6 +1511,13 @@ MoufMethod.prototype.isAssociativeArray = function() {
 }
 
 /**
+ * Returns null (a method has no parent, only sub-properties have parents).
+ */
+MoufMethod.prototype.getParent = function() {
+	return null;
+}
+
+/**
  * Returns the name of the property (if this method has a @Property annotation).
  */
 MoufMethod.prototype.getPropertyName = function() {
@@ -1631,6 +1646,13 @@ MoufParameter.prototype.getKeyType = function() {
  */
 MoufParameter.prototype.getMoufInstanceProperty = function(instance) {
 	return instance.getConstructorArgument(this.json['name']);
+}
+
+/**
+ * Returns null (a parameter has no parent, only sub-properties have parents).
+ */
+MoufParameter.prototype.getParent = function() {
+	return null;
 }
 
 /**
