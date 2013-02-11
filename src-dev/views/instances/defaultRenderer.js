@@ -192,11 +192,11 @@ var MoufDefaultRenderer = (function () {
 				
 				// First, let's make sure we can drag directly in the sortable.
 				MoufInstanceManager.getClass(subtype).then(function(classDescriptor) {
-					sortable.addClass(getCssClassFromClassDescriptor(classDescriptor));
+					//sortable.addClass(getCssClassFromClassDescriptor(classDescriptor));
+					sortable.addClass(MoufUI.getCssNameFromType(classDescriptor.getName()));
 					
 					if (values instanceof Array) {
 						moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
-							//cnt++;
 							var rowElem = renderField(instanceSubProperty).data("key", instanceSubProperty.getKey());
 							rowElem.appendTo(sortable);
 						});

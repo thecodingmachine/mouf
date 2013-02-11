@@ -605,6 +605,14 @@ MoufInstance.prototype.getClass = function() {
 	return MoufInstanceManager.getClass(this.getClassName());
 }
 
+/**
+ * Returns the MoufClass representing the instance directly. It must have been loaded first!
+ * If not, use getClass instead.
+ */
+MoufInstance.prototype.getLocalClass = function() {
+	return MoufInstanceManager.getLocalClass(this.getClassName());
+}
+
 MoufInstance.prototype.getName = function() {
 	return this.json["name"];
 }

@@ -169,6 +169,26 @@ var MoufUI = (function () {
 				var inputFilter = jQuery("<input/>").addClass("instanceFilter").appendTo(divFilter);
 				jQuery("<h3/>").text("Instances").appendTo(targetSelector);
 				var instanceListDiv = jQuery("<div/>").addClass("instanceList").appendTo(targetSelector);
+				
+				/**
+				 * Utility function that returns the CSS classes we should bind draggables to.
+				 */
+				var getCssSelectorFromClassDescriptor = function(classDescriptor) {
+					// Note: slice is performing a clone of the array
+					var subclassOf = classDescriptor.json["implements"].slice(0);
+					var parentClass = classDescriptor;
+					do {
+						subclassOf.push(parentClass.getName());
+						parentClass = parentClass.getParentClass();
+					} while (parentClass);
+					
+					for (var i = 0; i<subclassOf.length; i++) {
+						subclassOf[i] = '.'+MoufUI.getCssNameFromType(subclassOf[i]);
+					}
+					var cssSelector = subclassOf.join(',');
+					return cssSelector;
+				}
+				
 				for (var key in instances) {
 					var instance = instances[key];
 					instance.render().draggable({
@@ -176,7 +196,7 @@ var MoufUI = (function () {
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
 						cursor: "move",
-						connectToSortable: "."+MoufUI.getCssNameFromType(instance.getClassName())
+						connectToSortable: getCssSelectorFromClassDescriptor(instance.getLocalClass())
 					}).appendTo(instanceListDiv);
 				}
 				jQuery("<h3/>").text("Classes").appendTo(targetSelector);
@@ -188,7 +208,7 @@ var MoufUI = (function () {
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
 						cursor: "move",
-						connectToSortable: "."+MoufUI.getCssNameFromType(classDescriptor.getName())
+						connectToSortable: getCssSelectorFromClassDescriptor(classDescriptor)
 					}).appendTo(classListDiv);
 				}
 				
