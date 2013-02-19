@@ -1733,7 +1733,7 @@ MoufParameter.prototype.hasDefault = function() {
 /**
  * Returns the default value.
  */
-MoufParameter.prototype.hasDefault = function() {
+MoufParameter.prototype.getDefault = function() {
 	return this.json['default'];
 }
 
