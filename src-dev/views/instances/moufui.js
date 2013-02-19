@@ -69,7 +69,7 @@ $(document).ready(function() {
 		})
 	});*/
 	
-	$('[rel=tooltip]').live('mouseenter', function() {
+	$(document).on('mouseenter', '[rel=tooltip]', function() {
 		// If the tooltip was already created, let's quit.
 		var api = $(this).data('qtip');
 		if (api) {

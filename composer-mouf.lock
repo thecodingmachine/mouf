@@ -1,5 +1,5 @@
 {
-    "hash": "1edb2d49fb35129778348f8802d966af",
+    "hash": "66883b320080122a29b7422a25700a38",
     "packages": [
         {
             "name": "michelf/php-markdown",
@@ -30,6 +30,7 @@
                     "Michelf": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -61,7 +62,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/moufmouf/famfamfam/archive/30730b2268dd0adc775f95d7eb9ae8962b491221.zip",
+                "url": "https://api.github.com/repos/moufmouf/famfamfam/zipball/30730b2268dd0adc775f95d7eb9ae8962b491221",
                 "reference": "30730b2268dd0adc775f95d7eb9ae8962b491221",
                 "shasum": ""
             },
@@ -70,6 +71,7 @@
             },
             "time": "2012-09-19 14:40:44",
             "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Creative Commons Attribution 2.5 License"
             ],
@@ -97,7 +99,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.html_element/archive/e9d2c74c8155e1cecb71fa5da7458e81919126d2.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/e9d2c74c8155e1cecb71fa5da7458e81919126d2",
                 "reference": "e9d2c74c8155e1cecb71fa5da7458e81919126d2",
                 "shasum": ""
             },
@@ -111,6 +113,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -197,7 +200,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/e90932ba56d44a1e17e24de5cadafcc51751fd37.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "shasum": ""
             },
@@ -212,6 +215,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -240,7 +244,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/d402437cbd3d2e6de3727622af9875ed4eaa2fd2.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "shasum": ""
             },
@@ -255,6 +259,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -347,6 +352,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache License V2.0"
             ],
@@ -449,6 +455,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -477,7 +484,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.widgets.messageservice/archive/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
                 "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
                 "shasum": ""
             },
@@ -507,6 +514,7 @@
                     "src/common_functions.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -529,23 +537,23 @@
         },
         {
             "name": "mouf/javascript.jquery.jquery",
-            "version": "1.7.2.x-dev",
+            "version": "1.9.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "4f07be5afa598f52c97b48cb963aa04e92a94b90"
+                "reference": "b2e0d72b63588b15bf9df286e246419f0b3622f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery/archive/4f07be5afa598f52c97b48cb963aa04e92a94b90.zip",
-                "reference": "4f07be5afa598f52c97b48cb963aa04e92a94b90",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/b2e0d72b63588b15bf9df286e246419f0b3622f6",
+                "reference": "b2e0d72b63588b15bf9df286e246419f0b3622f6",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-06 09:35:44",
+            "time": "2013-02-14 10:53:39",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -557,6 +565,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -585,7 +594,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/cd54be33ad6cb667c116394d35c5bef37ac1a502.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "shasum": ""
             },
@@ -605,6 +614,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -631,19 +641,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git",
-                "reference": "5078cdf09eee4f54902393cad5506b57b309e2d8"
+                "reference": "c54f46f02e0c0a5461078908135edb7998f9548b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-ui/zipball/5078cdf09eee4f54902393cad5506b57b309e2d8",
-                "reference": "5078cdf09eee4f54902393cad5506b57b309e2d8",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-ui/zipball/c54f46f02e0c0a5461078908135edb7998f9548b",
+                "reference": "c54f46f02e0c0a5461078908135edb7998f9548b",
                 "shasum": ""
             },
             "require": {
                 "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-10 15:50:00",
+            "time": "2013-02-14 10:55:08",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -686,7 +696,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "shasum": ""
             },
@@ -711,6 +721,7 @@
                     "Mouf": "php/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -739,7 +750,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/9eae854caf24a9be83a055d08af05559088e744f.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/9eae854caf24a9be83a055d08af05559088e744f",
                 "reference": "9eae854caf24a9be83a055d08af05559088e744f",
                 "shasum": ""
             },
@@ -759,6 +770,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -931,7 +943,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common/archive/0790978c138e02a2611a3dc69ca6c4c2e2eb8084.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
                 "reference": "0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
                 "shasum": ""
             },
@@ -960,6 +972,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -990,7 +1003,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/4c719e7e102b08065eaa4dcd378e3cab80b60311.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "shasum": ""
             },
@@ -1005,6 +1018,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1033,7 +1047,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "shasum": ""
             },
@@ -1048,6 +1062,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1077,7 +1092,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userservice/archive/258d29984ea0631ddd21700818aeb968725cc5b9.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/258d29984ea0631ddd21700818aeb968725cc5b9",
                 "reference": "258d29984ea0631ddd21700818aeb968725cc5b9",
                 "shasum": ""
             },
@@ -1106,6 +1121,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1164,6 +1180,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1192,7 +1209,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.cache-interface/archive/530923d1756242dfb551f040ee7c77410ec015ed.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/530923d1756242dfb551f040ee7c77410ec015ed",
                 "reference": "530923d1756242dfb551f040ee7c77410ec015ed",
                 "shasum": ""
             },
@@ -1213,6 +1230,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1267,6 +1285,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1295,7 +1314,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.cache.no-cache/archive/e431eebfad39516d3c352b6798aab4dc87b67c70.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.no-cache/zipball/e431eebfad39516d3c352b6798aab4dc87b67c70",
                 "reference": "e431eebfad39516d3c352b6798aab4dc87b67c70",
                 "shasum": ""
             },
@@ -1321,6 +1340,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1349,7 +1369,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.conditioninterface/archive/77cea9572876de02af2bdfa66b6e90451e8ea485.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/77cea9572876de02af2bdfa66b6e90451e8ea485",
                 "reference": "77cea9572876de02af2bdfa66b6e90451e8ea485",
                 "shasum": ""
             },
@@ -1363,6 +1383,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1390,7 +1411,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
@@ -1405,6 +1426,7 @@
                     "src/TcmUtilsException.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1429,19 +1451,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/utils.i18n.fine.git",
-                "reference": "5a18d3be6d57fed56dfa15e48a14acbd61c2cbe3"
+                "reference": "f5a703c6300aa84e876fa90c6e8142bafd1252f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/5a18d3be6d57fed56dfa15e48a14acbd61c2cbe3",
-                "reference": "5a18d3be6d57fed56dfa15e48a14acbd61c2cbe3",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/f5a703c6300aa84e876fa90c6e8142bafd1252f3",
+                "reference": "f5a703c6300aa84e876fa90c6e8142bafd1252f3",
                 "shasum": ""
             },
             "require": {
                 "mouf/mouf-installer": ">=2.0,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-08 13:56:48",
+            "time": "2013-02-11 10:12:30",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1513,7 +1535,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger/archive/d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.errorlog_logger/zipball/d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a",
                 "reference": "d80094ddc85ca3cc8fa4ac32a4055caf7ebe387a",
                 "shasum": ""
             },
@@ -1542,6 +1564,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1570,7 +1593,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.log.log_interface/archive/97085d196987feeddf9ac6feba31068d10a54c3b.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.log_interface/zipball/97085d196987feeddf9ac6feba31068d10a54c3b",
                 "reference": "97085d196987feeddf9ac6feba31068d10a54c3b",
                 "shasum": ""
             },
@@ -1585,6 +1608,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1637,6 +1661,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1665,7 +1690,6 @@
         "mouf/html.template.mouftemplate": 20,
         "mouf/utils.i18n.fine": 20,
         "mouf/mvc.splash": 20,
-        "mouf/javascript.jquery.jquery-ui": 20,
         "mouf/javascript.underscore": 20,
         "mouf/javascript.jquery.jquery-filetree": 20,
         "mouf/javascript.syntaxhighlighter": 20,

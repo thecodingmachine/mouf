@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:thecodingmachine/mouf-installer.git",
-                "reference": "4b5c2e85d24363ea29c4ef8378a2956af4d3eb19"
+                "reference": "d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/mouf-installer/archive/4b5c2e85d24363ea29c4ef8378a2956af4d3eb19.zip",
-                "reference": "4b5c2e85d24363ea29c4ef8378a2956af4d3eb19",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58",
+                "reference": "d518f9c3a91f0b67e6f04eb8b3c39a8a21e6ef58",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-26 19:34:01",
+            "time": "2013-02-05 10:46:25",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -26,7 +26,6 @@
                     "Mouf\\Installer\\MoufFrameworkInstaller"
                 ]
             },
-            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Mouf": "src/"

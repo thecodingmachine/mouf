@@ -460,6 +460,20 @@ var MoufDefaultRenderer = (function () {
 	}
 	
 	/**
+	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an array of objects
+	 */
+	var isArrayOfObjectType = function(moufProperty) {
+		var type = moufProperty.getSubType();
+		if (type == null) {
+			return false;
+		} else if (fieldsRenderer[type]) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
 	 * This function will return the instance whose "elem" html element is part of.
 	 */
 	var findInstance = function(elem) {
@@ -602,7 +616,12 @@ var MoufDefaultRenderer = (function () {
 		var moufProperty = moufInstanceProperty.getMoufProperty();
 		
 		var makeDroppable = function(elem) {
-			var type = moufProperty.getType();
+			var type;
+			if (!moufProperty.isArray()) {
+				type = moufProperty.getType();
+			} else {
+				type = moufProperty.getSubType();
+			}
 			elem.droppable({
 				accept: "."+MoufUI.getCssNameFromType(type),
 				activeClass: "stateActive",
@@ -610,12 +629,25 @@ var MoufDefaultRenderer = (function () {
 				greedy: true,
 				tolerance: "intersect",
 				drop: function( event, ui ) {
-					var droppedInstance = jQuery( ui.draggable ).data("instance");
 					
+					// Workaround to prevent false drop:
+					//if (!$(event.srcElement).hasClass("ui-draggable-dragging")) {
+					/*if (!$(ui.draggable).hasClass("ui-draggable-dragging")) {
+						return;
+					} */
+					
+					var droppedInstance = jQuery( ui.draggable ).data("instance");
 					
 					if (droppedInstance) {
 						// If an instance was dropped
-						moufInstanceProperty.setValue(droppedInstance.getName());
+						
+						if (!moufProperty.isArray()) {
+							moufInstanceProperty.setValue(droppedInstance.getName());	
+						} else {
+							// If we dropped in a null/default value array:
+							moufInstanceProperty.addArrayElement(null, droppedInstance.getName());
+						}
+						
 						refreshField(moufInstanceProperty);
 						
 						// Also, if this comes from a drag'n'drop from another property of the class,
@@ -623,10 +655,12 @@ var MoufDefaultRenderer = (function () {
 						// But let's do this in a setTimeout, so the stop draggable event can be triggered
 						var originalMoufInstanceProperty = ui.draggable.closest(".fieldWrapper").data('moufInstanceProperty');
 						
-						setTimeout(function() {
-							originalMoufInstanceProperty.setValue(null);
-							refreshField(originalMoufInstanceProperty);
-						}, 0);
+						if (originalMoufInstanceProperty != null) {
+							setTimeout(function() {
+								originalMoufInstanceProperty.setValue(null);
+								refreshField(originalMoufInstanceProperty);
+							}, 0);
+						}
 					} else {
 						// If not, it's a class that has been dropped
 						var droppedClass = jQuery( ui.draggable ).data("class");
@@ -634,12 +668,15 @@ var MoufDefaultRenderer = (function () {
 						if (droppedClass == null) {
 							throw "Error! The dropped item is neither an instance nor a class!";
 						}
-						//moufInstanceProperty.setValue(droppedInstance.getName());
-						elem.html("");
-	
+						
 						var timestamp = new Date();
 						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
-						moufInstanceProperty.setValue(newInstance.getName());
+						
+						if (!moufProperty.isArray()) {
+							moufInstanceProperty.setValue(newInstance.getName());
+						} else {
+							moufInstanceProperty.addArrayElement(null, newInstance.getName());
+						}
 						
 						refreshField(moufInstanceProperty);
 					}
@@ -648,7 +685,7 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		// Let's check if we can drop something in the "null" or "default" buttons of this property.
-		var isDroppable = isObjectType(moufProperty);
+		var isDroppable = isObjectType(moufProperty) || (isArrayOfObjectType(moufProperty) && !moufProperty.isAssociativeArray());
 		var isPartOfNonAssociativeObjectArray = false;
 		var parentProperty = moufProperty.getParent();
 		if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray() && isObjectType(moufProperty)) {
@@ -656,41 +693,49 @@ var MoufDefaultRenderer = (function () {
 			isPartOfNonAssociativeObjectArray = true;
 		}
 		
+		var onClickNullOrNotSetField = function() {
+			if (isObjectType(moufProperty)) {
+				// Null field for an object
+				MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
+			} else {
+				// Null field for a primitive type / array
+				fieldInnerWrapper.empty();
+				var field = renderInnerField(moufInstanceProperty);
+				field.appendTo(fieldInnerWrapper);
+				// If this is an array, let's display the instance type.
+				if (isArrayOfObjectType(moufProperty)) {
+					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
+				}
+			}
+		}
+		
 		var getNullField = function() {
 			var field = jQuery("<div/>");
 			if (isPartOfNonAssociativeObjectArray) {
 				var moveable = jQuery("<div class='moveable' />").appendTo(field);
 			}
-			var button = jQuery("<button class='btn btn-mini btn-info nullValue' rel='tooltip' title='Click to set value'>Null</button>").click(function() {
-				if (isObjectType(moufProperty)) {
-					// Null field for an object
-					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
-				} else {
-					// Null field for a primitive type / array
-					fieldInnerWrapper.empty();
-					var field = renderInnerField(moufInstanceProperty);
-					field.appendTo(fieldInnerWrapper);
-				}
-			}).appendTo(field);
+			var button = jQuery("<button class='btn btn-mini btn-info nullValue' rel='tooltip' title='Click to set value'>Null</button>")
+				.click(onClickNullOrNotSetField).appendTo(field);
 			// Droppable if related to an object and that object is not in a "sortable".
 			if (isDroppable) {
 				makeDroppable(button);
 			}
+			
 			return field;
 		}
 		var getNotSetField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-warning defaultValue'><em>Click to set value</em></button>").click(function() {
-				if (isObjectType(moufProperty)) {
-					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
-				} else {
-					fieldInnerWrapper.empty();
-					var field = renderInnerField(moufInstanceProperty);
-					field.appendTo(fieldInnerWrapper);
-				}
-			});
+			var field = jQuery("<button class='btn btn-mini btn-warning defaultValue'><em>Click to set value</em></button>")
+				.click(onClickNullOrNotSetField);
 			if (isDroppable) {
+				//makeDroppable(fieldInnerWrapper);
 				makeDroppable(fieldInnerWrapper);
 			}
+			
+
+			// FIXME: peut être que le problème vient de là:
+			// makeDroppable rend le fieldInnerWrapper droppable.
+			// Quand on clique dessus, on a une array qui apparaît. Il faudrait être sur que le droppable disparaît.
+			
 			return field;
 		}
 		var getConfigConstantField = function() {

@@ -504,11 +504,17 @@ button.defaultValue:focus {
 }
 
 div.array:empty {
-	min-height: 20px;
+	min-width: 226px;
+	min-height: 30px;
 	background-color: #eee;
 }
 
 div.array:empty:before {
 	content: "Empty array";
 	font-style: italic;
+}
+
+button.btn.defaultValue, button.btn.nullValue {
+	width: 220px;
+	height: 27px;
 }
