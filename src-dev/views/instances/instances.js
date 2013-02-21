@@ -523,29 +523,42 @@ var MoufInstanceManager = (function() {
 		 */
 		newInstance : function(classDescriptor, instanceName, isAnonymous) {
 
-			var properties = {};
-			_.each(classDescriptor.getAllInjectableProperties(), function(
+			var constructorArguments = {};
+			_.each(classDescriptor.getInjectableConstructorArguments(), function(
 					property) {
-				if (property instanceof MoufProperty
-						|| property instanceof MoufParameter) {
-					if (property.hasDefault()) {
+				if (property.hasDefault()) {
+					constructorArguments[property.getName()] = {
+						value : property.getDefault(),
+						origin : "string",
+						metadata : []
+					};
+				}
+			});
+			
+			var properties = {};
+			_.each(classDescriptor.getInjectablePublicProperties(), function(
+					property) {
+				if (property.hasDefault()) {
+					properties[property.getName()] = {
+						value : property.getDefault(),
+						origin : "string",
+						metadata : []
+					};
+				}
+			});
+			
+			var setters = {};
+			_.each(classDescriptor.getInjectableSetters(), function(
+					property) {
+				var parameters = property.getParameters();
+				if (parameters.length > 0) {
+					var parameter = parameters[0];
+					if (parameter.hasDefault()) {
 						properties[property.getName()] = {
-							value : property.getDefault(),
+							value : parameter.getDefault(),
 							origin : "string",
 							metadata : []
 						};
-					}
-				} else if (property instanceof MoufMethod) {
-					var parameters = property.getParameters();
-					if (parameters.length > 0) {
-						var parameter = parameters[0];
-						if (parameter.hasDefault()) {
-							properties[property.getName()] = {
-								value : parameter.getDefault(),
-								origin : "string",
-								metadata : []
-							};
-						}
 					}
 				}
 			});
@@ -554,7 +567,9 @@ var MoufInstanceManager = (function() {
 				"name" : instanceName,
 				"class" : classDescriptor.getName(),
 				"anonymous" : isAnonymous,
-				"properties" : properties
+				"constructorArguments" : constructorArguments,
+				"properties" : properties,
+				"setters" : setters
 			});
 			_instances[instanceName] = instance;
 
