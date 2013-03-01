@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Composer;
 
+use Composer\Script\EventDispatcher;
+
 use Mouf\Installer\MoufUIFileWritter;
 
 use Mouf\Installer\PackagesOrderer;
@@ -73,10 +75,11 @@ class ComposerService {
 			return $this->classMap;
 		}
 		
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
+		$composer = $this->getComposer();
 		
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
 		
-		$composer = $this->getComposer(); 
 		
 		$installationManager = $composer->getInstallationManager();
 		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());

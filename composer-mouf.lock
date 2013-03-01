@@ -18,7 +18,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-03 21:14:12",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -50,7 +49,8 @@
             "homepage": "http://michelf.ca/projects/php-markdown/",
             "keywords": [
                 "markdown"
-            ]
+            ],
+            "time": "2013-02-03 21:14:12"
         },
         {
             "name": "mouf/famfamfam",
@@ -69,7 +69,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-09-19 14:40:44",
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -87,7 +86,8 @@
                 "famfamfam",
                 "icons",
                 "silk"
-            ]
+            ],
+            "time": "2012-09-19 14:40:44"
         },
         {
             "name": "mouf/html.htmlelement",
@@ -106,7 +106,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-21 16:52:17",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -130,7 +129,8 @@
                 "html",
                 "interface",
                 "tohtml"
-            ]
+            ],
+            "time": "2013-01-21 16:52:17"
         },
         {
             "name": "mouf/html.template.bootstrap",
@@ -153,7 +153,6 @@
                 "mouf/html.widgets.menu": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-06 15:31:32",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -188,7 +187,8 @@
                 "javascript",
                 "mouf",
                 "template"
-            ]
+            ],
+            "time": "2013-02-06 15:31:32"
         },
         {
             "name": "mouf/html.template.menus.basicmenu",
@@ -208,7 +208,6 @@
                 "mouf/html.widgets.menu": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:46:21",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -232,7 +231,8 @@
                 "basicmenu",
                 "menu",
                 "mouf"
-            ]
+            ],
+            "time": "2012-11-24 11:46:21"
         },
         {
             "name": "mouf/html.template.mouftemplate",
@@ -252,7 +252,6 @@
                 "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:46:29",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -276,7 +275,8 @@
                 "mouf",
                 "mouftemplate",
                 "template"
-            ]
+            ],
+            "time": "2012-11-24 11:46:29"
         },
         {
             "name": "mouf/html.template.templateinterface",
@@ -296,7 +296,6 @@
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-06 15:35:29",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -320,7 +319,8 @@
                 "interface",
                 "template",
                 "templateinterface"
-            ]
+            ],
+            "time": "2013-02-06 15:35:29"
         },
         {
             "name": "mouf/html.utils.bootstrap",
@@ -340,7 +340,6 @@
                 "mouf/javascript.jquery.jquery": ">=1.7,<2.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-28 11:25:15",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -370,7 +369,8 @@
                 "bootstrap",
                 "javascript",
                 "mouf"
-            ]
+            ],
+            "time": "2013-01-28 11:25:15"
         },
         {
             "name": "mouf/html.utils.weblibrarymanager",
@@ -391,7 +391,6 @@
                 "mouf/mouf-installer": ">=2.0,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-08 15:11:47",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -428,7 +427,8 @@
                 "html",
                 "javascript",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-08 15:11:47"
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -448,7 +448,6 @@
                 "mouf/utils.i18n.fine": "3.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-06 09:58:36",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -472,7 +471,8 @@
                 "menu",
                 "mouf",
                 "template"
-            ]
+            ],
+            "time": "2013-02-06 09:58:36"
         },
         {
             "name": "mouf/html.widgets.messageservice",
@@ -494,7 +494,6 @@
                 "mouf/utils.session.session-manager": ">=2.0,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-26 11:50:42",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -533,7 +532,8 @@
                 "mouf",
                 "widget",
                 "widgets"
-            ]
+            ],
+            "time": "2012-12-26 11:50:42"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -553,7 +553,6 @@
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-14 10:53:39",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -582,7 +581,8 @@
                 "javascript",
                 "jquery",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-14 10:53:39"
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -602,7 +602,6 @@
                 "mouf/javascript.jquery.jquery-ui": ">=1.8.22-dev,<2.0",
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-03 09:16:06",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -633,27 +632,27 @@
                 "jquery",
                 "jquery filetree",
                 "mouf"
-            ]
+            ],
+            "time": "2012-12-03 09:16:06"
         },
         {
             "name": "mouf/javascript.jquery.jquery-ui",
             "version": "1.10.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-ui.git",
-                "reference": "c54f46f02e0c0a5461078908135edb7998f9548b"
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-ui.git",
+                "reference": "f2ed1359437769b0509b3aae5719abc855789d59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-ui/zipball/c54f46f02e0c0a5461078908135edb7998f9548b",
-                "reference": "c54f46f02e0c0a5461078908135edb7998f9548b",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-ui/zipball/f2ed1359437769b0509b3aae5719abc855789d59",
+                "reference": "f2ed1359437769b0509b3aae5719abc855789d59",
                 "shasum": ""
             },
             "require": {
-                "mouf/javascript.jquery.jquery": ">=1.7.2-dev,<2.0",
+                "mouf/javascript.jquery.jquery": ">=1.7,<2.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-14 10:55:08",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -684,7 +683,8 @@
                 "jquery",
                 "jquery-ui",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-14 10:57:43"
         },
         {
             "name": "mouf/javascript.syntaxhighlighter",
@@ -704,7 +704,6 @@
                 "mouf/javascript.jquery.jquery": ">=1.7.2",
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-14 15:04:52",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -738,7 +737,8 @@
                 "SyntaxHighlighter",
                 "javascript",
                 "mouf"
-            ]
+            ],
+            "time": "2013-01-14 15:04:52"
         },
         {
             "name": "mouf/javascript.underscore",
@@ -758,7 +758,6 @@
                 "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2012-12-03 09:12:06",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -788,7 +787,8 @@
                 "mouf",
                 "underscore",
                 "underscorejs"
-            ]
+            ],
+            "time": "2012-12-03 09:12:06"
         },
         {
             "name": "mouf/mouf-installer",
@@ -807,7 +807,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-05 10:46:25",
             "type": "composer-installer",
             "extra": {
                 "class": [
@@ -835,7 +834,8 @@
             "keywords": [
                 "install",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-05 10:46:25"
         },
         {
             "name": "mouf/mvc.splash",
@@ -859,7 +859,6 @@
                 "mouf/utils.cache.no-cache": "2.0.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-06 15:40:24",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -931,20 +930,21 @@
                 "mouf",
                 "mvc",
                 "splash"
-            ]
+            ],
+            "time": "2013-02-06 15:40:24"
         },
         {
             "name": "mouf/mvc.splash-common",
             "version": "4.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common",
-                "reference": "0790978c138e02a2611a3dc69ca6c4c2e2eb8084"
+                "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
+                "reference": "ec5e3c737c6bdf5585d68afccdf36de9f88a389f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
-                "reference": "0790978c138e02a2611a3dc69ca6c4c2e2eb8084",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/ec5e3c737c6bdf5585d68afccdf36de9f88a389f",
+                "reference": "ec5e3c737c6bdf5585d68afccdf36de9f88a389f",
                 "shasum": ""
             },
             "require": {
@@ -952,7 +952,6 @@
                 "mouf/utils.i18n.fine": "3.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-28 09:27:48",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -991,7 +990,8 @@
                 "mvc",
                 "splash",
                 "splash-common"
-            ]
+            ],
+            "time": "2013-02-14 16:39:50"
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -1011,7 +1011,6 @@
                 "mouf/security.userservice": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-28 12:18:56",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -1035,7 +1034,8 @@
                 "login",
                 "mouf",
                 "security"
-            ]
+            ],
+            "time": "2012-11-28 12:18:56"
         },
         {
             "name": "mouf/security.userfiledao",
@@ -1055,7 +1055,6 @@
                 "mouf/security.userservice": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:47:22",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -1080,7 +1079,8 @@
                 "mouf",
                 "security",
                 "userdao"
-            ]
+            ],
+            "time": "2012-11-24 11:47:22"
         },
         {
             "name": "mouf/security.userservice",
@@ -1101,7 +1101,6 @@
                 "mouf/utils.log.log_interface": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-28 12:13:42",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1138,7 +1137,8 @@
                 "User management",
                 "security",
                 "user"
-            ]
+            ],
+            "time": "2012-11-28 12:13:42"
         },
         {
             "name": "mouf/utils.cache.apc-cache",
@@ -1160,7 +1160,6 @@
                 "mouf/utils.log.errorlog_logger": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-31 15:53:41",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1197,7 +1196,8 @@
                 "apc",
                 "cache",
                 "mouf"
-            ]
+            ],
+            "time": "2013-01-31 15:53:41"
         },
         {
             "name": "mouf/utils.cache.cache-interface",
@@ -1216,7 +1216,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:47:29",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1247,7 +1246,8 @@
                 "cache",
                 "interface",
                 "mouf"
-            ]
+            ],
+            "time": "2012-11-24 11:47:29"
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -1268,7 +1268,6 @@
                 "mouf/utils.log.log_interface": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-05 16:57:34",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1302,7 +1301,8 @@
                 "cache",
                 "file",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-05 16:57:34"
         },
         {
             "name": "mouf/utils.cache.no-cache",
@@ -1323,7 +1323,6 @@
                 "mouf/utils.log.log_interface": "2.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:46:45",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1357,7 +1356,8 @@
                 "cache",
                 "mouf",
                 "nocache"
-            ]
+            ],
+            "time": "2012-11-24 11:46:45"
         },
         {
             "name": "mouf/utils.common.conditioninterface",
@@ -1376,7 +1376,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:47:37",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -1399,7 +1398,8 @@
             "keywords": [
                 "condition",
                 "interface"
-            ]
+            ],
+            "time": "2012-11-24 11:47:37"
         },
         {
             "name": "mouf/utils.common.getvars",
@@ -1418,7 +1418,6 @@
             "require": {
                 "php": ">=5.2.0"
             },
-            "time": "2012-11-28 16:10:18",
             "type": "mouf-library",
             "autoload": {
                 "files": [
@@ -1443,7 +1442,8 @@
                 "mouf",
                 "protect",
                 "request"
-            ]
+            ],
+            "time": "2012-11-28 16:10:18"
         },
         {
             "name": "mouf/utils.i18n.fine",
@@ -1463,7 +1463,6 @@
                 "mouf/mouf-installer": ">=2.0,<3.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-11 10:12:30",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1523,7 +1522,8 @@
                 "i18n",
                 "internationalisation",
                 "mouf"
-            ]
+            ],
+            "time": "2013-02-11 10:12:30"
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
@@ -1547,7 +1547,6 @@
             "provide": {
                 "mouf/utils.log.logger": "1.0"
             },
-            "time": "2012-11-28 15:16:09",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1581,7 +1580,8 @@
                 "error_log",
                 "log",
                 "logger"
-            ]
+            ],
+            "time": "2012-11-28 15:16:09"
         },
         {
             "name": "mouf/utils.log.log_interface",
@@ -1601,7 +1601,6 @@
                 "mouf/utils.log.logger": "1.*",
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-24 11:47:50",
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
@@ -1625,7 +1624,8 @@
                 "interface",
                 "log",
                 "logger"
-            ]
+            ],
+            "time": "2012-11-24 11:47:50"
         },
         {
             "name": "mouf/utils.session.session-manager",
@@ -1644,7 +1644,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-28 14:39:51",
             "type": "mouf-library",
             "extra": {
                 "mouf": {
@@ -1677,7 +1676,8 @@
             "keywords": [
                 "mouf",
                 "session"
-            ]
+            ],
+            "time": "2013-01-28 14:39:51"
         }
     ],
     "packages-dev": null,

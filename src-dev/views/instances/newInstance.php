@@ -5,7 +5,7 @@
 <div id="messages"></div>
 
 
-<form action="createComponent" method="post" id="createInstanceForm" class="form-horizontal">
+<form id="createInstanceForm" class="form-horizontal">
 <input type="hidden" name="selfedit" value="<?php echo plainstring_to_htmlprotected($this->selfedit); ?>" />
 
 
