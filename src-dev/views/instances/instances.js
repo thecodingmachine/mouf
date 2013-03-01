@@ -333,7 +333,9 @@ var MoufInstanceManager = (function() {
 		getClass : function(className) {
 			var promise = new Mouf.Promise();
 
-			if (_classes[className] && !_classes[className].incomplete) {
+			if (_classes[className] 
+					&& !_classes[className].incomplete
+					&& _classes[className].getExportMode() == "all") {
 				promise.triggerSuccess(window, _classes[className]);
 			} else {
 				jQuery.ajax(this.rootUrl + "src/direct/get_class.php", {
@@ -554,7 +556,7 @@ var MoufInstanceManager = (function() {
 				if (parameters.length > 0) {
 					var parameter = parameters[0];
 					if (parameter.hasDefault()) {
-						properties[property.getName()] = {
+						setters[property.getName()] = {
 							value : parameter.getDefault(),
 							origin : "string",
 							metadata : []
@@ -1142,7 +1144,7 @@ MoufClass.prototype.getName = function() {
 }
 
 /**
- * Returns the name of the class.
+ * Returns the export mode of the class (tiny|properties|all)
  */
 MoufClass.prototype.getExportMode = function() {
 	return this.json['exportmode'];

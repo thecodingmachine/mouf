@@ -95,8 +95,15 @@ jQuery(document).ready(function() {
 		jQuery("#createInstanceForm button").attr("disabled", true);
 		
 		var classDescriptor = jQuery("#selectedclasscontainer div").data("class");
-		MoufInstanceManager.newInstance(classDescriptor, jQuery("input[name=instanceName]").val(), false);
 
+		if (classDescriptor.getExportMode() != 'all') {
+			MoufInstanceManager.getClass(classDescriptor.getName()).then(function(fullClassDescriptor) {
+				MoufInstanceManager.newInstance(fullClassDescriptor, jQuery("input[name=instanceName]").val(), false);
+			});
+		} else {
+			MoufInstanceManager.newInstance(classDescriptor, jQuery("input[name=instanceName]").val(), false);
+		}
+		
 		return false;
 	});
 
