@@ -246,7 +246,9 @@ class ComposerService {
 	 * @return PackageInterface[]
 	 */
 	public function getLocalPackages() {
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
+		$composer = $this->getComposer();
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
 		
 		if ($this->selfEdit) {
 			chdir(__DIR__."/../../..");
