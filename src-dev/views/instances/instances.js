@@ -525,6 +525,10 @@ var MoufInstanceManager = (function() {
 		 */
 		newInstance : function(classDescriptor, instanceName, isAnonymous) {
 
+			if (classDescriptor.getExportMode() == 'tiny') {
+				throw 'Class descriptor not fully loaded. Cannot create new instance.';
+			}
+			
 			var constructorArguments = {};
 			_.each(classDescriptor.getInjectableConstructorArguments(), function(
 					property) {
@@ -532,7 +536,15 @@ var MoufInstanceManager = (function() {
 					constructorArguments[property.getName()] = {
 						value : property.getDefault(),
 						origin : "string",
-						metadata : []
+						metadata : [],
+						isset: true
+					};
+				} else {
+					constructorArguments[property.getName()] = {
+						value : null,
+						origin : null,
+						metadata : [],
+						isset: false
 					};
 				}
 			});
@@ -544,7 +556,15 @@ var MoufInstanceManager = (function() {
 					properties[property.getName()] = {
 						value : property.getDefault(),
 						origin : "string",
-						metadata : []
+						metadata : [],
+						isset: true
+					};
+				} else {
+					properties[property.getName()] = {
+						value : null,
+						origin : null,
+						metadata : [],
+						isset: false
 					};
 				}
 			});
@@ -559,7 +579,15 @@ var MoufInstanceManager = (function() {
 						setters[property.getName()] = {
 							value : parameter.getDefault(),
 							origin : "string",
-							metadata : []
+							metadata : [],
+							isset: true
+						};
+					} else {
+						setters[property.getName()] = {
+							value : null,
+							origin : null,
+							metadata : [],
+							isset: false
 						};
 					}
 				}
@@ -729,7 +757,11 @@ MoufInstance.prototype.getPublicProperties = function() {
  * of this instance.
  */
 MoufInstance.prototype.getPublicProperty = function(propertyName) {
-	return this.publicProperties[propertyName];
+	var publicProperty = this.publicProperties[propertyName]; 
+	if (publicProperty == null) {
+		throw "Error! The public property '"+propertyName+"' does not exist in instance '"+this.getName()+"' of class '"+this.getClassName()+"'";
+	}
+	return publicProperty;
 }
 
 /**
@@ -745,7 +777,11 @@ MoufInstance.prototype.getConstructorArguments = function() {
  * constructor arguments of this instance.
  */
 MoufInstance.prototype.getConstructorArgument = function(propertyName) {
-	return this.constructorArguments[propertyName];
+	var property = this.constructorArguments[propertyName]; 
+	if (property == null) {
+		throw "Error! The constructor argument '"+propertyName+"' does not exist in instance '"+this.getName()+"' of class '"+this.getClassName()+"'";
+	}
+	return property;
 }
 
 /**
@@ -761,7 +797,11 @@ MoufInstance.prototype.getSetters = function() {
  * this instance.
  */
 MoufInstance.prototype.getSetter = function(propertyName) {
-	return this.setters[propertyName];
+	var property = this.setters[propertyName]; 
+	if (property == null) {
+		throw "Error! The setter '"+propertyName+"' does not exist in instance '"+this.getName()+"' of class '"+this.getClassName()+"'";
+	}
+	return property;
 }
 
 /**
@@ -1401,9 +1441,7 @@ MoufClass.prototype.getImplementedInterfaces = function() {
 
 /**
  * Let's define the MoufProperty class, that defines a PHP field in a class
- * (does not have to have the
- * 
- * @Property annotation)
+ * (does not have to have the @Property annotation)
  */
 var MoufProperty = function(json) {
 	this.json = json;
@@ -1516,9 +1554,7 @@ MoufProperty.prototype.getParent = function() {
 
 /**
  * Returns the MoufInstanceProperty of a property for the instance passed in
- * parameter (available if this property has a
- * 
- * @Property annotation)
+ * parameter (available if this property has a @Property annotation)
  */
 MoufProperty.prototype.getMoufInstanceProperty = function(instance) {
 	return instance.getPublicProperty(this.json['name']);
