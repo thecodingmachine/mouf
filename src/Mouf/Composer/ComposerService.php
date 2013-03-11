@@ -82,7 +82,7 @@ class ComposerService {
 
 		
 		$installationManager = $composer->getInstallationManager();
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$config = $composer->getConfig();
 		
@@ -260,7 +260,7 @@ class ComposerService {
 		
 		$composer = $this->getComposer();
 				
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$packagesList = $localRepos->getPackages();
 		$packagesList[] = $package;
