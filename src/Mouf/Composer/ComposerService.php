@@ -74,26 +74,26 @@ class ComposerService {
 		if ($this->classMap !== null) {
 			return $this->classMap;
 		}
-		
+
 		$composer = $this->getComposer();
 		
 		$dispatcher = new EventDispatcher($composer, $this->io);
 		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
-		
+
 		
 		$installationManager = $composer->getInstallationManager();
 		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
 		$package = $composer->getPackage();
 		$config = $composer->getConfig();
 		
-		
 		$packageMap = $autoloadGenerator->buildPackageMap($installationManager, $package, $localRepos->getPackages());
-		
+
+
 		//var_dump($packageMap);
 		$autoloads = $autoloadGenerator->parseAutoloads($packageMap, $package);
 		
 		
-		
+
 		
 		
 		$targetDir = "composer";
@@ -107,14 +107,9 @@ class ComposerService {
 		//$vendorPathCode = $filesystem->findShortestPathCode(realpath($targetDir), $vendorPath, true);
 		//$vendorPathToTargetDirCode = $filesystem->findShortestPathCode($vendorPath, realpath($targetDir), true);
 		
-		
-		
-		
-		
-		
+				
 		// flatten array
 		$classMap = array();
-		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		
 		foreach ($autoloads['psr-0'] as $namespace => $paths) {
 			foreach ($paths as $dir) {
@@ -124,23 +119,29 @@ class ComposerService {
 						preg_quote(rtrim($dir, '/')),
 						strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
 				);
+				if (!is_dir($dir)) {
+					continue;
+				}
 				foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
 					if ('' === $namespace || 0 === strpos($class, $namespace)) {
 						$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 						if (!isset($classMap[$class])) {
-							$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+							//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+							$classMap[$class] = $path;
 						}
 					}
 				}
 			}
 		}
+	
+		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
-				$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+				$classMap[$class] = $path;
 			}
 		}
-		
 		
 		
 		//var_dump($classMap);
