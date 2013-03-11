@@ -394,7 +394,7 @@ var MoufInstanceManager = (function() {
 			}).fail(
 					function(e) {
 						var msg = e;
-						if (e.responseText) {
+						if (e.responseText || e.statusText) {
 							msg = "Status code: " + e.status + " - "
 									+ e.statusText + "\n" + e.responseText;
 						}
