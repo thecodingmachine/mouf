@@ -76,7 +76,7 @@ class MoufValidatorService implements HtmlElementInterface {
 			
 		}
 		jQuery(document).ready(function() {
-			jQuery(".seeErrorDetails").live("click", function(evt) {
+			jQuery(document).on("click", ".seeErrorDetails", function(evt) {
 				jQuery(evt.target).parent().find("pre").toggle();
 			});
 			

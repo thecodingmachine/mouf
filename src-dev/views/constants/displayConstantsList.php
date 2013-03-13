@@ -18,7 +18,7 @@ function deleteConstant(name) {
 }
 </script>
 
-<form action="saveConfig" method="post">
+<form action="saveConfig" method="post" class="form-horizontal">
 <input type="hidden" name="selfedit" id="selfedit" value="<?php echo $this->selfedit; ?>" />
 <?php
 
@@ -26,26 +26,19 @@ if (!empty($this->constantsList)) {
 	foreach ($this->constantsList as $key=>$def) {
 		echo '<div class="constant">';
 		echo '<div>';
-		if ($def["defined"]) {
-			echo nl2br($def['comment'])."<br/>";
-			if ($def['type'] == 'bool') {
-				echo "<em>Default value: '".($def['defaultValue']?"true":"false")."'.</em>";
-			} else {
-				echo "<em>Default value: '".plainstring_to_htmlprotected($def['defaultValue'])."'.</em>";
-			}
-		} else {
+		if (!$def["defined"]) {
 			// TODO: correctly display bool
 			echo "<div class='warning'>This constant '".plainstring_to_htmlprotected($key)."' is present in the <code>config.php</code> file but not declared in Mouf. <a href='register?name=".urlencode($key)."'>Please declare this value</a>.</div>";
 		}
 		if (isset($def['missinginconfigphp'])) {
-			echo "<div class='warning'>This constant '".plainstring_to_htmlprotected($key)."' is present in defined in Mouf but not defined in the <code>config.php</code> file.
+			echo "<div class='warning'>This constant '".plainstring_to_htmlprotected($key)."' is declared in Mouf but not defined in the <code>config.php</code> file.
 			Please choose a value, and click the Save button to add it to the <code>config.php</code> file.</div>";
 		}
-		
 		echo '</div>';
-		echo '<div>';
+		echo '<div class="control-group">';
 		//echo '<input type="text" value="'.plainstring_to_htmlprotected($key).'" /> => ';
-		echo '<label>'.plainstring_to_htmlprotected($key).'</label>';
+		echo '<label class="control-label">'.plainstring_to_htmlprotected($key).'</label>';
+		echo '<div class="controls">';
 		if (isset($def['type']) && $def['type'] == 'bool') {
 			$val = isset($def['value'])?$def['value']:$def['defaultValue'];
 			echo '<input type="checkbox" name="'.plainstring_to_htmlprotected($key).'" value="true" '.(($val==true)?"checked='checked' ":"").' />';
@@ -54,6 +47,17 @@ if (!empty($this->constantsList)) {
 		}
 		echo "<a href='register?name=".urlencode($key)."'><img src='".ROOT_URL."vendor/mouf/famfamfam/icons/pencil.png' alt='Edit' /></a>";
 		echo "<img src='".ROOT_URL."vendor/mouf/famfamfam/icons/cross.png' alt='Delete' onclick='deleteConstant(\"".plainstring_to_htmlprotected($key)."\")' />";
+		echo '<span class="help-block">';
+		if ($def["defined"]) {
+			echo nl2br($def['comment'])."<br/>";
+			if ($def['type'] == 'bool') {
+				echo "<em>Default value: '".($def['defaultValue']?"true":"false")."'.</em>";
+			} else {
+				echo "<em>Default value: '".plainstring_to_htmlprotected($def['defaultValue'])."'.</em>";
+			}
+		}
+		echo '</span>';
+		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 	}

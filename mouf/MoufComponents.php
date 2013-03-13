@@ -188,6 +188,27 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'apcCacheService' => 
+  array (
+    'class' => 'Mouf\\Utils\\Cache\\ApcCache',
+    'external' => false,
+    'weak' => false,
+    'fieldProperties' => 
+    array (
+      'defaultTimeToLive' => 
+      array (
+        'value' => 3600,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+    'fieldBinds' => 
+    array (
+      'fallback' => 'fileCacheService',
+    ),
+  ),
   'block.content' => 
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
@@ -444,6 +465,7 @@ $moufManager->addComponentInstances(array (
         10 => 'javascript.chooseInstancePopupJs',
         11 => 'javascript.jquery-filetree',
         12 => 'messageServiceLibrary',
+        13 => 'weblibrary.qtip2',
       ),
     ),
   ),
@@ -873,6 +895,39 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'fileCacheService' => 
+  array (
+    'class' => 'Mouf\\Utils\\Cache\\FileCache',
+    'external' => false,
+    'weak' => false,
+    'fieldProperties' => 
+    array (
+      'defaultTimeToLive' => 
+      array (
+        'value' => 3600,
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      'relativeToSystemTempDirectory' => 
+      array (
+        'type' => 'string',
+        'value' => true,
+        'metadata' => 
+        array (
+        ),
+      ),
+      'cacheDirectory' => 
+      array (
+        'type' => 'string',
+        'value' => 'mouf_cache',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'includePhpFilesMenuItemIcon' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
@@ -1143,7 +1198,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.7.2.min.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.9.1.min.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1167,7 +1222,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery-ui/js/jquery-ui-1.8.22.custom.min.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery-ui/js/jquery-ui-1.10.0.custom.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -2233,6 +2288,7 @@ $moufManager->addComponentInstances(array (
           0 => 'navBarMenuRenderer',
           1 => '__anonymous_1351271275513',
           2 => 'searchBox',
+          3 => 'purgeCodeCacheButton',
         ),
         'parametertype' => 'object',
         'type' => 'string',
@@ -2241,7 +2297,7 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
-    'anonymous' => true,
+    'anonymous' => false,
   ),
   'navBarMenuRenderer' => 
   array (
@@ -2568,6 +2624,24 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'purgeCodeCacheButton' => 
+  array (
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlFromFile',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'type' => 'string',
+        'value' => 'src-dev/views/codeCacheButton.php',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'repositories' => 
   array (
     'class' => 'Mouf\\Controllers\\RepositorySourceController',
@@ -2654,6 +2728,24 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Controllers\\MoufRootController',
     'external' => false,
   ),
+  'rootUrlJsFile' => 
+  array (
+    'class' => 'Mouf\\Html\\HtmlElement\\HtmlFromFile',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'type' => 'string',
+        'value' => 'src-dev/views/instances/setRootUrlBlock.php',
+        'parametertype' => 'primitive',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
   'search' => 
   array (
     'class' => 'Mouf\\Controllers\\SearchController',
@@ -2711,17 +2803,10 @@ $moufManager->addComponentInstances(array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\InlineWebLibrary',
     'external' => false,
     'weak' => false,
-    'fieldProperties' => 
-    array (
-      'additionalPhpFile' => 
-      array (
-        'value' => 'src-dev/views/instances/setRootUrlBlock.php',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+	'fieldBinds' =>
+		array (
+			'additionalElement' => "rootUrlJsFile"
+		),
   ),
   'specialActionsMenu' => 
   array (
@@ -3083,6 +3168,39 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'weblibrary.qtip2' => 
+  array (
+    'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+    'external' => false,
+    'weak' => false,
+    'constructor' => 
+    array (
+      0 => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/javascript/qtip/jquery.qtip.js',
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'value' => 
+        array (
+          0 => 'src-dev/views/javascript/qtip/jquery.qtip.css',
+        ),
+        'parametertype' => 'primitive',
+        'type' => 'string',
+        'metadata' => 
+        array (
+        ),
+      ),
+    ),
+  ),
 ));
 
 
@@ -3127,6 +3245,13 @@ unset($moufManager);
 	 */
 	 public static function getAnalyzeClassesMenuItem() {
 	 	return MoufManager::getMoufManager()->getInstance('analyzeClassesMenuItem');
+	 }
+
+	/**
+	 * @return Mouf\Utils\Cache\ApcCache
+	 */
+	 public static function getApcCacheService() {
+	 	return MoufManager::getMoufManager()->getInstance('apcCacheService');
 	 }
 
 	/**
@@ -3302,6 +3427,13 @@ unset($moufManager);
 	 */
 	 public static function getErrorLogger() {
 	 	return MoufManager::getMoufManager()->getInstance('errorLogger');
+	 }
+
+	/**
+	 * @return Mouf\Utils\Cache\FileCache
+	 */
+	 public static function getFileCacheService() {
+	 	return MoufManager::getMoufManager()->getInstance('fileCacheService');
 	 }
 
 	/**
@@ -3634,6 +3766,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\HtmlElement\HtmlFromFile
+	 */
+	 public static function getPurgeCodeCacheButton() {
+	 	return MoufManager::getMoufManager()->getInstance('purgeCodeCacheButton');
+	 }
+
+	/**
 	 * @return Mouf\Controllers\RepositorySourceController
 	 */
 	 public static function getRepositories() {
@@ -3659,6 +3798,13 @@ unset($moufManager);
 	 */
 	 public static function getRootController() {
 	 	return MoufManager::getMoufManager()->getInstance('rootController');
+	 }
+
+	/**
+	 * @return Mouf\Html\HtmlElement\HtmlFromFile
+	 */
+	 public static function getRootUrlJsFile() {
+	 	return MoufManager::getMoufManager()->getInstance('rootUrlJsFile');
 	 }
 
 	/**
@@ -3802,6 +3948,13 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Utils\WebLibraryManager\WebLibrary
+	 */
+	 public static function getWeblibrary_qtip2() {
+	 	return MoufManager::getMoufManager()->getInstance('weblibrary.qtip2');
+	 }
+
+	/**
 	 * @return Mouf\Html\Widgets\Menu\MenuItem
 	 */
 	 public static function getUtilsMainMenu() {
@@ -3851,6 +4004,34 @@ unset($moufManager);
 	 }
 
 	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcMainMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashSubMenu() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashSubMenu');
+	 }
+
+	/**
+	 * @return Mouf\Html\Widgets\Menu\MenuItem
+	 */
+	 public static function getMvcSplashAdminUrlsListMenuItem() {
+	 	return MoufManager::getMoufManager()->getInstance('mvcSplashAdminUrlsListMenuItem');
+	 }
+
+	/**
+	 * @return Mouf\Mvc\Splash\Controllers\Admin\SplashViewUrlsController
+	 */
+	 public static function getSplashViewUrls() {
+	 	return MoufManager::getMoufManager()->getInstance('splashViewUrls');
+	 }
+
+	/**
 	 * @return Mouf\Mvc\Splash\SplashGenerateService
 	 */
 	 public static function getSplashGenerateService() {
@@ -3883,20 +4064,6 @@ unset($moufManager);
 	 */
 	 public static function getSplashHtaccessValidator() {
 	 	return MoufManager::getMoufManager()->getInstance('splashHtaccessValidator');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getMvcMainMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('mvcMainMenu');
-	 }
-
-	/**
-	 * @return Mouf\Html\Widgets\Menu\MenuItem
-	 */
-	 public static function getMvcSplashSubMenu() {
-	 	return MoufManager::getMoufManager()->getInstance('mvcSplashSubMenu');
 	 }
 
 	/**
@@ -3946,6 +4113,13 @@ unset($moufManager);
 	 */
 	 public static function getTdbminstall() {
 	 	return MoufManager::getMoufManager()->getInstance('tdbminstall');
+	 }
+
+	/**
+	 * @return Mouf\MVC\BCE\controllers\BceConfigController
+	 */
+	 public static function getBceadmin() {
+	 	return MoufManager::getMoufManager()->getInstance('bceadmin');
 	 }
 
 }

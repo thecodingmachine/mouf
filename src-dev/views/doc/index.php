@@ -19,15 +19,12 @@ foreach ($this->packageList as $package):
 //var_export($package->getPrettyName());echo "<br/>";
 //var_export($package->getExtra());echo "<br/>";echo "<br/>";
 	/* @var $package PackageInterface */
-	$extra = $package->getExtra();
-	if (isset($extra['mouf']['doc'])) :
-		$docPages = $extra['mouf']['doc'];
-	?><h2><?php echo $package->getPrettyName() ?></h2>
-		<p>Package <?php echo $package->getName()." ".$package->getVersion() ?></p>
+	$docPages = $this->getDocPages($package);
+	if ($docPages) {
+		?><h2><?php echo $package->getPrettyName() ?> <small><?php echo $package->getPrettyVersion() ?></small></h2>
 		<?php 
 		$this->displayDocDirectory($docPages, $package->getName());
-		?>
-		<?php
-	endif;
+	}
+
 endforeach;
 ?>

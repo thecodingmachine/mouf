@@ -28,7 +28,7 @@ RewriteBase $uri
 RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule mouf\\/doc\\/view\\/ vendor/mouf/mvc.splash/src/splash.php
+RewriteRule doc\\/view\\/ vendor/mouf/mvc.splash/src/splash.php
 RewriteRule !((\\.(js|ico|gif|jpg|png|css)$)|^vendor|^src/direct/) vendor/mouf/mvc.splash/src/splash.php";
 
 file_put_contents("../.htaccess", $str);
@@ -43,15 +43,13 @@ if (!file_exists("../../../../mouf")) {
 // Write Mouf.php:
 if (!file_exists("../../../../mouf/Mouf.php")) {
 	$moufStr = "<?php
+define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
+require_once __DIR__.'/../config.php';
+define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
+			
 require_once __DIR__.'/../vendor/autoload.php';
 
 require_once 'MoufComponents.php';
-
-define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
-
-require_once __DIR__.'/../config.php';
-
-define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
 ?>";
 	
 	file_put_contents("../../../../mouf/Mouf.php", $moufStr);

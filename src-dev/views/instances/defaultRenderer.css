@@ -32,7 +32,7 @@ div.smallinstance.ui-draggable, div.smallclass.ui-draggable {
 }
 
 div.smallinstance:hover, div.smallclass:hover, div.mediuminstance:hover {
-	background-color: #d7d0d0;
+	background-color: #e5e0e0;
 }
 
 div.mediuminstance {

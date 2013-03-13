@@ -1,6 +1,12 @@
 <?php 
 namespace Mouf\Composer;
 
+use Composer\Script\EventDispatcher;
+
+use Mouf\Installer\MoufUIFileWritter;
+
+use Mouf\Installer\PackagesOrderer;
+
 use Composer\Package\Link;
 
 use Symfony\Component\Console\Application as BaseApplication;
@@ -67,25 +73,26 @@ class ComposerService {
 		if ($this->classMap !== null) {
 			return $this->classMap;
 		}
+
+		$composer = $this->getComposer();
 		
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
-		
-		
-		$composer = $this->getComposer(); 
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
+
 		
 		$installationManager = $composer->getInstallationManager();
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$config = $composer->getConfig();
 		
-		
 		$packageMap = $autoloadGenerator->buildPackageMap($installationManager, $package, $localRepos->getPackages());
-		
+
+
 		//var_dump($packageMap);
 		$autoloads = $autoloadGenerator->parseAutoloads($packageMap, $package);
 		
 		
-		
+
 		
 		
 		$targetDir = "composer";
@@ -99,14 +106,9 @@ class ComposerService {
 		//$vendorPathCode = $filesystem->findShortestPathCode(realpath($targetDir), $vendorPath, true);
 		//$vendorPathToTargetDirCode = $filesystem->findShortestPathCode($vendorPath, realpath($targetDir), true);
 		
-		
-		
-		
-		
-		
+				
 		// flatten array
 		$classMap = array();
-		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		
 		foreach ($autoloads['psr-0'] as $namespace => $paths) {
 			foreach ($paths as $dir) {
@@ -116,23 +118,29 @@ class ComposerService {
 						preg_quote(rtrim($dir, '/')),
 						strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
 				);
+				if (!is_dir($dir)) {
+					continue;
+				}
 				foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
 					if ('' === $namespace || 0 === strpos($class, $namespace)) {
 						$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 						if (!isset($classMap[$class])) {
-							$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+							//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+							$classMap[$class] = $path;
 						}
 					}
 				}
 			}
 		}
+	
+		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
-				$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+				$classMap[$class] = $path;
 			}
 		}
-		
 		
 		
 		//var_dump($classMap);
@@ -238,7 +246,9 @@ class ComposerService {
 	 * @return PackageInterface[]
 	 */
 	public function getLocalPackages() {
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
+		$composer = $this->getComposer();
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
 		
 		if ($this->selfEdit) {
 			chdir(__DIR__."/../../..");
@@ -249,7 +259,7 @@ class ComposerService {
 		
 		$composer = $this->getComposer();
 				
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$packagesList = $localRepos->getPackages();
 		$packagesList[] = $package;
@@ -258,63 +268,14 @@ class ComposerService {
 	}
 	
 	/**
-	 * Method: go through the tree, loading child first.
-	 * Each time we go through a package, lets ensure the package is not already part of the packages to install.
-	 * If so, ignore.
+	 * Returns the list of local packages, ordered by dependency.
 	 */
 	public function getLocalPackagesOrderedByDependencies() {
 		$unorderedPackagesList = $this->getLocalPackages();
 		
-		
-		$orderedPackagesList = array();
-		foreach ($unorderedPackagesList as $package) {
-			$orderedPackagesList = $this->walkPackagesList($package, $orderedPackagesList, $unorderedPackagesList);
-		}
-
-		return $orderedPackagesList;
+		return PackagesOrderer::reorderPackages($unorderedPackagesList);
 	}
 	
-	/**
-	 * Function used to sort packages by dependencies (packages depending from no other package in front of others)
-	 * Invariant hypothesis for this function: $orderedPackagesList is already ordered and the package we add
-	 * has all its dependencies already accounted for. If not, we add the dependencies first.
-	 * 
-	 * @param PackageInterface $package
-	 * @param PackageInterface[] $orderedPackagesList The list of sorted packages
-	 * @param PackageInterface[] $availablePackages The list of all packages not yet sorted
-	 * @return PackageInterface[]
-	 */
-	private function walkPackagesList(PackageInterface $package, array $orderedPackagesList, array &$availablePackages) {
-		// First, let's check that the package we want to add is not already in our list.
-		foreach ($orderedPackagesList as $includedPackage) {
-			if ($includedPackage->equals($package)) {
-				return $orderedPackagesList;
-			}
-		}
-		
-		// We need to make sure there is no loop (if a package A requires a package B that requires the package A)...
-		// We do that by removing the package from the list of all available packages.
-		$key = array_search($package, $availablePackages);
-		unset($availablePackages[$key]);
-		
-		// Now, let's see if there are dependencies.
-		foreach ($package->getRequires() as $require) {
-			/* @var $require Link */
-			foreach ($availablePackages as $iterPackage) {
-				if ($iterPackage->getName() == $require->getTarget()) {
-					$orderedPackagesList = $this->walkPackagesList($iterPackage, $orderedPackagesList, $availablePackages);
-					break;
-				}
-			}
-		}	
-		
-		// FIXME: manage dev-requires and "provides"
-		
-		// Finally, let's add the package once all dependencies have been added.
-		$orderedPackagesList[] = $package;
-		
-		return $orderedPackagesList;
-	}
 	
 	protected $onlyName;
 	protected $tokens;
@@ -325,19 +286,26 @@ class ComposerService {
 	 * Returns a list of packages matching the search query.
 	 * 
 	 * @param string $text
-	 * @return PackageInterface[]
+	 * @param OnPackageFoundInterface $callback
+	 * @param bool $onlyName
 	 */
-	public function searchPackages($text, OnPackageFoundInterface $callback) {
+	public function searchPackages($text, OnPackageFoundInterface $callback, $onlyName = false, $includeLocal = true) {
 		$this->onPackageFoundCallback = $callback;
 		$composer = $this->getComposer();
 		$platformRepo = new PlatformRepository;
 
-		$localRepo = $composer->getRepositoryManager()->getLocalRepository();
-		$installedRepo = new CompositeRepository(array($localRepo, $platformRepo));
+		$searched = array();
+		
+		if ($includeLocal) {
+			$localRepo = $composer->getRepositoryManager()->getLocalRepository();
+			$searched[] = $localRepo;
+		}
+		$searched[] = $platformRepo;
+		$installedRepo = new CompositeRepository($searched);
 		$repos = new CompositeRepository(array_merge(array($installedRepo), $composer->getRepositoryManager()->getRepositories()));
 		
 		//$this->onlyName = $input->getOption('only-name');
-		$this->onlyName = false;
+		$this->onlyName = $onlyName;
 		//$this->tokens = $input->getArgument('tokens');
 		$this->tokens = explode(" ", $text);
 		
@@ -528,29 +496,14 @@ class ComposerService {
 	
 		return true;
 	}
-	
+
 	/**
-	 * Returns the list of files to be included in the MoufUI.
-	 * @return array<string>
+	 * Rewrites MoufUI.php (the actual rewrite is delegated to MoufUIFileWritter.
 	 */
-	public function getAdminFiles() {
+	public function rewriteMoufUi() {
 		$composer = $this->getComposer();
-		
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
-		$packagesList = $localRepos->getPackages();
-		
-		$files = array();
-		
-		foreach ($packagesList as $package) {
-			/* @var $package Package */
-			$extra = $package->getExtra();
-			if (isset($extra["mouf"]["require-admin"])) {
-				foreach ($extra["mouf"]["require-admin"] as $adminFile) {
-					$files[] = $package->getName().DIRECTORY_SEPARATOR.$adminFile;
-				}
-			}
-		}
-		return $files;
+		$moufUiFileWriter = new MoufUIFileWritter($composer);
+		$moufUiFileWriter->writeMoufUI();
 	}
 }
 

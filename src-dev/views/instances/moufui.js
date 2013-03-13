@@ -10,11 +10,106 @@
    };
 }(jQuery));
 
+/**
+ * A simple Javascript plugin that puts an element in fixed position, but only when starting scrolling below
+ * its first position.
+ */
+$.fn.fixedFromPos = function ( ) {
+    var $this = this,
+        $window = $(window);
+
+    var topPos = $this.position().top;
+    
+    var repos = function(e){
+        if ($window.scrollTop() <= topPos) {
+            $this.css({
+                "margin-top": 0,
+                height: $window.height() - topPos + $window.scrollTop() - 10,
+                "overflow-y": "auto",
+                "background-color":"white"
+            });
+        } else {
+            $this.css({
+                "margin-top": $window.scrollTop() - topPos,
+                height: $window.height() - 10,
+                "overflow-y": "auto",
+                "background-color":"white"
+            });
+        }
+    }
+    
+    $window.scroll(repos);
+    $window.resize(repos);
+};
+
 // Enable Bootstrap tooltips by default.
 $(document).ready(function() {
-	$('body').tooltip({
+	/*$('body').tooltip({
 	    selector: '[rel=tooltip]'
+	});*/
+	
+	/* Now, let's correct an enoying tooltip bug:
+		When the container element is destroyed,
+		the tooltip stays forever (because the mouseleave event
+		of the container is never triggered.
+		Let's solve this with timeouts */
+	
+	/*$('[rel=tooltip]').live('mouseenter', function() {
+		var parentElem = $(this);
+		parentElem.tooltip('show')
+		var deleteTimer = setInterval(function() {
+			if (parentElem.is(':hidden')) {
+				parentElem.tooltip('hide');
+				clearInterval(deleteTimer);
+			}
+		}, 2000);
+		
+		$(this).mouseleave(function() {
+			clearInterval(deleteTimer);
+		})
+	});*/
+	
+	$(document).on('mouseenter', '[rel=tooltip]', function() {
+		// If the tooltip was already created, let's quit.
+		var api = $(this).data('qtip');
+		if (api) {
+			return;
+		}
+		
+		$(this).qtip({
+			hide: {
+				fixed: true,
+				delay: 200
+			},
+			position: {
+				my: 'bottom center',
+				at: 'top center'
+			},
+			style: {
+				classes: 'qtip-dark qtip-rounded qtip-shadow'
+			}
+		});
+		var api = $(this).data('qtip');
+		// It might sound surprising, but "api" can actually be null, especially
+		// during jQuery drag'n'drops
+		if (api) {
+			api.show();
+		}
+		
+		/*var parentElem = $(this);
+		parentElem.tooltip('show')
+		var deleteTimer = setInterval(function() {
+			if (parentElem.is(':hidden')) {
+				parentElem.tooltip('hide');
+				clearInterval(deleteTimer);
+			}
+		}, 2000);
+		
+		$(this).mouseleave(function() {
+			clearInterval(deleteTimer);
+		})*/
 	});
+	
 })
 
 /**
@@ -63,20 +158,45 @@ var MoufUI = (function () {
 		 * are a subtype of "type"
 		 */
 		displayInstanceOfType : function(targetSelector, type, displayInstances, displayClasses) {
+			$(targetSelector).empty();
+			$("<div/>").addClass('loading').text("Loading").appendTo($(targetSelector));
+			
 			MoufInstanceManager.getInstanceListByType(type).then(function(instances, classes) {
+				$(targetSelector).empty();
+				
 				jQuery("<h2/>").html("Type "+MoufUI.getHtmlClassName(type)).appendTo(targetSelector);
 				var divFilter = jQuery("<div>Filter: </div>").appendTo(targetSelector);
 				var inputFilter = jQuery("<input/>").addClass("instanceFilter").appendTo(divFilter);
 				jQuery("<h3/>").text("Instances").appendTo(targetSelector);
 				var instanceListDiv = jQuery("<div/>").addClass("instanceList").appendTo(targetSelector);
+				
+				/**
+				 * Utility function that returns the CSS classes we should bind draggables to.
+				 */
+				var getCssSelectorFromClassDescriptor = function(classDescriptor) {
+					// Note: slice is performing a clone of the array
+					var subclassOf = classDescriptor.json["implements"].slice(0);
+					var parentClass = classDescriptor;
+					do {
+						subclassOf.push(parentClass.getName());
+						parentClass = parentClass.getParentClass();
+					} while (parentClass);
+					
+					for (var i = 0; i<subclassOf.length; i++) {
+						subclassOf[i] = '.'+MoufUI.getCssNameFromType(subclassOf[i]);
+					}
+					var cssSelector = subclassOf.join(',');
+					return cssSelector;
+				}
+				
 				for (var key in instances) {
 					var instance = instances[key];
 					instance.render().draggable({
 						revert: "invalid", // when not dropped, the item will revert back to its initial position
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
-						cursor: "move" /*,
-						connectToSortable: ".todo"*/
+						cursor: "move",
+						connectToSortable: getCssSelectorFromClassDescriptor(instance.getLocalClass())
 					}).appendTo(instanceListDiv);
 				}
 				jQuery("<h3/>").text("Classes").appendTo(targetSelector);
@@ -87,8 +207,8 @@ var MoufUI = (function () {
 						revert: "invalid", // when not dropped, the item will revert back to its initial position
 						//containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
 						helper: "clone",
-						cursor: "move" /*,
-						connectToSortable: ".todo"*/
+						cursor: "move",
+						connectToSortable: getCssSelectorFromClassDescriptor(classDescriptor)
 					}).appendTo(classListDiv);
 				}
 				
@@ -177,7 +297,7 @@ var MoufUI = (function () {
 		 *  	}
 		 *  ]);
 		 */
-		createMenuIcon: function(items) {
+		createMenuIcon: function(items, bindTo) {
 			/*var div = jQuery("<div/>").addClass("inlinemenuicon");
 			// Sadly, we cannot pass UL the in the same HTML block because the containing block might be "overflow: hidden" 
 			// and that would propagate to our element. So let's put the UL at the top of the document, and let's position it
@@ -213,9 +333,9 @@ var MoufUI = (function () {
 			
 			return div;*/
 			
-			var div = jQuery("<div/>").addClass("btn-group");
+			var div = jQuery("<div/>").addClass("btn-group").css({"visibility": "hidden"});
 			
-			var buttonDropdownToggle = jQuery("<button><span class='caret'></span></button>").addClass("btn btn-mini dropdown-toggle").attr("data-toggle", "dropdown").appendTo(div);
+			var buttonDropdownToggle = jQuery("<button><i class='icon-wrench'></i></span></button>").addClass("btn btn-mini dropdown-toggle").attr("data-toggle", "dropdown").appendTo(div);
 			var ul = jQuery("<ul/>").addClass("dropdown-menu").appendTo(div);
 			_.each(items, function(item) {
 				var li = jQuery("<li/>")
@@ -231,6 +351,25 @@ var MoufUI = (function () {
 				}
 				li.appendTo(ul);
 			});
+			
+			$(bindTo).mouseenter(function() {
+				div.css({"visibility": "visible"});
+			});
+			$(bindTo).mouseleave(function() {
+				div.css({"visibility": "hidden"});
+			});
+			// Let's make a glow arround the targetted elements
+			div.mouseenter(function() {
+				div.siblings().first().css({
+					"transition": "all 0.25s ease-in-out",
+					"box-shadow": "0 0 5px rgba(100, 100, 255, 1)"
+				});
+			})
+			div.mouseleave(function() {
+				div.siblings().first().css({
+					"box-shadow": "none"
+				});
+			})
 			
 			return div;
 		    /*<div class="btn-group">
@@ -457,7 +596,7 @@ var MoufUI = (function () {
 				});
 			} else {
 				for (var key in definedConstants) {
-			    	jQuery('<option/>').attr('value', 'key').text(key).appendTo(selectField);
+			    	jQuery('<option/>').attr('value', key).text(key).appendTo(selectField);
 			    }
 			}
 			

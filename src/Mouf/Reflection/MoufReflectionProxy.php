@@ -40,15 +40,15 @@ class MoufReflectionProxy {
 	 * @param boolean $selfEdit
 	 * @return MoufXmlReflectionClass[]
 	 */
-	public static function getAllClasses($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_all_classes.php?selfedit=".(($selfEdit)?"true":"false");
+	public static function getAllClasses($selfEdit, $exportMode = MoufReflectionClass::EXPORT_ALL) {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_all_classes.php?selfedit=".(($selfEdit)?"true":"false")."&export_mode=".$exportMode;
 	
 		$response = self::performRequest($url);
 	
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url, ENT_QUOTES)."'>".plainstring_to_htmlprotected($url, ENT_QUOTES)."</a>");
 		}
 		
 		return $obj;
@@ -65,10 +65,10 @@ class MoufReflectionProxy {
 		
 		$response = self::performRequest($url);
 
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".htmlspecialchars($url, ENT_QUOTES)."'>".htmlspecialchars($url, ENT_QUOTES)."</a>");
 		}
 		
 		return $obj;
@@ -79,10 +79,10 @@ class MoufReflectionProxy {
 
 		$response = self::performRequest($url);
 
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".htmlspecialchars($url, ENT_QUOTES)."'>".htmlspecialchars($url, ENT_QUOTES)."</a>");
 		}
 		
 		return $obj;
@@ -94,10 +94,10 @@ class MoufReflectionProxy {
 
 		$response = self::performRequest($url);
 
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\plainstring_to_htmlprotected($url)."'>".\plainstring_to_htmlprotected($url)."</a>");
+			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".htmlspecialchars($url)."'>".htmlspecialchars($url)."</a>");
 		}
 		
 		return $obj;
@@ -116,7 +116,7 @@ class MoufReflectionProxy {
 		
 		$response = self::performRequest($url);
 
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
 			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
@@ -148,7 +148,7 @@ class MoufReflectionProxy {
 		}
 		$msg = $arr[count($arr)-1]; 
 		
-		$obj = unserialize($msg);
+		$obj = @unserialize($msg);
 		
 		if ($obj === false) {
 			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
@@ -200,9 +200,10 @@ class MoufReflectionProxy {
 	
 		$response = self::performRequest($url);
 		
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
+			echo $response;
 			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\htmlspecialchars($url)."'>".\htmlspecialchars($url)."</a>");
 		}
 		

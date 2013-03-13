@@ -54,7 +54,7 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
 	 * @param string $className The name of the class to analyse.
 	 */
 	public function __construct($xmlStr) {
-		$this->xmlRoot = simplexml_load_string($xmlStr);
+		$this->xmlRoot = @simplexml_load_string($xmlStr);
 		
 		if ($this->xmlRoot == null) {
 			throw new \Exception("An error occured while retrieving message: ".$xmlStr);

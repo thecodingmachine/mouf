@@ -174,9 +174,9 @@ class MoufPhpDocComment {
 	
 		
 		$annotationClassName = $annotationName."Annotation";
-		if (class_exists("\\Mouf\\Annotations\\".$annotationClassName)) {
+		if (class_exists("Mouf\\Annotations\\".$annotationClassName)) {
 			foreach ($this->annotationsArrayAsString[$annotationName] as $value) {
-				$finalClassName = "\\Mouf\\Annotations\\".$annotationClassName;
+				$finalClassName = "Mouf\\Annotations\\".$annotationClassName;
 				$this->annotationsArrayAsObject[$annotationName][] = new $finalClassName($value);
 			}
 		} elseif (class_exists($annotationClassName)) {

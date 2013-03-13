@@ -183,4 +183,50 @@ class MoufUtils {
 	{
 		return array_keys($arr) !== range(0, count($arr) - 1);
 	}
+	
+	/**
+	 * Returns the URL (including the ROOT_URL) from a file URL.
+	 * 
+	 * @param string $filePath
+	 * @return string
+	 */
+	public static function getUrlPathFromFilePath($filePath, $relativeToRootUrl = false) {
+		$dir = $filePath;
+		$rootPath = ROOT_PATH;
+		
+		if (strpos($dir, ROOT_PATH) === 0) {
+			$dirUrl = ROOT_URL.substr(ROOT_PATH, strlen(__DIR__)+1);
+		} else {
+			// The directory URL is below the ROOT_URL. Let's try to find it (not 100% success rate)
+			$rootPaths = explode(DIRECTORY_SEPARATOR, trim($rootPath, DIRECTORY_SEPARATOR));
+			$thisDirs = explode(DIRECTORY_SEPARATOR, trim($dir, DIRECTORY_SEPARATOR));
+		
+			for ($i=0; $i<count($rootPaths); $i++) {
+				if ($rootPaths[$i] != $thisDirs[$i]) {
+					break;
+				}
+			}
+		
+			$nbSkip = count($rootPaths) - $i;
+			$urls = explode('/', trim(ROOT_URL, '/'));
+		
+			if ($nbSkip > count($urls)) {
+				throw new Exception('The directory "'.$dir.'" is almost certainly out of reach from the web.');
+			}
+		
+			$dirUrls = array();
+			for ($j=0; $j < count($urls)- $nbSkip; $j++) {
+				$dirUrls[] = $urls[$j];
+			}
+			for ($k = $i; $k<count($thisDirs); $k++) {
+				$dirUrls[] = $thisDirs[$k];
+			}
+			$dirUrl = '/'.implode('/', $dirUrls);
+			
+			if ($relativeToRootUrl) {
+				$dirUrl = ltrim(str_repeat('/..', count($urls)).$dirUrl, '/');
+			}
+		}
+		return $dirUrl;
+	}
 }

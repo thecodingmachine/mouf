@@ -128,7 +128,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
 	            return null;
 	        }
     	} catch (\ReflectionException $e) {
-    		throw new MoufException("Error while analyzing @var annotation for parameter {$this->paramName} in '{$this->getDeclaringClass()->getName()}::{$this->getDeclaringFunction()->getName()}': ".$e->getMessage(), 0, $e);
+    		throw new MoufException("Error while analyzing @param annotation for parameter {$this->paramName} in '{$this->getDeclaringClass()->getName()}::{$this->getDeclaringFunction()->getName()}': ".$e->getMessage(), 0, $e);
     	}
         
         $moufRefClass = new MoufReflectionClass($refClass->getName());

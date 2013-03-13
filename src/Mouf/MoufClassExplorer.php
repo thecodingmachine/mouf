@@ -40,70 +40,103 @@ class MoufClassExplorer {
 	
 	private $dataAvailable = false;
 	
+	private $useCache = true;
+	
+	private $cacheService;
+	
 	public function __construct($selfEdit = false) {
 		$this->selfEdit = $selfEdit;
+		$this->cacheService = new MoufCache();
 	}
 	
-	private function analyze() {
+	/**
+	 * 
+	 * @param bool $useCache
+	 */
+	public function setUseCache($useCache) {
+		$this->useCache = $useCache;
+	}
+	
+	private function analyze() {		
 		if ($this->dataAvailable) {
 			return;
 		}
 		
 		$classMap = MoufReflectionProxy::getClassMap($this->selfEdit);
 		
-		$notYetAnalysedClassMap = $classMap;
-		
-		while (!empty($notYetAnalysedClassMap)) {
-			$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
-			
-			$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
-			if ($startupPos === false) {
-				// It seems there is a problem running the script, let's throw an exception
-				throw new MoufException("Error while running classes analysis: ".$this->analysisResponse);
-			}
-			
-			$this->analysisResponse = substr($this->analysisResponse, $startupPos+18);
-			//echo($this->analysisResponse);exit;
-			while (true) {
-				$beginMarker = $this->trimLine();
-				if ($beginMarker == "SQDSG4FDSE3234JK_ENDFILE") {
-					// We are finished analysing the file! Yeah!
-					break;
-				} elseif ($beginMarker != "X4EVDX4SEVX5_BEFOREINCLUDE") {
-					//echo $beginMarker."\n".$this->analysisResponse;
-					throw new \Exception("Strange behaviour while importing classes. Begin marker: ".$beginMarker);
-				}
-
-				$analyzedClassName = $this->trimLine();
+		do {
+			$notYetAnalysedClassMap = $classMap;
+			$nbRun = 0;
+			while (!empty($notYetAnalysedClassMap)) {
+				$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
+				$nbRun++;
 				
-				// Now, let's see if the end marker is right after the begin marker...
-				$endMarkerPos = strpos($this->analysisResponse, "DSQRZREZRZER__AFTERINCLUDE\n");
-				if ($endMarkerPos !== 0) {
-					// There is a problem...
-					if ($endMarkerPos === false) {
-						// An error occured:
-						$this->forbiddenClasses[$analyzedClassName] = $this->analysisResponse;
-						unset($notYetAnalysedClassMap[$analyzedClassName]);
+				$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
+				if ($startupPos === false) {
+					// It seems there is a problem running the script, let's throw an exception
+					throw new MoufException("Error while running classes analysis: ".$this->analysisResponse);
+				}
+				
+				$this->analysisResponse = substr($this->analysisResponse, $startupPos+18);
+				//echo($this->analysisResponse);exit;
+				while (true) {
+					$beginMarker = $this->trimLine();
+					if ($beginMarker == "SQDSG4FDSE3234JK_ENDFILE") {
+						// We are finished analysing the file! Yeah!
 						break;
-					} else {
-						$this->forbiddenClasses[$analyzedClassName] = substr($this->analysisResponse, 0, $endMarkerPos);
-						$this->analysisResponse = substr($this->analysisResponse, $endMarkerPos);
+					} elseif ($beginMarker != "X4EVDX4SEVX5_BEFOREINCLUDE") {
+						//echo $beginMarker."\n".$this->analysisResponse;
+						throw new \Exception("Strange behaviour while importing classes. Begin marker: ".$beginMarker);
 					}
+	
+					$analyzedClassName = $this->trimLine();
+					
+					// Now, let's see if the end marker is right after the begin marker...
+					$endMarkerPos = strpos($this->analysisResponse, "DSQRZREZRZER__AFTERINCLUDE\n");
+					if ($endMarkerPos !== 0) {
+						// There is a problem...
+						if ($endMarkerPos === false) {
+							// An error occured:
+							$this->forbiddenClasses[$analyzedClassName] = $this->analysisResponse;
+							unset($notYetAnalysedClassMap[$analyzedClassName]);
+							break;
+						} else {
+							$this->forbiddenClasses[$analyzedClassName] = substr($this->analysisResponse, 0, $endMarkerPos);
+							$this->analysisResponse = substr($this->analysisResponse, $endMarkerPos);
+						}
+					}
+					$this->trimLine();
+					
+					unset($notYetAnalysedClassMap[$analyzedClassName]);
+					
 				}
-				$this->trimLine();
-				
-				unset($notYetAnalysedClassMap[$analyzedClassName]);
-				
 			}
 			
-		}
+			foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
+				unset($classMap[$badClass]);
+			}
+			
+			if ($nbRun <= 1) {
+				break;
+			}
+			
+			// If we arrive here, we managed to detect a number of files to exclude.
+			// BUT, the complete list of file has never been tested together.
+			// and sometimes, a class included can trigger errors if another class is included at the same time
+			// (most of the time, when a require is performed on a file already loaded, triggering a "class already defined" error.
+			
+						
+		} while (true);
 		
 		// Let's remove from the classmap any class in error.
 		$this->classMap = $classMap;
-		foreach ($this->forbiddenClasses as $badClass=>$errorMessage) {
-			unset($this->classMap[$badClass]);
+		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->cacheService->set("mouf.classMap.".__DIR__."/".json_encode($this->selfEdit), $this->classMap, 30*60);
+			$this->cacheService->set("forbidden.classes.".__DIR__."/".json_encode($this->selfEdit), $this->forbiddenClasses, 30*60);
 		}
-
+		
 		$this->dataAvailable = true;
 	}
 	
@@ -119,6 +152,10 @@ class MoufClassExplorer {
 	private function trimLine() {
 		$newLinePos = strpos($this->analysisResponse, "\n");
 		
+		if ($newLinePos === false) {
+			throw new \Exception("End of file reached!");
+		}
+		
 		$line = substr($this->analysisResponse, 0, $newLinePos);
 		$this->analysisResponse = substr($this->analysisResponse, $newLinePos + 1);
 		return $line;
@@ -129,6 +166,18 @@ class MoufClassExplorer {
 	 * @return array<string, string>
 	 */
 	public function getClassMap() {
+		if ($this->classMap) {
+			return $this->classMap;
+		}
+		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->classMap = $this->cacheService->get("mouf.classMap.".__DIR__."/".json_encode($this->selfEdit));
+			if ($this->classMap != null) {
+				return $this->classMap;
+			}
+		}
+		
 		$this->analyze();
 		return $this->classMap;
 	}
@@ -139,6 +188,18 @@ class MoufClassExplorer {
 	 * @return array<string, string>
 	 */
 	public function getErrors() {
+		if ($this->forbiddenClasses) {
+			return $this->forbiddenClasses;
+		}
+		
+		if ($this->useCache) {
+			// Cache duration: 30 minutes.
+			$this->forbiddenClasses = $this->cacheService->get("forbidden.classes.".__DIR__."/".json_encode($this->selfEdit));
+			if ($this->forbiddenClasses != null) {
+				return $this->forbiddenClasses;
+			}
+		}
+		
 		$this->analyze();
 		return $this->forbiddenClasses;
 	}

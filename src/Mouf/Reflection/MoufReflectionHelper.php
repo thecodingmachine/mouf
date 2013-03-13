@@ -59,9 +59,11 @@ class MoufReflectionHelper {
 	 *
 	 * @return array
 	 */
-	public static function classToJson($refClass) {
+	public static function classToJson($refClass, $exportMode) {
 		$result = array();
 		$result['name'] = $refClass->getName();
+		
+		$result['exportmode'] = $exportMode;
 		
 		// The filename is relative to the ROOT_PATH.
 		// It is "null" if the class is not part of the ROOT_PATH.
@@ -94,16 +96,32 @@ class MoufReflectionHelper {
 			$result['extend'] = $refClass->getParentClass()->getName();
 		}
 		
-		$result['properties'] = array();
-		foreach ($refClass->getProperties() as $property) {
-			if ($property->isPublic() && !$property->isStatic()) {
-				$result['properties'][] = self::propertyToJson($property);
-			}
-		}
+		if ($exportMode != MoufReflectionClass::EXPORT_TINY) {
 		
-		$result['methods'] = array();
-		foreach ($refClass->getMethods() as $method) {
-			$result['methods'][] = self::methodToJson($method);
+			$result['properties'] = array();
+			foreach ($refClass->getProperties() as $property) {
+				if ($property->isPublic() && !$property->isStatic()) {
+					$result['properties'][] = self::propertyToJson($property);
+				}
+			}
+			
+			$result['methods'] = array();
+			foreach ($refClass->getMethods() as $method) {
+				$doExport = false;
+				if ($exportMode == MoufReflectionClass::EXPORT_PROPERTIES) {
+					// TODO: improve this, a setter must have exactly one compulsory parameter
+					$methodName = $method->getName();
+					if (strpos($methodName, "set") === 0 && strlen($methodName)>3) {
+						$doExport = true;
+					}	
+				} else {
+					$doExport = true;
+				}
+				if ($doExport) {
+					$result['methods'][] = self::methodToJson($method);
+				}
+			}
+		
 		}
 		 
 		return $result;

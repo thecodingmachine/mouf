@@ -8,10 +8,7 @@ var Composer = {
 	 */
 	"displayPackage": function(packageObj, score) {
 		var version = packageObj.version;
-		var displayVersion = version.replace(/\.9999999/g, "");
-		if (displayVersion == "9999999-dev") {
-			displayVersion = "dev-master";
-		}
+		var displayVersion = packageObj.prettyVersion;
 		
 		var packageDiv = $("<div/>").addClass("package");
 		var iconDiv = $("<div/>").addClass("packageicon").appendTo(packageDiv);
@@ -178,7 +175,7 @@ var Composer = {
 		$("#packageversionmanual").val("");
 		$("#packagefromsource").attr("checked", false);
 		
-		var version = packageObj.version;
+		var version = packageObj.prettyVersion;
 		var versionParts = version.split(".");
 		
 		var proposedVersions = [];
@@ -190,7 +187,6 @@ var Composer = {
 			currentVersionParts.push("*");
 			proposedVersions.push(currentVersionParts.join("."));
 		}
-		proposedVersions.push(version);
 		
 		for (var i=0; i<proposedVersions.length; i++) {
 			var option = $("<option/>").val(proposedVersions[i]).text(proposedVersions[i]);

@@ -9,9 +9,14 @@
  */
 namespace Mouf\Controllers;
 
+use Michelf\MarkdownExtra;
+
+use dflydev\markdown\MarkdownExtraParser;
+
+use Mouf\Html\Widgets\Menu\MenuItem;
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
-
+use MoufAdmin;
 use Mouf\MoufManager;
 
 use Mouf\MoufDocumentationPageDescriptor;
@@ -79,6 +84,8 @@ class DocumentationController extends Controller {
 	 */
 	protected $package;
 	
+	protected $rootPath;
+	
 	/**
 	 * Displays the list of doc files from the packages
 	 * 
@@ -93,8 +100,10 @@ class DocumentationController extends Controller {
 		
 		if ($selfedit == "true") {
 			$this->moufManager = MoufManager::getMoufManager();
+			$this->rootPath = ROOT_PATH;
 		} else {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
+			$this->rootPath = ROOT_PATH.'../../../';
 		}
 		
 		$composerService = new ComposerService($this->selfedit == "true");
@@ -108,7 +117,7 @@ class DocumentationController extends Controller {
 	/**
 	 * Action that is run to view a documentation page.
 	 *
-	 * @Action
+	 * @URL doc/view/*
 	 * @Logged
 	 * @param string $selfedit
 	 */
@@ -117,145 +126,101 @@ class DocumentationController extends Controller {
 		$this->selfedit = $selfedit;
 		if ($selfedit == "true") {
 			$this->moufManager = MoufManager::getMoufManager();
+			$this->rootPath = ROOT_PATH;
 		} else {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
+			$this->rootPath = ROOT_PATH.'../../../';
 		}
 
-		// TODO: ADD support for @URL doc/view/*
+		$composerService = new ComposerService($this->selfedit == "true");
 		
-		$this->packageManager = new MoufPackageManager();
-		
-		// TODO
+		$this->packageList = $composerService->getLocalPackages();
 		
 		$redirect_uri = $_SERVER['REDIRECT_URL'];
 
 		$pos = strpos($redirect_uri, ROOT_URL);
 		if ($pos === FALSE) {
-			throw new Exception('Error: the prefix of the web application "'.$this->splashUrlPrefix.'" was not found in the URL. The application must be misconfigured. Check the ROOT_URL parameter in your MoufUniversalParameters.php file at the root of your project.');
+			throw new \Exception('Error: the prefix of the web application "'.$this->splashUrlPrefix.'" was not found in the URL. The application must be misconfigured. Check the ROOT_URL parameter in your MoufUniversalParameters.php file at the root of your project.');
 		}
 
 		$tailing_url = substr($redirect_uri, $pos+strlen(ROOT_URL));
 		$args = explode("/", $tailing_url);
-		// We remove the first 3 parts of the URL (mouf/doc/view)
+		// We remove the first 2 parts of the URL (mouf/doc/view)
 		array_shift($args);
 		array_shift($args);
-		array_shift($args);
 		
-		$oldDir = getcwd();
-		
-		chdir(ROOT_PATH."plugins");
-		
-		$group = $this->packageManager->getOrderedPackagesList();
-		
-		$dirToPackage = "";
-		$packageContainer = null;
-		while ($args) {
-			$dir = array_shift($args);
-			
-			if ($group->hasSubgroup($dir)) {
-				$group = $group->getGroup($dir);
-				$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-			} elseif ($group->hasPackageContainer($dir)) {
-				$packageContainer = $group->getPackageContainer($dir);
-				$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-				break;
-			} else {
-				Controller::FourOFour("Page not found", false);
-				return;
-			}
-		}
-		
-		if ($packageContainer == null) {
-			Controller::FourOFour("Page not found", false);
-			return;
-		}
-		
-		$dir = array_shift($args);
-		
-		if ($dir != "latest") {
-			$this->package = $packageContainer->getPackage($dir);
-			if ($this->package == null) {
-				Controller::FourOFour("Page not found", false);
-				return;
-			}
-			$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-		} else {
-			// Let's find the latest version!
-			$packages = $packageContainer->getOrderedList();
-			$this->package = array_pop($packages);
-			$dirToPackage .= $this->package->getDescriptor()->getVersion().DIRECTORY_SEPARATOR;
-		}
-		
-		
-		/*$dirToPackage = "";
-		$found = false;
-		while ($args) {
-			if (file_exists("package.xml")) {
-				$found = true;
-				break;
-			}
-			
-			$dir = array_shift($args);
-			if (!file_exists($dir) || !is_dir($dir)) {
-				if ($dir == "latest") {
-					// If the user decides to write "latest" instead of the version, let's find the latest version for him.
-					
-					$dir = "TODO: find the latest version!";
-				} else {
-					Controller::FourOFour("Page not found", false);
-					return;
-				}
-			}
-			chdir($dir);
-			$dirToPackage .= $dir.DIRECTORY_SEPARATOR;
-		}
-		
-		chdir($oldDir);
-		*/
+		$groupName = array_shift($args);
+		$packageName = array_shift($args);
 		
 		
 		//$this->package = $this->packageManager->getPackage($dirToPackage."package.xml");
+		foreach ($this->packageList as $package) {
+			if ($package->getName() == $groupName.'/'.$packageName) {
+				$this->package = $package;
+				break;
+			}
+		}
+		
+		if ($this->package == null) {
+			MoufAdmin::getSplash()->print404("No package with this name");
+			return;
+		}
 		
 		$docPath = implode("/", $args);
-
-		$filename = ROOT_PATH."plugins/".$dirToPackage.$this->package->getDocumentationRootDirectory().DIRECTORY_SEPARATOR.$docPath;
+		
+		$filename = $this->rootPath."vendor/".$groupName."/".$packageName."/".$docPath;
 			
-
 		if (!file_exists($filename)) {
-			Controller::FourOFour("Documentation page does not exist", false);
+			MoufAdmin::getSplash()->print404("Documentation page does not exist");
 			return;
 		}
 		if (!is_readable($filename)) {
-			Controller::FourOFour("Page not found", false);
+			MoufAdmin::getSplash()->print404("Page not found");
 			return;
 		}
 
-		if (strripos($filename, ".html") !== false) {
+
+		if (strripos($filename, ".html") !== false || strripos($filename, ".md") !== false || strripos($filename, "README") !== false) {
 			$this->addMenu();
 			
 			$fileStr = file_get_contents($filename);
-
-			$bodyStart = strpos($fileStr, "<body");
-			if ($bodyStart === false) {
-				$this->template->addContentText('<div class="staticwebsite">'.$fileStr.'</div>');
+			
+			if (strripos($filename, ".md") !== false) {
+				// The line below is a workaround around a bug in markdown implementation.
+				$forceautoload = new \ReflectionClass('\\Michelf\\Markdown');
+				
+				$markdownParser = new MarkdownExtra();
+				
+				$fileStr = str_replace('```', '~~~', $fileStr);
+				
+				// Let's parse and transform markdown format in HTML
+				$fileStr = $markdownParser->transform($fileStr);
+				
+				$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
 				$this->template->toHtml();
 			} else {
-				$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
-	
-				$partBody = substr($fileStr, $bodyOpenTagEnd+1);
-	
-				$bodyEndTag = strpos($partBody, "</body>");
-				if ($bodyEndTag === false) {
-					return '<div class="staticwebsite">'.$partBody.'</div>';
+				$bodyStart = strpos($fileStr, "<body");
+				if ($bodyStart === false) {
+					$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
+					$this->template->toHtml();
+				} else {
+					$bodyOpenTagEnd = strpos($fileStr, ">", $bodyStart);
+		
+					$partBody = substr($fileStr, $bodyOpenTagEnd+1);
+		
+					$bodyEndTag = strpos($partBody, "</body>");
+					if ($bodyEndTag === false) {
+						return '<div class="staticwebsite">'.$partBody.'</div>';
+					}
+					$body = substr($partBody, 0, $bodyEndTag);
+		
+					$this->contentBlock->addText('<div class="staticwebsite">'.$body.'</div>');
+					$this->template->toHtml();
 				}
-				$body = substr($partBody, 0, $bodyEndTag);
-	
-				$this->template->addContentText('<div class="staticwebsite">'.$body.'</div>');
-				$this->template->toHtml();
 			}
 		} elseif (strripos($filename, ".php") !== false) {
 			// PHP files are not accessible
-			Controller::FourOFour("Cannot access PHP file through doc", false);
+			MoufAdmin::getSplash()->print404("Cannot access PHP file through doc");
 			return;
 		} else {
 			readfile($filename);
@@ -266,23 +231,91 @@ class DocumentationController extends Controller {
 	}
 	
 	protected function addMenu() {
-		$docPages = $this->package->getDocPages();
+		$docPages = $this->getDocPages($this->package);
 		
-		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getDisplayName());
+		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getPrettyName());
 		$this->fillMenu($documentationMenuMainItem, $docPages);
 		$this->documentationMenu->addChild($documentationMenuMainItem);
 	}
+	
+	/**
+	 * Returns an array of doc pages with the format:
+	 * 	[
+	 *   		{
+	 *   			"title": "Using FINE",
+	 *   			"url": "using_fine.html"
+	 *   		},
+	 *   		{
+	 *   			"title": "Date functions",
+	 *   			"url": "date_functions.html"
+	 *   		},
+	 *   		{
+	 *   			"title": "Currency functions",
+	 *   			"url": "currency_functions.html"
+	 *   		}
+	 *   	]
+	 *  
+	 * @param \Composer\Package\PackageInterface $package
+	 */
+	protected function getDocPages(\Composer\Package\PackageInterface $package) {
+		$extra = $package->getExtra();
+		
+		$docArray = array();
+		
+		// Let's find if there is a README file.
+		$packagePath = $this->rootPath."vendor/".$package->getName()."/";
+		if (file_exists($packagePath."index.md")) {
+			$docArray[] = array("title"=> "Start page",
+						"url"=>"index.md"
+			);
+		}
+		if (file_exists($packagePath."README")) {
+			$docArray[] = array("title"=> "Read me",
+						"url"=>"README"
+			);
+		}
+		if (file_exists($packagePath."README.md")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.md"
+			);
+		}
+		if (file_exists($packagePath."README.html")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.html"
+			);
+		}
+		if (file_exists($packagePath."README.txt")) {
+			$docArray[] = array("title"=> "Read me",
+					"url"=>"README.txt"
+			);
+		}
+		
+		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
+			$docArray = array_merge($docArray, $extra['mouf']['doc']);
+		}
+		return $docArray;
+	}
+	
+	
 	
 	private function fillMenu($menu, array $docPages) {
 		$children = array();
 		foreach ($docPages as $docPage) {
 			/* @var $docPage MoufDocumentationPageDescriptor */
+			
+			if (!isset($docPage['title'])) {
+				continue;
+			}
+			
 			$menuItem = new MenuItem();
-			$menuItem->setLabel($docPage->getTitle());
-			$menuItem->setUrl(ROOT_URL."mouf/doc/view/".$this->package->getDescriptor()->getGroup()."/".$this->package->getDescriptor()->getName()."/".$this->package->getDescriptor()->getVersion()."/".$docPage->getURL());
+			$menuItem->setLabel($docPage['title']);
+			if (isset($docPage['url'])) {
+				$menuItem->setUrl(ROOT_URL."doc/view/".$this->package->getName()."/".$docPage['url']);
+			}
 			$children[] = $menuItem;
-			if ($docPage->getChildren()) {
-				$this->fillMenu($menuItem, $menuItem->getChildren());
+			
+			if (isset($docPage['children'])) {
+				$this->fillMenu($menuItem, $docPage['children']);
 			}
 		}
 		$menu->setChildren($children);
@@ -310,12 +343,14 @@ class DocumentationController extends Controller {
 		?>
 		<ul>
 		<?php 
-		foreach ($docPages as $url=>$title):
+		foreach ($docPages as $docPage):
+			$url = $docPage['url'];
+			$title = $docPage['title'];
 			?>
 			<li>
 			<?php 
 			if ($url) {
-				echo "<a href='".$packageName."/doc/".$url."'>";
+				echo "<a href='view/".$packageName."/".$url."'>";
 			}
 			echo $title;
 			if ($url) {

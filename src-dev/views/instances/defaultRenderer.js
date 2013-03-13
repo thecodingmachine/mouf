@@ -7,11 +7,9 @@
 var MoufDefaultRenderer = (function () {
 
 	/**
-	 * Returns the wrapper DIV element in which the class will be stored.
-	 * The wrapper DIV will have appropriate CSS classes to handle drag'n'drop.
-	 * The wrapper is returned as an "in-memory" jQuery element.
+	 * Returns the CSS class applying to a class descriptor (used for drag'n'drop)
 	 */
-	var getClassWrapper = function(classDescriptor) {
+	var getCssClassFromClassDescriptor = function(classDescriptor) {
 		// Note: slice is performing a clone of the array
 		var subclassOf = classDescriptor.json["implements"].slice(0);
 		var parentClass = classDescriptor;
@@ -23,7 +21,16 @@ var MoufDefaultRenderer = (function () {
 		for (var i = 0; i<subclassOf.length; i++) {
 			cssClass += MoufUI.getCssNameFromType(subclassOf[i]) + " ";
 		}
-		return jQuery("<div/>").addClass(cssClass).data("class", classDescriptor);
+		return cssClass;
+	}
+	
+	/**
+	 * Returns the wrapper DIV element in which the class will be stored.
+	 * The wrapper DIV will have appropriate CSS classes to handle drag'n'drop.
+	 * The wrapper is returned as an "in-memory" jQuery element.
+	 */
+	var getClassWrapper = function(classDescriptor) {
+		return jQuery("<div/>").addClass(getCssClassFromClassDescriptor(classDescriptor)).data("class", classDescriptor);
 	}
 	
 	/**
@@ -132,53 +139,80 @@ var MoufDefaultRenderer = (function () {
 		var elem = jQuery("<div/>");
 		var sortable = jQuery("<div/>").addClass('array');
 		sortable.appendTo(elem);
+		var subtype = moufProperty.getSubType();
 
 		if (!moufProperty.isAssociativeArray())  {
-			if (values instanceof Array) {
-				moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
-					var fieldElem = jQuery("<div/>").addClass('fieldContainer')
-						.data("key", instanceSubProperty.getKey())
-						.appendTo(sortable);
-						
-					var sortableElem = jQuery("<div/>").addClass('sortable');
-					jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
-					/*fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
-					var rowElem = fieldRenderer(instanceSubProperty);*/
-					var rowElem = renderField(instanceSubProperty);
-					rowElem.appendTo(fieldElem);
-				});
-			}
-			var subtype = moufProperty.getSubType();
-			// If this is a known primitive type, let's display a "add a value" button
-			
-			
-			//var addDiv = jQuery("<div/>").addClass('addavalue')
-			var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
-				.appendTo(elem)
-				.click(function() {
-					// key=null (since we are not an associative array), and we init the value to null too.
-					var moufNewSubInstanceProperty = moufInstanceProperty.addArrayElement(null, null);
-					
-					var fieldElem = jQuery("<div/>").addClass('fieldContainer')
-						.data("key", moufNewSubInstanceProperty.getKey())
-						.appendTo(sortable);
-					
-					var sortableElem = jQuery("<div/>").addClass('sortable');
-					jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
-					
-					/*var renderer = getFieldRenderer(subtype, null, null);
-					var rowElem = renderer(moufNewSubInstanceProperty);*/
-					var rowElem = renderField(moufNewSubInstanceProperty);
-					rowElem.appendTo(fieldElem);
-				});
-			
-			
+			// If this is a known primitive type
 			if (fieldsRenderer[subtype]) {
-				//addDiv.text("Add a value");
+			
+				if (values instanceof Array) {
+					moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
+						var fieldElem = jQuery("<div/>").addClass('fieldContainer')
+							.data("key", instanceSubProperty.getKey())
+							.appendTo(sortable);
+						
+						var sortableElem = jQuery("<div/>").addClass('sortable');
+						jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
+						/*fieldRenderer = getFieldRenderer(instanceSubProperty.getMoufProperty().getType(), instanceSubProperty.getMoufProperty().getKeyType(), instanceSubProperty.getMoufProperty().getSubType());
+						var rowElem = fieldRenderer(instanceSubProperty);*/
+						var rowElem = renderField(instanceSubProperty);
+						rowElem.appendTo(fieldElem);
+					});
+				}
+								
+				//var addDiv = jQuery("<div/>").addClass('addavalue')
+				var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
+					.appendTo(elem)
+					.click(function() {
+						// key=null (since we are not an associative array), and we init the value to null too.
+						var moufNewSubInstanceProperty = moufInstanceProperty.addArrayElement(null, null);
+						
+						var fieldElem = jQuery("<div/>").addClass('fieldContainer')
+							.data("key", moufNewSubInstanceProperty.getKey())
+							.appendTo(sortable);
+						
+						var sortableElem = jQuery("<div/>").addClass('sortable');
+						jQuery("<div/>").addClass('moveable').appendTo(fieldElem);
+						
+						/*var renderer = getFieldRenderer(subtype, null, null);
+						var rowElem = renderer(moufNewSubInstanceProperty);*/
+						var rowElem = renderField(moufNewSubInstanceProperty);
+						rowElem.appendTo(fieldElem);
+					});
+				
+				
+				// If this is a known primitive type, let's display a "add a value" button
 				addDiv.html("<i class='icon-plus icon-white'></i> Add a value");
+		
 			} else {
-				addDiv.html("<i class='icon-plus icon-white'></i> Add an instance");
-				//addDiv.text("Add an instance");
+				// This is an object, in a non associative array.
+				// Let's display an optimized drag'n'drop strategy.
+
+				sortable.addClass("nonassociativearray");
+				
+				// First, let's make sure we can drag directly in the sortable.
+				MoufInstanceManager.getClass(subtype).then(function(classDescriptor) {
+					//sortable.addClass(getCssClassFromClassDescriptor(classDescriptor));
+					sortable.addClass(MoufUI.getCssNameFromType(classDescriptor.getName()));
+					
+					if (values instanceof Array) {
+						moufInstanceProperty.forEachArrayElement(function(instanceSubProperty) {
+							var rowElem = renderField(instanceSubProperty).data("key", instanceSubProperty.getKey());
+							rowElem.appendTo(sortable);
+						});
+					}
+					
+					//var addDiv = jQuery("<div/>").addClass('addavalue')
+					var addDiv = jQuery("<a/>").addClass('btn btn-mini btn-success')
+						.html("<i class='icon-plus icon-white'></i> Add an instance")
+						.appendTo(elem)
+						.click(function() {
+							MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
+						});
+					
+				})
+				
+				
 			}
 			
 		} else {
@@ -244,6 +278,7 @@ var MoufDefaultRenderer = (function () {
 			}
 		}
 		var _startPosition = null;
+		//var _dragStartedInSortable = true;
 		sortable.sortable({
 			start: function(event, ui) {
 				_startPosition = jQuery(ui.item).index();
@@ -257,12 +292,64 @@ var MoufDefaultRenderer = (function () {
 			stop: function(event, ui) {
 				MoufUI.hideBin();
 			},
+			receive: function(event, ui) {
+				//_dragStartedInSortable = false;
+				// We are receiving on element from the outside world!
+				var droppedInstance = jQuery( ui.item ).data("instance");
+				
+				if (droppedInstance) {
+					// If an instance was dropped
+					
+					// We add at the end of the array
+					moufInstanceProperty.addArrayElement(null, droppedInstance.getName());
+					
+					
+					/*elem.html("");
+					renderInstanceInField(droppedInstance);*/
+				} else {
+					// If not, it's a class that has been dropped
+					var droppedClass = jQuery( ui.item ).data("class");
+					
+					//elem.html("");
+
+					var timestamp = new Date();
+					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+					
+					// We add at the end of the array
+					moufInstanceProperty.addArrayElement(null, newInstance.getName());
+					
+					
+					//renderInstanceInField(newInstance);
+				}
+				
+
+				// The "update" event will be triggered after the "receive" event
+				// and will reorder the elements if we give it the right start position.
+				_startPosition = moufInstanceProperty.arraySize()-1;
+				
+				// Finally, let's trigger a full field reload.
+				// TODO: detect elem in the DOM, remove it and put it back.
+				
+				setTimeout(function() {
+					//var fullFieldPos = elem.parent().index();
+					var parent = elem.parent();
+					elem.remove();
+					renderArrayField(moufInstanceProperty).appendTo(parent);
+				}, 100);
+			},
 			update: function(event, ui) {
-				// When moving an element graphically, let's apply the change in the instances list.
-				var newPosition = jQuery(ui.item).index();
-				moufInstanceProperty.reorderArrayElement(_startPosition, newPosition);
-				// This is because the "remove" trigger might be called after the "update" trigger. In that case, _startPosition must point to the new position.
-				_startPosition = newPosition;
+				//if (_dragStartedInSortable) {
+					// When moving an element graphically, let's apply the change in the instances list.
+					var newPosition = jQuery(ui.item).index();
+					moufInstanceProperty.reorderArrayElement(_startPosition, newPosition);
+					// This is because the "remove" trigger might be called after the "update" trigger. In that case, _startPosition must point to the new position.
+					_startPosition = newPosition;
+					
+				/*} else {
+					// We are receiving on element from the outside world!
+					// We don't need to refresh position.
+					_dragStartedInSortable = true;
+				}*/
 			},
 			// Elements of this sortable can be dropped in the bin.
 			connectWith: "div.bin"
@@ -270,7 +357,6 @@ var MoufDefaultRenderer = (function () {
 		
 		return elem;
 	}
-	
 	
 	/**
 	 * Renders a field representing a link to an instance.
@@ -281,28 +367,9 @@ var MoufDefaultRenderer = (function () {
 		var value = moufInstanceProperty.getValue();
 		var type = moufInstanceProperty.getMoufProperty().getType();
 	
-		var parentElem = jQuery('<div/>').addClass("fieldInstanceRenderer");
-				
-		var elem = jQuery("<div/>").addClass('instanceReceiver');
+		var parentElem = jQuery('<div/>');
 		
-		// An element containing the text to display when the value is null
-		var nullElem = jQuery("<div/>");
-		nullElem.addClass("null");
-		jQuery("<a href='#'>Drop here a <em>"+MoufUI.getHtmlClassName(type)+"</em> instance</a>").click(function() {
-			jQuery("#instanceList").empty();
-			MoufUI.displayInstanceOfType("#instanceList", type, true, true);
-			jQuery("#instanceList").scrollintoview({duration: "slow", direction: "y"});
-			
-			return false;
-		}).appendTo(nullElem);
-		
-		var setToNull = function() {
-			elem.find("*").remove();
-			nullElem.appendTo(elem);
-			moufInstanceProperty.setValue(null);
-		}
-	
-		var renderInstanceInField = function(instance) {
+		MoufInstanceManager.getInstance(value).then(function(instance) {
 			// Let's do that in a setTimeout.
 			// This way, we can be sure other instances are already in the DOM before displaying our instance.
 			
@@ -310,86 +377,40 @@ var MoufDefaultRenderer = (function () {
 				var found = isInstanceDisplayed(instance);
 				var displayType = found?"small":"medium";
 				
-				instance.render(displayType).appendTo(elem).draggable({
-					revert: "invalid",
-					containment: "window",
-					start: function(event, ui) { 
-						MoufUI.onDroppedInBin(function() {
-							setToNull();
-							MoufUI.hideBin();
-						});
-						MoufUI.showBin();
-					},
-					stop: function(event, ui) {
-						MoufUI.hideBin();
-					}
-				}).data('originalElemSetToNull', setToNull);
-			}, 0);
-		}
-		
-		
-		if (value === null) {
-			nullElem.appendTo(elem);
-		} else {
-			MoufInstanceManager.getInstance(value).then(function(instance) {
-				renderInstanceInField(instance);
-			}).onError(function(e) {
-				addMessage("<pre>"+e+"</pre>", "error");
-			})
-		}
-		
-		/*var menu = MoufUI.createMenuIcon([
-  			{
-  				label: "Set to <em>null</em>",
-  				click: setToNull
-  			}
-  		]);*/
-		
-		elem.droppable({
-			accept: "."+MoufUI.getCssNameFromType(type),
-			activeClass: "stateActive",
-			hoverClass: "stateHover",
-			greedy: true,
-			tolerance: "touch",
-			drop: function( event, ui ) {
-				var droppedInstance = jQuery( ui.draggable ).data("instance");
-				
-				
-				if (droppedInstance) {
-					// If an instance was dropped
-					moufInstanceProperty.setValue(droppedInstance.getName());
-					elem.html("");
-					renderInstanceInField(droppedInstance);
-					
-					// Also, if this comes from a drag'n'drop from another property of the class,
-					// let's perform a "move" by setting to "null".
-					// But let's do this in a setTimeout, so the stop draggable event can be triggered
-					setTimeout(function() {
-						var setToNull = jQuery( ui.draggable ).data('originalElemSetToNull');
-						if (setToNull != null) {
-							setToNull();
-						}						
-					}, 0);
-				} else {
-					// If not, it's a class that has been dropped
-					var droppedClass = jQuery( ui.draggable ).data("class");
-					
-					//moufInstanceProperty.setValue(droppedInstance.getName());
-					elem.html("");
-
-					var timestamp = new Date();
-					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
-					moufInstanceProperty.setValue(newInstance.getName());
-					
-					renderInstanceInField(newInstance);
+				// Exception case: if we are in a non associative array, let's not make it draggable.
+				// The container will do that for us.
+				var parentProperty = moufInstanceProperty.getMoufProperty().getParent();
+				var drag = true;
+				if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray()) {
+					drag = false;
 				}
-			}
-		});
+				
+				var renderedInstance = instance.render(displayType).appendTo(parentElem);
+				
+				if (drag) {
+					renderedInstance.draggable({
+						revert: "invalid",
+						containment: "window",
+						start: function(event, ui) { 
+							MoufUI.onDroppedInBin(function() {
+								moufInstanceProperty.setValue(null);
+								// Let's redraw the elem.
+								refreshField(moufInstanceProperty);
+								
+								MoufUI.hideBin();
+							});
+							MoufUI.showBin();
+						},
+						stop: function(event, ui) {
+							MoufUI.hideBin();
+						}
+					})
+				}
+			}, 0);
+		}).onError(function(e) {
+			addMessage("<pre>"+e+"</pre>", "error");
+		})
 		
-  		
-  		elem.appendTo(parentElem);
-  		//menu.appendTo(parentElem);
-  		
   		return parentElem;
 	}
 	
@@ -420,6 +441,35 @@ var MoufDefaultRenderer = (function () {
 			// TODO: manage subtype and keytype
 			// TODO: default should be to display the corresponding renderer.
 			return renderInstanceField;
+		}
+	}
+	
+	/**
+	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an object
+	 * (i.e. it is not a primitive nor an array type).
+	 */
+	var isObjectType = function(moufProperty) {
+		var type = moufProperty.getType();
+		if (type == null) {
+			return false;
+		} else if (fieldsRenderer[type]) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an array of objects
+	 */
+	var isArrayOfObjectType = function(moufProperty) {
+		var type = moufProperty.getSubType();
+		if (type == null) {
+			return false;
+		} else if (fieldsRenderer[type]) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	
@@ -530,24 +580,164 @@ var MoufDefaultRenderer = (function () {
 	 */
 	var renderField = function(moufInstanceProperty) {
 		var fieldWrapper = jQuery("<div>").addClass('fieldWrapper');
+		fieldWrapper.data('moufInstanceProperty', moufInstanceProperty);
 		
+		refreshField(moufInstanceProperty, fieldWrapper);
+		
+		return fieldWrapper;
+	}
+	
+	/**
+	 * Refreshes the HTML matching the moufInstanceProperty.
+	 * Very useful to refresh display when property has been updated.
+	 * 
+	 * If target is not passed, we will search on the whole page.
+	 */
+	var refreshField = function(moufInstanceProperty, target) {
+		if (target == null) {
+			// Let's find our target
+			$('.fieldWrapper').each(function(index, elem) {
+				var $elem = $(elem);
+				var elemMoufInstanceProperty = $elem.data('moufInstanceProperty');
+				if (elemMoufInstanceProperty == moufInstanceProperty) {
+					target = $elem;
+				}
+			})
+			if (target != null) {
+				target.empty();
+			} else {
+				throw "Unable to find matching HTML element for this moufInstanceProperty";
+			}
+		}		
+
 		var fieldInnerWrapper = jQuery("<div>").addClass('fieldInnerWrapper');
-		fieldInnerWrapper.appendTo(fieldWrapper);
+		fieldInnerWrapper.appendTo(target);
 		
-		var getNullField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-info' rel='tooltip' title='Click to set value'>Null</button>").click(function() {
+		var moufProperty = moufInstanceProperty.getMoufProperty();
+		
+		var makeDroppable = function(elem) {
+			var type;
+			if (!moufProperty.isArray()) {
+				type = moufProperty.getType();
+			} else {
+				type = moufProperty.getSubType();
+			}
+			elem.droppable({
+				accept: "."+MoufUI.getCssNameFromType(type),
+				activeClass: "stateActive",
+				hoverClass: "stateHover",
+				greedy: true,
+				tolerance: "intersect",
+				drop: function( event, ui ) {
+					
+					// Workaround to prevent false drop:
+					//if (!$(event.srcElement).hasClass("ui-draggable-dragging")) {
+					/*if (!$(ui.draggable).hasClass("ui-draggable-dragging")) {
+						return;
+					} */
+					
+					var droppedInstance = jQuery( ui.draggable ).data("instance");
+					
+					if (droppedInstance) {
+						// If an instance was dropped
+						
+						if (!moufProperty.isArray()) {
+							moufInstanceProperty.setValue(droppedInstance.getName());	
+						} else {
+							// If we dropped in a null/default value array:
+							moufInstanceProperty.addArrayElement(null, droppedInstance.getName());
+						}
+						
+						refreshField(moufInstanceProperty);
+						
+						// Also, if this comes from a drag'n'drop from another property of the class,
+						// let's perform a "move" by setting to "null".
+						// But let's do this in a setTimeout, so the stop draggable event can be triggered
+						var originalMoufInstanceProperty = ui.draggable.closest(".fieldWrapper").data('moufInstanceProperty');
+						
+						if (originalMoufInstanceProperty != null) {
+							setTimeout(function() {
+								originalMoufInstanceProperty.setValue(null);
+								refreshField(originalMoufInstanceProperty);
+							}, 0);
+						}
+					} else {
+						// If not, it's a class that has been dropped
+						var droppedClass = jQuery( ui.draggable ).data("class");
+						
+						if (droppedClass == null) {
+							//throw "Error! The dropped item is neither an instance nor a class!";
+							console.error("Error! The dropped item is neither an instance nor a class!");
+							return;
+						}
+						
+						var timestamp = new Date();
+						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+						
+						if (!moufProperty.isArray()) {
+							moufInstanceProperty.setValue(newInstance.getName());
+						} else {
+							moufInstanceProperty.addArrayElement(null, newInstance.getName());
+						}
+						
+						refreshField(moufInstanceProperty);
+					}
+				}
+			});
+		}
+		
+		// Let's check if we can drop something in the "null" or "default" buttons of this property.
+		var isDroppable = isObjectType(moufProperty) || (isArrayOfObjectType(moufProperty) && !moufProperty.isAssociativeArray());
+		var isPartOfNonAssociativeObjectArray = false;
+		var parentProperty = moufProperty.getParent();
+		if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray() && isObjectType(moufProperty)) {
+			isDroppable = false;
+			isPartOfNonAssociativeObjectArray = true;
+		}
+		
+		var onClickNullOrNotSetField = function() {
+			if (isObjectType(moufProperty)) {
+				// Null field for an object
+				MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
+			} else {
+				// Null field for a primitive type / array
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
-			});
+				// If this is an array, let's display the instance type.
+				if (isArrayOfObjectType(moufProperty)) {
+					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
+				}
+			}
+		}
+		
+		var getNullField = function() {
+			var field = jQuery("<div/>");
+			if (isPartOfNonAssociativeObjectArray) {
+				var moveable = jQuery("<div class='moveable' />").appendTo(field);
+			}
+			var button = jQuery("<button class='btn btn-mini btn-info nullValue' rel='tooltip' title='Click to set value'>Null</button>")
+				.click(onClickNullOrNotSetField).appendTo(field);
+			// Droppable if related to an object and that object is not in a "sortable".
+			if (isDroppable) {
+				makeDroppable(button);
+			}
+			
 			return field;
 		}
 		var getNotSetField = function() {
-			var field = jQuery("<button class='btn btn-mini btn-warning' rel='tooltip' title='Click to set value'><em>Default value</em></button>").click(function() {
-				fieldInnerWrapper.empty();
-				var field = renderInnerField(moufInstanceProperty);
-				field.appendTo(fieldInnerWrapper);
-			});
+			var field = jQuery("<button class='btn btn-mini btn-warning defaultValue'><em>Click to set value</em></button>")
+				.click(onClickNullOrNotSetField);
+			if (isDroppable) {
+				//makeDroppable(fieldInnerWrapper);
+				makeDroppable(fieldInnerWrapper);
+			}
+			
+
+			// FIXME: peut être que le problème vient de là:
+			// makeDroppable rend le fieldInnerWrapper droppable.
+			// Quand on clique dessus, on a une array qui apparaît. Il faudrait être sur que le droppable disparaît.
+			
 			return field;
 		}
 		var getConfigConstantField = function() {
@@ -559,9 +749,6 @@ var MoufDefaultRenderer = (function () {
 					var field = getConfigConstantField();
 					field.appendTo(fieldInnerWrapper);
 				}, MoufInstanceManager.selfEdit);
-				/*fieldInnerWrapper.empty();
-				var field = renderInnerField(moufInstanceProperty);
-				field.appendTo(fieldInnerWrapper);*/
 			});
 			return field;
 		}
@@ -614,10 +801,8 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		
-		var menu = MoufUI.createMenuIcon(menuDescriptor);
-		menu.appendTo(fieldWrapper);
-		
-		return fieldWrapper;
+		var menu = MoufUI.createMenuIcon(menuDescriptor, target);
+		menu.appendTo(target);
 	}
 	
 	/**
@@ -632,7 +817,8 @@ var MoufDefaultRenderer = (function () {
 		
 		var field = fieldRenderer(moufInstanceProperty);
 		return field;
-	}
+	}	
+
 	
 	return {
 		/**
@@ -679,6 +865,7 @@ var MoufDefaultRenderer = (function () {
 									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
 									fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
 									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+									
 									renderField(moufInstanceProperty).appendTo(fieldElem);
 									
 									fieldGlobalElem.appendTo(propertiesList);
@@ -816,7 +1003,7 @@ var MoufDefaultRenderer = (function () {
 			var renderer = getRendererAnnotation(classDescriptor);
 			if (renderer != null) {
 				if (renderer.smallLogo != null) {
-					jQuery(wrapper).css("background-image", "url("+MoufInstanceManager.rootUrl+"../"+renderer.smallLogo+")");
+					jQuery(wrapper).css("background-image", "url("+MoufInstanceManager.rootUrl+"../../../"+renderer.smallLogo+")");
 				}
 			}
 

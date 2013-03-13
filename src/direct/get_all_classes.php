@@ -33,6 +33,11 @@ if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]=="json") {
 	$encode = "json";
 }
 
+$exportMode = "all";
+if (isset($_REQUEST["export_mode"])) {
+	$exportMode = $_REQUEST["export_mode"];
+}
+
 $moufManager = MoufManager::getMoufManager();
 
 $classExplorer = new MoufClassExplorer($selfedit);
@@ -46,15 +51,16 @@ $classList = array();
 foreach ($classNameList as $className) {
 	$classDescriptor = $moufManager->getClassDescriptor($className);
 	if ($classDescriptor->isInstantiable()) {
-		do {
-			$classList[$classDescriptor->getName()] = $classDescriptor->toJson();
+		while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()])) {
+			$classList[$classDescriptor->getName()] = $classDescriptor->toJson($exportMode);
 			$classDescriptor = $classDescriptor->getParentClass();
-		} while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()]));
+		}
 	} 
 }
 
 $response = array();
 $response["classes"] = $classList;
+$response["errors"] = $classExplorer->getErrors();
 
 if ($encode == "php") {
 	echo serialize($response);

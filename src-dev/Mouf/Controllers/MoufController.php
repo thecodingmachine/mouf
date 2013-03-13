@@ -194,14 +194,21 @@ class MoufController extends Controller implements MoufSearchable {
 		// We have a sorted components list.
 		// Now, for each of these, let's find the instance that match...
 		$instanceList = $this->moufManager->getInstancesList();
+		$nonAnonymousinstanceList = array();
 		// Let's revert the instance list.
 		$instanceListByClass = array();
 		foreach ($instanceList as $instanceName=>$className) {
+			// Let's remove anonymous classes:
+			if ($this->moufManager->getInstanceDescriptor($instanceName)->isAnonymous()) {
+				continue;
+			}
+			$nonAnonymousinstanceList[$instanceName] = $className; 
+			
 			$instanceListByClass[$className][] = $instanceName;
 		}
 		
 		// The instances are bound to classes that no longer exist:
-		$this->inErrorInstances = $instanceList;
+		$this->inErrorInstances = $nonAnonymousinstanceList;
 		
 		// type: array<package, array<class, instance>>
 		$instancesByPackage = array();

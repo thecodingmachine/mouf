@@ -118,6 +118,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 		//$html = $this->getHtmlForPackage($package);
 		$packageArr = array();
 		$packageArr['prettyName'] = $package->getPrettyName();
+		$packageArr['prettyVersion'] = $package->getPrettyVersion();
 		$packageArr['name'] = $package->getName();
 		$packageArr['version'] = $package->getVersion();
 		$packageArr['homePage'] = $package->getHomepage();
@@ -132,10 +133,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 	}
 	
 	public function getHtmlForPackage(PackageInterface $package) {
-		$version = str_replace(array(".9999999.9999999-dev", ".9999999-dev"), array("-dev", "-dev"), $package->getVersion());
-		if ($version == "9999999-dev") {
-			$version = "dev-master";
-		}
+		$version = $package->getPrettyVersion();
 		$html = '<div class="package">
 		<div class="packageicon">';
 		$extra = $package->getExtra();

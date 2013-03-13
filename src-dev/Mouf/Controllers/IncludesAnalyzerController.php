@@ -9,6 +9,8 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\MoufCache;
+
 use Mouf\Reflection\MoufReflectionProxy;
 
 use Mouf\MoufManager;
@@ -53,10 +55,10 @@ class IncludesAnalyzerController extends Controller {
 	public $contentBlock;
 		
 	/**
-	 * 
-	 * @var array<string, string> key: classname, value: file
+	 * The list of classes that have no errors nor warnings.
+	 * @var array<string> value: classname
 	 */
-	protected $classMap;
+	protected $classList = array();
 	
 	/**
 	 * 
@@ -87,32 +89,49 @@ class IncludesAnalyzerController extends Controller {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$classExplorer = new MoufClassExplorer($selfedit == "true");
-		$this->classMap = $classExplorer->getClassMap();
-		$this->errors = $classExplorer->getErrors();
-		
-		// Next step: let's get all classes and let's see what errors are triggered.
-		// Note: this is suboptimal, as the get_all_classes call is calling itself MoufClassExplorer.
+		// Let's get all classes and let's see what errors are triggered.
 		$allClasses = MoufReflectionProxy::getAllClasses($selfedit == "true");
 		//var_export($allClasses["classes"]);
 		
+		$this->errors = $allClasses['errors'];
+		
 		foreach ($allClasses["classes"] as $class) {
 			foreach ($class["methods"] as $method) {
+				$hasErrors = false;
 				if (isset($parameter["classinerror"])) {
 					$this->warnings[$class["name"]][] = $parameter["classinerror"];
-					unset($this->classMap[$class["name"]]);
+					$hasErrors = true;
 				}
 				foreach ($method["parameters"] as $parameter) {
 					if (isset($parameter["classinerror"])) {
 						$this->warnings[$class["name"]][] = $parameter["classinerror"];
-						unset($this->classMap[$class["name"]]);
+						$hasErrors = true;
 					}
 				}
+			}
+			if (!$hasErrors) {
+				$this->classList[] = $class["name"];
 			}
 		}
 		
 		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/includes/index.php", $this);
 		$this->template->toHtml();	
 	}	
+	
+	/**
+	 * Purge cache and redirects to analysis page.
+	 *
+	 * @Action
+	 * @Logged
+	 * @param string $selfedit
+	 */
+	public function refresh($selfedit = "false") {
+		$this->selfedit = $selfedit;
+		
+		$moufCache = new MoufCache();
+		$moufCache->purgeAll();
+		
+		header("Location: .?selfedit=".$selfedit);
+	}
 }
 ?>
