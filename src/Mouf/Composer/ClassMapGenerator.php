@@ -1,12 +1,14 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is copied from the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @license MIT
  */
 
 namespace Mouf\Composer;
@@ -21,12 +23,11 @@ class ClassMapGenerator
     /**
      * Generate a class map file
      *
-     * @param array|string $dirs Directories or a single path to search in
-     * @param string       $file The name of the class map file
+     * @param Traversable $dirs Directories or a single path to search in
+     * @param string      $file The name of the class map file
      */
     public static function dump($dirs, $file)
     {
-        $dirs = (array) $dirs;
         $maps = array();
 
         foreach ($dirs as $dir) {
@@ -39,14 +40,19 @@ class ClassMapGenerator
     /**
      * Iterate over all files in the given directory searching for classes
      *
-     * @param Iterator|string $dir The directory to search in or an iterator
+     * @param Iterator|string $dir       The directory to search in or an iterator
+     * @param string          $whitelist Regex that matches against the file path
      *
      * @return array A class map array
      */
-    public static function createMap($dir)
+    public static function createMap($dir, $whitelist = null)
     {
         if (is_string($dir)) {
-            $dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
+            if (is_file($dir)) {
+                $dir = array(new \SplFileInfo($dir));
+            } else {
+                $dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
+            }
         }
 
         $map = array();
@@ -59,6 +65,10 @@ class ClassMapGenerator
             $path = $file->getRealPath();
 
             if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
+                continue;
+            }
+
+            if ($whitelist && !preg_match($whitelist, strtr($path, '\\', '/'))) {
                 continue;
             }
 
@@ -83,7 +93,14 @@ class ClassMapGenerator
     private static function findClasses($path)
     {
         $contents = file_get_contents($path);
-        $tokens   = token_get_all($contents);
+        try {
+            if (!preg_match('{\b(?:class|interface|trait)\b}i', $contents)) {
+                return array();
+            }
+            $tokens   = token_get_all($contents);
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Could not scan for classes inside '.$path.": \n".$e->getMessage(), 0, $e);
+        }
         $T_TRAIT  = version_compare(PHP_VERSION, '5.4', '<') ? -1 : T_TRAIT;
 
         $classes = array();
