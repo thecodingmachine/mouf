@@ -25,7 +25,6 @@ use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Util\Filesystem;
-use Composer\Autoload\ClassMapGenerator;
 use Composer\Package\CompletePackageInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
