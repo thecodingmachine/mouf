@@ -97,8 +97,18 @@ Now, let's have a look at a more complex install process. In this sample, the pa
 
 Internally, Mouf is using the <a href="/package/mvc/splash">Splash MVC framework</a>. Therefore, to interact with the user, we will be writing a <a href="/package_doc/mvc/splash/3.2/writing_controllers.html">Splash controller</a>. Here is the controller:
 
-<h3>controller/MyInstallController.php</h3>
-<pre class="brush:php">
+###controller/MyInstallController.php
+
+```php
+namespace Test\MyPackage\Controllers;
+
+use Mouf\Actions\InstallUtils;
+use Mouf\MoufManager;
+use Mouf\Html\Template\TemplateInterface;
+use Mouf\Mvc\Splash\Controllers\Controller;
+
+
+
 /**
  * The controller managing the install process.
  *
@@ -117,11 +127,16 @@ class MyInstallController extends Controller  {
 	/**
 	 * The template used by the install process.
 	 *
-	 * @Property
-	 * @Compulsory
 	 * @var TemplateInterface
 	 */
 	public $template;
+	
+	/**
+	 * The content block the template will be writting into.
+	 *
+	 * @var HtmlBlock
+	 */
+	public $contentBlock;
 	
 	/**
 	 * Displays the install screen.
@@ -138,9 +153,9 @@ class MyInstallController extends Controller  {
 		} else {
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
-				
-		$this->template->addContentFile(dirname(__FILE__)."/../views/install.php", $this);
-		$this->template->draw();
+
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../../../views/install.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -177,13 +192,12 @@ class MyInstallController extends Controller  {
 		
 		InstallUtils::continueInstall($selfedit == "true");
 	}
-		
 }
-</pre>
+```
 
-<h3>views/install.php</h3>
+###views/install.php
 
-<pre class="brush:html">
+```html
 &lt;h1&gt;Setting up your instance&lt;/h1&gt;
 
 &lt;p&gt;Our package can create automatically a &lt;em&gt;myInstance&lt;/em&gt; instance for the class &lt;em&gt;myClass&lt;/em&gt;.
@@ -197,26 +211,31 @@ So you want to create it?&lt;/p&gt;
 	&lt;input type="hidden" name="selfedit" value="&lt;?php echo $this-&gt;selfedit ?&gt;" /&gt;
 	&lt;button&gt;No&lt;/button&gt;
 &lt;/form&gt;
-</pre>
+```
 
 Ok, we have written our install process. Now, we must create the MyInstallController instance. The problem is we cannot use the Mouf admin interface, since the MyInstallController instance must be created only when the package is enabled.
-Hopefully, we can do this using the package.xml file. Here is a sample:
+Hopefully, we can do this using the *composer.json* file. Here is a sample:
 
-<pre class="brush:xml">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;package&gt;
+```js
+{
 	...
-	&lt;adminRequires&gt;
-		&lt;require&gt;controllers/MyInstallController.php&lt;/require&gt;
-		&lt;require&gt;InstallAdmin.php&lt;/require&gt;
-	&lt;/adminRequires&gt;
-	&lt;install&gt;
-		&lt;url&gt;mouf/myinstall/&lt;/url&gt;
-	&lt;/install&gt;
-&lt;/package&gt;
-</pre>
+    "extra": {
+    	"mouf": {
+	    	"install": [
+	    		{
+	    			"type": "url",
+	    			"url": "myinstall/"
+	    		}
+	    	],
+    		"require-admin": [
+    			"src/InstallAdmin.php"
+    		]
+    	}
+    }
+}
+```
 
-We have already seen the &lt;install&gt; tag. Let's focus on the &lt;adminRequires&gt; tag. This tag is a bit like the &lt;requires&gt; tag, except it includes files in the admin. So the files you put inside the <adminRequires> tag are loaded for each page of the Mouf administration pages (and not in your application). Therefore, it is the perfect place to request our controller.
+We have already seen the "install" section. Let's focus on the "require-admin" section. TODO: This tag is a bit like the &lt;requires&gt; tag, except it includes files in the admin. So the files you put inside the <adminRequires> tag are loaded for each page of the Mouf administration pages (and not in your application). Therefore, it is the perfect place to request our controller.
 
 You will also notice we include a second file: InstallAdmin.php. We haven't yet introduced that file. We use that file to create an instance of the MyInstallController class on the fly. Here is the content:
 
