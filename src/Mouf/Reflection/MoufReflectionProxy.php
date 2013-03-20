@@ -164,12 +164,12 @@ class MoufReflectionProxy {
 	 * @throws Exception
 	 */
 	public static function analyzeIncludes2($selfEdit, $forbiddenClasses) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/analyze_includes_2.php?selfedit=".(($selfEdit)?"true":"false");
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/analyze_includes_2.php";
 		/*foreach ($forbiddenClasses as $forbiddenClass) {
 			$url .= "&forbiddenClasses[]=".$forbiddenClass;
 		}*/	
 		
-		$response = self::performRequest($url, array("selfedit"=>json_encode($selfEdit), "classMap"=>$forbiddenClasses));
+		$response = self::performRequest($url, array("selfedit"=>json_encode($selfEdit), "classMap"=>json_encode($forbiddenClasses)));
 	
 		// Let's strip the invalid parts:
 		/*$arr = explode("\nX4EVDX4SEVX548DSVDXCDSF489\n", $response);
