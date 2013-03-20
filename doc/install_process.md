@@ -258,4 +258,4 @@ The 'moufInstallTemplate' instance is an instance of template declared in the ad
 It is very useful to display install pages, where you want your user to stay on the page and not click on a menu item that would bring it out of the install process.
 
 That's it for the dynamic install process. You should now know enough to create your own install processes.
-Do not hesitate to <a href="/package/mvc/splash">learn more about Splash</a> if you want to write complex controllers.
+Do not hesitate to <a href="http://mouf-php.com/packages/mouf/mvc.splash/index.md">learn more about Splash</a> if you want to write complex controllers.
