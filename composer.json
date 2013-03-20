@@ -31,6 +31,10 @@
                 {
 	    			"title": "Troubleshooting install",
 	    			"url": "doc/troubleshooting.md"
+	    		},
+	    		{
+	    			"title": "Creating a Mouf2 package",
+	    			"url": "doc/create_mouf_package.md"
 	    		}
             ]
         }
