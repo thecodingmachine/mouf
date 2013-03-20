@@ -91,8 +91,6 @@ This call is required to continue the global install process. If you do not call
 A typical dynamic install process
 ---------------------------------
 
-TODO! Continue here!!!!!!!
-
 Now, let's have a look at a more complex install process. In this sample, the package will ask the user if he wants to create the "myInstance" instance or not. The user will select the choice using 2 buttons ("yes" or "no").
 
 Internally, Mouf is using the <a href="/package/mvc/splash">Splash MVC framework</a>. Therefore, to interact with the user, we will be writing a <a href="/package_doc/mvc/splash/3.2/writing_controllers.html">Splash controller</a>. Here is the controller:
@@ -198,23 +196,25 @@ class MyInstallController extends Controller  {
 ###views/install.php
 
 ```html
-&lt;h1&gt;Setting up your instance&lt;/h1&gt;
+<h1>Setting up your instance</h1>
 
-&lt;p&gt;Our package can create automatically a &lt;em&gt;myInstance&lt;/em&gt; instance for the class &lt;em&gt;myClass&lt;/em&gt;.
-So you want to create it?&lt;/p&gt;
+<p>Our package can create automatically a <em>myInstance</em> instance for the class <em>myClass</em>.
+So you want to create it?</p>
 
-&lt;form action="install"&gt;
-	&lt;input type="hidden" name="selfedit" value="&lt;?php echo $this-&gt;selfedit ?&gt;" /&gt;
-	&lt;button&gt;Yes&lt;/button&gt;
-&lt;/form&gt;
-&lt;form action="skip"&gt;
-	&lt;input type="hidden" name="selfedit" value="&lt;?php echo $this-&gt;selfedit ?&gt;" /&gt;
-	&lt;button&gt;No&lt;/button&gt;
-&lt;/form&gt;
+<form action="install">
+	<input type="hidden" name="selfedit" value="<?php echo $this->selfedit ?>" />
+	<button>Yes</button>
+</form>
+<form action="skip">
+	<input type="hidden" name="selfedit" value="<?php echo $this->selfedit ?>" />
+	<button>No</button>
+</form>
 ```
 
 Ok, we have written our install process. Now, we must create the MyInstallController instance. The problem is we cannot use the Mouf admin interface, since the MyInstallController instance must be created only when the package is enabled.
 Hopefully, we can do this using the *composer.json* file. Here is a sample:
+
+###composer.json
 
 ```js
 {
@@ -235,20 +235,26 @@ Hopefully, we can do this using the *composer.json* file. Here is a sample:
 }
 ```
 
-We have already seen the "install" section. Let's focus on the "require-admin" section. TODO: This tag is a bit like the &lt;requires&gt; tag, except it includes files in the admin. So the files you put inside the <adminRequires> tag are loaded for each page of the Mouf administration pages (and not in your application). Therefore, it is the perfect place to request our controller.
+We have already seen the "install" section. Let's focus on the "require-admin" section.
+When you declare files in "require-admin", these files will be included each time you load a page in the Mouf user interface. So the files you put inside the "adminRequires" are loaded for each page of the Mouf administration pages (and not in your application). Therefore, it is the perfect place to request our controller.
 
-You will also notice we include a second file: InstallAdmin.php. We haven't yet introduced that file. We use that file to create an instance of the MyInstallController class on the fly. Here is the content:
+You will also notice we include a second file: **InstallAdmin.php**. We haven't yet introduced that file. We use that file to create an instance of the MyInstallController class on the fly. Here is the content:
 
 
-<pre class="brush:php">
+###InstallAdmin.php
+
+```php
+use Mouf\MoufManager;
+
 // Let's declare the contoller
-MoufManager::getMoufManager()->declareComponent('myinstall', 'MyInstallController', true);
+MoufManager::getMoufManager()->declareComponent('myinstall', 'Test\\MyPackage\\Controllers\\MyInstallController', true);
 // Let's bind the 'template' property of the controller to the 'installTemplate' instance
-MoufManager::getMoufManager()->bindComponents('myinstall', 'template', 'instanceTemplate');
-</pre>
+MoufManager::getMoufManager()->bindComponents('myinstall', 'template', 'moufInstallTemplate');
+MoufManager::getMoufManager()->bindComponents('myinstall', 'contentBlock', 'block.content');
+```
 
 
-The 'installTemplate' instance is an instance of template declared in the admin that contains no menu bars.
+The 'moufInstallTemplate' instance is an instance of template declared in the admin that contains no menu bars.
 It is very useful to display install pages, where you want your user to stay on the page and not click on a menu item that would bring it out of the install process.
 
 That's it for the dynamic install process. You should now know enough to create your own install processes.
