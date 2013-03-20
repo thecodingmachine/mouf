@@ -20,5 +20,20 @@
         "psr-0": {
             "Mouf": "src/"
         }
+    },
+    "extra": {
+        "mouf": {
+            "doc": [
+                {
+	    			"title": "Installing Mouf",
+	    			"url": "doc/installing_mouf.md"
+	    		},
+                {
+	    			"title": "Troubleshooting install",
+	    			"url": "doc/troubleshooting.md"
+	    		}
+            ]
+        }
+        
     }
 }
