@@ -88,3 +88,15 @@ You start the installation using "php composer.phar install", and Composer hangs
 This behaviour has been spoted on Windows 8, using Cygwin.
 
 To solve this problem, instead of using Cygwin, try using the Windows command-line client, or gitbash if you have it. One of them might help you with the install.
+
+
+Mouf causes Apache to stop and restart on Windows (but everyting is fine with Linux)
+------------------------------------------------------------------------------------
+If you are encountering such a problem, it is likely that your Apache installation is limited to a stack trace of 1Mo.
+Although this is fine with Mouf, you might encounter very disturbing errors in Mouf with some PHP files. You should edit your <em>httpd.conf</em> file and add these lines:
+<pre>
+&lt;IfModule mpm_winnt_module&gt;
+   ThreadStackSize 8388608
+&lt;/IfModule&gt;
+</pre>
+This will increase the Apache stacktrace to 8Mo. You can learn more about it <a href="http://stackoverflow.com/questions/5058845/how-do-i-increase-the-stack-size-for-apache-running-under-windows-7">on StackOverflow</a>.

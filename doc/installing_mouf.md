@@ -3,17 +3,6 @@ Requirements:
 To run Mouf 2, you will need PHP 5.3.2+ running on Apache.
 The **php_curl** and **php_openssl** extensions must be enabled, as well as the *mod_rewrite* for Apache.
 
-
-<div class="alert"><strong>Windows users, warning!</strong> It is likely that your Apache installation is limited to a stack trace of 1Mo. Also this is fine with Mouf, you might
-encounter very disturbing errors in Mouf with some PHP files. You should edit your <em>httpd.conf</em> file and add these lines:
-<pre>
-&lt;IfModule mpm_winnt_module&gt;
-   ThreadStackSize 8388608
-&lt;/IfModule&gt;
-</pre>
-This will increase the Apache stacktrace to 8Mo. You can learn more about it <a href="http://stackoverflow.com/questions/5058845/how-do-i-increase-the-stack-size-for-apache-running-under-windows-7">on StackOverflow</a>.
-</div>
-
 Download Mouf 2:
 --------------------------
 
