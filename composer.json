@@ -34,16 +34,19 @@
 	    		},
 	    		{
 	    			"title": "Creating a Mouf2 package",
-	    			"url": "doc/create_mouf_package.md"
-	    		},
-	    		{
-	    			"title": "Writing an install process",
-	    			"url": "doc/install_process.md"
-	    		},
-	    		{
-	    			"title": "Writing packages documentation",
-	    			"url": "doc/writing_packages_documentation.md"
+	    			"url": "doc/create_mouf_package.md",
+	    			"children": [
+	    			    {
+			    			"title": "Writing an install process",
+			    			"url": "doc/install_process.md"
+			    		},
+			    		{
+			    			"title": "Writing packages documentation",
+			    			"url": "doc/writing_packages_documentation.md"
+			    		}
+	    			]
 	    		}
+	    		
             ]
         }
         

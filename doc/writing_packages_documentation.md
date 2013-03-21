@@ -17,16 +17,22 @@ If you need to add additional pages, the documentation should be declared in the
 	    	"logo": "logo.png",
 	    	"doc": [
 	    		{
-	    			"title": "Using FINE",
-	    			"url": "doc/using_fine.html"
+	    			"title": "Introduction",
+	    			"url": "doc/introduction.html"
 	    		},
 	    		{
-	    			"title": "Date functions",
-	    			"url": "doc/date_functions.html"
+	    			"title": "My first page",
+	    			"url": "doc/first_page.md"
 	    		},
 	    		{
-	    			"title": "Currency functions",
-	    			"url": "doc/currency_functions.html"
+	    			"title": "My first chapter",
+	    			"url": "doc/chapter.html"
+	    			"children": [
+		    			{
+			    			"title": "A sub page",
+			    			"url": "doc/subpage.md"
+		    			}
+	    			]
 	    		}
 	    	]
 	    	
