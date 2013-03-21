@@ -21,9 +21,29 @@ foreach ($this->packageList as $package):
 	/* @var $package PackageInterface */
 	$docPages = $this->getDocPages($package);
 	if ($docPages) {
-		?><h2><?php echo $package->getPrettyName() ?> <small><?php echo $package->getPrettyVersion() ?></small></h2>
+		$extra = $package->getExtra();
+		if (isset($extra['mouf']['logo'])) {
+			$imgUrl = ROOT_URL.'../../'.$package->getName()."/".$extra['mouf']['logo'];
+		} else {
+			$imgUrl = ROOT_URL.'src-dev/views/images/package.png';
+		}
+
+		?>
+		<div class="media">
+	    	<a class="pull-left" href="#">
+	    		<img class="media-object" src="<?php echo $imgUrl ?>">
+	    	</a>
+	    	<div class="media-body">
+	    		<h4 class="media-heading">
+				<?php echo $package->getPrettyName() ?> <small><?php echo $package->getPrettyVersion() ?></small>
+				</h4>
+		
 		<?php 
 		$this->displayDocDirectory($docPages, $package->getName());
+		?>
+			</div>
+		</div>
+		<?php 
 	}
 
 endforeach;
