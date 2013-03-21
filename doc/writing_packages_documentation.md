@@ -1,7 +1,7 @@
 Writing documentation for your packages
 =======================================
 
-A good package should be documented. Indeed, what's the use of writing reusable code if nobody can use it? Mouf makes documentation writing easy for developers. The idea is simple: you write your documentation inside your package directory, in HTML or in <a href="http://daringfireball.net/projects/markdown/basics">Markdown</a> format. The documentation will be available to the users of the package (accessible through the "packages => documentation" menu in the Mouf admin interface), and will also be directly published to the Mouf website if you decide to upload your package.
+A good package should be documented. Indeed, what's the use of writing reusable code if nobody can use it? Mouf makes documentation writing easy for developers. The idea is simple: you write your documentation inside your package directory, in HTML or in <a href="http://daringfireball.net/projects/markdown/basics">Markdown</a> format. The documentation will be available to the users of the package (accessible through the **"packages => documentation"** menu in the Mouf admin interface), and will also be directly published to the Mouf website if you decide to upload your package.
 
 Declaring the composer.json pages
 ---------------------------------
@@ -52,3 +52,10 @@ Only pure HTML files (with the .html extension) or Markdown files (with the .md 
 You can use images (PNG, JPG, etc...)
 You do not need to write a full HTML file, you can start directly with the content of the &lt;body&gt; tag.
 Only the &lt;body&gt; tag will be displayed. The content of the &lt;head&gt; tag will be discarded.
+
+Generating a complete website for your packages documentation
+-------------------------------------------------------------
+
+As a bonus, if you want to publish the documentation of your package on the web, we provide a webapp for that!
+The [Composer package documentation generator](https://github.com/thecodingmachine/services.package-website-generator) can be used to generate a website containing your package's documentation.
+The Mouf documentation website is built with this tool. Don't hesitate using it too! 
