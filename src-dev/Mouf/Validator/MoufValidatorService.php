@@ -49,7 +49,9 @@ class MoufValidatorService implements HtmlElementInterface {
 			}
 			ValidatorsCounter.incrementGlobal();
 			var validatorNb = window.moufNbValidators;
-			jQuery('#validators').append("<div id='validator"+validatorNb+"' class='validator'><div class='loading'>Running "+name+"</div></div>");
+
+			var container = ValidatorMessages.addLoadingMessage("Running "+name);
+			//jQuery('#validators').append("<div id='validator"+validatorNb+"' class='validator'><div class='loading'>Running "+name+"</div></div>");
 
 			jQuery.ajax({
 				url: "<?php echo ROOT_URL ?>"+url,
@@ -57,25 +59,20 @@ class MoufValidatorService implements HtmlElementInterface {
 
 					try {
 						var json = jQuery.parseJSON(text);
-						
+
 						if (json.code == "ok") {
-							ValidatorsCounter.incrementSuccess();
-							jQuery('#validator'+validatorNb).html("<div class='alert alert-success'>"+json.html+"</div>");
+							ValidatorMessages.turnMessageIntoSuccess(container, json.message);
 						} else if (json.code == "warn") {
-							ValidatorsCounter.incrementWarn();
-							jQuery('#validator'+validatorNb).html("<div class='alert alert-block'>"+json.html+"</div>");
+							ValidatorMessages.turnMessageIntoWarn(container, json.message);
 						} else {
-							ValidatorsCounter.incrementError();
-							jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>"+json.html+"</div>");
+							ValidatorMessages.turnMessageIntoError(container, json.message);
 						}
 					} catch (e) {
-						ValidatorsCounter.incrementError();
-						jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
+						ValidatorsCounter.turnMessageIntoError(container, "Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					ValidatorsCounter.incrementError();
-					jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Unable to run '"+name+"': "+textStatus+"</div>");
+					ValidatorsCounter.turnMessageIntoError(container, "Unable to run '"+name+"': "+textStatus);
 				}
 								
 			});
