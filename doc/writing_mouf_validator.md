@@ -91,3 +91,21 @@ class MyController implements MoufValidatorInterface {
 
 For each instance of the class declared in Mouf, the validator will be run once. This also means that if you do not
 create an instance of this class, the validator will be ignored.
+
+Including Mouf validators in your Composer packages
+---------------------------------------------------
+
+You might want to include Mouf validators in your Composer packages, but without making your package dependant on the
+whole Mouf package. For this reason, the Mouf validator interfaces have been isolated in a very small package:
+**mouf/mouf-validators-interface**.
+
+This way, in your Composer package, if you decide to use Mouf validators, you just need to add a dependency on this package:
+
+```js
+{
+	...
+    "require": {
+    	"mouf/mouf-validators-interface": "~2.0"
+    }
+}
+```
