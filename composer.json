@@ -41,7 +41,7 @@
 	    			"children": [
 	    			    {
 			    			"title": "Writing a validator",
-			    			"url": "doc/writing_mouf_validator.md"
+			    			"url": "doc/writing_mouf_validator.md",
 			    			"children": [
 			    				{
 					    			"title": "Legacy validators",
