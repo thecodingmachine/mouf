@@ -88,3 +88,6 @@ class MyController implements MoufValidatorInterface {
 
 }
 ```
+
+For each instance of the class declared in Mouf, the validator will be run once. This also means that if you do not
+create an instance of this class, the validator will be ignored.
