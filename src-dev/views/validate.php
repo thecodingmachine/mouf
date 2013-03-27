@@ -190,7 +190,6 @@ $(document).ready(function() {
 				});
 
 				_.each(result.instances, function(instanceName) {
-					ValidatorsCounter.incrementGlobal();
 					
 					var container = ValidatorMessages.addLoadingMessage("Running validator for instance '"+instanceName+"'");
 
