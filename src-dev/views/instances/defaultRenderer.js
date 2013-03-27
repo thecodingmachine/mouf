@@ -666,7 +666,9 @@ var MoufDefaultRenderer = (function () {
 						var droppedClass = jQuery( ui.draggable ).data("class");
 						
 						if (droppedClass == null) {
-							throw "Error! The dropped item is neither an instance nor a class!";
+							//throw "Error! The dropped item is neither an instance nor a class!";
+							console.error("Error! The dropped item is neither an instance nor a class!");
+							return;
 						}
 						
 						var timestamp = new Date();
@@ -863,6 +865,7 @@ var MoufDefaultRenderer = (function () {
 									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
 									fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
 									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+									
 									renderField(moufInstanceProperty).appendTo(fieldElem);
 									
 									fieldGlobalElem.appendTo(propertiesList);

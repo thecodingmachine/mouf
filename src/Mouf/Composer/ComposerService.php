@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Composer;
 
+use Composer\Script\EventDispatcher;
+
 use Mouf\Installer\MoufUIFileWritter;
 
 use Mouf\Installer\PackagesOrderer;
@@ -29,7 +31,6 @@ use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Util\Filesystem;
-use Composer\Autoload\ClassMapGenerator;
 use Composer\Package\CompletePackageInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
@@ -72,25 +73,26 @@ class ComposerService {
 		if ($this->classMap !== null) {
 			return $this->classMap;
 		}
+
+		$composer = $this->getComposer();
 		
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
-		
-		
-		$composer = $this->getComposer(); 
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
+
 		
 		$installationManager = $composer->getInstallationManager();
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$config = $composer->getConfig();
 		
-		
 		$packageMap = $autoloadGenerator->buildPackageMap($installationManager, $package, $localRepos->getPackages());
-		
+
+
 		//var_dump($packageMap);
 		$autoloads = $autoloadGenerator->parseAutoloads($packageMap, $package);
 		
 		
-		
+
 		
 		
 		$targetDir = "composer";
@@ -104,14 +106,9 @@ class ComposerService {
 		//$vendorPathCode = $filesystem->findShortestPathCode(realpath($targetDir), $vendorPath, true);
 		//$vendorPathToTargetDirCode = $filesystem->findShortestPathCode($vendorPath, realpath($targetDir), true);
 		
-		
-		
-		
-		
-		
+				
 		// flatten array
 		$classMap = array();
-		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		
 		foreach ($autoloads['psr-0'] as $namespace => $paths) {
 			foreach ($paths as $dir) {
@@ -121,23 +118,29 @@ class ComposerService {
 						preg_quote(rtrim($dir, '/')),
 						strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
 				);
+				if (!is_dir($dir)) {
+					continue;
+				}
 				foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
 					if ('' === $namespace || 0 === strpos($class, $namespace)) {
 						$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 						if (!isset($classMap[$class])) {
-							$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+							//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+							$classMap[$class] = $path;
 						}
 					}
 				}
 			}
 		}
+	
+		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
-				$classMap[$class] = /*'$baseDir . '.var_export(*/$path/*, true).",\n"*/;
+				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+				$classMap[$class] = $path;
 			}
 		}
-		
 		
 		
 		//var_dump($classMap);
@@ -243,7 +246,9 @@ class ComposerService {
 	 * @return PackageInterface[]
 	 */
 	public function getLocalPackages() {
-		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator();
+		$composer = $this->getComposer();
+		$dispatcher = new EventDispatcher($composer, $this->io);
+		$autoloadGenerator = new \Composer\Autoload\AutoloadGenerator($dispatcher);
 		
 		if ($this->selfEdit) {
 			chdir(__DIR__."/../../..");
@@ -254,7 +259,7 @@ class ComposerService {
 		
 		$composer = $this->getComposer();
 				
-		$localRepos = new CompositeRepository($composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));
 		$package = $composer->getPackage();
 		$packagesList = $localRepos->getPackages();
 		$packagesList[] = $package;

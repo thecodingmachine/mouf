@@ -568,7 +568,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		
     		return $jsonArray;
     	} else {
-    		return MoufReflectionHelper::classToJson($this);
+    		return MoufReflectionHelper::classToJson($this, $exportMode);
     	}
     }
 

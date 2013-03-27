@@ -12,6 +12,7 @@
  * Analyses all included PHP files to detect whether one is not behaving correctly (outputing some text, which is strictly forbidden)
  */
 
+use Mouf\Reflection\MoufReflectionClass;
 use Mouf\Composer\ComposerService;
 
 // Disable output buffering
@@ -38,7 +39,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 
-$classMap = $_REQUEST['classMap'];
+$classMap = json_decode($_REQUEST['classMap'], true);
 
 /*$forbiddenClasses = isset($_REQUEST["forbiddenClasses"])?$_REQUEST["forbiddenClasses"]:array();
 // Put the values in key for faster search
@@ -51,14 +52,19 @@ $componentsList = array();
 */
 echo "FDSFZEREZ_STARTUP\n";
 
-foreach ($classMap as $className => $fileName) {
-	//if (!isset($forbiddenClasses[$className])) {
-		echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
-		echo $className."\n";
-		$refClass = new ReflectionClass($className);
-		// If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
-		echo "DSQRZREZRZER__AFTERINCLUDE\n";
-	//}
+if (is_array($classMap)) {
+	foreach ($classMap as $className => $fileName) {
+		//if (!isset($forbiddenClasses[$className])) {
+			echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
+			echo $className."\n";
+			$refClass = new MoufReflectionClass($className);
+			// Let's also serialize to check all the parameters, fields, etc...
+			$refClass->toJson();
+			
+			// If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
+			echo "DSQRZREZRZER__AFTERINCLUDE\n";
+		//}
+	}
 }
 
 // Another line breaker to mark the end of class loading. If we make it here, everything went according to plan.

@@ -97,7 +97,8 @@ class MoufValidatorService implements HtmlElementInterface {
 		});
 		</script>
 <?php 
-		
+		// TODO: add a script that searches for instances / classes in JS, and add a validator in JS directly.
+		// Doing so in Ajax will allow us to be sure the page displays fast enough.
 	}
 	
 	/**
