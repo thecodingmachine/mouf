@@ -42,16 +42,8 @@ class MoufValidatorService implements HtmlElementInterface {
 				
 		function addValidator(name, url) {
 
-			if (typeof(window.moufNbValidators) == "undefined") {
-				window.moufNbValidators = 0;
-			} else {
-				window.moufNbValidators++;
-			}
-			ValidatorsCounter.incrementGlobal();
-			var validatorNb = window.moufNbValidators;
 
 			var container = ValidatorMessages.addLoadingMessage("Running "+name);
-			//jQuery('#validators').append("<div id='validator"+validatorNb+"' class='validator'><div class='loading'>Running "+name+"</div></div>");
 
 			jQuery.ajax({
 				url: "<?php echo ROOT_URL ?>"+url,
@@ -61,18 +53,18 @@ class MoufValidatorService implements HtmlElementInterface {
 						var json = jQuery.parseJSON(text);
 
 						if (json.code == "ok") {
-							ValidatorMessages.turnMessageIntoSuccess(container, json.message);
+							ValidatorMessages.turnMessageIntoSuccess(container, json.html);
 						} else if (json.code == "warn") {
-							ValidatorMessages.turnMessageIntoWarn(container, json.message);
+							ValidatorMessages.turnMessageIntoWarn(container, json.html);
 						} else {
-							ValidatorMessages.turnMessageIntoError(container, json.message);
+							ValidatorMessages.turnMessageIntoError(container, json.html);
 						}
 					} catch (e) {
-						ValidatorsCounter.turnMessageIntoError(container, "Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+						ValidatorMessages.turnMessageIntoError(container, "Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					ValidatorsCounter.turnMessageIntoError(container, "Unable to run '"+name+"': "+textStatus);
+					ValidatorMessages.turnMessageIntoError(container, "Unable to run '"+name+"': "+textStatus);
 				}
 								
 			});

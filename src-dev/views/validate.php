@@ -177,11 +177,11 @@ $(document).ready(function() {
 										ValidatorMessages.turnMessageIntoError(container, json.message);
 									}
 								} catch (e) {
-									ValidatorsCounter.turnMessageIntoError(container, "Error while running validator for class '"+classValidator.className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+classValidator.className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 								}
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorsCounter.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for class '"+classValidator.className+"': "+textStatus+"</div>");
+								ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for class '"+classValidator.className+"': "+textStatus+"</div>");
 							}
 											
 						});
@@ -215,11 +215,11 @@ $(document).ready(function() {
 										ValidatorMessages.turnMessageIntoError(container, json.message);
 									}
 								} catch (e) {
-									ValidatorsCounter.turnMessageIntoError(container, "Error while running validator for instance '"+instanceValidator.instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceValidator.instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 								}
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorsCounter.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for instance '"+instanceValidator.instanceName+"': "+textStatus+"</div>");
+								ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for instance '"+instanceValidator.instanceName+"': "+textStatus+"</div>");
 							}
 											
 						});
