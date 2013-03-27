@@ -858,12 +858,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-validators-interface.git",
-                "reference": "0222ef6ea5556b3410f497d5800d808a3d98a4a7"
+                "reference": "d3078d573802d84965a5a9b51c3ebd4c4db4aeee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-validators-interface/zipball/0222ef6ea5556b3410f497d5800d808a3d98a4a7",
-                "reference": "0222ef6ea5556b3410f497d5800d808a3d98a4a7",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-validators-interface/zipball/d3078d573802d84965a5a9b51c3ebd4c4db4aeee",
+                "reference": "d3078d573802d84965a5a9b51c3ebd4c4db4aeee",
                 "shasum": ""
             },
             "require": {
@@ -892,7 +892,7 @@
                 "mouf",
                 "validators"
             ],
-            "time": "2013-03-27 08:59:11"
+            "time": "2013-03-27 15:25:40"
         },
         {
             "name": "mouf/mvc.splash",
