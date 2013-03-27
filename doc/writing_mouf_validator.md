@@ -18,6 +18,7 @@ Things you should know about validators
 ---------------------------------------
 
 There are 3 kinds of validators:
+
 - Class validators (each class generates one validator) 
 - Instance validators (each instance generates one validator)
 - Custom validators (almost always useless and out of scope of this document. Check the legacy validators code to learn more)
@@ -54,11 +55,15 @@ As you can see, you have a single method to implement: <code>validateClass</code
 
 The first parameter of the <code>MoufValidatorResult</code> constructor is the result type.
 It can be one amongst:
+
 - MoufValidatorResult::SUCCESS
 - MoufValidatorResult::WARN
 - MoufValidatorResult::ERROR
 
 The second parameter is the text that will be displayed.
+
+<div class="alert alert-info"><strong>Note:</strong> When you create a new validator, for your validator to appear 
+in the Mouf status page, please be sure to click the <strong>purge the code cache</strong> button.</div>
 
 Developing an instance validator
 --------------------------------
@@ -101,6 +106,7 @@ whole Mouf package. For this reason, the Mouf validator interfaces have been iso
 
 This way, in your Composer package, if you decide to use Mouf validators, you just need to add a dependency on this package:
 
+####composer.json
 ```js
 {
 	...
