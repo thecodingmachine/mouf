@@ -51,27 +51,11 @@ $moufManager = MoufManager::getMoufManager();
 $response = array("instances"=>array(), "classes"=>array());
 
 $instanceList = $moufManager->findInstances("Mouf\\Validator\\MoufValidatorInterface");
-
-foreach ($instanceList as $instanceName) {
-	$instance = $moufManager->getInstance($instanceName);
-	/* @var $instance Mouf\Validator\MoufValidatorInterface */
-	try {
-		$response["instances"][] = array("title"=>$instance->getValidatorTitle(), "instanceName"=>$instanceName);
-	} catch (Exception $e) {
-		$response["instances"][] = array("error"=>$e->getTraceAsString(), "instanceName"=>$instanceName);
-	}
-}
+$response["instances"] = $instanceList;
 
 // Now, let's get the full list of absolutely all classes implementing "MoufStaticValidatorInterface".
 $classList = Moufspector::getComponentsList("Mouf\\Validator\\MoufStaticValidatorInterface", $selfEdit);
-
-foreach ($classList as $className) {
-	try {
-		$response["classes"][] = array("title"=>$className::getStaticValidatorTitle(), "className"=>$className);
-	} catch (Exception $e) {
-		$response["classes"][] = array("error"=>$e->getTraceAsString(), "className"=>$className);
-	}
-}
+$response["classes"] = $classList;
 
 $encode = "php";
 if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]=="json") {

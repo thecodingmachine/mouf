@@ -150,80 +150,82 @@ $(document).ready(function() {
 				
 				$('#loadingValidatorsIndicator').hide();
 				
-				_.each(result.classes, function(classValidator) {
-					
-					if (classValidator.error) {
-						ValidatorMessages.addLoadingMessage("").turnMessageIntoError(classValidator.error);
-					} else {
-						var container = ValidatorMessages.addLoadingMessage(classValidator.title);
+				_.each(result.classes, function(className) {
 
-						$.ajax({
-							url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
-							data : {
-								encode : "json",
-								"class" : classValidator.className,
-								selfedit : this.selfEdit ? "true" : "false"
-							},
-							success: function(json){
+					var container = ValidatorMessages.addLoadingMessage("Running validator for class '"+className+"'");
 
-								try {
-									//var json = jQuery.parseJSON(text);
-									
-									if (json.code == "ok") {
-										ValidatorMessages.turnMessageIntoSuccess(container, json.message);
-									} else if (json.code == "warn") {
-										ValidatorMessages.turnMessageIntoWarn(container, json.message);
-									} else {
-										ValidatorMessages.turnMessageIntoError(container, json.message);
-									}
-								} catch (e) {
-									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+classValidator.className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+					$.ajax({
+						url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
+						data : {
+							encode : "json",
+							"class" : className,
+							selfedit : this.selfEdit ? "true" : "false"
+						},
+						success: function(json){
+
+							try {
+								if (typeof(json) == "string") {
+									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									return;
 								}
-							},
-							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for class '"+classValidator.className+"': "+textStatus+"</div>");
+								//var json = jQuery.parseJSON(text);
+								
+								if (json.code == "ok") {
+									ValidatorMessages.turnMessageIntoSuccess(container, json.message).attr("title", "Validator for class '"+className+"'");
+								} else if (json.code == "warn") {
+									ValidatorMessages.turnMessageIntoWarn(container, json.message).attr("title", "Validator for class '"+className+"'");
+								} else {
+									ValidatorMessages.turnMessageIntoError(container, json.message).attr("title", "Validator for class '"+className+"'");
+								}
+							} catch (e) {
+								ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
 							}
-											
-						});
-					}
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for class '"+className+"': "+textStatus+"</div>");
+						}
+										
+					});
+					
 				});
 
-				_.each(result.instances, function(instanceValidator) {
+				_.each(result.instances, function(instanceName) {
 					ValidatorsCounter.incrementGlobal();
-					if (instanceValidator.error) {
-						ValidatorMessages.addLoadingMessage("").turnMessageIntoError(instanceValidator.error);
-					} else {
-						var container = ValidatorMessages.addLoadingMessage(instanceValidator.title);
+					
+					var container = ValidatorMessages.addLoadingMessage("Running validator for instance '"+instanceName+"'");
 
-						$.ajax({
-							url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
-							data : {
-								encode : "json",
-								"instance" : instanceValidator.instanceName,
-								selfedit : this.selfEdit ? "true" : "false"
-							},
-							success: function(json){
+					$.ajax({
+						url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
+						data : {
+							encode : "json",
+							"instance" : instanceName,
+							selfedit : this.selfEdit ? "true" : "false"
+						},
+						success: function(json){
 
-								try {
-									//var json = jQuery.parseJSON(text);
-									
-									if (json.code == "ok") {
-										ValidatorMessages.turnMessageIntoSuccess(container, json.message);
-									} else if (json.code == "warn") {
-										ValidatorMessages.turnMessageIntoWarn(container, json.message);
-									} else {
-										ValidatorMessages.turnMessageIntoError(container, json.message);
-									}
-								} catch (e) {
-									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceValidator.instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+							try {
+								if (typeof(json) == "string") {
+									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									return;
 								}
-							},
-							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for instance '"+instanceValidator.instanceName+"': "+textStatus+"</div>");
+								//var json = jQuery.parseJSON(text);
+								
+								if (json.code == "ok") {
+									ValidatorMessages.turnMessageIntoSuccess(container, json.message).attr("title", "Validator for instance '"+instanceName+"'");
+								} else if (json.code == "warn") {
+									ValidatorMessages.turnMessageIntoWarn(container, json.message).attr("title", "Validator for instance '"+instanceName+"'");
+								} else {
+									ValidatorMessages.turnMessageIntoError(container, json.message).attr("title", "Validator for instance '"+instanceName+"'");
+								}
+							} catch (e) {
+								ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 							}
-											
-						});
-					}
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							ValidatorMessages.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for instance '"+instanceName+"': "+textStatus+"</div>");
+						}
+										
+					});
 				});
 				
 			});
