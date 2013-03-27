@@ -42,6 +42,12 @@
 	    			    {
 			    			"title": "Writing a validator",
 			    			"url": "doc/writing_mouf_validator.md"
+			    			"children": [
+			    				{
+					    			"title": "Legacy validators",
+					    			"url": "doc/mouf_legacy_validators.md"
+					    		}
+			    			]
 			    		},
 			    		{
 			    			"title": "Writing an install process",
