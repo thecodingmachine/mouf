@@ -47,6 +47,7 @@ class MoufValidatorService implements HtmlElementInterface {
 			} else {
 				window.moufNbValidators++;
 			}
+			ValidatorsCounter.incrementGlobal();
 			var validatorNb = window.moufNbValidators;
 			jQuery('#validators').append("<div id='validator"+validatorNb+"' class='validator'><div class='loading'>Running "+name+"</div></div>");
 
@@ -58,17 +59,22 @@ class MoufValidatorService implements HtmlElementInterface {
 						var json = jQuery.parseJSON(text);
 						
 						if (json.code == "ok") {
+							ValidatorsCounter.incrementSuccess();
 							jQuery('#validator'+validatorNb).html("<div class='alert alert-success'>"+json.html+"</div>");
 						} else if (json.code == "warn") {
+							ValidatorsCounter.incrementWarn();
 							jQuery('#validator'+validatorNb).html("<div class='alert alert-block'>"+json.html+"</div>");
 						} else {
+							ValidatorsCounter.incrementError();
 							jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>"+json.html+"</div>");
 						}
 					} catch (e) {
+						ValidatorsCounter.incrementError();
 						jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
+					ValidatorsCounter.incrementError();
 					jQuery('#validator'+validatorNb).html("<div class='alert alert-error'>Unable to run '"+name+"': "+textStatus+"</div>");
 				}
 								

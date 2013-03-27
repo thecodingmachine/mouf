@@ -442,7 +442,6 @@ var MoufInstanceManager = (function() {
 		getInstanceListByType : function(type) {
 			var promise = new Mouf.Promise();
 
-			// TODO: add support for selfedit! (or "whatevermoufmanagername").
 			jQuery
 					.ajax(
 							this.rootUrl
