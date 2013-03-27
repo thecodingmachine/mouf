@@ -1,5 +1,5 @@
 {
-    "hash": "a329f980d7c8de1a92286e9755039c19",
+    "hash": "310f9b04fb5a8da4847c26b5d7a02313",
     "packages": [
         {
             "name": "michelf/php-markdown",
@@ -144,23 +144,24 @@
         },
         {
             "name": "mouf/html.template.bootstrap",
-            "version": "2.3.1.x-dev",
+            "version": "2.3.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.bootstrap.git",
-                "reference": "fe5554bb3b87cec84c83ecb06be29c1f3eebb413"
+                "reference": "1d4a46cfaae7b95396c51dc9dd0838feaf4f487d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/fe5554bb3b87cec84c83ecb06be29c1f3eebb413",
-                "reference": "fe5554bb3b87cec84c83ecb06be29c1f3eebb413",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/1d4a46cfaae7b95396c51dc9dd0838feaf4f487d",
+                "reference": "1d4a46cfaae7b95396c51dc9dd0838feaf4f487d",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
+                "mouf/html.template.templateinterface": ">=2.0,<3.0",
                 "mouf/html.utils.bootstrap": "2.3.*",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "mouf/html.utils.weblibrarymanager": ">=2.0,<3.0",
                 "mouf/html.widgets.menu": "2.*",
+                "mouf/html.widgets.messageservice": ">=2.2,<3.0",
                 "php": ">=5.3.0"
             },
             "type": "mouf-library",
@@ -199,7 +200,7 @@
                 "mouf",
                 "template"
             ],
-            "time": "2013-03-19 22:41:15"
+            "time": "2013-03-25 08:42:47"
         },
         {
             "name": "mouf/html.template.menus.basicmenu",
@@ -489,16 +490,16 @@
         },
         {
             "name": "mouf/html.widgets.messageservice",
-            "version": "2.1.x-dev",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842"
+                "reference": "33509c39f1c36580cc473c40eae18350ac741285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
-                "reference": "809f7f11ae6ded5c04b4c1ba2d389bc7ec851842",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/33509c39f1c36580cc473c40eae18350ac741285",
+                "reference": "33509c39f1c36580cc473c40eae18350ac741285",
                 "shasum": ""
             },
             "require": {
@@ -546,7 +547,7 @@
                 "widget",
                 "widgets"
             ],
-            "time": "2012-12-26 11:50:42"
+            "time": "2013-03-25 08:43:40"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -852,17 +853,59 @@
             "time": "2013-03-19 17:56:25"
         },
         {
+            "name": "mouf/mouf-validators-interface",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/mouf-validators-interface.git",
+                "reference": "0222ef6ea5556b3410f497d5800d808a3d98a4a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-validators-interface/zipball/0222ef6ea5556b3410f497d5800d808a3d98a4a7",
+                "reference": "0222ef6ea5556b3410f497d5800d808a3d98a4a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "The mouf-validators-interface package contains interfaces your classes can implement to provide self-validation in the Mouf interface.",
+            "homepage": "http://mouf-php.com",
+            "keywords": [
+                "mouf",
+                "validators"
+            ],
+            "time": "2013-03-27 08:59:11"
+        },
+        {
             "name": "mouf/mvc.splash",
             "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "d9eeb8dd906530a5d70a9fec8b6672bd48fc6c71"
+                "reference": "dc15c24ebe97aac6acbf29d884b9a18f1af17f88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/d9eeb8dd906530a5d70a9fec8b6672bd48fc6c71",
-                "reference": "d9eeb8dd906530a5d70a9fec8b6672bd48fc6c71",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/dc15c24ebe97aac6acbf29d884b9a18f1af17f88",
+                "reference": "dc15c24ebe97aac6acbf29d884b9a18f1af17f88",
                 "shasum": ""
             },
             "require": {
@@ -946,7 +989,7 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2013-03-19 18:18:33"
+            "time": "2013-03-27 09:12:56"
         },
         {
             "name": "mouf/mvc.splash-common",
@@ -1272,12 +1315,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.file-cache.git",
-                "reference": "f42bb469c8a1e4e13ce4ea996709d1630971860a"
+                "reference": "b9130f9fa49fa1be2abd6f6994710daf0df8fcda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.file-cache/zipball/f42bb469c8a1e4e13ce4ea996709d1630971860a",
-                "reference": "f42bb469c8a1e4e13ce4ea996709d1630971860a",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.file-cache/zipball/b9130f9fa49fa1be2abd6f6994710daf0df8fcda",
+                "reference": "b9130f9fa49fa1be2abd6f6994710daf0df8fcda",
                 "shasum": ""
             },
             "require": {
@@ -1320,7 +1363,7 @@
                 "file",
                 "mouf"
             ],
-            "time": "2013-03-19 22:05:23"
+            "time": "2013-03-25 18:09:43"
         },
         {
             "name": "mouf/utils.cache.no-cache",
@@ -1943,12 +1986,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2"
+                "reference": "3.7.19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2",
-                "reference": "a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3.7.19",
+                "reference": "3.7.19",
                 "shasum": ""
             },
             "require": {
@@ -2009,7 +2052,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-03-19 10:54:27"
+            "time": "2013-03-25 11:45:06"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2067,12 +2110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf"
+                "reference": "3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf",
-                "reference": "bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab",
+                "reference": "3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab",
                 "shasum": ""
             },
             "require": {
@@ -2105,7 +2148,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2013-03-06 17:38:49"
+            "time": "2013-03-23 07:49:54"
         }
     ],
     "aliases": [
