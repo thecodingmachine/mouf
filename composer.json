@@ -40,6 +40,10 @@
 	    			"url": "doc/create_mouf_package.md",
 	    			"children": [
 	    			    {
+			    			"title": "Writing a validator",
+			    			"url": "doc/writing_mouf_validator.md"
+			    		},
+			    		{
 			    			"title": "Writing an install process",
 			    			"url": "doc/install_process.md"
 			    		},
