@@ -36,6 +36,60 @@ ValidatorsCounter = {
 		$('#errorBtn').text(ValidatorsCounter.error);
 	}
 };
+
+ValidatorMessages = {
+	displayMode: "all", // displayMode can be "all", "warn" or "error"
+		
+	addLoadingMessage: function(text) {
+		ValidatorsCounter.incrementGlobal();
+
+		var $validatorsDiv = $('#loadedValidatorsIndicators');
+		var container = $("<div/>").appendTo($validatorsDiv);
+		$("<div/>").addClass("loading")
+			.text(text)
+			.appendTo(container);
+		return container;
+	},
+	turnMessageIntoSuccess: function(container, text) {
+		ValidatorsCounter.incrementSuccess();
+		container.html("<div class='alert alert-success validatorSuccess'>"+text+"</div>");
+		if (ValidatorMessages.displayMode != "all") {
+			container.hide();
+		}
+		return container;
+	},
+	turnMessageIntoWarn: function(container, text) {
+		ValidatorsCounter.incrementWarn();
+		container.html("<div class='alert validatorWarning'>"+text+"</div>");
+		if (ValidatorMessages.displayMode == "error") {
+			container.hide();
+		}
+		return container;
+	},
+	turnMessageIntoError: function(container, text) {
+		ValidatorsCounter.incrementError();
+		container.html("<div class='alert alert-error validatorError'>"+text+"</div>");
+
+		return container;
+	}
+}
+
+$(document).ready(function() {
+	$("#successBtn").click(function() {
+		$(".validatorSuccess").show();
+		$(".validatorWarning").show();
+	});
+
+	$("#warnBtn").click(function() {
+		$(".validatorSuccess").hide();
+		$(".validatorWarning").show();
+	});
+	
+	$("#errorBtn").click(function() {
+		$(".validatorSuccess").hide();
+		$(".validatorWarning").hide();
+	});
+});
 </script>
 
 <h1>Mouf status</h1>
@@ -95,20 +149,13 @@ $(document).ready(function() {
 
 				
 				$('#loadingValidatorsIndicator').hide();
-				$validatorsDiv = $('#loadedValidatorsIndicators');
 				
 				_.each(result.classes, function(classValidator) {
-					ValidatorsCounter.incrementGlobal();
+					
 					if (classValidator.error) {
-						ValidatorsCounter.incrementError();
-						$("<div/>").addClass("alert alert-error")
-							.text(classValidator.error)
-							.appendTo($validatorsDiv);
+						ValidatorMessages.addLoadingMessage("").turnMessageIntoError(classValidator.error);
 					} else {
-						var container = $("<div/>").appendTo($validatorsDiv);
-						$("<div/>").addClass("loading")
-							.text(classValidator.title)
-							.appendTo(container);
+						var container = ValidatorMessages.addLoadingMessage(classValidator.title);
 
 						$.ajax({
 							url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
@@ -123,23 +170,18 @@ $(document).ready(function() {
 									//var json = jQuery.parseJSON(text);
 									
 									if (json.code == "ok") {
-										ValidatorsCounter.incrementSuccess();
-										container.html("<div class='alert alert-success'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoSuccess(container, json.message);
 									} else if (json.code == "warn") {
-										ValidatorsCounter.incrementWarn();
-										container.html("<div class='alert alert-block'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoWarn(container, json.message);
 									} else {
-										ValidatorsCounter.incrementError();
-										container.html("<div class='alert alert-error'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoError(container, json.message);
 									}
 								} catch (e) {
-									ValidatorsCounter.incrementError();
-									container.html("<div class='alert alert-error'>Error while running validator for class '"+classValidator.className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
+									ValidatorsCounter.turnMessageIntoError(container, "Error while running validator for class '"+classValidator.className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 								}
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorsCounter.incrementError();
-								container.html("<div class='alert alert-error'>Unable to run validator for class '"+classValidator.className+"': "+textStatus+"</div>");
+								ValidatorsCounter.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for class '"+classValidator.className+"': "+textStatus+"</div>");
 							}
 											
 						});
@@ -149,15 +191,9 @@ $(document).ready(function() {
 				_.each(result.instances, function(instanceValidator) {
 					ValidatorsCounter.incrementGlobal();
 					if (instanceValidator.error) {
-						$("<div/>").addClass("alert alert-error")
-							.text(instanceValidator.error)
-							.appendTo($validatorsDiv);
+						ValidatorMessages.addLoadingMessage("").turnMessageIntoError(instanceValidator.error);
 					} else {
-						var container = $("<div/>").appendTo($validatorsDiv);
-						ValidatorsCounter.incrementError();
-						$("<div/>").addClass("loading")
-							.text(instanceValidator.title)
-							.appendTo(container);
+						var container = ValidatorMessages.addLoadingMessage(instanceValidator.title);
 
 						$.ajax({
 							url: MoufInstanceManager.rootUrl + "src/direct/validate.php",
@@ -172,23 +208,18 @@ $(document).ready(function() {
 									//var json = jQuery.parseJSON(text);
 									
 									if (json.code == "ok") {
-										ValidatorsCounter.incrementSuccess();
-										container.html("<div class='alert alert-success'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoSuccess(container, json.message);
 									} else if (json.code == "warn") {
-										ValidatorsCounter.incrementWarn();
-										container.html("<div class='alert alert-block'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoWarn(container, json.message);
 									} else {
-										ValidatorsCounter.incrementError();
-										container.html("<div class='alert alert-error'>"+json.message+"</div>");
+										ValidatorMessages.turnMessageIntoError(container, json.message);
 									}
 								} catch (e) {
-									ValidatorsCounter.incrementError();
-									container.html("<div class='alert alert-error'>Error while running validator for class '"+instanceValidator.instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre></div>").find("pre").text(text);
+									ValidatorsCounter.turnMessageIntoError(container, "Error while running validator for instance '"+instanceValidator.instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
 								}
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								ValidatorsCounter.incrementError();
-								container.html("<div class='alert alert-error'>Unable to run validator for class '"+instanceValidator.instanceName+"': "+textStatus+"</div>");
+								ValidatorsCounter.turnMessageIntoError(container, "<div class='alert alert-error'>Unable to run validator for instance '"+instanceValidator.instanceName+"': "+textStatus+"</div>");
 							}
 											
 						});
