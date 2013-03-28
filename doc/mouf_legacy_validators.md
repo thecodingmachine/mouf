@@ -3,7 +3,7 @@ Mouf legacy validators
 
 Validators are the self-check items displayed on the status page.
 
-<div class="alert">If you want to provide your own validators, we strongly advise you to use the new [Mouf2 validators](writing_mouf_validator.md).</div>
+<div class="alert">If you want to provide your own validators, we strongly advise you to use the new <a href="writing_mouf_validator.md">Mouf2 validators</a>.</div>
 
 If for some reason, your validator cannot be bound to a class, nor to an instance, you might still want
 to have a look at the old Mouf 1 validators that are directly implemented as Ajax calls.
