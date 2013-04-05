@@ -96,6 +96,7 @@ class IncludesAnalyzerController extends Controller {
 		$this->errors = $allClasses['errors'];
 		
 		foreach ($allClasses["classes"] as $class) {
+			$hasErrors = false;
 			foreach ($class["methods"] as $method) {
 				$hasErrors = false;
 				if (isset($parameter["classinerror"])) {
