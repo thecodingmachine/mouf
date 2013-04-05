@@ -500,7 +500,12 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     
     public function toXml() {
     	$root = simplexml_load_string("<class name=\"".$this->getName()."\"></class>");
-    	$comment = $root->addChild("comment", $this->getDocComment());
+    	$commentNode = $root->addChild("comment");
+    	
+    	$node= dom_import_simplexml($root);
+   		$no = $node->ownerDocument;
+   		$node->appendChild($no->createCDATASection($this->getDocComment())); 
+    	
 
     	foreach ($this->getProperties() as $property) {
     		$property->toXml($root);

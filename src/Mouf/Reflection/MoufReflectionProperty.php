@@ -190,7 +190,13 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     public function toXml(\SimpleXMLElement $root) {
     	$propertyNode = $root->addChild("property");
     	$propertyNode->addAttribute("name", $this->getName());
-    	$propertyNode->addChild("comment", $this->getDocComment());
+    	$commentNode = $propertyNode->addChild("comment");
+    	
+    	$node= dom_import_simplexml($propertyNode);
+   		$no = $node->ownerDocument;
+   		$node->appendChild($no->createCDATASection($this->getDocComment())); 
+    	
+    	
 		$propertyNode->addAttribute("modifier", $this->isPrivate() ? 'private' : $this->isProtected() ? "protected" : "public");
 		$propertyNode->addAttribute("is_static", $this->isStatic() ? "true" : "false");
 		

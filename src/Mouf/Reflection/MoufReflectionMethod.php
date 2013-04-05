@@ -203,7 +203,12 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     	$methodNode->addAttribute("abstract", $this->isAbstract()?"true":"false");
     	$methodNode->addAttribute("constructor", $this->isConstructor()?"true":"false");
     	$methodNode->addAttribute("final", $this->isFinal()?"true":"false");
-    	$methodNode->addChild("comment", $this->getDocComment());
+    	$commentNode = $methodNode->addChild("comment");
+    	
+    	$node= dom_import_simplexml($methodNode);
+   		$no = $node->ownerDocument;
+   		$node->appendChild($no->createCDATASection($this->getDocComment())); 
+    	
     	
     	foreach ($this->getParameters() as $parameter) {
     		$parameter->toXml($methodNode);
