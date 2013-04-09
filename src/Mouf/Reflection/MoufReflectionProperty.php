@@ -192,7 +192,7 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	$propertyNode->addAttribute("name", $this->getName());
     	$commentNode = $propertyNode->addChild("comment");
     	
-    	$node= dom_import_simplexml($propertyNode);
+    	$node= dom_import_simplexml($commentNode);
    		$no = $node->ownerDocument;
    		$node->appendChild($no->createCDATASection($this->getDocComment())); 
     	

@@ -205,7 +205,7 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     	$methodNode->addAttribute("final", $this->isFinal()?"true":"false");
     	$commentNode = $methodNode->addChild("comment");
     	
-    	$node= dom_import_simplexml($methodNode);
+    	$node= dom_import_simplexml($commentNode);
    		$no = $node->ownerDocument;
    		$node->appendChild($no->createCDATASection($this->getDocComment())); 
     	

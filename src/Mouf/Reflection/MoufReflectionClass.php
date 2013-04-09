@@ -502,7 +502,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	$root = simplexml_load_string("<class name=\"".$this->getName()."\"></class>");
     	$commentNode = $root->addChild("comment");
     	
-    	$node= dom_import_simplexml($root);
+    	$node= dom_import_simplexml($commentNode);
    		$no = $node->ownerDocument;
    		$node->appendChild($no->createCDATASection($this->getDocComment())); 
     	
