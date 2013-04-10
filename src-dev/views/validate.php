@@ -131,14 +131,11 @@ $(document).ready(function() {
 				}
 			})
 	.fail(
-			function(e) {
-				var msg = e;
-				if (e.responseText) {
-					msg = "Status code: " + e.status + " - "
-							+ e.statusText + "\n"
-							+ e.responseText;
-				}
-				addMessage("<pre>"+msg+"</pre>", "error");
+			function(jqXHR, textStatus, e) {
+				var msg = "Status code: " + textStatus + " - " + e;
+                                
+				//addMessage("<pre>"+msg+"</pre>", "error");
+                                $("#loadingValidatorsIndicator").removeClass('loading').addClass('alert alert-error').text("An error occured while loading validators for classes and instances : "+msg);
 			})
 	.done(
 			function(result) {

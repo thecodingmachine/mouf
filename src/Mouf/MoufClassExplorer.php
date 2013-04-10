@@ -70,7 +70,6 @@ class MoufClassExplorer {
 			while (!empty($notYetAnalysedClassMap)) {
 				$this->analysisResponse = MoufReflectionProxy::analyzeIncludes2($this->selfEdit, $notYetAnalysedClassMap);
 				$nbRun++;
-				
 				$startupPos = strpos($this->analysisResponse, "FDSFZEREZ_STARTUP\n");
 				if ($startupPos === false) {
 					// It seems there is a problem running the script, let's throw an exception
