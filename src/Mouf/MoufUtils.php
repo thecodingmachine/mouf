@@ -132,6 +132,9 @@ class MoufUtils {
 		if (isset($composer["autoload"]["psr-0"])) {
 			$autoload = $composer["autoload"]["psr-0"];
 		}
+                else {
+                    return null;
+                }
 		
 		if (self::isAssoc($autoload)) {
 			return self::unfactorizeAutoload(array($autoload));
