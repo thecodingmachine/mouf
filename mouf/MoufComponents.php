@@ -1779,6 +1779,7 @@ $moufManager->addComponentInstances(array (
     'fieldBinds' => 
     array (
       'messageProvider' => 'userMessageService',
+      'messageRenderer' => 'bootstrapMessageRenderer',
     ),
   ),
   'miscellaneousSubMenu' => 
@@ -3200,6 +3201,12 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
+  ),
+    'bootstrapMessageRenderer' => 
+  array (
+    'class' => 'Mouf\\Html\\Template\\Messages\\BootstrapMessageRenderer',
+    'external' => false,
+    'weak' => false
   ),
 ));
 
