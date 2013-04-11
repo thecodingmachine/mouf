@@ -214,6 +214,12 @@ class ComposerService {
 		} else {
 			chdir(__DIR__."/../../../../../..");
 		}
+		
+		$composerHome = getenv('COMPOSER_HOME');
+		if (!$composerHome) {
+			\putenv('COMPOSER_HOME='.ROOT_PATH.".composer");
+		}
+		
 	}
 	
 	/**

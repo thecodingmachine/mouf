@@ -1222,7 +1222,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery-ui/js/jquery-ui-1.10.0.custom.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery-ui/js/jquery-ui-1.10.2.custom.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1233,7 +1233,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery-ui/css/ui-lightness/jquery-ui.css',
+          0 => 'vendor/mouf/javascript.jquery.jquery-ui/css/ui-lightness/jquery-ui-1.10.2.custom.min.css',
         ),
         'type' => 'string',
         'metadata' => 
