@@ -458,7 +458,7 @@ class MoufManager {
 						} else {
 							// If this is a simple property
 							if ($properties == $instanceName) {
-								$this->setParameterViaConstructor($declaredInstanceName, $index, $properties, 'object');
+								$this->setParameterViaConstructor($declaredInstanceName, $index, $newInstanceName, 'object');
 							}
 						}
 					}
