@@ -530,145 +530,147 @@ class MoufManager {
 		if (!isset($this->declaredInstances[$instanceName])) {
 			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' is not defined.", 1, $instanceName);
 		}
-
-		$instanceDefinition = $this->declaredInstances[$instanceName];
-
-		$className = $instanceDefinition["class"];
-
-		if (isset($instanceDefinition['constructor'])) {
-			$constructorParametersArray = $instanceDefinition['constructor'];
-			
-			$classDescriptor = new \ReflectionClass($className);
-			
-			$constructorParameters = array();
-			foreach ($constructorParametersArray as $constructorParameterDefinition) {
-				$value = $constructorParameterDefinition["value"];
-				switch ($constructorParameterDefinition['parametertype']) {
-					case "primitive":
-						switch ($constructorParameterDefinition["type"]) {
-							case "string":
-								$constructorParameters[] = $value;
-								break;
-							case "request":
-								$constructorParameters[] = $_REQUEST[$value];
-								break;
-							case "session":
-								$constructorParameters[] = $_SESSION[$value];
-								break;
-							case "config":
-								$constructorParameters[] = constant($value);
-								break;
-							default:
-								throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
-						}
-						break;
-					case "object":
-						if (is_array($value)) {
-							$tmpArray = array();
-							foreach ($value as $keyInstanceName=>$valueInstanceName) {
-								if ($valueInstanceName !== null) {
-									$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+		try {
+			$instanceDefinition = $this->declaredInstances[$instanceName];
+	
+			$className = $instanceDefinition["class"];
+	
+			if (isset($instanceDefinition['constructor'])) {
+				$constructorParametersArray = $instanceDefinition['constructor'];
+				
+				$classDescriptor = new \ReflectionClass($className);
+				
+				$constructorParameters = array();
+				foreach ($constructorParametersArray as $constructorParameterDefinition) {
+					$value = $constructorParameterDefinition["value"];
+					switch ($constructorParameterDefinition['parametertype']) {
+						case "primitive":
+							switch ($constructorParameterDefinition["type"]) {
+								case "string":
+									$constructorParameters[] = $value;
+									break;
+								case "request":
+									$constructorParameters[] = $_REQUEST[$value];
+									break;
+								case "session":
+									$constructorParameters[] = $_SESSION[$value];
+									break;
+								case "config":
+									$constructorParameters[] = constant($value);
+									break;
+								default:
+									throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
+							}
+							break;
+						case "object":
+							if (is_array($value)) {
+								$tmpArray = array();
+								foreach ($value as $keyInstanceName=>$valueInstanceName) {
+									if ($valueInstanceName !== null) {
+										$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+									} else {
+										$tmpArray[$keyInstanceName] = null;
+									}
+								}
+								$constructorParameters[] = $tmpArray;
+							} else {
+								if ($value !== null) {
+									$constructorParameters[] = $this->getInstance($value);
 								} else {
-									$tmpArray[$keyInstanceName] = null;
+									$constructorParameters[] = null;
 								}
 							}
-							$constructorParameters[] = $tmpArray;
-						} else {
-							if ($value !== null) {
-								$constructorParameters[] = $this->getInstance($value);
+							break;
+						default:	
+							throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
+					}
+				}
+				$object = $classDescriptor->newInstanceArgs($constructorParameters);
+			} else {
+				$object = new $className();
+			}
+			$this->objectInstances[$instanceName] = $object;
+			if (isset($instanceDefinition["fieldProperties"])) {
+				foreach ($instanceDefinition["fieldProperties"] as $key=>$valueDef) {
+					switch ($valueDef["type"]) {
+						case "string":
+							$object->$key = $valueDef["value"];
+							break;
+						case "request":
+							$object->$key = $_REQUEST[$valueDef["value"]];
+							break;
+						case "session":
+							$object->$key = $_SESSION[$valueDef["value"]];
+							break;
+						case "config":
+							$object->$key = constant($valueDef["value"]);
+							break;
+						default:
+							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+					}
+				}
+			}
+	
+			if (isset($instanceDefinition["setterProperties"])) {
+				foreach ($instanceDefinition["setterProperties"] as $key=>$valueDef) {
+					//$object->$key($valueDef["value"]);
+					switch ($valueDef["type"]) {
+						case "string":
+							$object->$key($valueDef["value"]);
+							break;
+						case "request":
+							$object->$key($_REQUEST[$valueDef["value"]]);
+							break;
+						case "session":
+							$object->$key($_SESSION[$valueDef["value"]]);
+							break;
+						case "config":
+							$object->$key(constant($valueDef["value"]));
+							break;
+						default:
+							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+					}
+				}
+			}
+	
+			if (isset($instanceDefinition["fieldBinds"])) {
+				foreach ($instanceDefinition["fieldBinds"] as $key=>$value) {
+					if (is_array($value)) {
+						$tmpArray = array();
+						foreach ($value as $keyInstanceName=>$valueInstanceName) {
+							if ($valueInstanceName !== null) {
+								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
 							} else {
-								$constructorParameters[] = null;
+								$tmpArray[$keyInstanceName] = null;
 							}
 						}
-						break;
-					default:	
-						throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
-				}
-			}
-			$object = $classDescriptor->newInstanceArgs($constructorParameters);
-		} else {
-			$object = new $className();
-		}
-		$this->objectInstances[$instanceName] = $object;
-		if (isset($instanceDefinition["fieldProperties"])) {
-			foreach ($instanceDefinition["fieldProperties"] as $key=>$valueDef) {
-				switch ($valueDef["type"]) {
-					case "string":
-						$object->$key = $valueDef["value"];
-						break;
-					case "request":
-						$object->$key = $_REQUEST[$valueDef["value"]];
-						break;
-					case "session":
-						$object->$key = $_SESSION[$valueDef["value"]];
-						break;
-					case "config":
-						$object->$key = constant($valueDef["value"]);
-						break;
-					default:
-						throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
-				}
-			}
-		}
-
-		if (isset($instanceDefinition["setterProperties"])) {
-			foreach ($instanceDefinition["setterProperties"] as $key=>$valueDef) {
-				//$object->$key($valueDef["value"]);
-				switch ($valueDef["type"]) {
-					case "string":
-						$object->$key($valueDef["value"]);
-						break;
-					case "request":
-						$object->$key($_REQUEST[$valueDef["value"]]);
-						break;
-					case "session":
-						$object->$key($_SESSION[$valueDef["value"]]);
-						break;
-					case "config":
-						$object->$key(constant($valueDef["value"]));
-						break;
-					default:
-						throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
-				}
-			}
-		}
-
-		if (isset($instanceDefinition["fieldBinds"])) {
-			foreach ($instanceDefinition["fieldBinds"] as $key=>$value) {
-				if (is_array($value)) {
-					$tmpArray = array();
-					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						if ($valueInstanceName !== null) {
-							$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
-						} else {
-							$tmpArray[$keyInstanceName] = null;
-						}
+						$object->$key = $tmpArray;
+					} else {
+						$object->$key = $this->getInstance($value);
 					}
-					$object->$key = $tmpArray;
-				} else {
-					$object->$key = $this->getInstance($value);
 				}
 			}
-		}
-
-		if (isset($instanceDefinition["setterBinds"])) {
-			foreach ($instanceDefinition["setterBinds"] as $key=>$value) {
-				if (is_array($value)) {
-					$tmpArray = array();
-					foreach ($value as $keyInstanceName=>$valueInstanceName) {
-						if ($valueInstanceName !== null) {
-							$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
-						} else {
-							$tmpArray[$keyInstanceName] = null;
+	
+			if (isset($instanceDefinition["setterBinds"])) {
+				foreach ($instanceDefinition["setterBinds"] as $key=>$value) {
+					if (is_array($value)) {
+						$tmpArray = array();
+						foreach ($value as $keyInstanceName=>$valueInstanceName) {
+							if ($valueInstanceName !== null) {
+								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+							} else {
+								$tmpArray[$keyInstanceName] = null;
+							}
 						}
+						$object->$key($tmpArray);
+					} else {
+						$object->$key($this->getInstance($value));
 					}
-					$object->$key($tmpArray);
-				} else {
-					$object->$key($this->getInstance($value));
 				}
 			}
+		} catch (MoufInstanceNotFoundException $e) {
+			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' could not be created because it depends on an object in error (".$e->getMissingInstanceName().")", 2, $instanceName, $e);
 		}
-
 		return $object;
 	}
 
