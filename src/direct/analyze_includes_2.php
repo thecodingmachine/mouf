@@ -38,9 +38,17 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
+if (get_magic_quotes_gpc()==1)
+{
+	$classMapJson = stripslashes($_REQUEST["classMap"]);
+} else {
+	$classMapJson = $_REQUEST["classMap"];
+}
 
-$classMap = json_decode($_REQUEST['classMap'], true);
-
+$classMap = json_decode($classMapJson, true);
+if(json_last_error() != JSON_ERROR_NONE ){
+    throw new Exception('Corrupted JSON ClassMap while analyzing includes...');
+}
 /*$forbiddenClasses = isset($_REQUEST["forbiddenClasses"])?$_REQUEST["forbiddenClasses"]:array();
 // Put the values in key for faster search
 $forbiddenClasses = array_flip($forbiddenClasses);
@@ -51,7 +59,6 @@ $classMap = $composerService->getClassMap();
 $componentsList = array();
 */
 echo "FDSFZEREZ_STARTUP\n";
-
 if (is_array($classMap)) {
 	foreach ($classMap as $className => $fileName) {
 		//if (!isset($forbiddenClasses[$className])) {

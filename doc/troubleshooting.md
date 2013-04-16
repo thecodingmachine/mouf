@@ -100,3 +100,19 @@ Although this is fine with Mouf, you might encounter very disturbing errors in M
 &lt;/IfModule&gt;
 </pre>
 This will increase the Apache stacktrace to 8Mo. You can learn more about it <a href="http://stackoverflow.com/questions/5058845/how-do-i-increase-the-stack-size-for-apache-running-under-windows-7">on StackOverflow</a>.
+
+
+Fatal Error on mouf validation using MAC OSX
+------------------------------------------------------------------------------------
+When installing mouf 2.0, during the validation step, if you run into this error : 
+
+	<b>Fatal error</b>:  Uncaught exception 'Symfony\Component\Process\Exception\RuntimeException' with message 'The process stopped because of a &quot;0&quot; signal.' in phar:///Users/camk/Web/www/mouf/vendor/mouf/mouf/composer.phar/vendor/symfony/process/Symfony/Component/Process/Process.php:446
+
+You need to change a configuration file of MAMP. Open the <em>envvars</em> file located at the following path : /Applications/MAMP/Library/bin/envvars , you will notice the two lines : 
+
+	DYLD_LIBRARY_PATH="/Applications/MAMP/Library/lib:$DYLD_LIBRARY_PATH"
+	export DYLD_LIBRARY_PATH
+
+Comment them (add # in front of each line).
+Restart your server and reload the mouf validation page.
+

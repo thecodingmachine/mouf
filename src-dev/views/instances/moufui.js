@@ -545,27 +545,28 @@ var MoufUI = (function () {
 		 */
 		renameInstance: function(instance) {
 			var modal = MoufUI.openPopup("Rename instance");
-			
-			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
-			
-			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
-			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
-			var label = jQuery('<label class="control-label" for="name">').text("New instance name ").appendTo(divControlGroup);
-			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
-			var inputField = jQuery('<input type="text" placeholder="Anonymous instance">')
-				.val(instance.getName())
-				.appendTo(divControlGroup);
-						
-			
-			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
-			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
-			jQuery("<button/>").addClass("btn btn-primary").text("Save changes").click(function() {
+			var inputField;
+			var formElem = jQuery('<form class="form-horizontal">').submit(function() {
 				instance.rename(inputField.val(), function() {
 					// When save is performed, let's reload the page with the new URL.
 					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(instance.getName())+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
 				});
 				return false;
-			}).appendTo(modalFooter);
+			}).appendTo(modal);
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(formElem);
+			
+			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
+			var label = jQuery('<label class="control-label" for="name">').text("New instance name ").appendTo(divControlGroup);
+			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
+			inputField = jQuery('<input type="text" placeholder="Anonymous instance">')
+				.val(instance.getName())
+				.appendTo(divControlGroup);
+						
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(formElem);
+			jQuery("<button type='button'/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
+			jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Save changes").appendTo(modalFooter);
 		},
 		
 		/**

@@ -40,7 +40,7 @@ class SplashHtaccessValidator implements MoufStaticValidatorInterface {
 	 * @return MoufValidatorResult
 	 */
 	public static function validateClass() {
-		if (file_exists(ROOT_PATH.".htaccess")) {
+		if (!file_exists(ROOT_PATH.".htaccess")) {
 			return new MoufValidatorResult(MoufValidatorResult::WARN, "Unable to find .htaccess file.");
 		} else {
 			return new MoufValidatorResult(MoufValidatorResult::SUCCESS, ".htaccess file found.");
