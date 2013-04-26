@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
+
 /**
  * Extended Reflection class for class methods that allows usage of annotations.
  * 
@@ -213,6 +215,59 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     	foreach ($this->getParameters() as $parameter) {
     		$parameter->toXml($methodNode);
     	}
+    }
+
+    /**
+     * Returns a PHP array representing the method.
+     *
+     * @return array
+     */
+    public function toJson() {
+    	$result = array();
+    	$result['name'] = $this->getName();
+    
+    	$modifier = "";
+    	if ($this->isPublic()) {
+    		$modifier = "public";
+    	} elseif ($this->isProtected()) {
+    		$modifier = "protected";
+    	} elseif ($this->isPrivate()) {
+    		$modifier = "private";
+    	}
+    	$result['modifier'] = $modifier;
+    	$result['static'] = $this->isStatic();
+    	$result['abstract'] = $this->isAbstract();
+    	$result['constructor'] = $this->isConstructor();
+    	$result['final'] = $this->isFinal();
+    	//$result['comment'] = $this->getDocComment();
+    	$result['comment'] = $this->getMoufPhpDocComment()->getJsonArray();
+    
+    	$result['parameters'] = array();
+    	$parameters = $this->getParameters();
+    	foreach ($parameters as $parameter) {
+    		$result['parameters'][] = $parameter->toJson();
+    	}
+    
+    	//$properties = $this->getAnnotations("Property");
+    	try {
+    		/*if (!empty($properties)) {
+    		 $result['moufProperty'] = true;*/
+    		
+    		// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
+    		$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+    		$result['type'] = $moufPropertyDescriptor->getType();
+    		if ($moufPropertyDescriptor->isAssociativeArray()) {
+    			$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+    		}
+    		if ($moufPropertyDescriptor->isArray()) {
+    			$result['subtype'] = $moufPropertyDescriptor->getSubType();
+    		}
+    		//}
+    	} catch (\Exception $e) {
+    		$result['classinerror'] = $e->getMessage();
+    	}
+    
+    	return $result;
     }
     
 }

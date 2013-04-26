@@ -561,7 +561,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     				}
     			}	
     		}
-    		$jsonArray = MoufReflectionHelper::classToJson($this, $exportMode);
+    		$jsonArray = $this->performToJson($exportMode);
     		
     		$this->cacheService->set("mouf_class_json_".$this->getName()."/".$exportMode,
     				array(
@@ -573,9 +573,84 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		
     		return $jsonArray;
     	} else {
-    		return MoufReflectionHelper::classToJson($this, $exportMode);
+    		// TODO: move MoufReflectionHelper::classToJson inside this class.
+    		return $this->performToJson($exportMode);
     	}
     }
+    
+    /**
+     * Returns a PHP array representing the class.
+     *
+     * @return array
+     */
+    public function performToJson($exportMode) {
+    	$result = array();
+    	$result['name'] = $this->getName();
+    
+    	$result['exportmode'] = $exportMode;
+    
+    	// The filename is relative to the ROOT_PATH.
+    	// It is "null" if the class is not part of the ROOT_PATH.
+    	$fileName = $this->getFileName();
+    	if (strpos($fileName, ROOT_PATH) === 0) {
+    		$result['filename'] = substr($fileName, strlen(ROOT_PATH));
+    	} else {
+    		$result['filename'] = null;
+    	}
+    	$result['startline'] = $this->getStartLine();
+    	$result['isinstantiable'] = $this->isInstantiable();
+    
+    	$result['comment'] = $this->getMoufDocComment()->getJsonArray();
+    	$result['implements'] = array();
+
+    	$interfaces = $this->getInterfaces();
+    	foreach ($interfaces as $interface) {
+    		/* @var $interface MoufReflectionClass */
+    		$result['implements'][] = $interface->getName();
+    	}
+    
+    	/*$extends = array();
+    		$currentClass = $this;
+    	while ($currentClass->getExtension()) {
+    	$currentClass = $currentClass->getExtension();
+    	$extends[] = $currentClass->getName();
+    	}
+    	$result['extends'] = $extends;*/
+    	if ($this->getParentClass()) {
+    		$result['extend'] = $this->getParentClass()->getName();
+    	}
+    
+    	if ($exportMode != MoufReflectionClass::EXPORT_TINY) {
+    
+    		$result['properties'] = array();
+    		foreach ($this->getProperties() as $property) {
+    			if ($property->isPublic() && !$property->isStatic()) {
+    				$result['properties'][] = $property->toJson();
+    			}
+    		}
+    			
+    		$result['methods'] = array();
+    		foreach ($this->getMethods() as $method) {
+    			$doExport = false;
+    			if ($exportMode == MoufReflectionClass::EXPORT_PROPERTIES) {
+    				// TODO: improve this, a setter must have exactly one compulsory parameter
+    				$methodName = $method->getName();
+    				if (strpos($methodName, "set") === 0 && strlen($methodName)>3) {
+    					$doExport = true;
+    				}
+    			} else {
+    				$doExport = true;
+    			}
+    			if ($doExport) {
+    				$result['methods'][] = $method->toJson();
+    			}
+    		}
+    
+    	}
+    		
+    	return $result;
+    }
+    
 
     private $useNamespaces;
     

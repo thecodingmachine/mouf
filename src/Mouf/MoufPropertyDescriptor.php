@@ -340,7 +340,7 @@ class MoufPropertyDescriptor {
 	}
 	
 	/**
-	 * Returns the sybType for the property.
+	 * Returns the subType for the property.
 	 *
 	 * @return string
 	 */

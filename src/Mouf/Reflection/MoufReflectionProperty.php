@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
+
 /**
  * Extended Reflection class for class properties that allows usage of annotations.
  * 
@@ -210,6 +212,36 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
 			$propertyNode->addChild("default", serialize($instance->$property));*/
 			$propertyNode->addChild("default", serialize($this->getDefault()));
     	}    	
+    }
+    
+
+    /**
+     * Returns a PHP array representing the property.
+     *
+     * @return array
+     */
+    public function toJson() {
+    	$result = array();
+    	$result['name'] = $this->getName();
+    	$result['comment'] = $this->getMoufPhpDocComment()->getJsonArray();
+    	$result['default'] = $this->getDefault();
+    
+    	/*$properties = $this->getAnnotations("Property");
+    		if (!empty($properties)) {
+    	$result['moufProperty'] = true;*/
+    	
+    	// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
+    	$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+    	$result['type'] = $moufPropertyDescriptor->getType();
+    	if ($moufPropertyDescriptor->isAssociativeArray()) {
+    		$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+    	}
+    	if ($moufPropertyDescriptor->isArray()) {
+    		$result['subtype'] = $moufPropertyDescriptor->getSubType();
+    	}
+    	//}
+    
+    	return $result;
     }
     
 }

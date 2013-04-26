@@ -35,7 +35,7 @@ class paramAnnotation extends varAnnotation
      * @param string $value
      */
 	private function analyzeString($value) {
-		// In the "type", there cannot be a $ sign.
+		// In the "type", there must be a $ sign.
 		// So let's find this:
 		$varPos = strpos($value, '$');
 		
