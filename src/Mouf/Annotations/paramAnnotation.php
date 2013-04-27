@@ -39,20 +39,28 @@ class paramAnnotation extends varAnnotation
 		// So let's find this:
 		$varPos = strpos($value, '$');
 		
-		if ($varPos === false) {
+		// Some framework (Symfony, I'm looking at you) are not always passing the variable name
+		/*if ($varPos === false) {
 			throw new MoufException("Error in the @param annotation. The @param annotation does not refer to a variable. The structure must be: \"@param type \$variable comment\". Passed value: @param $value");
-		}
+		}*/
 		
-		$type = trim(substr($value, 0, $varPos));
+		if ($varPos !== false) {	
+			$type = trim(substr($value, 0, $varPos));
+			// Get the parameter name
+			$this->parameterName = strtok(substr($value, $varPos), " \n\t");
+			$this->comments = strtok("");
+		} else {
+			$type = $value;
+			$tmp = strtok($value, " \n\t");
+			$this->comments = strtok("");
+		}
 
 		if (empty($type)) {
 			throw new MoufException("Error in the @param annotation. The @param annotation does not have a type. The structure must be: \"@param type \$variable comment\". Passed value: @param $value");
 		}
 		$this->analyzeType($type);
 		
-		// Get the parameter name
-		$this->parameterName = strtok(substr($value, $varPos), " \n\t");
-		$this->comments = strtok("");
+		
 	}
 	
 	/**

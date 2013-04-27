@@ -12,6 +12,10 @@ class TypeDescriptor {
 	
 	private $type;
 	private $keyType;
+	/**
+	 * 
+	 * @var TypeDescriptor
+	 */
 	private $subType;
 	
 	public function __construct() {
@@ -109,4 +113,63 @@ class TypeDescriptor {
 		}
 		return $array;
 	}
+	
+	/**
+	 * Give a fully qualified class name from the $type and declared "use" statements.
+	 * Note: Once resulved, the qualified names always start with a \
+	 *
+	 * @param array<string, string> $useMap
+	 * @param string $namespace
+	 * @return unknown|string
+	 */
+	public function resolveType($useMap, $namespace) {
+		if ($this->subType != null) {
+			$this->subType->resolveType();
+		}
+		
+		if ($this->type == null || $this->type == "array" || $this->isPrimitiveType()) {
+			return;
+		}
+	
+		$index = strpos($this->type, '\\');
+		if ($index === false) {
+			if (isset($useMap[$this->type])) {
+				return '\\'.$useMap[$this->type];
+			} else {
+				if ($namespace) {
+					return '\\'.$namespace.'\\'.$this->type;
+				} else {
+					return '\\'.$this->type;
+				}
+			}
+		}
+		if ($index === 0) {
+			// Starting with \. Already a fully qualified name.
+			return $this->type;
+		}
+		$leftPart = substr($this->type, 0, $index);
+		$rightPart = substr($this->type, $index);
+	
+		if (isset($useMap[$leftPart])) {
+			return '\\'.$useMap[$leftPart].$rightPart;
+		} else {
+			return '\\'.$namespace.'\\'.$this->type;
+		}
+	}
+	
+	/**
+	 * Returns true if the type passed in parameter is primitive.
+	 * It will return false if this is an array or an object.
+	 *
+	 * Accepted primitive types: string, char, bool, boolean, int, integer, double, float, real, mixed
+	 * No type (empty type) is considered primitive type.
+	 *
+	 * @param string $type
+	 * @return bool
+	 */
+	private function isPrimitiveType() {
+		$lowerVarType = strtolower($this->type);
+		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
+	}
+	
 }

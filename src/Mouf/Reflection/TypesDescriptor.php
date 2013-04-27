@@ -41,10 +41,7 @@ class TypesDescriptor {
 	}
 	
 	private function __construct($types) {
-		$this->analyze($types);
-		
-		// TODO: start by building a lexer!
-		
+		$this->analyze($types);		
 	}
 	
 	private function analyze($types) {
@@ -121,5 +118,18 @@ class TypesDescriptor {
 			$array[] = $type->toJson();
 		}
 		return $array;
+	}
+	
+	/**
+	 * Give a fully qualified class name to all the types using declared "use" statements.
+	 * Note: Once resulved, the qualified names always start with a \
+	 *
+	 * @param array<string, string> $useMap
+	 * @param string $namespace
+	 */
+	public function resolveType($useMap, $namespace) {
+		foreach ($this->types as $type) {
+			$type->resolveType($useMap, $namespace);
+		}
 	}
 }
