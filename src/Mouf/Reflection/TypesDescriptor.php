@@ -1,6 +1,10 @@
 <?php 
 namespace Mouf\Reflection;
 
+use Mouf\MoufTypeParserException;
+
+use Mouf\MoufException;
+
 /**
  * This class represents the potential types of a variable/parameter.
  * This class can represents many types at one.
@@ -40,20 +44,29 @@ class TypesDescriptor {
 		return self::$localCache[$types];
 	}
 	
+	public static function getEmptyTypes() {
+		return self::parseTypeString(null);
+	}
+	
 	private function __construct($types) {
-		$this->analyze($types);		
+		if (!empty($types)) {
+			$this->analyze($types);
+		}	
 	}
 	
 	private function analyze($types) {
-		
-		$tokens = self::runLexer($types);
-		
-		while ($tokens) {
-			if ($tokens[0]['token'] == 'T_OR') {
-				array_shift($tokens);
-			}
+		try {
+			$tokens = self::runLexer($types);
 			
-			$this->types[] = TypeDescriptor::parseTokens($tokens);
+			while ($tokens) {
+				if ($tokens[0]['token'] == 'T_OR') {
+					array_shift($tokens);
+				}
+				
+				$this->types[] = TypeDescriptor::parseTokens($tokens);
+			}
+		} catch (MoufTypeParserException $e) {
+			throw new MoufTypeParserException("Error while parsing type string: '".$types."': ".$e->getMessage(), 0, $e);
 		}
 		
 	}
@@ -98,7 +111,7 @@ class TypesDescriptor {
 		while($offset < strlen($line)) {
 			$result = static::_match($line, $offset);
 			if($result === false) {
-				throw new Exception("Unable to parse.");
+				throw new MoufException("Unable to parse.");
 			}
 			$tokens[] = $result;
 			$offset += strlen($result['match']);
@@ -132,4 +145,5 @@ class TypesDescriptor {
 			$type->resolveType($useMap, $namespace);
 		}
 	}
+	
 }

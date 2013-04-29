@@ -1,7 +1,7 @@
 <?php 
 namespace Mouf\Reflection;
 
-use Mouf\MoufException;
+use Mouf\MoufTypeParserException;
 
 /**
  * This class represents one type.
@@ -50,6 +50,15 @@ class TypeDescriptor {
 	}
 	
 	/**
+	 * Returns true if the type is an array and it has a key defined.
+	 *
+	 * @return boolean
+	 */
+	public function isAssociativeArray() {
+		return $this->keyType !== null;
+	}
+	
+	/**
 	 * Parses the tokens (passed in reference!) and returns a TypeDescriptor for the parsed tokens.
 	 * 
 	 * 
@@ -59,7 +68,7 @@ class TypeDescriptor {
 	public static function parseTokens(&$tokens) {
 		$typeArray = array_shift($tokens);
 		if ($typeArray['token'] != 'T_TYPE') {
-			throw new MoufException("Invalid type! Expecting a type name. Got '".$typeArray['match']."'");
+			throw new MoufTypeParserException("Invalid type! Expecting a type name. Got '".$typeArray['match']."'");
 		}
 		
 		$type = new TypeDescriptor();
@@ -86,7 +95,7 @@ class TypeDescriptor {
 				case 'T_START_ARRAY';
 					if ($tokens[1]['token'] == 'T_COMA') {
 						if ($tokens[0]['token'] != 'T_TYPE') {
-							throw new MoufException("Invalid type! Expecting a type name. Got ".$tokens['match']);
+							throw new MoufTypeParserException("Invalid type! Expecting a type name. Got ".$tokens['match']);
 						}
 						$type->keyType = $tokens[0]['match'];
 						array_shift($tokens);

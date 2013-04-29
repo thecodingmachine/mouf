@@ -192,13 +192,14 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     
     			$result['comment'] = $moufPropertyDescriptor->getDocCommentWithoutAnnotations();
     
-    			$result['type'] = $moufPropertyDescriptor->getType();
-    			if ($moufPropertyDescriptor->isAssociativeArray()) {
+    			$result['type'] = $moufPropertyDescriptor->getTypes()->toJson();
+
+    			/*if ($moufPropertyDescriptor->isAssociativeArray()) {
     				$result['keytype'] = $moufPropertyDescriptor->getKeyType();
     			}
     			if ($moufPropertyDescriptor->isArray()) {
     				$result['subtype'] = $moufPropertyDescriptor->getSubType();
-    			}
+    			}*/
     		}
     	} catch (\Exception $e) {
     		$result['classinerror'] = $e->getMessage();

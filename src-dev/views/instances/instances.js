@@ -860,11 +860,15 @@ var MoufInstanceProperty = function(source, propertyName, json, parent) {
 	this.source = source;
 
 	var moufProperty = this.getMoufProperty();
-	if (moufProperty.isArray()) {
+	
+	var value = this.getValue();
+	if (typeof(value) == 'Array') {
+		var values = value;
+	//if (moufProperty.isArray()) {
 		// In case of arrays, let's completely drop the value and replace it
 		// with an array of MoufInstanceSubProperties
 		this.moufInstanceSubProperties = [];
-		var values = this.getValue();
+		
 		// Arrays (even associative PHP arrays) are stored as list of {key:"",
 		// value:""} objects in order
 		// to preserve the PHP order of keys (that is not guaranteed to be
@@ -1444,6 +1448,7 @@ MoufClass.prototype.getImplementedInterfaces = function() {
  */
 var MoufProperty = function(json) {
 	this.json = json;
+	this.types = new MoufTypes(json['types']);
 }
 
 /**
@@ -1506,8 +1511,8 @@ MoufProperty.prototype.getPropertyName = function() {
  * 
  * @var annotation).
  */
-MoufProperty.prototype.getType = function() {
-	return this.json['type'];
+MoufProperty.prototype.getTypes = function() {
+	return this.types;
 }
 
 /**
@@ -1516,9 +1521,9 @@ MoufProperty.prototype.getType = function() {
  * 
  * @var annotation).
  */
-MoufProperty.prototype.getSubType = function() {
+/*MoufProperty.prototype.getSubType = function() {
 	return this.json['subtype'];
-}
+}*/
 
 /**
  * Returns the type of the array's key if the type of the annotation is an
@@ -1526,16 +1531,16 @@ MoufProperty.prototype.getSubType = function() {
  * 
  * @var annotation).
  */
-MoufProperty.prototype.getKeyType = function() {
+/*MoufProperty.prototype.getKeyType = function() {
 	return this.json['keytype'];
-}
+}*/
 
 /**
  * Returns true if the type of the property is an array.
  */
-MoufProperty.prototype.isArray = function() {
+/*MoufProperty.prototype.isArray = function() {
 	return this.json['type'] == 'array';
-}
+}*/
 
 /**
  * Returns true if the type of the property is an associative array.
@@ -1655,9 +1660,7 @@ MoufMethod.prototype.hasPropertyAnnotation = function() {
 }
 
 /**
- * Returns the type of the property (as defined in the
- * 
- * @var annotation).
+ * Returns the type of the property (as defined in the @var annotation).
  */
 MoufMethod.prototype.getType = function() {
 	return this.json['type'];
@@ -1765,6 +1768,7 @@ MoufMethod.prototype.getParameter = function(propertyName) {
  */
 var MoufParameter = function(json, parentMethod) {
 	this.json = json;
+	this.types = new MoufTypes(json['types']);
 	this.parentMethod = parentMethod;
 }
 
@@ -1792,16 +1796,16 @@ MoufParameter.prototype.getDefault = function() {
 /**
  * Returns whether the parameter is typed as an array.
  */
-MoufParameter.prototype.isArray = function() {
+/*MoufParameter.prototype.isArray = function() {
 	return (this.json['type'] == 'array');
-}
+}*/
 
 /**
  * Returns true if the type of the property is an associative array.
  */
-MoufParameter.prototype.isAssociativeArray = function() {
+/*MoufParameter.prototype.isAssociativeArray = function() {
 	return (this.json['type'] == 'array' && this.json['keytype']);
-}
+}*/
 
 /**
  * Returns the class name of the parameter, if any.
@@ -1820,8 +1824,8 @@ MoufParameter.prototype.getPropertyName = function() {
 /**
  * Returns the type of the parameter (the class, if any)
  */
-MoufParameter.prototype.getType = function() {
-	return this.json['type'];
+MoufParameter.prototype.getTypes = function() {
+	return this.types;
 }
 
 /**
@@ -1830,9 +1834,9 @@ MoufParameter.prototype.getType = function() {
  * 
  * @var annotation).
  */
-MoufParameter.prototype.getSubType = function() {
+/*MoufParameter.prototype.getSubType = function() {
 	return this.json['subtype'];
-}
+}*/
 
 /**
  * Returns the type of the array's key if the type of the parameter is an
@@ -1840,9 +1844,9 @@ MoufParameter.prototype.getSubType = function() {
  * 
  * @var annotation).
  */
-MoufParameter.prototype.getKeyType = function() {
+/*MoufParameter.prototype.getKeyType = function() {
 	return this.json['keytype'];
-}
+}*/
 
 /**
  * Returns the MoufInstanceProperty of a property for the instance passed in
@@ -2120,4 +2124,72 @@ MoufSubProperty.prototype.getValueForInstance = function(instance) {
 	// FIXME: does not work anymore!
 	var values = this.parentMoufProperty.getValueForInstance(instance);
 	return values[this.key];
+}
+
+/**
+ * Let's define the MoufTypes class, that defines the list of
+ * types a property can have.
+ */
+var MoufTypes = function(json) {
+	this.json = json;
+	var types = [];
+	_.each(json, function(
+			jsonType) {
+		types.push(new Type(jsonType));
+	});
+	this.types = types;
+}
+
+/**
+ * Returns the list of allowed types.
+ */
+MoufTypes.prototype.getTypes = function() {
+	return this.types;
+}
+
+/**
+ * Let's define one type for a property.
+ */
+var MoufType = function(json) {
+	this.json = json;
+	if (this.json['subType']) {
+		this.subType = new MoufType(this.json['subType']);
+	} else {
+		this.subType = null;
+	}
+}
+
+/**
+ * Returns the main type of this type as a string.
+ */
+MoufType.prototype.getType = function() {
+	return this.json['type'];
+}
+
+/**
+ * Returns the key type of this type as a string.
+ */
+MoufType.prototype.getKeyType = function() {
+	return this.json['keyType'];
+}
+
+/**
+ * Returns the key type of this type as a string.
+ */
+MoufType.prototype.getSubType = function() {
+	return this.subType;
+}
+
+/**
+ * Returns true if the type of the property is an array.
+ */
+MoufType.prototype.isArray = function() {
+	return this.json['type'] == 'array';
+}
+
+/**
+ * Returns true if the type is an associative array.
+ */
+MoufType.prototype.isAssociativeArray = function() {
+	return (this.json['type'] == 'array' && this.json['keyType']);
 }

@@ -108,9 +108,13 @@ class MoufPropertyDescriptor {
 		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			$property = $this->object;
 			if ($property->hasAnnotation("var")) {
-				$varTypes = $property->getAnnotations("var");
+				try {
+					$varTypes = $property->getAnnotations("var");
+				} catch (MoufTypeParserException $e) {
+					throw new MoufException("Error for property ".$property->getDeclaringClass()->getName()."::".$property->getName().". Unable to parse the @var annotation. ".$e->getMessage(), 0, $e);
+				}
 				if (count($varTypes)>1) {
-					throw new MoufException("Error for property ".$property->getName().". More than one @var annotation was found.");
+					throw new MoufException("Error for property ".$property->getDeclaringClass()->getName()."::".$property->getName().". More than one @var annotation was found.");
 				}
 				$varTypeAnnot = $varTypes[0];
 				/* @var $varTypeAnnot varAnnotation */
@@ -180,7 +184,7 @@ class MoufPropertyDescriptor {
 					}
 					
 					$this->types = $paramAnnotation->getTypes();
-					$this->types->resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
+					$this->types->resolveType($useNamespaces, $namespace);
 					/*$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
 					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
 					$this->keyType = $paramAnnotation->getKeyType();*/
@@ -242,9 +246,10 @@ class MoufPropertyDescriptor {
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
 					$parameters = $method->getParameters();
 					if ($parameters[0]->isArray()) {
-						$this->type = "array";
+						$this->types = TypesDescriptor::parseTypeString("array");
+						//$this->type = "array";
 					} elseif ($parameters[0]->getType() != null) {
-						$this->type = '\\'.$parameters[0]->getType();
+						$this->types = TypesDescriptor::parseTypeString("\\".$parameters[0]->getType());
 					}
 				}
 			} else {
@@ -255,6 +260,10 @@ class MoufPropertyDescriptor {
 					$this->types = TypesDescriptor::parseTypeString("\\".$parameters[0]->getType());
 				}
 			}
+		}
+		
+		if ($this->types == null) {
+			$this->types = TypesDescriptor::getEmptyTypes();
 		}
 		// Apply a namespace to type and subtype if necessary
 		//$this->applyNamespace();
@@ -334,8 +343,8 @@ class MoufPropertyDescriptor {
 		return $this->object->getAnnotations($name);
 	}
 	
-	public function hasType() {
-		return $this->type != null;
+	public function hasTypes() {
+		return $this->types != null && count($this->types->getTypes)>0;
 	}
 	
 	/**

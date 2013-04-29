@@ -232,13 +232,13 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	
     	// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
     	$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
-    	$result['type'] = $moufPropertyDescriptor->getType();
-    	if ($moufPropertyDescriptor->isAssociativeArray()) {
+    	$result['type'] = $moufPropertyDescriptor->getTypes()->toJson();
+    	/*if ($moufPropertyDescriptor->isAssociativeArray()) {
     		$result['keytype'] = $moufPropertyDescriptor->getKeyType();
     	}
     	if ($moufPropertyDescriptor->isArray()) {
     		$result['subtype'] = $moufPropertyDescriptor->getSubType();
-    	}
+    	}*/
     	//}
     
     	return $result;
