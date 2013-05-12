@@ -834,7 +834,7 @@ var MoufDefaultRenderer = (function () {
 	 * @param currentType MoufType The current type to put in bold
 	 */
 	var renderTypesSelector = function(moufTypes, currentType, onclick) {
-		var typesElem = $("<div/>");
+		var typesElem = $("<ul/>").addClass('nav nav-pills mouftypes');
 		var first = true;
 		var types = moufTypes.getTypes();
 		_.each(types, function(type) {
@@ -844,19 +844,22 @@ var MoufDefaultRenderer = (function () {
 			}
 			
 			if (first != true) {
-				types.append(" | ");
+				typesElem.append("<li class='disabled'><a href='javascript:void(0)'>|</a></li>");
 			}
 			first = false;
 			
 			var typeText = type.toString();
 
-			var typeElem = $("<span>").text(typeText);
+			var typeElem = $("<li>");
 			if (selected) {
 				// Todo: change this for some button
-				typeElem.css("font-weight", "bold");
+				typeElem.addClass('disabled');
 			}
+			var innerLink = $('<a href="#">').appendTo(typeElem).text(typeText);
 			if (onclick) {
-				typeElem.click(function() { onclick(type) });
+				innerLink.click(function() { onclick(type); return false; });
+			} else {
+				innerLink.click(function() { return false; });
 			}
 			typeElem.appendTo(typesElem);
 		})
@@ -976,37 +979,45 @@ var MoufDefaultRenderer = (function () {
 						jQuery("<div/>").addClass("classComment").html(classDescriptor.getComment()).appendTo(containerForm);
 						
 						var displayField = function(moufProperty) {
-							var fieldGlobalElem = jQuery("<div/>").addClass("control-group");
-							jQuery("<label/>").text(moufProperty.getPropertyName())
-								.addClass("control-label")
-								.appendTo(fieldGlobalElem);
-							var fieldElem = jQuery("<div/>").addClass('controls')
-								.data("moufProperty", moufProperty).appendTo(fieldGlobalElem);
-
-							
-							var types = moufProperty.getTypes();
-							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-							
-							// Let's find the current type, if any
-							var currentType = types.findType(moufInstanceProperty.getType());
-							
-							if (types.getWarningMessage() != null) {
-								$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+							var fieldGlobalElem = jQuery("<div/>").addClass("control-group").appendTo(propertiesList);
+							var displayInnerField = function() {
+								jQuery("<label/>").text(moufProperty.getPropertyName())
+									.addClass("control-label")
+									.appendTo(fieldGlobalElem);
+								var fieldElem = jQuery("<div/>").addClass('controls')
+									.data("moufProperty", moufProperty).appendTo(fieldGlobalElem);
+	
+								
+								var types = moufProperty.getTypes();
+								var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+								
+								// Let's find the current type, if any
+								var currentType = types.findType(moufInstanceProperty.getType());
+								
+								if (types.getWarningMessage() != null) {
+									$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+								}
+								
+								// Function called when another type is clicked.
+								var onChangeType = function(newType) {
+									fieldGlobalElem.empty();
+									moufInstanceProperty.setType(newType);
+									displayInnerField();
+								}
+								
+								renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
+								
+								if (currentType != null) {
+									var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
+									renderField(moufInstanceProperty).appendTo(fieldContainer);
+								} else {
+									// Display a warning message.
+									$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+								}
+								
+								jQuery("<span class='help-block'>").html(moufProperty.getComment()).appendTo(fieldElem);
 							}
-							
-							renderTypesSelector(types, currentType).appendTo(fieldElem);
-							
-							if (currentType != null) {
-								var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
-								renderField(moufInstanceProperty).appendTo(fieldContainer);
-							} else {
-								// Display a warning message.
-								$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
-							}
-							
-							jQuery("<span class='help-block'>").html(moufProperty.getComment()).appendTo(fieldElem);
-							
-							fieldGlobalElem.appendTo(propertiesList);
+							displayInnerField();
 						}
 						
 						var moufProperties = classDescriptor.getInjectableConstructorArguments();

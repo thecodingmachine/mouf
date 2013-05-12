@@ -518,3 +518,7 @@ button.btn.defaultValue, button.btn.nullValue {
 	width: 220px;
 	height: 27px;
 }
+
+ul.nav.mouftypes {
+	margin-bottom: 0px;
+}

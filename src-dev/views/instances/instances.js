@@ -917,6 +917,15 @@ MoufInstanceProperty.prototype.getType = function() {
 	return this.type;
 }
 
+/**
+ * Sets the type for this instance property.
+ * This will also reset the value to "undefined".
+ */
+MoufInstanceProperty.prototype.setType = function(moufType) {
+	this.unSet();
+	this.type = moufType;
+}
+
 
 /**
  * Returns the value for this property. If the value is a primitive type, the
