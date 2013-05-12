@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Reflection;
 
+use Mouf\MoufInstanceDescriptor;
+
 use Mouf\MoufTypeParserException;
 
 /**
@@ -59,6 +61,15 @@ class TypeDescriptor {
 	}
 	
 	/**
+	 * Returns true if the type is an array.
+	 *
+	 * @return boolean
+	 */
+	public function isArray() {
+		return $this->subType !== null;
+	}
+	
+	/**
 	 * Parses the tokens (passed in reference!) and returns a TypeDescriptor for the parsed tokens.
 	 * 
 	 * 
@@ -93,16 +104,26 @@ class TypeDescriptor {
 				case 'T_END_ARRAY';
 					break;
 				case 'T_START_ARRAY';
-					if ($tokens[1]['token'] == 'T_COMA') {
-						if ($tokens[0]['token'] != 'T_TYPE') {
+					$tok1 = self::getNthTokenWithoutWhitespace($tokens, 1);
+					if ($tok1['token'] == 'T_COMA') {
+						$tok0 = self::getNthTokenWithoutWhitespace($tokens, 0);
+						if ($tok0['token'] != 'T_TYPE') {
 							throw new MoufTypeParserException("Invalid type! Expecting a type name. Got ".$tokens['match']);
 						}
-						$type->keyType = $tokens[0]['match'];
+						$type->keyType = $tok0['match'];
+						// Let's shift twice, without counting whitespaces:
+						while ($tokens[0] != $tok1) {
+							array_shift($tokens);
+						}
 						array_shift($tokens);
-						array_shift($tokens);
+						// TODO: with a state machine, we could handle whitespaces in a best way
+						// TODO: develop a statemachine!
+						while ($tokens[0]['token'] == 'T_WHITESPACE') {
+							array_shift($tokens);
+						}
 						
-						$type->subType = TypeDescriptor::parseTokens($tokens);
 					}
+					$type->subType = TypeDescriptor::parseTokens($tokens);
 					break;
 				case 'T_OR':
 					break;
@@ -133,7 +154,7 @@ class TypeDescriptor {
 	 */
 	public function resolveType($useMap, $namespace) {
 		if ($this->subType != null) {
-			$this->subType->resolveType();
+			$this->subType->resolveType($useMap, $namespace);
 		}
 		
 		if ($this->type == null || $this->type == "array" || $this->isPrimitiveType()) {
@@ -143,26 +164,31 @@ class TypeDescriptor {
 		$index = strpos($this->type, '\\');
 		if ($index === false) {
 			if (isset($useMap[$this->type])) {
-				return '\\'.$useMap[$this->type];
+				$this->type = '\\'.$useMap[$this->type];
+				return;
 			} else {
 				if ($namespace) {
-					return '\\'.$namespace.'\\'.$this->type;
+					$this->type = '\\'.$namespace.'\\'.$this->type;
+					return;
 				} else {
-					return '\\'.$this->type;
+					$this->type = '\\'.$this->type;
+					return;
 				}
 			}
 		}
 		if ($index === 0) {
 			// Starting with \. Already a fully qualified name.
-			return $this->type;
+			return;
 		}
 		$leftPart = substr($this->type, 0, $index);
 		$rightPart = substr($this->type, $index);
 	
 		if (isset($useMap[$leftPart])) {
-			return '\\'.$useMap[$leftPart].$rightPart;
+			$this->type = '\\'.$useMap[$leftPart].$rightPart;
+			return;
 		} else {
-			return '\\'.$namespace.'\\'.$this->type;
+			$this->type = '\\'.$namespace.'\\'.$this->type;
+			return;
 		}
 	}
 	
@@ -176,9 +202,105 @@ class TypeDescriptor {
 	 * @param string $type
 	 * @return bool
 	 */
-	private function isPrimitiveType() {
+	public function isPrimitiveType() {
 		$lowerVarType = strtolower($this->type);
 		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
 	}
 	
+	/**
+	 * Returns true if the type passed in parameter is primitive or an array of primitive
+	 * type or an array of array of primitive type, etc...
+	 *
+	 * @param string $type
+	 * @return bool
+	 */
+	public function isPrimitiveTypesOrRecursiveArrayOfPrimitiveTypes() {
+		if ($this->isPrimitiveType()) {
+			return true;
+		}
+		if ($this->subType) {
+			return $this->subType->isPrimitiveTypesOrRecursiveArrayOfPrimitiveTypes();
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if this type is compatible with the propertyDescriptor's value
+	 * passed in parameter.
+	 *
+	 * @param string|array|MoufInstanceDescriptor|MoufInstanceDescriptor[] $instanceDescriptor
+	 * @return bool
+	 */
+	public function isCompatible($value) {
+		// If null, we are compatible
+		if ($value === null) {
+			return true;
+		}
+		
+		// If the value passed is an array
+		if (is_array($value)) {
+			// Let's check if this type is an array.
+			if (!$this->isArray()) {
+				return false;
+			}
+			if (!$this->isAssociativeArray()) {
+				// Let's check if the array passed in parameter has string values as keys.
+				foreach ($value as $key=>$val) {
+					if (is_string($key)) {
+						return false;
+					}
+				}
+			}
+			// Now, let's test each subkey for compatibility
+			foreach ($value as $key=>$val) {
+				if (!$this->subType->isCompatible($val)) {
+					return false;
+				}
+			}
+			return true;
+		} elseif ($value instanceof MoufInstanceDescriptor) {
+			// Let's check if the instance descriptor is compatible with our type.
+			if ($this->isPrimitiveType()) {
+				return false;
+			}
+			if ($this->type == "array") {
+				return false;
+			}
+			$classDescriptor = $value->getClassDescriptor();
+			if (ltrim($this->type,'\\') == ltrim($classDescriptor->getName(), '\\')) {
+				return true;
+			}
+			//$type = new MoufReflectionClass($this->getType());
+			$result =  $classDescriptor->isSubclassOf($this->getType());
+			return $result;
+		} else {
+			// The value is a primitive type.
+			if ($this->isPrimitiveType()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	/**
+	 * Returns the nth token, skipping any whitespace.
+	 * Return null, if $i is out of bounds.
+	 * 
+	 * @param array $tokens
+	 * @param int $i position
+	 */
+	private static function getNthTokenWithoutWhitespace($tokens, $i) {
+		$j = 0;
+		foreach ($tokens as $token) {
+			if ($token['token'] == 'T_WHITESPACE') {
+				continue;
+			}
+			if ($i == $j) {
+				return $token;
+			}
+			$j++;
+		}
+		return null;
+	}
 }

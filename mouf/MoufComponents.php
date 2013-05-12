@@ -262,16 +262,6 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'weak' => false,
   ),
-  'components' => 
-  array (
-    'class' => 'Mouf\\Controllers\\ComponentsController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
   'config' => 
   array (
     'class' => 'Mouf\\Controllers\\ConfigController',
@@ -2347,20 +2337,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'packageDownloadService' => 
-  array (
-    'class' => 'Mouf\\MoufPackageDownloadService',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'cacheService' => 'repositoryCache',
-    ),
-  ),
-  'packagesService' => 
-  array (
-    'class' => 'Mouf\\Controllers\\PackageServiceController',
-    'external' => false,
-  ),
   'packagesSubMenu' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
@@ -2453,17 +2429,6 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-    ),
-  ),
-  'packagetransfer' => 
-  array (
-    'class' => 'Mouf\\Controllers\\PackageDownloadController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-      'packageDownloadService' => 'packageDownloadService',
     ),
   ),
   'phpInfo' => 
@@ -2637,52 +2602,6 @@ $moufManager->addComponentInstances(array (
         'type' => 'string',
         'value' => 'src-dev/views/codeCacheButton.php',
         'parametertype' => 'primitive',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
-  'repositories' => 
-  array (
-    'class' => 'Mouf\\Controllers\\RepositorySourceController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
-  'repositoryCache' => 
-  array (
-    'class' => 'Mouf\\Utils\\Cache\\FileCache',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'log' => 'errorLogger',
-    ),
-    'fieldProperties' => 
-    array (
-      'defaultTimeToLive' => 
-      array (
-        'value' => '3600',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'cacheDirectory' => 
-      array (
-        'value' => 'moufRepositoriesCache/',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'relativeToSystemTempDirectory' => 
-      array (
-        'value' => true,
-        'type' => 'string',
         'metadata' => 
         array (
         ),

@@ -56,7 +56,7 @@ class paramAnnotation extends varAnnotation
 		}
 
 		if (empty($type)) {
-			throw new MoufException("Error in the @param annotation. The @param annotation does not have a type. The structure must be: \"@param type \$variable comment\". Passed value: @param $value");
+			throw new MoufException("The @param annotation does not have a type. The structure must be: \"@param type \$variable comment\". Passed value: @param $value");
 		}
 		$this->analyzeType($type);
 		

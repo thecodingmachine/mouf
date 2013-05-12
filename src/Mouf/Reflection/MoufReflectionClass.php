@@ -401,6 +401,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	    		/* @var $attribute MoufXmlReflectionProperty */
 	    		//if ($attribute->hasAnnotation("Property")) {
 	    		if ($attribute->isPublic() && !$attribute->isStatic()) {
+	    			// We might want to catch it and to display it properly
 	    			$propertyDescriptor = new MoufPropertyDescriptor($attribute);
 	    			$moufProperties[$attribute->getName()] = $propertyDescriptor;
 	    		}
@@ -633,11 +634,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		foreach ($this->getMethods() as $method) {
     			$doExport = false;
     			if ($exportMode == MoufReflectionClass::EXPORT_PROPERTIES) {
-    				// TODO: improve this, a setter must have exactly one compulsory parameter
-    				$methodName = $method->getName();
-    				if (strpos($methodName, "set") === 0 && strlen($methodName)>3) {
-    					$doExport = true;
-    				}
+    				$doExport = $method->isSetter();
     			} else {
     				$doExport = true;
     			}

@@ -1,4 +1,8 @@
 <?php
+use Mouf\Reflection\TypesDescriptor;
+
+use Mouf\Reflection\TypeDescriptor;
+
 use Mouf\MoufException;
 
 /*
@@ -79,6 +83,8 @@ foreach ($changesList as $command) {
 		case "setProperty":
 			$instanceName = $command['instance'];
 			$propertyName = $command['property'];
+			$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
+			$type = $types[0];
 			$source = $command['source'];
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
 			
@@ -97,7 +103,7 @@ foreach ($changesList as $command) {
 					throw new MoufException("Unknown source '".$source."' while saving parameter ".$propertyName);
 			}
 			
-			$propertyDescriptor = $property->getPropertyDescriptor();
+			//$propertyDescriptor = $property->getPropertyDescriptor();
 			
 			if ($command['origin'] == 'config') {
 				$property->setOrigin('config');
@@ -114,11 +120,11 @@ foreach ($changesList as $command) {
 				} else {
 					$value = isset($command['value'])?$command['value']:null;
 					
-					if ($propertyDescriptor->isArray()) {
+					if ($type->isArray()) {
 						if ($value === null) {
 							$value = array();
 						}
-						if (!$propertyDescriptor->isAssociativeArray()) {
+						if (!$type->isAssociativeArray()) {
 							$value = mouf_convert_json_ordered_array_to_php($value, false);
 						} else {
 							$value = mouf_convert_json_ordered_array_to_php($value, true);
@@ -134,7 +140,7 @@ foreach ($changesList as $command) {
 				// use the source!
 				
 				
-				if ($propertyDescriptor->isPrimitiveType() || $propertyDescriptor->isArrayOfPrimitiveTypes()) {
+				if ($type->isPrimitiveTypesOrRecursiveArrayOfPrimitiveTypes()) {
 					$property->setValue($value);
 				} else {
 					if (!is_array($value)) {

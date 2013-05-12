@@ -254,8 +254,19 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     		 $result['moufProperty'] = true;*/
     		
     		// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
-    		$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
-    		$result['type'] = $moufPropertyDescriptor->getTypes()->toJson();
+    		
+    		// If this is a setter only:
+    		
+    		if ($this->isSetter()) {
+	    		$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+	    		$types = $moufPropertyDescriptor->getTypes();
+	    		$result['types'] = $types->toJson();
+	    		
+	    		if ($types->getWarningMessage()) {
+	    			$result['classinerror'] = $types->getWarningMessage();
+	    		}
+    		}
+    		
     		/*if ($moufPropertyDescriptor->isAssociativeArray()) {
     			$result['keytype'] = $moufPropertyDescriptor->getKeyType();
     		}
@@ -266,9 +277,38 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     	} catch (\Exception $e) {
     		$result['classinerror'] = $e->getMessage();
     	}
+    	
     
     	return $result;
     }
     
+    /**
+     * Returns true if this method has the signature of a setter.
+     * 
+     * @return boolean
+     */
+    public function isSetter() {
+    	$methodName = $this->getName();
+    	
+    	   
+    	if (strpos($methodName, "set") === 0 && strlen($methodName)>3) {
+    		// A setter must have exactly one compulsory parameter
+    		$parameters = $this->getParameters();
+    		if (count($parameters) == 0) {
+    			return false;
+    		}
+    		if (count($parameters)>1) {
+    			for ($i=1, $count=count($parameters); $i<$count; $i++) {
+    				$param = $parameters[$i];
+    				if (!$param->isDefaultValueAvailable()) {
+    					return false;
+    				}
+    			}
+    		}
+    		
+    		return true;
+    	}
+    	return false;
+    }
 }
 ?>

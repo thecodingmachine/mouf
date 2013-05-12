@@ -1,6 +1,10 @@
 <?php 
 namespace Mouf\Reflection;
 
+use Mouf\MoufInstancePropertyDescriptor;
+
+use Mouf\MoufInstanceDescriptor;
+
 use Mouf\MoufTypeParserException;
 
 use Mouf\MoufException;
@@ -28,6 +32,13 @@ class TypesDescriptor {
 	private static $localCache = array();
 	
 	/**
+	 * An optional warning message.
+	 * 
+	 * @var string
+	 */
+	private $warningMessage;
+	
+	/**
 	 * The list of detected types (as TypeDescriptor array)
 	 * 
 	 * @return \Mouf\Reflection\TypeDescriptor[]
@@ -36,6 +47,11 @@ class TypesDescriptor {
 		return $this->types;
 	}
 	
+	/**
+	 * 
+	 * @param string $types
+	 * @return TypesDescriptor
+	 */
 	public static function parseTypeString($types) {
 		if (isset(self::$localCache[$types])) {
 			return self::$localCache[$types];
@@ -126,9 +142,12 @@ class TypesDescriptor {
 	 * @return array
 	 */
 	public function toJson() {
-		$array = array();
+		$array = array("types"=>array());
 		foreach ($this->types as $type) {
-			$array[] = $type->toJson();
+			$array["types"][] = $type->toJson();
+		}
+		if ($this->warningMessage) {
+			$array["warning"] = $this->warningMessage;
 		}
 		return $array;
 	}
@@ -142,8 +161,43 @@ class TypesDescriptor {
 	 */
 	public function resolveType($useMap, $namespace) {
 		foreach ($this->types as $type) {
+			/* @var $type TypeDescriptor */
 			$type->resolveType($useMap, $namespace);
 		}
 	}
+
+	/**
+	 * Returns the TypeDescriptor that is part of these types that is the most likely to fit the propertyDescriptor's value
+	 * passed in parameter.
+	 * Returns null if no type is compatible.
+	 * 
+	 * @param string|array|MoufInstanceDescriptor|MoufInstanceDescriptor[] $instanceDescriptor
+	 * @return TypeDescriptor
+	 */
+	public function getCompatibleTypeForInstance($value) {
+		foreach ($this->types as $type) {
+			if ($type->isCompatible($value)) {
+				return $type;
+			}
+		}
+		return null;
+	}
 	
+	/**
+	 * Sets an optional warning message (if something seems wrong for these types).
+	 * 
+	 * @param string $warningMessage
+	 */
+	public function setWarningMessage($warningMessage) {
+		$this->warningMessage = $warningMessage;
+	}
+	
+	/**
+	 * Returns the optional warning message (if something seems wrong for these types).
+	 * 
+	 * @return string
+	 */
+	public function getWarningMessage() {
+		return $this->warningMessage;
+	}
 }

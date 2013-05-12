@@ -230,9 +230,20 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     		if (!empty($properties)) {
     	$result['moufProperty'] = true;*/
     	
-    	// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
-    	$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
-    	$result['type'] = $moufPropertyDescriptor->getTypes()->toJson();
+    	try {
+    		 
+	    	// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
+	    	$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+	    	$types = $moufPropertyDescriptor->getTypes();
+	    	$result['types'] = $types->toJson();
+	    	 
+	    	if ($types->getWarningMessage()) {
+	    		$result['classinerror'] = $types->getWarningMessage();
+	    	}
+	    		    	
+    	} catch (\Exception $e) {
+    		$result['classinerror'] = $e->getMessage();
+    	}
     	/*if ($moufPropertyDescriptor->isAssociativeArray()) {
     		$result['keytype'] = $moufPropertyDescriptor->getKeyType();
     	}

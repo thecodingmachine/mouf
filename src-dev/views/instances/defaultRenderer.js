@@ -135,13 +135,14 @@ var MoufDefaultRenderer = (function () {
 	var renderArrayField = function(moufInstanceProperty) {
 		var name = moufInstanceProperty.getName();
 		var values = moufInstanceProperty.getValue();
-		var moufProperty = moufInstanceProperty.getMoufProperty();
+		var currentType = moufInstanceProperty.getType();
+		//var moufProperty = moufInstanceProperty.getMoufProperty();
 		var elem = jQuery("<div/>");
 		var sortable = jQuery("<div/>").addClass('array');
 		sortable.appendTo(elem);
-		var subtype = moufProperty.getSubType();
+		var subtype = currentType.getSubType().getType();
 
-		if (!moufProperty.isAssociativeArray())  {
+		if (!currentType.isAssociativeArray())  {
 			// If this is a known primitive type
 			if (fieldsRenderer[subtype]) {
 			
@@ -207,7 +208,7 @@ var MoufDefaultRenderer = (function () {
 						.html("<i class='icon-plus icon-white'></i> Add an instance")
 						.appendTo(elem)
 						.click(function() {
-							MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
+							MoufUI.displayInstanceOfType("#instanceList", moufInstanceProperty.getType().getSubType(), true, true);
 						});
 					
 				})
@@ -243,7 +244,7 @@ var MoufDefaultRenderer = (function () {
 					rowElem.appendTo(fieldElem);
 				});
 			}
-			var subtype = moufProperty.getSubType();
+			
 			// If this is a known primitive type, let's display a "add a value" button
 			
 			var addDiv = jQuery("<div/>").addClass('btn btn-mini btn-success')
@@ -365,7 +366,7 @@ var MoufDefaultRenderer = (function () {
 	var renderInstanceField = function(moufInstanceProperty) {
 		var name = moufInstanceProperty.getName();
 		var value = moufInstanceProperty.getValue();
-		var type = moufInstanceProperty.getMoufProperty().getType();
+		//var type = moufInstanceProperty.getMoufProperty().getType();
 	
 		var parentElem = jQuery('<div/>');
 		
@@ -379,10 +380,10 @@ var MoufDefaultRenderer = (function () {
 				
 				// Exception case: if we are in a non associative array, let's not make it draggable.
 				// The container will do that for us.
-				var parentProperty = moufInstanceProperty.getMoufProperty().getParent();
+				//var parentProperty = moufInstanceProperty.getMoufProperty().getParent();
 				var drag = true;
-				if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray()) {
-					drag = false;
+				if (moufInstanceProperty.getParent && moufInstanceProperty.getParent().getType().isArray() && !moufInstanceProperty.getParent().getType().isAssociativeArray()) {
+						drag = false;
 				}
 				
 				var renderedInstance = instance.render(displayType).appendTo(parentElem);
@@ -432,11 +433,12 @@ var MoufDefaultRenderer = (function () {
 	/**
 	 * Returns the field renderer method for the field whose class is "name"
 	 */
-	var getFieldRenderer = function(type, subtype, keytype) {
-		if (type == null) {
+	var getFieldRenderer = function(type) {
+		var coreType = type.getType();
+		if (coreType == null) {
 			return renderStringField;
-		} else if (fieldsRenderer[type]) {
-			return fieldsRenderer[type];
+		} else if (fieldsRenderer[coreType]) {
+			return fieldsRenderer[coreType];
 		} else {
 			// TODO: manage subtype and keytype
 			// TODO: default should be to display the corresponding renderer.
@@ -445,14 +447,14 @@ var MoufDefaultRenderer = (function () {
 	}
 	
 	/**
-	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an object
+	 * Returns true if the MoufType passed in parameter represents an object
 	 * (i.e. it is not a primitive nor an array type).
 	 */
-	var isObjectType = function(moufProperty) {
-		var type = moufProperty.getType();
-		if (type == null) {
+	var isObjectType = function(type) {
+		var maintype = type.getType();
+		if (maintype == null) {
 			return false;
-		} else if (fieldsRenderer[type]) {
+		} else if (fieldsRenderer[maintype]) {
 			return false;
 		} else {
 			return true;
@@ -460,13 +462,13 @@ var MoufDefaultRenderer = (function () {
 	}
 	
 	/**
-	 * Returns true if the moufProperty (or subproperty) passed in parameter represents an array of objects
+	 * Returns true if the MoufType passed in parameter represents an array of objects
 	 */
-	var isArrayOfObjectType = function(moufProperty) {
-		var type = moufProperty.getSubType();
-		if (type == null) {
+	var isArrayOfObjectType = function(type) {
+		var subtype = type.getSubType();
+		if (subtype == null) {
 			return false;
-		} else if (fieldsRenderer[type]) {
+		} else if (fieldsRenderer[subtype]) {
 			return false;
 		} else {
 			return true;
@@ -614,13 +616,14 @@ var MoufDefaultRenderer = (function () {
 		fieldInnerWrapper.appendTo(target);
 		
 		var moufProperty = moufInstanceProperty.getMoufProperty();
+		var currentType = moufInstanceProperty.getType();
 		
 		var makeDroppable = function(elem) {
 			var type;
-			if (!moufProperty.isArray()) {
-				type = moufProperty.getType();
+			if (!currentType.isArray()) {
+				type = currentType.getType();
 			} else {
-				type = moufProperty.getSubType();
+				type = currentType.getSubType().getType();
 			}
 			elem.droppable({
 				accept: "."+MoufUI.getCssNameFromType(type),
@@ -641,7 +644,7 @@ var MoufDefaultRenderer = (function () {
 					if (droppedInstance) {
 						// If an instance was dropped
 						
-						if (!moufProperty.isArray()) {
+						if (!moufInstanceProperty.getType().isArray()) {
 							moufInstanceProperty.setValue(droppedInstance.getName());	
 						} else {
 							// If we dropped in a null/default value array:
@@ -674,7 +677,7 @@ var MoufDefaultRenderer = (function () {
 						var timestamp = new Date();
 						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
 						
-						if (!moufProperty.isArray()) {
+						if (!currentType.isArray()) {
 							moufInstanceProperty.setValue(newInstance.getName());
 						} else {
 							moufInstanceProperty.addArrayElement(null, newInstance.getName());
@@ -687,26 +690,29 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		// Let's check if we can drop something in the "null" or "default" buttons of this property.
-		var isDroppable = isObjectType(moufProperty) || (isArrayOfObjectType(moufProperty) && !moufProperty.isAssociativeArray());
+		var isDroppable = isObjectType(currentType) || (isArrayOfObjectType(currentType) && !currentType.isAssociativeArray());
 		var isPartOfNonAssociativeObjectArray = false;
-		var parentProperty = moufProperty.getParent();
-		if (parentProperty != null && parentProperty.isArray() && !parentProperty.isAssociativeArray() && isObjectType(moufProperty)) {
-			isDroppable = false;
-			isPartOfNonAssociativeObjectArray = true;
+		// If this is a sub instance property
+		if (moufInstanceProperty.getParent) {
+			var parentInstanceProperty = moufInstanceProperty.getParent();
+			if (parentInstanceProperty.getType().isArray() && !parentInstanceProperty.getType().isAssociativeArray() && isObjectType(currentType)) {
+				isDroppable = false;
+				isPartOfNonAssociativeObjectArray = true;
+			}
 		}
 		
 		var onClickNullOrNotSetField = function() {
-			if (isObjectType(moufProperty)) {
+			if (isObjectType(currentType)) {
 				// Null field for an object
-				MoufUI.displayInstanceOfType("#instanceList", moufProperty.getType(), true, true);
+				MoufUI.displayInstanceOfType("#instanceList", moufInstanceProperty.getType(), true, true);
 			} else {
 				// Null field for a primitive type / array
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
 				// If this is an array, let's display the instance type.
-				if (isArrayOfObjectType(moufProperty)) {
-					MoufUI.displayInstanceOfType("#instanceList", moufProperty.getSubType(), true, true);
+				if (isArrayOfObjectType(currentType)) {
+					MoufUI.displayInstanceOfType("#instanceList", moufInstanceProperty.getType().getSubType(), true, true);
 				}
 			}
 		}
@@ -812,12 +818,50 @@ var MoufDefaultRenderer = (function () {
 	 * The focus parameter decides if the clicked element should have focus or not.
 	 */
 	var renderInnerField = function(moufInstanceProperty) {
-		var moufProperty = moufInstanceProperty.getMoufProperty();
-		var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
+		//var moufProperty = moufInstanceProperty.getMoufProperty();
+		var fieldRenderer = getFieldRenderer(moufInstanceProperty.getType());
 		
 		var field = fieldRenderer(moufInstanceProperty);
 		return field;
-	}	
+	}
+	
+	
+	/**
+	 * Renders as a jQuery element the list of types and binds the callback passed in parameter when one is clicked.
+	 * The callback passes a MoufType object in parameter.
+	 * 
+	 * @param moufTypes MoufTypes
+	 * @param currentType MoufType The current type to put in bold
+	 */
+	var renderTypesSelector = function(moufTypes, currentType, onclick) {
+		var typesElem = $("<div/>");
+		var first = true;
+		var types = moufTypes.getTypes();
+		_.each(types, function(type) {
+			var selected = false;
+			if (type == currentType) {
+				selected = true;
+			}
+			
+			if (first != true) {
+				types.append(" | ");
+			}
+			first = false;
+			
+			var typeText = type.toString();
+
+			var typeElem = $("<span>").text(typeText);
+			if (selected) {
+				// Todo: change this for some button
+				typeElem.css("font-weight", "bold");
+			}
+			if (onclick) {
+				typeElem.click(function() { onclick(type) });
+			}
+			typeElem.appendTo(typesElem);
+		})
+		return typesElem;
+	}
 
 	
 	return {
@@ -936,15 +980,29 @@ var MoufDefaultRenderer = (function () {
 							jQuery("<label/>").text(moufProperty.getPropertyName())
 								.addClass("control-label")
 								.appendTo(fieldGlobalElem);
-							var fieldElem = jQuery("<div/>").addClass('fieldContainer controls')
+							var fieldElem = jQuery("<div/>").addClass('controls')
 								.data("moufProperty", moufProperty).appendTo(fieldGlobalElem);
 
 							
-							/*var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
+							var types = moufProperty.getTypes();
 							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-							fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
-							var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-							renderField(moufInstanceProperty).appendTo(fieldElem);
+							
+							// Let's find the current type, if any
+							var currentType = types.findType(moufInstanceProperty.getType());
+							
+							if (types.getWarningMessage() != null) {
+								$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+							}
+							
+							renderTypesSelector(types, currentType).appendTo(fieldElem);
+							
+							if (currentType != null) {
+								var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
+								renderField(moufInstanceProperty).appendTo(fieldContainer);
+							} else {
+								// Display a warning message.
+								$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+							}
 							
 							jQuery("<span class='help-block'>").html(moufProperty.getComment()).appendTo(fieldElem);
 							

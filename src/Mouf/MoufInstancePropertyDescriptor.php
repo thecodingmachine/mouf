@@ -70,6 +70,7 @@ class MoufInstancePropertyDescriptor {
 		if ($propertyDescriptor->isSetterProperty()) {
 			$this->name = $propertyDescriptor->getMethodName();
 		} else {
+			$this->name = $propertyDescriptor->getName();
 		}
 		
 		$this->propertyDescriptor = $propertyDescriptor;
@@ -122,20 +123,26 @@ class MoufInstancePropertyDescriptor {
 			}
 			
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
+				$this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
 				$this->moufManager->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
+				$this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 				$this->moufManager->setParameterViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
+				$this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "primitive", $origin);
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
 		} else {
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
+				$this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
 				$this->moufManager->bindComponents($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
+				$this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 				$this->moufManager->bindComponentsViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
+				$this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "object");
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
@@ -289,7 +296,7 @@ class MoufInstancePropertyDescriptor {
 	 * @return MoufInstancePropertyDescriptor Returns $this for chaining.
 	 */
 	public function setOrigin($origin) {
-		if ($this->propertyDescriptor->isPrimitiveType()) {
+		//if ($this->propertyDescriptor->isPrimitiveType()) {
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
 				$this->moufManager->setParameterType($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
@@ -299,9 +306,10 @@ class MoufInstancePropertyDescriptor {
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
-		} else {
+		/*} else {
 			// FIXME: TODO: support origin for binds
-		}
+			throw new MoufException("config or other origins is NOT YET SUPPORTED for instance binding.");
+		}*/
 		return $this;
 	}
 	
@@ -339,27 +347,37 @@ class MoufInstancePropertyDescriptor {
 	public function toJson() {
 		$result = array();
 		$value = $this->getValue();
+
 		if ($value instanceof MoufInstanceDescriptor) {
 			$serializableValue = $value->getIdentifierName();
-			$result['type'] = 'object';
+			//$result['type'] = 'object';
 		} elseif (is_array($value)) {
 			// We cannot match a PHP array to a JSON array!
 			// The keys in a PHP array are ordered. The key in a JSON array are not ordered!
 			// Therefore, we will be sending the arrays as JSON arrays of key/values to preserve order.
 			$serializableValue = self::arrayToJson($value);
 			
-			$result['type'] = 'scalar';
+			//$result['type'] = 'scalar';
 			// Let's find the type:
-			foreach ($value as $val) {
+			/*foreach ($value as $val) {
 				if ($val instanceof MoufInstanceDescriptor) {
-					$result['type'] = 'object';
+					//$result['type'] = 'object';
 					break;
 				}
-			}
+			}*/
 			
 		} else {
 			$serializableValue = $value;
-			$result['type'] = 'scalar';
+			//$result['type'] = 'scalar';
+		}
+		$type = $this->propertyDescriptor->getTypes()->getCompatibleTypeForInstance($value);
+		/*if ($type == null) {
+			throw new MoufException("Error for property ".$this->propertyDescriptor->getName()." for instance ".$this->instanceDescriptor->getName().".");
+		}*/
+		if ($type == null) {
+			$result['type'] = null;
+		} else {
+			$result['type'] = $type->toJson();
 		}
 		$result['value'] = $serializableValue;
 		$result['isset'] = $this->isValueSet();

@@ -101,10 +101,18 @@ class MoufPropertyDescriptor {
 		} else {
 			$this->name = $object->getName();
 		}
-		$this->analyzeType();
+		try {
+			$this->analyzeType();
+		} catch (MoufException $e) {
+			if ($this->types == null) {
+				$this->types = $this->types = TypesDescriptor::parseTypeString("string");
+			}
+			$this->types->setWarningMessage($e->getMessage());
+		}
 	}
 	
 	private function analyzeType() {
+		$warningMessage = null;
 		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			$property = $this->object;
 			if ($property->hasAnnotation("var")) {
@@ -190,6 +198,7 @@ class MoufPropertyDescriptor {
 					$this->keyType = $paramAnnotation->getKeyType();*/
 					
 				} else {
+					
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
 					if ($parameter->isArray()) {
 						$this->types = TypesDescriptor::parseTypeString("array");
@@ -251,6 +260,7 @@ class MoufPropertyDescriptor {
 					} elseif ($parameters[0]->getType() != null) {
 						$this->types = TypesDescriptor::parseTypeString("\\".$parameters[0]->getType());
 					}
+					$warningMessage = "Warning! The setter <strong>".$this->methodName."</strong> has a parameter named <strong>\$".$parameters[0]->getName()."</strong>, but the @param annotation points to a parameter named <strong>".$paramTypes[0]->getParameterName()."</strong>. This is likely to be an error in the @param annotation.";
 				}
 			} else {
 				$parameters = $method->getParameters();
@@ -263,8 +273,11 @@ class MoufPropertyDescriptor {
 		}
 		
 		if ($this->types == null) {
-			$this->types = TypesDescriptor::getEmptyTypes();
+			// Let's default to "string" if something goes wrong.
+			//$this->types = TypesDescriptor::getEmptyTypes();
+			$this->types = TypesDescriptor::parseTypeString("string");
 		}
+		$this->types->setWarningMessage($warningMessage);
 		// Apply a namespace to type and subtype if necessary
 		//$this->applyNamespace();
 	}

@@ -92,12 +92,12 @@ abstract class AbstractMoufInstanceController extends Controller {
 		}
 		
 		$this->className = $this->moufManager->getInstanceType($this->instanceName);		
-		$this->reflectionClass = MoufReflectionProxy::getClass($this->className, $selfedit=="true");
-		//$this->properties = Moufspector::getPropertiesForClass($this->reflectionClass);
+		//$this->reflectionClass = MoufReflectionProxy::getClass($this->className, $selfedit=="true");
+		
 		$this->weak = $this->moufManager->isInstanceWeak($this->instanceName);
 		
 		// Init the right menu:
-		$extendedActions = $this->reflectionClass->getAnnotations("ExtendedAction");
+		/*$extendedActions = $this->reflectionClass->getAnnotations("ExtendedAction");
 		if (!empty($extendedActions)) {
 			$items = array();
 			foreach ($extendedActions as $extendedAction) {
@@ -111,7 +111,7 @@ abstract class AbstractMoufInstanceController extends Controller {
 			\MoufAdmin::getSpecialActionsMenu()->addChild($specialActionsMenuItem);
 			
 			//$this->template->addRightHtmlElement($menuItems);	
-		}
+		}*/
 		
 		$viewPropertiesMenuItem = new MenuItem("View properties", ROOT_URL."ajaxinstance/");
 		$viewPropertiesMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));
