@@ -1,15 +1,3 @@
-// A mini jQuery plugin to be able to use the draggable feature in "live" mode.
-(function ($) {
-   $.fn.liveDraggable = function (opts) {
-      this.live("mouseover", function() {
-         if (!$(this).data("init")) {
-            $(this).data("init", true).draggable(opts);
-         }
-      });
-      return $();
-   };
-}(jQuery));
-
 /**
  * A simple Javascript plugin that puts an element in fixed position, but only when starting scrolling below
  * its first position.
