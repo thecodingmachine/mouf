@@ -259,6 +259,17 @@ div.loading {
 	background-position: 5px 5px;
 }
 
+i.loading-icon {
+    background-image: url("images/ajax-loader.gif");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    margin-top: 1px;
+    vertical-align: text-top;
+    width: 14px;
+}
+
 div.validator {
 	margin-bottom: 5px;
 }

@@ -397,7 +397,8 @@ var MoufUI = (function () {
 		 * 
 		 * @param options A list of options to be passed to the class list;
 		 * {
-		 *  onSelect: function(classDescriptor, jQueryElement)
+		 *  onSelect: function(classDescriptor, jQueryElement),
+		 *  onReady: function() // triggered when the class list is loaded.
 		 * }
 		 */
 		renderClassesList : function(options) {
@@ -493,6 +494,10 @@ var MoufUI = (function () {
 				componentAnnotationFilter.change(applyFilter);
 
 				applyFilter();
+				
+				if (options && options.onReady) {
+					options.onReady();
+				}
 				
 			}).onError(function(e) {
 				addMessage("<pre>"+e+"</pre>", "error");
