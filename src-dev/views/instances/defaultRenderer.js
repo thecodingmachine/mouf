@@ -856,7 +856,7 @@ var MoufDefaultRenderer = (function () {
 				typeElem.addClass('disabled');
 			}
 			var innerLink = $('<a href="#">').appendTo(typeElem).text(typeText);
-			if (onclick) {
+			if (onclick && !selected) {
 				innerLink.click(function() { onclick(type); return false; });
 			} else {
 				innerLink.click(function() { return false; });
@@ -902,20 +902,50 @@ var MoufDefaultRenderer = (function () {
 							if (annotations) {
 								var isImportant = annotations['Important'];
 								if (isImportant) {
-									var fieldGlobalElem = jQuery("<div/>");
-									jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
-									var fieldElem = jQuery("<div/>").addClass('fieldContainer')
-										.data("moufProperty", moufProperty)
-										.appendTo(fieldGlobalElem);
-	
-									/*var fieldRenderer = getFieldRenderer(moufProperty.getType(), moufProperty.getSubType(), moufProperty.getKeyType());
-									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-									fieldRenderer(moufInstanceProperty).appendTo(fieldElem);*/
-									var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
-									
-									renderField(moufInstanceProperty).appendTo(fieldElem);
-									
-									fieldGlobalElem.appendTo(propertiesList);
+									var fieldGlobalElem = jQuery("<div/>").appendTo(propertiesList);;
+									var displayInnerField = function() {
+										jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
+										var fieldElem = jQuery("<div/>").addClass('fieldContainer')
+											.data("moufProperty", moufProperty)
+											.appendTo(fieldGlobalElem);
+		
+										var types = moufProperty.getTypes();
+										var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+										
+										// Let's find the current type, if any
+										var currentType = types.findType(moufInstanceProperty.getType());
+										
+										if (moufInstanceProperty.getWarningMessage() != null) {
+											$("<div/>").addClass("alert").html(moufInstanceProperty.getWarningMessage()).appendTo(fieldElem);
+										}
+										if (types.getWarningMessage() != null) {
+											$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+										}
+										
+										// Function called when another type is clicked.
+										var onChangeType = function(newType) {
+											fieldGlobalElem.empty();
+											moufInstanceProperty.setType(newType);
+											displayInnerField();
+										}
+										
+										if (types.getTypes().length > 1) {
+											renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
+										}
+										
+										if (currentType != null) {
+											var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
+											renderField(moufInstanceProperty).appendTo(fieldContainer);
+										} else {
+											// Display a warning message.
+											$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+										}
+										
+										
+										//renderField(moufInstanceProperty).appendTo(fieldElem);
+										
+									}
+									displayInnerField();
 								}
 							}
 
@@ -994,6 +1024,9 @@ var MoufDefaultRenderer = (function () {
 								// Let's find the current type, if any
 								var currentType = types.findType(moufInstanceProperty.getType());
 								
+								if (moufInstanceProperty.getWarningMessage() != null) {
+									$("<div/>").addClass("alert").html(moufInstanceProperty.getWarningMessage()).appendTo(fieldElem);
+								}
 								if (types.getWarningMessage() != null) {
 									$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
 								}

@@ -208,14 +208,18 @@ class MoufInstancePropertyDescriptor {
 			return $this->toInstanceDescriptor($instanceName);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
 			// Let's try to see if it is a "value":
+			$argumentType = $this->moufManager->isConstructorParameterObjectOrPrimitive($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 			$param = $this->moufManager->getParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
-			if ($param != null) {
+				
+			if ($argumentType == "primitive") {
 				return $param;
+			} elseif ($argumentType == "object") {
+				return $this->toInstanceDescriptor($param);
+			} else {
+				// Not set: return null
+				return null;
 			}
 			
-			$instanceName = $this->moufManager->getParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
-
-			return $this->toInstanceDescriptor($instanceName);
 		} else {
 			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 		}
@@ -370,7 +374,14 @@ class MoufInstancePropertyDescriptor {
 			$serializableValue = $value;
 			//$result['type'] = 'scalar';
 		}
-		$type = $this->propertyDescriptor->getTypes()->getCompatibleTypeForInstance($value);
+		
+		try {
+			$type = $this->propertyDescriptor->getTypes()->getCompatibleTypeForInstance($value);
+		} catch (\ReflectionException $e) {
+			// If an error occurs here, let's silently continue with an error message added.
+			$result['warning'] = $e->getMessage();
+			$type = null;
+		}
 		/*if ($type == null) {
 			throw new MoufException("Error for property ".$this->propertyDescriptor->getName()." for instance ".$this->instanceDescriptor->getName().".");
 		}*/

@@ -532,19 +532,24 @@ var MoufInstanceManager = (function() {
 			var constructorArguments = {};
 			_.each(classDescriptor.getInjectableConstructorArguments(), function(
 					property) {
+				var types = property.getTypes();
+				var type = (types.getTypes().length > 0)?types.getTypes()[0].toJson():null;
+				
 				if (property.hasDefault()) {
 					constructorArguments[property.getName()] = {
 						value : property.getDefault(),
 						origin : "string",
 						metadata : [],
-						isset: true
+						isset: true,
+						type: type
 					};
 				} else {
 					constructorArguments[property.getName()] = {
 						value : null,
 						origin : null,
 						metadata : [],
-						isset: false
+						isset: false,
+						type: type
 					};
 				}
 			});
@@ -552,19 +557,24 @@ var MoufInstanceManager = (function() {
 			var properties = {};
 			_.each(classDescriptor.getInjectablePublicProperties(), function(
 					property) {
+				var types = property.getTypes();
+				var type = (types.getTypes().length > 0)?types.getTypes()[0].toJson():null;
+				
 				if (property.hasDefault()) {
 					properties[property.getName()] = {
 						value : property.getDefault(),
 						origin : "string",
 						metadata : [],
-						isset: true
+						isset: true,
+						type: type
 					};
 				} else {
 					properties[property.getName()] = {
 						value : null,
 						origin : null,
 						metadata : [],
-						isset: false
+						isset: false,
+						type: type
 					};
 				}
 			});
@@ -572,6 +582,9 @@ var MoufInstanceManager = (function() {
 			var setters = {};
 			_.each(classDescriptor.getInjectableSetters(), function(
 					property) {
+				var types = property.getTypes();
+				var type = (types.getTypes().length > 0)?types.getTypes()[0].toJson():null;
+				
 				var parameters = property.getParameters();
 				if (parameters.length > 0) {
 					var parameter = parameters[0];
@@ -580,14 +593,16 @@ var MoufInstanceManager = (function() {
 							value : parameter.getDefault(),
 							origin : "string",
 							metadata : [],
-							isset: true
+							isset: true,
+							type: type
 						};
 					} else {
 						setters[property.getName()] = {
 							value : null,
 							origin : null,
 							metadata : [],
-							isset: false
+							isset: false,
+							type: type
 						};
 					}
 				}
@@ -922,8 +937,8 @@ MoufInstanceProperty.prototype.getType = function() {
  * This will also reset the value to "undefined".
  */
 MoufInstanceProperty.prototype.setType = function(moufType) {
-	this.unSet();
 	this.type = moufType;
+	this.unSet();
 }
 
 
@@ -1175,6 +1190,14 @@ MoufInstanceProperty.prototype.removeArrayElement = function(i) {
 	MoufInstanceManager.firePropertyChange(this);
 
 }
+
+/**
+ * Returns a warning message for this instance property, if any
+ */
+MoufInstanceProperty.prototype.getWarningMessage = function() {
+	return this.json['warning'];
+}
+
 
 /**
  * Let's define the MoufClass class, that defines a PHP class.
@@ -2180,6 +2203,15 @@ MoufTypes.prototype.findType = function(type) {
 }
 
 /**
+ * Converts this MoufTypes into its json representation.
+ * @return Object
+ */
+MoufTypes.prototype.toJson = function() {
+	// Since MoufTypes is immutable, we can directly return the json that was used to create it.
+	return this.json;
+}
+
+/**
  * Let's define one type for a property.
  */
 var MoufType = function(json) {
@@ -2258,4 +2290,13 @@ MoufType.prototype.toString = function() {
 		typeText += this.getSubType().toString() + ">";
 	}
 	return typeText;
+}
+
+/**
+ * Converts this MoufType into its json representation.
+ * @return Object
+ */
+MoufType.prototype.toJson = function() {
+	// Since MoufTypes is immutable, we can directly return the json that was used to create it.
+	return this.json;
 }
