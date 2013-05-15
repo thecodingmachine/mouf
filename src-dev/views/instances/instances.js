@@ -1000,6 +1000,9 @@ MoufInstanceProperty.prototype.unSet = function() {
 	this.json['isset'] = false;
 	this.json['origin'] = 'string';
 
+	this.json['value'] = null;
+	this.moufInstanceSubProperties = [];
+	
 	MoufInstanceManager.firePropertyChange(this);
 }
 

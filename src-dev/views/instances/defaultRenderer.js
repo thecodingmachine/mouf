@@ -848,14 +848,13 @@ var MoufDefaultRenderer = (function () {
 			}
 			first = false;
 			
-			var typeText = type.toString();
-
+			
 			var typeElem = $("<li>");
 			if (selected) {
 				// Todo: change this for some button
-				typeElem.addClass('disabled');
+				typeElem.addClass('active');
 			}
-			var innerLink = $('<a href="#">').appendTo(typeElem).text(typeText);
+			var innerLink = $('<a href="#">').appendTo(typeElem).append(renderType(type));
 			if (onclick && !selected) {
 				innerLink.click(function() { onclick(type); return false; });
 			} else {
@@ -863,7 +862,40 @@ var MoufDefaultRenderer = (function () {
 			}
 			typeElem.appendTo(typesElem);
 		})
-		return typesElem;
+		return $("<small>").append(typesElem);
+	}
+	
+	/**
+	 * Returns a jQuery object representing a <span> containing a moufType
+	 */
+	var renderType = function(moufType) {
+		var fullTypeName = moufType.getType();
+		var lastIndex = fullTypeName.lastIndexOf("\\");
+		if (lastIndex == -1) {
+			var typeName = fullTypeName;
+			var namespace = null;
+		} else {
+			var typeName = fullTypeName.substr(lastIndex+1);
+			var namespace = fullTypeName.substr(0, lastIndex);
+		}
+		
+		
+		var span = $("<span>")
+		if (namespace == null) {
+			span.text(typeName);
+		} else {
+			$("<span>").text(typeName).attr("rel", "tooltip").attr("title", namespace).appendTo(span);
+		}
+		
+		if (moufType.getSubType()) {
+			span.append("&lt;");
+			if (moufType.getKeyType()) {
+				span.append(moufType.getKeyType()+",");
+			}
+			span.append(renderType(moufType.getSubType()));
+			span.append("&gt;");
+		}
+		return span;
 	}
 
 	
@@ -1011,9 +1043,10 @@ var MoufDefaultRenderer = (function () {
 						var displayField = function(moufProperty) {
 							var fieldGlobalElem = jQuery("<div/>").addClass("control-group").appendTo(propertiesList);
 							var displayInnerField = function() {
-								jQuery("<label/>").text(moufProperty.getPropertyName())
+								var label = jQuery("<label/>").text(moufProperty.getPropertyName())
 									.addClass("control-label")
 									.appendTo(fieldGlobalElem);
+								
 								var fieldElem = jQuery("<div/>").addClass('controls')
 									.data("moufProperty", moufProperty).appendTo(fieldGlobalElem);
 	
@@ -1038,7 +1071,14 @@ var MoufDefaultRenderer = (function () {
 									displayInnerField();
 								}
 								
-								renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
+								var typesList = types.getTypes();
+								if (typesList.length == 1) {
+									$("<br/>").appendTo(label);
+									$("<small class='type'>").appendTo(label)
+										.html(renderType(typesList[0]));
+								} else {
+									renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
+								}
 								
 								if (currentType != null) {
 									var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);

@@ -533,3 +533,7 @@ button.btn.defaultValue, button.btn.nullValue {
 ul.nav.mouftypes {
 	margin-bottom: 0px;
 }
+
+label .type {
+	color: #999999
+}
