@@ -64,7 +64,9 @@ $instanceArray = array();
 
 foreach ($instanceList as $instanceName) {
 	$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
-	$response["instances"][$instanceDescriptor->getName()] = $instanceDescriptor->toJson();
+	if (!$instanceDescriptor->isAnonymous()) {
+		$response["instances"][$instanceDescriptor->getIdentifierName()] = $instanceDescriptor->toJson();
+	}
 }
 
 // Now, let's get the full list of absolutely all classes implementing "class".

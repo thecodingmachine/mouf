@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
+
 /**
  * Extended Reflection class for parameters.
  * 
@@ -166,5 +168,50 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     		$propertyNode->addAttribute("class", $this->getClass()->getName());
     	}
     }
+    
+
+    /**
+     * Returns a PHP array representing the parameter.
+     *
+     * @return array
+     */
+    public function toJson() {
+    	$result = array();
+    	$result['name'] = $this->getName();
+    	$result['hasDefault'] = $this->isDefaultValueAvailable();
+    	if ($result['hasDefault']) {
+    		$result['default'] = $this->getDefaultValue();
+    	}
+    	$result['isArray'] = $this->isArray();
+    
+    	try {
+    		// Let's export only the type if we are in a constructor... in order to save time.
+    		if ($this->getDeclaringFunction()->isConstructor()) {
+    			// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
+    			$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+    
+    			$result['comment'] = $moufPropertyDescriptor->getDocCommentWithoutAnnotations();
+    
+    	    	$types = $moufPropertyDescriptor->getTypes();
+	    		$result['types'] = $types->toJson();
+	    	 
+	    		if ($types->getWarningMessage()) {
+	    			$result['classinerror'] = $types->getWarningMessage();
+	    		}
+    			
+    			/*if ($moufPropertyDescriptor->isAssociativeArray()) {
+    				$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+    			}
+    			if ($moufPropertyDescriptor->isArray()) {
+    				$result['subtype'] = $moufPropertyDescriptor->getSubType();
+    			}*/
+    		}
+    	} catch (\Exception $e) {
+    		$result['classinerror'] = $e->getMessage();
+    	}
+    
+    	return $result;
+    }
+    
 }
 ?>

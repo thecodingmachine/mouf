@@ -97,15 +97,20 @@ class IncludesAnalyzerController extends Controller {
 		
 		foreach ($allClasses["classes"] as $class) {
 			$hasErrors = false;
+			foreach ($class["properties"] as $property) {
+				if (isset($property["classinerror"])) {
+					$this->warnings[$class["name"]][] = "Error in property '".$property['name']."': ".$property["classinerror"];
+					$hasErrors = true;
+				}
+			}
 			foreach ($class["methods"] as $method) {
-				$hasErrors = false;
-				if (isset($parameter["classinerror"])) {
-					$this->warnings[$class["name"]][] = $parameter["classinerror"];
+				if (isset($method["classinerror"])) {
+					$this->warnings[$class["name"]][] = "Error in method '".$method['name']."': ".$method["classinerror"];
 					$hasErrors = true;
 				}
 				foreach ($method["parameters"] as $parameter) {
 					if (isset($parameter["classinerror"])) {
-						$this->warnings[$class["name"]][] = $parameter["classinerror"];
+						$this->warnings[$class["name"]][] = "Error in method '".$method['name']."' for parameter '".$parameter['name']."': ".$parameter["classinerror"];
 						$hasErrors = true;
 					}
 				}

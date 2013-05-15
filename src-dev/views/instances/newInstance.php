@@ -21,7 +21,7 @@
 <div class="control-group">
 	<label class="control-label">Class:</label>
 	<div class="controls">
-		<a id="selectaclasslink" class="btn btn-primary" href="#">Click here to select a class</a>
+		<button id="selectaclassbutton" class="btn btn-primary" type="button" disabled="disabled"><i class="loading-icon"></i> Please wait, loading class list...</button>
 		<div id="selectedclasscontainer"></div>
 	</div>
 </div>
@@ -35,6 +35,24 @@
 </div>
 
 </form>
+
+<div class="row">
+	<div class="span12">
+		<div class="alert alert-info">
+			<strong>Cannot find your class in the class list?</strong> Click on this button to purge the
+			code cache and refresh the class list:
+			<a href="refreshNewInstance?selfedit=<?php echo $this->selfedit ?>&instanceName=<?php htmlentities($this->instanceName, ENT_QUOTES, "UTF-8") ?>&instanceClass=<?php htmlentities($this->className, ENT_QUOTES, "UTF-8") ?>" class="btn btn-success"><i class="icon-white icon-refresh"></i> Purge code cache and refresh</a>
+		</div>
+		<div class="alert alert-info">
+			<strong>Still cannot find your class in the class list?</strong> An error might prevent Mouf from loading
+			it. <a href="../includes/?selfedit=<?php echo $this->selfedit ?>">Head over to the class analyzer and check that your class has no errors</a>.
+		</div>
+		<div class="alert alert-info">
+			<strong>Still nothing?</strong> It is likely Composer cannot find your class. You might not have configured the <a href="http://getcomposer.org/doc/01-basic-usage.md#autoloading">composer autoloader
+			correctly</a>, or you might need to <a href="http://getcomposer.org/doc/03-cli.md#dump-autoload">dump the autoloader</a> after changing the settings or your class might not respect the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 standard</a>...
+		</div>
+	</div>
+</div>
 
 <div id="classesList" style="display:none"></div>
 
@@ -64,16 +82,19 @@ jQuery(document).ready(function() {
 			classDescriptor.render().appendTo("#selectedclasscontainer").click(openSelectClass);
 			jQuery("input[name=instanceClass]").val(classDescriptor.getName());
 
-			jQuery("#selectaclasslink").hide();
+			jQuery("#selectaclassbutton").hide();
+		},
+		onReady: function() {
+			$("#selectaclassbutton").attr("disabled", false).text("Click here to select a class");
 		}
 	}).appendTo("#classesList");
 
-	jQuery("#selectaclasslink").click(openSelectClass);
+	jQuery("#selectaclassbutton").click(openSelectClass);
 
 	<?php 
 	if ($this->instanceClass) {		
 	?>
-	jQuery("#selectaclasslink").hide();
+	jQuery("#selectaclassbutton").hide();
 	MoufInstanceManager.getClass(<?php echo json_encode($this->instanceClass); ?>).then(function(classDescriptor) {
 		classDescriptor.render().appendTo("#selectedclasscontainer").click(openSelectClass);
 	});

@@ -10,6 +10,8 @@
 
 namespace Mouf\Controllers;
 
+use Mouf\MoufCache;
+
 use Mouf\MoufClassExplorer;
 
 use Mouf\Composer\ComposerService;
@@ -324,6 +326,19 @@ class MoufController extends Controller implements MoufSearchable {
 		
 		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstance.php", $this);
 		$this->template->toHtml();	
+	}
+	
+	/**
+	 * Purge the cache and redisplays the screen allowing to create new instances.
+	 *
+	 * @Action
+	 * @Logged
+	 */
+	public function refreshNewInstance($selfedit = "false", $instanceName=null, $instanceClass=null) {
+		$moufCache = new MoufCache();
+		$moufCache->purgeAll();
+		
+		header("Location: newInstance2?selfedit=".$selfedit."&instanceName=".urlencode($instanceName)."&instanceClass=".urlencode($instanceClass));
 	}
 	
 	/**

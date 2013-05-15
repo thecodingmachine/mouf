@@ -38,7 +38,7 @@ class MoufReflectionProxy {
 	 * Returns the complete list of all classes in a PHP array.
 	 *
 	 * @param boolean $selfEdit
-	 * @return MoufXmlReflectionClass[]
+	 * @return array
 	 */
 	public static function getAllClasses($selfEdit, $exportMode = MoufReflectionClass::EXPORT_ALL) {
 		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_all_classes.php?selfedit=".(($selfEdit)?"true":"false")."&export_mode=".$exportMode;
