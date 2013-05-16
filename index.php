@@ -46,7 +46,7 @@ if (!extension_loaded("curl")) {
 	exit();
 }
 
-if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/../../..")) {
+if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/../../..") || (file_exists(dirname(__FILE__)."/../../../mouf") && !is_writable(dirname(__FILE__)."/../../../mouf"))) {
 ?>
 
 		<h1>Web directory must be writable for the Apache user</h1>
@@ -58,6 +58,9 @@ if (!is_writable(dirname(__FILE__)) || !is_writable(dirname(__FILE__)."/../../..
 			<?php }
 			if(!is_writable(dirname(__FILE__))) {?>
 				<li><?php echo realpath(dirname(__FILE__)) ?></li>
+			<?php }
+			if(file_exists(dirname(__FILE__)."/../../../mouf") && !is_writable(dirname(__FILE__)."/../../../mouf")) {?>
+				<li><?php echo realpath(dirname(__FILE__)."/../../../mouf") ?></li>
 			<?php }?>
 		</ul>
 		<?php if (function_exists("posix_getpwuid")) {
@@ -71,7 +74,10 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname
 			<?php }
 			if(!is_writable(dirname(__FILE__))) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__));
-			}?>
+			}
+			if(file_exists(dirname(__FILE__)."/../../../mouf") && !is_writable(dirname(__FILE__)."/../../../mouf")) {?>
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname(__FILE__)."/../../../mouf");
+			} ?>
 </pre>
 		<?php 
 		}
@@ -93,7 +99,7 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname
 		<form action="src/install.php" method="post">
 		
 			<p>Apparently, this is the first time you are running Mouf. You will need to install it.</p>
-			<?php if (file_exists(dirname(__FILE__)."/../MoufUsers.php")): ?>
+			<?php if (file_exists(dirname(__FILE__)."/../../../mouf/MoufUsers.php")): ?>
 				<p>The MoufUsers.php file has been detected. Logins/passwords from this file will be used to access Mouf.
 				If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>		
 			<?php else: ?>
