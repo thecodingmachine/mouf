@@ -27,11 +27,15 @@ The install process is declared in the composer.json file. Here is a sample:
     	    "install": [
     		    {
     			"type": "file",
-    			"file": "src/install.php"
+    			"file": "src/install.php",
+    			"scope": "global",
+    			"description": "My description"
     		    },
     		    {
     			"type": "url",
-    			"url": "dbconnectioninstall"
+    			"url": "dbconnectioninstall",
+    			"scope": "local",
+    			"description": "My description"
     		    }
     	    ]
         }
@@ -44,6 +48,15 @@ In this sample, you can see an install process can contain several steps. Each s
 
 - <b>File:</b> The file is relative to the root of the package
 - <b>URL:</b> The page is relative to Mouf's URL
+
+There are 2 more parameters that are optional:
+
+- *comment*: This is a simple comment that will be displayed on the Mouf page that lists installation items.
+- *scope*: The scope is either "local" or "global". If an installation is declared "global", the installation has
+  to be performed once when the package is installed. Then, if you share your code with other people, the install
+  process will not need to be run. If the scope is "local", each time someone will install your code, Mouf will
+  propose to run the install process again. This is very useful if you have some files that need to be written
+  and that depends on the environment, etc...  
 
 A typical install file
 ----------------------

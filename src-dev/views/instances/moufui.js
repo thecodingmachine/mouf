@@ -149,10 +149,10 @@ var MoufUI = (function () {
 			$(targetSelector).empty();
 			$("<div/>").addClass('loading').text("Loading").appendTo($(targetSelector));
 			
-			MoufInstanceManager.getInstanceListByType(type).then(function(instances, classes) {
+			MoufInstanceManager.getInstanceListByType(type.getType()).then(function(instances, classes) {
 				$(targetSelector).empty();
 				
-				jQuery("<h2/>").html("Type "+MoufUI.getHtmlClassName(type)).appendTo(targetSelector);
+				jQuery("<h2/>").html("Type "+MoufUI.getHtmlClassName(type.getType())).appendTo(targetSelector);
 				var divFilter = jQuery("<div>Filter: </div>").appendTo(targetSelector);
 				var inputFilter = jQuery("<input/>").addClass("instanceFilter").appendTo(divFilter);
 				jQuery("<h3/>").text("Instances").appendTo(targetSelector);
@@ -385,7 +385,8 @@ var MoufUI = (function () {
 		 * 
 		 * @param options A list of options to be passed to the class list;
 		 * {
-		 *  onSelect: function(classDescriptor, jQueryElement)
+		 *  onSelect: function(classDescriptor, jQueryElement),
+		 *  onReady: function() // triggered when the class list is loaded.
 		 * }
 		 */
 		renderClassesList : function(options) {
@@ -482,6 +483,10 @@ var MoufUI = (function () {
 
 				applyFilter();
 				
+				if (options && options.onReady) {
+					options.onReady();
+				}
+				
 			}).onError(function(e) {
 				addMessage("<pre>"+e+"</pre>", "error");
 			});
@@ -502,6 +507,7 @@ var MoufUI = (function () {
 
 		/**
 		 * Returns the HTML to display a class with an hover effect that displays a tooltip with the namespace.
+		 * @param className string
 		 */
 		getHtmlClassName: function(className) {
 			if (className.indexOf("\\") == 0) {

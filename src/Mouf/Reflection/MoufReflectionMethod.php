@@ -9,6 +9,8 @@
  */
 namespace Mouf\Reflection;
 
+use Mouf\MoufPropertyDescriptor;
+
 /**
  * Extended Reflection class for class methods that allows usage of annotations.
  * 
@@ -214,6 +216,99 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
     		$parameter->toXml($methodNode);
     	}
     }
+
+    /**
+     * Returns a PHP array representing the method.
+     *
+     * @return array
+     */
+    public function toJson() {
+    	$result = array();
+    	$result['name'] = $this->getName();
     
+    	$modifier = "";
+    	if ($this->isPublic()) {
+    		$modifier = "public";
+    	} elseif ($this->isProtected()) {
+    		$modifier = "protected";
+    	} elseif ($this->isPrivate()) {
+    		$modifier = "private";
+    	}
+    	$result['modifier'] = $modifier;
+    	$result['static'] = $this->isStatic();
+    	$result['abstract'] = $this->isAbstract();
+    	$result['constructor'] = $this->isConstructor();
+    	$result['final'] = $this->isFinal();
+    	//$result['comment'] = $this->getDocComment();
+    	$result['comment'] = $this->getMoufPhpDocComment()->getJsonArray();
+    
+    	$result['parameters'] = array();
+    	$parameters = $this->getParameters();
+    	foreach ($parameters as $parameter) {
+    		$result['parameters'][] = $parameter->toJson();
+    	}
+    
+    	//$properties = $this->getAnnotations("Property");
+    	try {
+    		/*if (!empty($properties)) {
+    		 $result['moufProperty'] = true;*/
+    		
+    		// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
+    		
+    		// If this is a setter only:
+    		
+    		if ($this->isSetter()) {
+	    		$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
+	    		$types = $moufPropertyDescriptor->getTypes();
+	    		$result['types'] = $types->toJson();
+	    		
+	    		if ($types->getWarningMessage()) {
+	    			$result['classinerror'] = $types->getWarningMessage();
+	    		}
+    		}
+    		
+    		/*if ($moufPropertyDescriptor->isAssociativeArray()) {
+    			$result['keytype'] = $moufPropertyDescriptor->getKeyType();
+    		}
+    		if ($moufPropertyDescriptor->isArray()) {
+    			$result['subtype'] = $moufPropertyDescriptor->getSubType();
+    		}*/
+    		//}
+    	} catch (\Exception $e) {
+    		$result['classinerror'] = $e->getMessage();
+    	}
+    	
+    
+    	return $result;
+    }
+    
+    /**
+     * Returns true if this method has the signature of a setter.
+     * 
+     * @return boolean
+     */
+    public function isSetter() {
+    	$methodName = $this->getName();
+    	
+    	   
+    	if (strpos($methodName, "set") === 0 && strlen($methodName)>3) {
+    		// A setter must have exactly one compulsory parameter
+    		$parameters = $this->getParameters();
+    		if (count($parameters) == 0) {
+    			return false;
+    		}
+    		if (count($parameters)>1) {
+    			for ($i=1, $count=count($parameters); $i<$count; $i++) {
+    				$param = $parameters[$i];
+    				if (!$param->isDefaultValueAvailable()) {
+    					return false;
+    				}
+    			}
+    		}
+    		
+    		return true;
+    	}
+    	return false;
+    }
 }
 ?>

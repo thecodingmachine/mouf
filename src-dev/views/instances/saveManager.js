@@ -75,7 +75,7 @@ var MoufSaveManager = (function () {
 		
 		var isBoolean = false;
 		var finalValue = null;
-		if (moufInstanceProperty.getMoufProperty().isArray()) {
+		if (moufInstanceProperty.getType().isArray()) {
 			finalValue = _serializeSubProperties(moufInstanceProperty);
 		} else {
 			if (value === true || value === false) {
@@ -95,7 +95,8 @@ var MoufSaveManager = (function () {
 			"origin": moufInstanceProperty.getOrigin(),
 			"isset": moufInstanceProperty.isSet(),
 			"source": moufInstanceProperty.getSource(),
-			"isNull": (finalValue === null)
+			"isNull": (finalValue === null),
+			"type": moufInstanceProperty.getType().toString()
 		};
 				
 		_changesList.push(command);

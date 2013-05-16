@@ -9,6 +9,10 @@
  */
 namespace Mouf;
 
+use Mouf\Reflection\TypesDescriptor;
+
+use Mouf\Reflection\TypeDescriptor;
+
 use Mouf\Annotations\paramAnnotation;
 
 use Mouf\Reflection\MoufReflectionPropertyInterface;
@@ -50,9 +54,12 @@ class MoufPropertyDescriptor {
 	 */
 	private $paramAnnotation;
 	
-	private $type;
-	private $keyType;
-	private $subType;
+	/**
+	 * @var TypesDescriptor
+	 */
+	private $types;
+	//private $keyType;
+	//private $subType;
 	
 	/**
 	 * Constructs the MoufPropertyDescriptor from a MoufReflectionPropertyInterface or a MoufReflectionMethodInterface or a MoufReflectionParameterInterface (depending on the kind of property: field or setter or constructor parameter)
@@ -94,22 +101,32 @@ class MoufPropertyDescriptor {
 		} else {
 			$this->name = $object->getName();
 		}
-		$this->analyzeType();
+		try {
+			$this->analyzeType();
+		} catch (MoufException $e) {
+			if ($this->types == null) {
+				$this->types = $this->types = TypesDescriptor::parseTypeString("string");
+			}
+			$this->types->setWarningMessage($e->getMessage());
+		}
 	}
 	
 	private function analyzeType() {
+		$warningMessage = null;
 		if ($this->object instanceof MoufReflectionPropertyInterface) {
 			$property = $this->object;
 			if ($property->hasAnnotation("var")) {
-				$varTypes = $property->getAnnotations("var");
+				try {
+					$varTypes = $property->getAnnotations("var");
+				} catch (MoufTypeParserException $e) {
+					throw new MoufException("Error for property ".$property->getDeclaringClass()->getName()."::".$property->getName().". Unable to parse the @var annotation. ".$e->getMessage(), 0, $e);
+				}
 				if (count($varTypes)>1) {
-					throw new MoufException("Error for property ".$property->getName().". More than one @var annotation was found.");
+					throw new MoufException("Error for property ".$property->getDeclaringClass()->getName()."::".$property->getName().". More than one @var annotation was found.");
 				}
 				$varTypeAnnot = $varTypes[0];
 				/* @var $varTypeAnnot varAnnotation */
-				$this->type = $varTypeAnnot->getType();
-				$this->subType = $varTypeAnnot->getSubType();
-				$this->keyType = $varTypeAnnot->getKeyType();
+				$this->types = $varTypeAnnot->getTypes();
 				
 				$declaringClass = $property->getDeclaringClass();
 				$useNamespaces = $declaringClass->getUseNamespaces();
@@ -126,8 +143,10 @@ class MoufPropertyDescriptor {
 					$namespace = substr($className, 0, $pos);
 				}
 				
-				$this->type = self::resolveType($this->type, $useNamespaces, $namespace);
-				$this->subType = self::resolveType($this->subType, $useNamespaces, $namespace);
+				$this->types->resolveType($useNamespaces, $namespace);
+				
+				/*$this->type = self::resolveType($this->type, $useNamespaces, $namespace);
+				$this->subType = self::resolveType($this->subType, $useNamespaces, $namespace);*/
 			}
 		} elseif ($this->object instanceof MoufReflectionParameterInterface) {
 			$parameter = $this->object;
@@ -172,19 +191,19 @@ class MoufPropertyDescriptor {
 						$namespace = substr($className, 0, $pos);
 					}
 					
-					
-					$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
+					$this->types = $paramAnnotation->getTypes();
+					$this->types->resolveType($useNamespaces, $namespace);
+					/*$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
 					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
-					$this->keyType = $paramAnnotation->getKeyType();
-					/*$this->type = $paramAnnotation->getType();
-					$this->subType = $paramAnnotation->getSubType();
 					$this->keyType = $paramAnnotation->getKeyType();*/
+					
 				} else {
+					
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
 					if ($parameter->isArray()) {
-						$this->type = "array";
+						$this->types = TypesDescriptor::parseTypeString("array");
 					} elseif ($parameter->getType() != null) {
-						$this->type = "\\".$parameter->getType();
+						$this->types = TypesDescriptor::parseTypeString("\\".$parameter->getType());
 					}
 				}
 			}
@@ -227,27 +246,38 @@ class MoufPropertyDescriptor {
 						$namespace = substr($className, 0, $pos);
 					}
 						
-					$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
+					$this->types = $paramAnnotation->getTypes();
+					$this->types->resolveType($useNamespaces, $namespace);
+					/*$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
 					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
-					$this->keyType = $paramAnnotation->getKeyType();
+					$this->keyType = $paramAnnotation->getKeyType();*/
 				} else {
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
 					$parameters = $method->getParameters();
 					if ($parameters[0]->isArray()) {
-						$this->type = "array";
+						$this->types = TypesDescriptor::parseTypeString("array");
+						//$this->type = "array";
 					} elseif ($parameters[0]->getType() != null) {
-						$this->type = '\\'.$parameters[0]->getType();
+						$this->types = TypesDescriptor::parseTypeString("\\".$parameters[0]->getType());
 					}
+					$warningMessage = "Warning! The setter <strong>".$this->methodName."</strong> has a parameter named <strong>\$".$parameters[0]->getName()."</strong>, but the @param annotation points to a parameter named <strong>".$paramTypes[0]->getParameterName()."</strong>. This is likely to be an error in the @param annotation.";
 				}
 			} else {
 				$parameters = $method->getParameters();
 				if ($parameters[0]->isArray()) {
-					$this->type = "array";
+					$this->types = TypesDescriptor::parseTypeString("array");
 				} elseif ($parameters[0]->getType() != null) {
-					$this->type = '\\'.$parameters[0]->getType();
+					$this->types = TypesDescriptor::parseTypeString("\\".$parameters[0]->getType());
 				}
 			}
 		}
+		
+		if ($this->types == null) {
+			// Let's default to "string" if something goes wrong.
+			//$this->types = TypesDescriptor::getEmptyTypes();
+			$this->types = TypesDescriptor::parseTypeString("string");
+		}
+		$this->types->setWarningMessage($warningMessage);
 		// Apply a namespace to type and subtype if necessary
 		//$this->applyNamespace();
 	}
@@ -326,8 +356,8 @@ class MoufPropertyDescriptor {
 		return $this->object->getAnnotations($name);
 	}
 	
-	public function hasType() {
-		return $this->type != null;
+	public function hasTypes() {
+		return $this->types != null && count($this->types->getTypes)>0;
 	}
 	
 	/**
@@ -335,36 +365,45 @@ class MoufPropertyDescriptor {
 	 *
 	 * @return string
 	 */
-	public function getType() {
-		return $this->type;
+	public function getTypes() {
+		return $this->types;
 	}
 	
 	/**
-	 * Returns the sybType for the property.
+	 * Returns the type for the property.
 	 *
 	 * @return string
 	 */
-	public function getSubType() {
+	/*public function getType() {
+		return $this->type;
+	}*/
+	
+	/**
+	 * Returns the subType for the property.
+	 *
+	 * @return string
+	 */
+	/*public function getSubType() {
 		return $this->subType;
-	}
+	}*/
 	
 	/**
 	 * Returns the keyType for the property (if this is an associative array)
 	 *
 	 * @return string
 	 */
-	public function getKeyType() {
+	/*public function getKeyType() {
 		return $this->keyType;
-	}
+	}*/
 	
 	/**
 	 * Returns true if the type is an associative array (with a key/value pair)
 	 *
 	 * @return string
 	 */
-	public function isAssociativeArray() {
+	/*public function isAssociativeArray() {
 		return $this->keyType != null;
-	}
+	}*/
 	
 	/**
 	 * Returns true if the property comes from a public field 
@@ -407,37 +446,22 @@ class MoufPropertyDescriptor {
 	 * 
 	 * @return string
 	 */
-	public function isArray() {
+	/*public function isArray() {
  		return !empty($this->subType);
-	}
-	
-	/**
-	 * Returns true if the type passed in parameter is primitive.
-	 * It will return false if this is an array or an object.
-	 * 
-	 * Accepted primitive types: string, char, bool, boolean, int, integer, double, float, real, mixed
-	 * No type (empty type) is considered primitive type.
-	 * 
-	 * @param string $type
-	 * @return bool
-	 */
-	private static function isPrimitiveTypeStatic($type) {
- 		$lowerVarType = strtolower($type);
-		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed'));
-	}
-	
+	}*/
+		
 	/**
 	 * Returns true of the type of the property is a primitive type.
 	 * 
 	 * Accepted primitive types: string, char, bool, boolean, int, integer, double, float, real, mixed
 	 * @return bool
 	 */
-	public function isPrimitiveType() {
+	/*public function isPrimitiveType() {
 		if ($this->getType() == null) {
 			return true;
 		}
 		return self::isPrimitiveTypeStatic($this->getType());
-	}
+	}*/
 	
 	/**
 	 * Returns true of the type of the property is an array of primitive types.
@@ -445,9 +469,9 @@ class MoufPropertyDescriptor {
 	 * Accepted primitive types: string, char, bool, boolean, int, integer, double, float, real, mixed
 	 * @return bool
 	 */
-	public function isArrayOfPrimitiveTypes() {
+	/*public function isArrayOfPrimitiveTypes() {
 		return self::isPrimitiveTypeStatic($this->getSubType());
-	}
+	}*/
 	
 	/**
 	 * Checks if the parent class has a namespace.
@@ -483,43 +507,6 @@ class MoufPropertyDescriptor {
 		
 	}*/
 	
-	/**
-	 * Give a fully qualified class name from the $type and declared "use" statements.
-	 * Note: The returned fully qualified name always starts with a \
-	 * 
-	 * @param string $type
-	 * @param array<string, string> $useMap
-	 */
-	private static function resolveType($type, $useMap, $namespace) {
-		if ($type == null || $type == "array" || self::isPrimitiveTypeStatic($type)) {
-			return $type;
-		}
-		
-		$index = strpos($type, '\\');
-		if ($index === false) {
-			if (isset($useMap[$type])) {
-				return '\\'.$useMap[$type];
-			} else {
-				if ($namespace) {
-					return '\\'.$namespace.'\\'.$type;
-				} else {
-					return '\\'.$type;
-				}
-			}
-		}
-		if ($index === 0) {
-			// Starting with \. Already a fully qualified name.
-			return $type;
-		}
-		$leftPart = substr($type, 0, $index);
-		$rightPart = substr($type, $index);
-		
-		if (isset($useMap[$leftPart])) {
-			return '\\'.$useMap[$leftPart].$rightPart;
-		} else {
-			return '\\'.$namespace.'\\'.$type;
-		}
-	}
 	
 	/**
 	 * Returns the index of the parameter if this property is a constructor.
