@@ -1414,7 +1414,8 @@ class MoufManager {
 	}
 
 	/**
-	 * Return all instances names whose instance type is (or extends or inherits) the provided $instanceType
+	 * Return all instances names whose instance type is (or extends or inherits) the provided $instanceType.
+	 * Note: this will silently ignore any instance whose class cannot be found.
 	 *
 	 * @param string $instanceType
 	 * @return array<string>
@@ -1428,7 +1429,12 @@ class MoufManager {
 
 		foreach ($this->declaredInstances as $instanceName=>$classDesc) {
 			$className = $classDesc['class'];
-				
+			
+			// Silently ignore any non existing class.
+			if (!class_exists($className)) {
+				continue;
+			}
+			
 			$reflectionClass = new \ReflectionClass($className);
 			if ($isInterface) {
 				if ($reflectionClass->implementsInterface($instanceType)) {

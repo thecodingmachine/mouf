@@ -140,7 +140,7 @@ $(document).ready(function() {
 	.done(
 			function(result) {
 				if (typeof (result) == "string") {
-					addMessage("<pre>"+msg+"</pre>", "error");
+					addMessage("<pre>"+result+"</pre>", "error");
 					return;
 				}
 

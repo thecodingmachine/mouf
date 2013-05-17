@@ -380,7 +380,7 @@ class MoufController extends Controller implements MoufSearchable {
 	 * @Action
 	 * @Logged
 	 */
-	public function deleteInstance($selfedit = "false", $instanceName=null) {
+	public function deleteInstance($selfedit = "false", $instanceName=null, $returnurl = null) {
 		$this->selfedit = $selfedit;
 		
 		if ($selfedit == "true") {
@@ -392,7 +392,11 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->moufManager->removeComponent($instanceName);
 		$this->moufManager->rewriteMouf();
 		
-		header("Location: .?selfedit=".$selfedit);
+		if ($returnurl) {
+			header("Location:".$returnurl);
+		} else {
+			header("Location: .?selfedit=".$selfedit);
+		}
 	}
 	
 	/**

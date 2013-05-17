@@ -934,6 +934,25 @@ var MoufDefaultRenderer = (function () {
 							if (annotations) {
 								var isImportant = annotations['Important'];
 								if (isImportant) {
+									// If there is a variable name after @Important (for instance @Important $varName), let's
+									// check that we are applying it to the right parameter (useful for @Important constructor parameters)
+									var applyImportant = false;
+									_.each(isImportant, function(importantString) {
+										if (importantString == "") {
+											applyImportant = true;
+										}
+										if (importantString.indexOf("$") == 0) {
+											var importantVar = importantString.substr(1);
+											if (importantVar == moufProperty.getName()) {
+												applyImportant = true;
+											}
+										}
+									});
+									
+									if (!applyImportant) {
+										continue;
+									}
+									
 									var fieldGlobalElem = jQuery("<div/>").appendTo(propertiesList);;
 									var displayInnerField = function() {
 										jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
@@ -947,11 +966,15 @@ var MoufDefaultRenderer = (function () {
 										// Let's find the current type, if any
 										var currentType = types.findType(moufInstanceProperty.getType());
 										
+										var warningMsg = null;
 										if (moufInstanceProperty.getWarningMessage() != null) {
-											$("<div/>").addClass("alert").html(moufInstanceProperty.getWarningMessage()).appendTo(fieldElem);
+											warningMsg = moufInstanceProperty.getWarningMessage()+"<br/>";
 										}
 										if (types.getWarningMessage() != null) {
-											$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+											warningMsg = types.getWarningMessage()+"<br/>";
+										}
+										if (warningMsg) {
+											$("<div/>").addClass("alert").html(warningMsg).appendTo(fieldElem);
 										}
 										
 										// Function called when another type is clicked.
@@ -970,7 +993,12 @@ var MoufDefaultRenderer = (function () {
 											renderField(moufInstanceProperty).appendTo(fieldContainer);
 										} else {
 											// Display a warning message.
-											$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+											var alertbox = $("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+											$("<button/>").addClass("btn btn-danger").text("Reset this property")
+												.click(function() {
+													onChangeType(types.getTypes()[0]);
+												})
+												.appendTo(alertbox);
 										}
 										
 										
@@ -1057,11 +1085,15 @@ var MoufDefaultRenderer = (function () {
 								// Let's find the current type, if any
 								var currentType = types.findType(moufInstanceProperty.getType());
 								
+								var warningMsg = null;
 								if (moufInstanceProperty.getWarningMessage() != null) {
-									$("<div/>").addClass("alert").html(moufInstanceProperty.getWarningMessage()).appendTo(fieldElem);
+									warningMsg = moufInstanceProperty.getWarningMessage()+"<br/>";
 								}
 								if (types.getWarningMessage() != null) {
-									$("<div/>").addClass("alert").html(types.getWarningMessage()).appendTo(fieldElem);
+									warningMsg = types.getWarningMessage()+"<br/>";
+								}
+								if (warningMsg) {
+									$("<div/>").addClass("alert").html(warningMsg).appendTo(fieldElem);
 								}
 								
 								// Function called when another type is clicked.
@@ -1085,7 +1117,13 @@ var MoufDefaultRenderer = (function () {
 									renderField(moufInstanceProperty).appendTo(fieldContainer);
 								} else {
 									// Display a warning message.
-									$("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+									// Display a warning message.
+									var alertbox = $("<div/>").addClass("alert").text("Error while displaying this value. The value stored does not match the declared type.").appendTo(fieldElem);
+									$("<button/>").addClass("btn btn-danger").text("Reset this property")
+										.click(function() {
+											onChangeType(types.getTypes()[0]);
+										})
+										.appendTo(alertbox);
 								}
 								
 								jQuery("<span class='help-block'>").html(moufProperty.getComment()).appendTo(fieldElem);
