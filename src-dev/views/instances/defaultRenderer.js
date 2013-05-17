@@ -954,7 +954,7 @@ var MoufDefaultRenderer = (function () {
 									}
 									
 									var fieldGlobalElem = jQuery("<div/>").appendTo(propertiesList);;
-									var displayInnerField = function() {
+									var displayInnerField = function(moufProperty) {
 										jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
 										var fieldElem = jQuery("<div/>").addClass('fieldContainer')
 											.data("moufProperty", moufProperty)
@@ -981,7 +981,7 @@ var MoufDefaultRenderer = (function () {
 										var onChangeType = function(newType) {
 											fieldGlobalElem.empty();
 											moufInstanceProperty.setType(newType);
-											displayInnerField();
+											displayInnerField(moufProperty);
 										}
 										
 										if (types.getTypes().length > 1) {
@@ -1005,7 +1005,7 @@ var MoufDefaultRenderer = (function () {
 										//renderField(moufInstanceProperty).appendTo(fieldElem);
 										
 									}
-									displayInnerField();
+									displayInnerField(moufProperty);
 								}
 							}
 
