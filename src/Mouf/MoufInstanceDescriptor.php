@@ -9,6 +9,8 @@
  */
 namespace Mouf;
 
+use Mouf\Reflection\MoufReflectionParameter;
+
 use Mouf\Reflection\MoufReflectionClass;
 
 use Mouf\Reflection\MoufXmlReflectionClass;
@@ -274,4 +276,49 @@ class MoufInstanceDescriptor {
 		return $instanceArray;
 	}
 
+	/**
+	 * Analyses the instance. Returns array() if everything is alright, are an array of error messages.
+	 * Analysis performed:
+	 * - The compulsory fields in the constructor are indeed filled.
+	 * 
+	 * @return string[]
+	 */
+	public function validate() {
+		$classDescriptor = $this->getClassDescriptor();
+		$constructor = $classDescriptor->getConstructor();
+		$errors = array();
+		if ($constructor) {
+			$params = $constructor->getParameters();
+			
+			$i=0;
+			
+			foreach ($params as $param) {
+				/* @var $param MoufReflectionParameter */
+				if (!$param->isOptional()) {
+					if (!$this->moufManager->isParameterSetForConstructor($this->getIdentifierName(), $i)) {
+						$name = $this->getIdentifierName();
+						if ($this->isAnonymous()) {
+							$name = "anonymous instance of class ".$this->getClassName();
+						}
+						$errors[] = "In instance <em>".$name."</em>, the constructor
+								parameter '".$param->getName()."' is compulsory.
+								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+					} elseif (!$param->allowsNull()) {
+						$name = $this->getIdentifierName();
+						if ($this->isAnonymous()) {
+							$name = "anonymous instance if class <strong>".$this->getClassName()."</strong>";
+						}
+						if ($this->moufManager->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
+							$errors[] = "In instance <em>".$name."</em>, the constructor
+								parameter '".$param->getName()."' is null, but the constructor signature does not allow it to be null.
+								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+						}
+					}
+				}
+				
+				$i++;
+			}
+		}
+		return $errors;
+	}
 }
