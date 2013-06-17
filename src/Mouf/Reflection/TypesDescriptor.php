@@ -127,7 +127,7 @@ class TypesDescriptor {
 		while($offset < strlen($line)) {
 			$result = static::_match($line, $offset);
 			if($result === false) {
-				throw new MoufException("Unable to parse.");
+				throw new MoufException("Unable to parse line '".$line."'.");
 			}
 			$tokens[] = $result;
 			$offset += strlen($result['match']);
