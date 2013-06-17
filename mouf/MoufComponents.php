@@ -462,6 +462,7 @@ $moufManager->addComponentInstances(array (
         11 => 'javascript.jquery-filetree',
         12 => 'messageServiceLibrary',
         13 => 'weblibrary.qtip2',
+      	14 => 'javascript.jqBootstrapValidation',
       ),
     ),
   ),
@@ -1309,6 +1310,34 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'javascript.jqBootstrapValidation' =>
+		array (
+				'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+				'external' => false,
+				'weak' => false,
+				'setterProperties' =>
+				array (
+						'setJsFiles' =>
+						array (
+								'value' =>
+								array (
+										0 => 'vendor/mouf/javascript.jquery.jq-bootstrap-validation/lib/jqBootstrapValidation.js',
+								),
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssFiles' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
   'javascript.composer' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
