@@ -2,13 +2,19 @@
 /*
  * This file is part of the Mouf core package.
  *
- * (c) 2012 David Negrier <david@mouf-php.com>
+ * (c) 2012-2013 David Negrier <david@mouf-php.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
+require_once __DIR__.'/mouf/Mouf.php';
+
+MoufAdmin::getMoufInstallController()->index();
+exit;
 ?>
+
+
 <html>
 
 	<head>
@@ -112,9 +118,9 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(dirname
                                     </table>
 
 			<?php endif ?>
-			<p>Please click the install button below. This will create and install a ".htaccess" file in the "Mouf" directory.
-			This will also create 7 files in your root directory: config.php, Mouf.php, MoufComponents.php, MoufRequire.php, MoufUI.php, MoufUniversalParameters.php and MoufUsers.php (if they don't already exist)</p>
-			<p>Please make sure that the Mouf directory is writable by your web-server.</p>
+			<p>Please click the install button below. This will create and install a ".htaccess" file in the "vendor/mouf/mouf" directory.
+			This will also create a config.php file in your root directory and a "mouf" directory containing a number of files (if they don't already exist)</p>
+			<p>Please make sure that the root directory is writable by your web-server.</p>
 			<p>Finally, please make sure that the Apache Rewrite module is enabled on your server. Since this install process will create a ".htaccess" file, 
 			you must make sure it will be taken into account. If after clicking the "Install" button, nothing happens, it is likely that your Apache server
 			has been configured to ignore the ".htaccess" files. In this case, please dive into your Apache configuration and look for a "<code>AllowOverride</code>" directive.

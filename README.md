@@ -8,11 +8,22 @@ Mouf is a PHP dependency injection framework with a nice web-based user interfac
 
 The goal of Mouf is to help you use and re-use components. By itself, it does not provide anything useful. However, it will help you download and install libraries of components, and bind those components together.
 
+Getting started
+---------------
+
+Mouf is at the same time a graphical dependency injection framework (the core of Mouf), and a full featured web-framework with
+hundreds of packages available.
+
+If you are intersted in Mouf's core dependency injection framework, stay here! You are at the right place.
+If you are intersted in the global Mouf ecosystem, the MVC library, the database layer, etc..., you might want to start by
+having a look at the [Getting things done with Mouf project](http://mouf-php.com/packages/mouf/getting-things-done-basic-edition/index.md). This
+is a kind of "distribution" of the most common libraries used with Mouf.
+
 Installation
 ------------
 
 Mouf 2 is provided as a [Composer](http://getcomposer.org) package. The name of the package is *mouf/mouf*.
-Follow the [installation guide](/doc/installing_mouf) to learn more.
+Follow the [installation guide](doc/installing_mouf.md) to learn more.
 
 Packages
 --------
