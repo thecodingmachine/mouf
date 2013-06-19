@@ -6,4 +6,4 @@
 <div class="alert">In order to run Mouf, you will first need to enable the "php_curl" extension on your server.</div>
 
 <p>Please enable this PHP extension and refresh this page.</p>
-<p>You can follow the <a href="http://mouf-php.com/packages/mouf/mouf/doc/installing_mouf.md">installation document</a> if you need help.
+<p>You can follow the <a href="http://mouf-php.com/packages/mouf/mouf/doc/installing_mouf.md">installation document</a> if you need help.</p>
