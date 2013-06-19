@@ -2764,7 +2764,7 @@ $moufManager->addComponentInstances(array (
   ),
   'sessionManager' => 
   array (
-    'class' => 'Mouf\\Utils\\Sesssion\\SessionManager\\DefaultSessionManager',
+    'class' => 'Mouf\\Utils\\Session\\SessionManager\\DefaultSessionManager',
     'external' => false,
   ),
   'setRootUrlJsBlock' => 
@@ -3749,7 +3749,7 @@ unset($moufManager);
 	 }
 
 	/**
-	 * @return Mouf\Utils\Sesssion\SessionManager\DefaultSessionManager
+	 * @return Mouf\Utils\Session\SessionManager\DefaultSessionManager
 	 */
 	 public static function getSessionManager() {
 	 	return MoufManager::getMoufManager()->getInstance('sessionManager');
