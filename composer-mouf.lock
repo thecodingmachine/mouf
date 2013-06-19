@@ -500,12 +500,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "a19cd99a016d1a29e539f37c1d83048682085be8"
+                "reference": "b51c754f398031fbba3f643c051fe1ed07016fc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/a19cd99a016d1a29e539f37c1d83048682085be8",
-                "reference": "a19cd99a016d1a29e539f37c1d83048682085be8",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/b51c754f398031fbba3f643c051fe1ed07016fc4",
+                "reference": "b51c754f398031fbba3f643c051fe1ed07016fc4",
                 "shasum": ""
             },
             "require": {
@@ -553,7 +553,7 @@
                 "widget",
                 "widgets"
             ],
-            "time": "2013-04-11 15:31:21"
+            "time": "2013-06-19 10:13:47"
         },
         {
             "name": "mouf/javascript.jquery.jq-bootstrap-validation",
@@ -561,12 +561,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/moufmouf/javascript.jquery.jqBootstrapValidation.git",
-                "reference": "8b9f0ba1e3d3b34e313a7e35c747330e254cc06e"
+                "reference": "f25987d36c052f2fd4719c8b949409fa934295ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/8b9f0ba1e3d3b34e313a7e35c747330e254cc06e",
-                "reference": "8b9f0ba1e3d3b34e313a7e35c747330e254cc06e",
+                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/f25987d36c052f2fd4719c8b949409fa934295ea",
+                "reference": "f25987d36c052f2fd4719c8b949409fa934295ea",
                 "shasum": ""
             },
             "require": {
@@ -603,7 +603,7 @@
                 "jqBootstrapValidation",
                 "validator"
             ],
-            "time": "2013-06-17 12:41:50"
+            "time": "2013-06-17 14:11:31"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -1666,12 +1666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.i18n.fine.git",
-                "reference": "501c0e02f21913b12fdb74c08ead6e4cbcced460"
+                "reference": "83c1f4b5a3d9d47fd346dafcc7460aaf09051da7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/501c0e02f21913b12fdb74c08ead6e4cbcced460",
-                "reference": "501c0e02f21913b12fdb74c08ead6e4cbcced460",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/83c1f4b5a3d9d47fd346dafcc7460aaf09051da7",
+                "reference": "83c1f4b5a3d9d47fd346dafcc7460aaf09051da7",
                 "shasum": ""
             },
             "require": {
@@ -1746,7 +1746,7 @@
                 "internationalisation",
                 "mouf"
             ],
-            "time": "2013-06-17 07:35:35"
+            "time": "2013-06-19 12:24:48"
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
@@ -1858,16 +1858,16 @@
         },
         {
             "name": "mouf/utils.session.session-manager",
-            "version": "2.0.x-dev",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/utils.session.session-manager.git",
-                "reference": "7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8"
+                "url": "https://github.com/thecodingmachine/utils.session.session-manager.git",
+                "reference": "900b7080cb2253a118f735fa3d4269701a0207e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8",
-                "reference": "7ba783159a06aaa1e9212daf2a7fb3eb6472a3e8",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/900b7080cb2253a118f735fa3d4269701a0207e3",
+                "reference": "900b7080cb2253a118f735fa3d4269701a0207e3",
                 "shasum": ""
             },
             "require": {
@@ -1906,7 +1906,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2013-01-28 14:39:51"
+            "time": "2013-06-19 12:43:18"
         },
         {
             "name": "mouf/utils.value.value-interface",
@@ -2198,12 +2198,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "268d9f12f6b7e982ad7bb40ea492085a3d1414d6"
+                "reference": "1d9d8a84fd20011411f685a19ba60a37a88dbf38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/268d9f12f6b7e982ad7bb40ea492085a3d1414d6",
-                "reference": "268d9f12f6b7e982ad7bb40ea492085a3d1414d6",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1d9d8a84fd20011411f685a19ba60a37a88dbf38",
+                "reference": "1d9d8a84fd20011411f685a19ba60a37a88dbf38",
                 "shasum": ""
             },
             "require": {
@@ -2264,7 +2264,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-06-01 10:06:56"
+            "time": "2013-06-18 15:37:33"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
