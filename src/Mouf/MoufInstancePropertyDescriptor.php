@@ -91,30 +91,7 @@ class MoufInstancePropertyDescriptor {
 		$isInstance = false;
 		$isValue = false;
 		
-		if ($value instanceof MoufInstanceDescriptor) {
-			$toStore = $value->getIdentifierName();
-			$isInstance = true;
-		} elseif (is_array($value)) {
-			// Let's find if there is a MoufInstanceDescriptor in this array...
-			$toStore = array();
-			foreach ($value as $key=>$val) {
-				if ($val == null) {
-					$toStore[$key] = null;
-				} elseif ($val instanceof MoufInstanceDescriptor) {
-					$toStore[$key] = $val->getIdentifierName();
-					$isInstance = true;
-				} else {
-					$toStore[$key] = $val;
-					$isValue = true;
-				}
-				if ($isInstance && $isValue) {
-					throw new MoufException("Invalid value passed to setValue. You passed a mix of MoufInstanceDescriptor and other values in the array.");
-				}
-			}
-		} else {
-			$toStore = $value;
-			$isValue = true;
-		}
+		$toStore = $this->toMoufManagerArray($value, $isInstance, $isValue);
 
 		if ($isValue) {
 			$origin = $this->getOrigin();
@@ -150,6 +127,32 @@ class MoufInstancePropertyDescriptor {
 		}
 		return $this;
 	}
+	
+	private function toMoufManagerArray($value, &$isInstance, &$isValue) {
+		if ($value == null) {
+			$toStore = null;
+		} elseif ($value instanceof MoufInstanceDescriptor) {
+			$toStore = $value->getIdentifierName();
+			$isInstance = true;
+		} elseif (is_array($value)) {
+			// Let's find if there is a MoufInstanceDescriptor in this array...
+			$toStore = array();
+			foreach ($value as $key=>$val) {
+				$toStore[$key] = $this->toMoufManagerArray($val, $isInstance, $isValue);
+				if ($isInstance && $isValue) {
+					throw new MoufException("Invalid value passed to setValue. You passed a mix of MoufInstanceDescriptor and other values in the array.");
+				}
+			}
+		} else {
+			if (is_object($value)) {
+				throw new MoufException("Invalid value passed to setValue. You passed a '".get_class($value)."' object to setValue. Primitive type of instance of MoufInstanceDescriptor class expected.");
+			}
+			$toStore = $value;
+			$isValue = true;
+		}
+		
+		return $toStore;
+	}
 
 	/**
 	 * Takes in parameter a return from the getBoundComponentsXXX methods and cast that to a MoufInstanceDescriptor
@@ -163,7 +166,15 @@ class MoufInstancePropertyDescriptor {
 			return null;
 		}
 		if (is_array($instanceNames)) {
-			$arrayOfDescriptors = array();
+			$moufManager = $this->moufManager;
+			return self::array_map_deep($instanceNames, function($instanceName) use ($moufManager) {
+				if ($instanceName != null) {
+					return $moufManager->getInstanceDescriptor($instanceName);
+				} else {
+					return null;
+				}
+			});
+			/*$arrayOfDescriptors = array();
 			foreach ($instanceNames as $key=>$instanceName) {
 				if ($instanceName != null) {
 					$arrayOfDescriptors[$key] = $this->moufManager->getInstanceDescriptor($instanceName);
@@ -171,11 +182,24 @@ class MoufInstancePropertyDescriptor {
 					$arrayOfDescriptors[$key] = null;
 				}
 			}
-			return $arrayOfDescriptors;
+			return $arrayOfDescriptors;*/
 		} else {
 			return $this->moufManager->getInstanceDescriptor($instanceNames);
 		}
 		
+	}
+	
+	private static function array_map_deep($array, $callback) {
+		$new = array();
+		if( is_array($array) ) foreach ($array as $key => $val) {
+			if (is_array($val)) {
+				$new[$key] = self::array_map_deep($val, $callback);
+			} else {
+				$new[$key] = call_user_func($callback, $val);
+			}
+		}
+		else $new = call_user_func($callback, $array);
+		return $new;
 	}
 	
 	/**

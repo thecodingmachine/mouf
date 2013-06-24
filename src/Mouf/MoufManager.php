@@ -1623,7 +1623,7 @@ class MoufManager {
 	public function purgeUnreachableWeakInstances() {
 		foreach ($this->declaredInstances as $key=>$instance) {
 			if (!isset($instance['weak']) || $instance['weak'] == false) {
-				$this->walkForGarbageCollection($this->declaredInstances[$key]);
+				$this->walkForGarbageCollection($key);
 			}
 		}
 
@@ -1645,9 +1645,10 @@ class MoufManager {
 	/**
 	 * Recursive function that mark this instance as NOT garbage collectable and go through referred nodes.
 	 *
-	 * @param array $instance
+	 * @param string $instanceName
 	 */
-	private function walkForGarbageCollection(&$instance) {
+	public function walkForGarbageCollection($instanceName) {
+		$instance = &$this->declaredInstances[$instanceName];
 		if (isset($instance['noGarbageCollect']) && $instance['noGarbageCollect'] == true) {
 			// No need to go through already visited nodes.
 			return;
@@ -1655,20 +1656,27 @@ class MoufManager {
 
 		$instance['noGarbageCollect'] = true;
 
+		$declaredInstances = &$this->declaredInstances;
+		$moufManager = $this;
 		if (isset($instance['constructor'])) {
 			foreach ($instance['constructor'] as $argument) {
 				if ($argument["parametertype"] == "object") {
 					$value = $argument["value"];
 					if(is_array($value)) {
-						foreach ($value as $singleValue) {
+						array_walk_recursive($value, function($singleValue) use (&$declaredInstances, $moufManager) {
+							if ($singleValue != null) {
+								$moufManager->walkForGarbageCollection($singleValue);
+							}
+						});
+						/*foreach ($value as $singleValue) {
 							if ($singleValue != null) {
 								$this->walkForGarbageCollection($this->declaredInstances[$singleValue]);
 							}
-						}
+						}*/
 					}
 					else {
 						if ($value != null) {
-							$this->walkForGarbageCollection($this->declaredInstances[$value]);
+							$this->walkForGarbageCollection($value);
 						}
 					}
 				}
@@ -1678,28 +1686,40 @@ class MoufManager {
 		if (isset($instance['fieldBinds'])) {
 			foreach ($instance['fieldBinds'] as $prop) {
 				if(is_array($prop)) {
-					foreach ($prop as $singleProp) {
+					array_walk_recursive($prop, function($singleProp) use (&$declaredInstances, $moufManager) {
+						if ($singleProp != null) {
+							$moufManager->walkForGarbageCollection($singleProp);
+						}
+					});
+							
+					/*foreach ($prop as $singleProp) {
 						if ($singleProp != null) {
 							$this->walkForGarbageCollection($this->declaredInstances[$singleProp]);
 						}
-					}
+					}*/
 				}
 				else {
-					$this->walkForGarbageCollection($this->declaredInstances[$prop]);
+					$this->walkForGarbageCollection($prop);
 				}
 			}
 		}
 		if (isset($instance['setterBinds'])) {
 			foreach ($instance['setterBinds'] as $prop) {
 				if(is_array($prop)) {
-					foreach ($prop as $singleProp) {
+					array_walk_recursive($prop, function($singleProp) use (&$declaredInstances, $moufManager) {
+						if ($singleProp != null) {
+							$moufManager->walkForGarbageCollection($singleProp);
+						}
+					});
+					/*foreach ($prop as $singleProp) {
 						if ($singleProp != null) {
 							$this->walkForGarbageCollection($this->declaredInstances[$singleProp]);
 						}
-					}
+					}*/
+					
 				}
 				else {
-					$this->walkForGarbageCollection($this->declaredInstances[$prop]);
+					$this->walkForGarbageCollection($prop);
 				}
 			}
 		}
