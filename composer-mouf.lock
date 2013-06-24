@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "7eb2ef20a06f7b9335c044f7741d87fb",
+    "hash": "af48cc3d927018e9820582ac3fca9f0f",
     "packages": [
         {
             "name": "michelf/php-markdown",
@@ -218,7 +218,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/e90932ba56d44a1e17e24de5cadafcc51751fd37.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "shasum": ""
             },
@@ -232,6 +232,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -261,7 +262,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/d402437cbd3d2e6de3727622af9875ed4eaa2fd2.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "shasum": ""
             },
@@ -275,6 +276,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -662,7 +664,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/cd54be33ad6cb667c116394d35c5bef37ac1a502.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "shasum": ""
             },
@@ -681,6 +683,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -763,7 +766,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "shasum": ""
             },
@@ -787,6 +790,7 @@
                     "Mouf": "php/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -816,7 +820,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/9eae854caf24a9be83a055d08af05559088e744f.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/9eae854caf24a9be83a055d08af05559088e744f",
                 "reference": "9eae854caf24a9be83a055d08af05559088e744f",
                 "shasum": ""
             },
@@ -835,6 +839,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1114,7 +1119,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/4c719e7e102b08065eaa4dcd378e3cab80b60311.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "shasum": ""
             },
@@ -1128,6 +1133,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1157,7 +1163,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "shasum": ""
             },
@@ -1171,6 +1177,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1201,7 +1208,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/security.userservice/archive/258d29984ea0631ddd21700818aeb968725cc5b9.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/258d29984ea0631ddd21700818aeb968725cc5b9",
                 "reference": "258d29984ea0631ddd21700818aeb968725cc5b9",
                 "shasum": ""
             },
@@ -1229,6 +1236,7 @@
                     "Mouf": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1519,12 +1527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.common.conditioninterface.git",
-                "reference": "b9c045045d929e735ae0f3ef43fb0483a9d15e18"
+                "reference": "d3026bcbec0d7ff2875da908f56729c11cf8cfb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/b9c045045d929e735ae0f3ef43fb0483a9d15e18",
-                "reference": "b9c045045d929e735ae0f3ef43fb0483a9d15e18",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/d3026bcbec0d7ff2875da908f56729c11cf8cfb4",
+                "reference": "d3026bcbec0d7ff2875da908f56729c11cf8cfb4",
                 "shasum": ""
             },
             "require": {
@@ -1553,7 +1561,7 @@
                 "condition",
                 "interface"
             ],
-            "time": "2013-03-18 14:44:21"
+            "time": "2013-06-24 16:44:05"
         },
         {
             "name": "mouf/utils.common.getvars",
@@ -1565,7 +1573,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
@@ -1956,12 +1964,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "8d0a47217af4a0ed74ac0e155ec2007205d1408f"
+                "reference": "58e6aa238f270d67187d16a50e14503bd9d02bee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8d0a47217af4a0ed74ac0e155ec2007205d1408f",
-                "reference": "8d0a47217af4a0ed74ac0e155ec2007205d1408f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/58e6aa238f270d67187d16a50e14503bd9d02bee",
+                "reference": "58e6aa238f270d67187d16a50e14503bd9d02bee",
                 "shasum": ""
             },
             "require": {
@@ -1971,13 +1979,18 @@
                 "phpunit/php-token-stream": ">=1.1.3@stable"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "3.7.*@dev"
             },
             "suggest": {
                 "ext-dom": "*",
                 "ext-xdebug": ">=2.0.5"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "PHP/"
@@ -2004,7 +2017,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-06-12 07:14:37"
+            "time": "2013-06-24 11:56:39"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2190,12 +2203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1d9d8a84fd20011411f685a19ba60a37a88dbf38"
+                "reference": "30110580b640440f6442a58322ee657216d2d8ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1d9d8a84fd20011411f685a19ba60a37a88dbf38",
-                "reference": "1d9d8a84fd20011411f685a19ba60a37a88dbf38",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/30110580b640440f6442a58322ee657216d2d8ba",
+                "reference": "30110580b640440f6442a58322ee657216d2d8ba",
                 "shasum": ""
             },
             "require": {
@@ -2204,11 +2217,11 @@
                 "ext-reflection": "*",
                 "ext-spl": "*",
                 "php": ">=5.3.3",
-                "phpunit/php-code-coverage": ">=1.2.1,<1.3.0",
+                "phpunit/php-code-coverage": ">=1.2.1,<1.3",
                 "phpunit/php-file-iterator": ">=1.3.1",
                 "phpunit/php-text-template": ">=1.1.1",
-                "phpunit/php-timer": ">=1.0.2,<1.1.0",
-                "phpunit/phpunit-mock-objects": ">=1.2.0,<1.3.0",
+                "phpunit/php-timer": ">=1.0.2,<1.1",
+                "phpunit/phpunit-mock-objects": ">=1.2,<1.3",
                 "symfony/yaml": ">=2.0,<3.0"
             },
             "require-dev": {
@@ -2256,7 +2269,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-06-18 15:37:33"
+            "time": "2013-06-23 07:31:03"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2264,22 +2277,31 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "8e9d897b39ca6310ccc2d81b8f29cabd5ce12786"
+                "reference": "977c5327c5f9e2a0f08728a59389ee604e5b2f47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/8e9d897b39ca6310ccc2d81b8f29cabd5ce12786",
-                "reference": "8e9d897b39ca6310ccc2d81b8f29cabd5ce12786",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/977c5327c5f9e2a0f08728a59389ee604e5b2f47",
+                "reference": "977c5327c5f9e2a0f08728a59389ee604e5b2f47",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "phpunit/php-text-template": ">=1.1.1@stable"
             },
+            "require-dev": {
+                "pear-pear/pear": "1.9.4",
+                "phpunit/phpunit": "3.7.*@dev"
+            },
             "suggest": {
                 "ext-soap": "*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "PHPUnit/"
@@ -2305,7 +2327,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2013-05-07 12:11:45"
+            "time": "2013-06-23 05:41:31"
         },
         {
             "name": "symfony/yaml",
