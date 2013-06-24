@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "af48cc3d927018e9820582ac3fca9f0f",
+    "hash": "7eb2ef20a06f7b9335c044f7741d87fb",
     "packages": [
         {
             "name": "michelf/php-markdown",
@@ -218,7 +218,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/e90932ba56d44a1e17e24de5cadafcc51751fd37",
+                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu/archive/e90932ba56d44a1e17e24de5cadafcc51751fd37.zip",
                 "reference": "e90932ba56d44a1e17e24de5cadafcc51751fd37",
                 "shasum": ""
             },
@@ -232,7 +232,6 @@
                     "Mouf": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -262,7 +261,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
+                "url": "https://github.com/thecodingmachine/html.template.mouftemplate/archive/d402437cbd3d2e6de3727622af9875ed4eaa2fd2.zip",
                 "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
                 "shasum": ""
             },
@@ -276,7 +275,6 @@
                     "Mouf": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -500,12 +498,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "b51c754f398031fbba3f643c051fe1ed07016fc4"
+                "reference": "de6448dca47a2df85a982fd87d2afeaf756b89dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/b51c754f398031fbba3f643c051fe1ed07016fc4",
-                "reference": "b51c754f398031fbba3f643c051fe1ed07016fc4",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/de6448dca47a2df85a982fd87d2afeaf756b89dd",
+                "reference": "de6448dca47a2df85a982fd87d2afeaf756b89dd",
                 "shasum": ""
             },
             "require": {
@@ -553,7 +551,7 @@
                 "widget",
                 "widgets"
             ],
-            "time": "2013-06-19 10:13:47"
+            "time": "2013-06-19 13:17:17"
         },
         {
             "name": "mouf/javascript.jquery.jq-bootstrap-validation",
@@ -664,7 +662,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/cd54be33ad6cb667c116394d35c5bef37ac1a502",
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree/archive/cd54be33ad6cb667c116394d35c5bef37ac1a502.zip",
                 "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502",
                 "shasum": ""
             },
@@ -683,7 +681,6 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -766,7 +763,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
+                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter/archive/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae.zip",
                 "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
                 "shasum": ""
             },
@@ -790,7 +787,6 @@
                     "Mouf": "php/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -820,7 +816,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/9eae854caf24a9be83a055d08af05559088e744f",
+                "url": "https://github.com/thecodingmachine/javascript.underscore/archive/9eae854caf24a9be83a055d08af05559088e744f.zip",
                 "reference": "9eae854caf24a9be83a055d08af05559088e744f",
                 "shasum": ""
             },
@@ -839,7 +835,6 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1119,7 +1114,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/4c719e7e102b08065eaa4dcd378e3cab80b60311",
+                "url": "https://github.com/thecodingmachine/security.simplelogincontroller/archive/4c719e7e102b08065eaa4dcd378e3cab80b60311.zip",
                 "reference": "4c719e7e102b08065eaa4dcd378e3cab80b60311",
                 "shasum": ""
             },
@@ -1133,7 +1128,6 @@
                     "Mouf": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1163,7 +1157,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
+                "url": "https://github.com/thecodingmachine/security.userfiledao/archive/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c.zip",
                 "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
                 "shasum": ""
             },
@@ -1177,7 +1171,6 @@
                     "Mouf": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1208,7 +1201,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/258d29984ea0631ddd21700818aeb968725cc5b9",
+                "url": "https://github.com/thecodingmachine/security.userservice/archive/258d29984ea0631ddd21700818aeb968725cc5b9.zip",
                 "reference": "258d29984ea0631ddd21700818aeb968725cc5b9",
                 "shasum": ""
             },
@@ -1236,7 +1229,6 @@
                     "Mouf": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1573,7 +1565,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/f7c164392837fb99c8a524c4b11999a6615c3d75",
+                "url": "https://github.com/thecodingmachine/utils.common.getvars/archive/f7c164392837fb99c8a524c4b11999a6615c3d75.zip",
                 "reference": "f7c164392837fb99c8a524c4b11999a6615c3d75",
                 "shasum": ""
             },
@@ -1862,12 +1854,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.session.session-manager.git",
-                "reference": "900b7080cb2253a118f735fa3d4269701a0207e3"
+                "reference": "e0741df532329ce9343157c63e35dd0cebde4235"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/900b7080cb2253a118f735fa3d4269701a0207e3",
-                "reference": "900b7080cb2253a118f735fa3d4269701a0207e3",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/e0741df532329ce9343157c63e35dd0cebde4235",
+                "reference": "e0741df532329ce9343157c63e35dd0cebde4235",
                 "shasum": ""
             },
             "require": {
@@ -1906,7 +1898,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2013-06-19 12:43:18"
+            "time": "2013-06-19 14:17:44"
         },
         {
             "name": "mouf/utils.value.value-interface",
