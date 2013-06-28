@@ -129,6 +129,7 @@ class MoufPropertyDescriptor {
 				$this->types = $varTypeAnnot->getTypes();
 				
 				$declaringClass = $property->getDeclaringClass();
+				
 				$useNamespaces = $declaringClass->getUseNamespaces();
 				//var_dump($declaringClass->getName());
 				// Let's resolve the class name...

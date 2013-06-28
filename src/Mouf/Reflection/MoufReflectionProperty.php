@@ -24,11 +24,18 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
      */
     protected $className;
     /**
-     * reflection instance for class declaring this property
+     * The class the object was built from
      *
      * @var  MoufReflectionClass
      */
     protected $refClass;
+    
+    /**
+     * The declaring class of the method
+     *
+     * @var  MoufReflectionClass
+     */
+    protected $declaringClass;
     /**
      * Name of the property
      *
@@ -144,11 +151,67 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     }
 
     /**
+     * getDeclaringClass fixing the problem with traits
+     * (non-PHPdoc)
+     * @see ReflectionProperty::getDeclaringClass()
+     */
+    function getDeclaringClass() {
+    	if ($this->declaringClass) {
+    		return $this->declaringClass;
+    	}
+    	
+    	// Let's scan all traits
+    	$trait = $this->deepScanTraitsForProperty($this->refClass->getTraits());
+    	if ($trait != null) {
+    		$this->declaringClass = $trait; 
+    		return $trait;
+    	}
+    	
+    	if ($this->refClass->getParentClass()) {
+    		if ($this->refClass->getParentClass()->hasProperty($this->getName())) {
+    			$declaringClass = $this->refClass->getParentClass()->getProperty($this->getName())->getDeclaringClass();
+    		}
+    		if ($declaringClass != null) {
+    			return $declaringClass;
+    		}
+    	}
+    	if ($this->refClass->hasProperty($this->getName())) {
+    		return $this->refClass;
+    	}
+    	return null;
+    	
+    	// The property is not part of the traits, let's find in which parent it is part of.
+    	/*$this->declaringClass = $this->getDeclaringClassWithoutTraits(); 
+    	return $this->declaringClass;*/
+    }
+    
+    /**
+     * Recursive method called to detect a method into a nested array of traits.
+     *
+     * @param $traits ReflectionClass[]
+     * @return ReflectionClass|null
+     */
+    private function deepScanTraitsForProperty(array $traits) {
+    	foreach ($traits as $trait) {
+    		// If the trait has a property, it's a win!
+    		$result = $this->deepScanTraitsForProperty($trait->getTraits(), $this->getName());
+    		if ($result != null) {
+    			return $result;
+    		} else {
+    			if ($trait->hasProperty($this->getName())) {
+    				return $trait;
+    			}
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
      * Returns the class that declares this parameter
      *
      * @return  MoufReflectionClass
      */
-    public function getDeclaringClass()
+    public function getDeclaringClassWithoutTraits()
     {
         $refClass = parent::getDeclaringClass();
         if ($refClass->getName() === $this->className) {

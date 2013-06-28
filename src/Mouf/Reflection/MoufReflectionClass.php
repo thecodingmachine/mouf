@@ -53,6 +53,13 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	private $cacheService;
 	
 	/**
+	 * The traits for this class
+	 *
+	 * @var  MoufReflectionClass[]
+	 */
+	protected $traits;
+	
+	/**
 	 * Default constructor
 	 *
 	 * @param string $className The name of the class to analyse.
@@ -290,6 +297,26 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         
         $moufRefClass = new self($parentClass->getName());
         return $moufRefClass;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see ReflectionClass::getTraits()
+     */
+    public function getTraits() {
+    	if (version_compare(PHP_VERSION, "5.4.0", '<')) {
+    		// I'm not using PHP 5.4 or higher
+    		return array();
+    	}
+    	
+    	if ($this->traits !== null) {
+    		return $this->traits;
+    	}
+    	
+    	$traitNames = parent::getTraitNames();
+    	$this->traits = array_map(function($name) { return new MoufReflectionClass($name); }, $traitNames);
+    	
+    	return $this->traits;
     }
 
     /**

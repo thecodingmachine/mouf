@@ -24,11 +24,19 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
      */
     protected $className;
     /**
-     * declaring class
+     * The class the object was built from
      *
      * @var  MoufReflectionClass
      */
     protected $refClass;
+    
+    /**
+     * The declaring class of the method
+     *
+     * @var  MoufReflectionClass
+     */
+    protected $declaringClass;
+    
     /**
      * name of the reflected method
      *
@@ -145,17 +153,68 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
      */
     public function getDeclaringClass()
     {
-        $refClass = parent::getDeclaringClass();
-        if ($refClass->getName() === $this->className) {
-            if (null === $this->refClass) {
-                $this->refClass = new MoufReflectionClass($this->className);
-            }
-            
-            return $this->refClass;
-        }
-        
-        $moufRefClass = new MoufReflectionClass($refClass->getName());
-        return $moufRefClass;
+    	if ($this->declaringClass) {
+    		return $this->declaringClass;
+    	}
+    	 
+    	$methodFile = $this->getFileName();
+    	$methodStartLine = $this->getStartLine();
+    	$methodEndLine = $this->getEndLine();
+    	
+    	$oldDeclaringClass = $this->getDeclaringClassWithoutTraits();
+    	
+    	// Let's scan all traits
+    	$trait = $this->deepScanTraits($oldDeclaringClass->getTraits(), $methodFile, $methodStartLine, $methodEndLine);
+    	if ($trait != null) {
+    		$this->declaringClass = $trait;
+    		return $trait;
+    	} else {
+    		$this->declaringClass = $oldDeclaringClass;
+    		return $oldDeclaringClass;
+    	}
+    }
+    
+    /**
+     * Recursive method called to detect a method into a nested array of traits.
+     *
+     * @param $traits ReflectionClass[]
+     * @param $methodFile string
+     * @param $methodStartLine int
+     * @param $methodEndLine int
+     * @return ReflectionClass|null
+     */
+    private function deepScanTraits(array $traits, $methodFile, $methodStartLine, $methodEndLine) {
+    	foreach ($traits as $trait) {
+    		// If the trait has a method, is it the method we see?
+    		if ($trait->getFileName() == $methodFile
+    				&& $trait->getStartLine() <= $methodStartLine
+    				&& $trait->getEndLine() >= $methodEndLine) {
+    			return $trait;
+    		}
+    		return $this->deepScanTraits($trait->getTraits(), $methodFile, $methodStartLine, $methodEndLine);
+    	}
+    	return null;
+    }
+    
+    /**
+     * This returns the declaring class, but with the PHP bug that makes it not return a trait.
+     * See http://mouf-php.com/blog/php_reflection_api_traits 
+     * 
+     * @return \Mouf\Reflection\MoufReflectionClass
+     */
+    private function getDeclaringClassWithoutTraits()
+    {
+    	$refClass = parent::getDeclaringClass();
+    	if ($refClass->getName() === $this->className) {
+    		if (null === $this->refClass) {
+    			$this->refClass = new MoufReflectionClass($this->className);
+    		}
+    
+    		return $this->refClass;
+    	}
+    
+    	$moufRefClass = new MoufReflectionClass($refClass->getName());
+    	return $moufRefClass;
     }
 
     /**

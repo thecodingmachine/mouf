@@ -468,6 +468,17 @@ class MoufXmlReflectionClass implements MoufReflectionClassInterface {
     }
     
     /**
+     * Returns a Mouf property descriptor for the constructor argument whose name is $name.
+     *
+     * @param string $name
+     * @return MoufPropertyDescriptor
+     */
+    public function getInjectablePropertyByConstructor($name) {
+    	$properties = $this->getInjectablePropertiesByConstructor();
+    	return $properties[$name];
+    }
+    
+    /**
      * Returns a Mouf property descriptor for the public property whose name is $name.
      *
      * @param string $name
