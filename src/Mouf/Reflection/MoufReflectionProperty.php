@@ -168,6 +168,7 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	}
     	
     	if ($this->refClass->getParentClass()) {
+    		$declaringClass = null;
     		if ($this->refClass->getParentClass()->hasProperty($this->getName())) {
     			$declaringClass = $this->refClass->getParentClass()->getProperty($this->getName())->getDeclaringClass();
     		}
