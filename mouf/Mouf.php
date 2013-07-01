@@ -36,7 +36,9 @@ $loader->register(true);
 // Now, let's use Mouf autoloader.
 require_once __DIR__.'/../vendor/autoload.php';
 
-require_once __DIR__.'/../../../../mouf/MoufComponents.php';
+if (file_exists(__DIR__.'/../../../../mouf/MoufComponents.php')) {
+	require_once __DIR__.'/../../../../mouf/MoufComponents.php';
+}
 
 // FIXME: rewrite this to support many MoufComponents!!!
 // Maybe with a "default" environment (first loaded) and a "getMoufManagerByName()" that loads on the fly?
