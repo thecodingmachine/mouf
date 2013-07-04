@@ -463,6 +463,7 @@ $moufManager->addComponentInstances(array (
         12 => 'messageServiceLibrary',
         13 => 'weblibrary.qtip2',
       	14 => 'javascript.jqBootstrapValidation',
+      	15 => 'javascript.highlight.js',
       ),
     ),
   ),
@@ -1479,6 +1480,37 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+		'javascript.highlight.js' =>
+		array (
+				'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
+				'external' => false,
+				'weak' => false,
+				'setterProperties' =>
+				array (
+						'setJsFiles' =>
+						array (
+								'value' =>
+								array (
+										0 => 'src-dev/views/javascript/highlight.js/highlight.pack.js',
+								),
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssFiles' =>
+						array (
+								'value' =>
+								array (
+										0 => 'src-dev/views/javascript/highlight.js/styles/googlecode.css',
+								),
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+			),
   'javascript.underscore' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',

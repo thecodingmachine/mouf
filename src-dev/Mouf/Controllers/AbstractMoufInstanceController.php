@@ -20,6 +20,9 @@ use Mouf\MoufManager;
 use Mouf\MoufPropertyDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Html\Template\TemplateInterface;
+use Mouf\Html\HtmlElement\HtmlBlock;
+
 
 /**
  * This abstract controller helps performing basic operations to display a detail instance page

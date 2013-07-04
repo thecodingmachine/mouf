@@ -938,13 +938,24 @@ var MoufDefaultRenderer = (function () {
 									// check that we are applying it to the right parameter (useful for @Important constructor parameters)
 									var applyImportant = false;
 									_.each(isImportant, function(importantString) {
-										if (importantString == "") {
-											applyImportant = true;
-										}
 										if (importantString.indexOf("$") == 0) {
 											var importantVar = importantString.substr(1);
-											if (importantVar == moufProperty.getName()) {
-												applyImportant = true;
+											var regex = /^([\w]+)/;
+											var importantVars = regex.exec(importantVar);
+											if (importantVars.length > 0) {
+												importantVar = importantVars[0];
+												if (importantVar == moufProperty.getName()) {
+													applyImportant = true;
+												}
+											}
+										} else {
+											applyImportant = true;
+										}
+										// If we have a @Important IfSet, we must display the property only if it is set.
+										if (importantString.match(/\bIfSet/)) {
+											var moufInstanceProperty = moufProperty.getMoufInstanceProperty(instance);
+											if (moufInstanceProperty.getValue() == null || moufInstanceProperty.isSet() == false) {
+												applyImportant = false;
 											}
 										}
 									});

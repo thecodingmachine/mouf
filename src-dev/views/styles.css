@@ -537,3 +537,8 @@ ul.nav.mouftypes {
 label .type {
 	color: #999999
 }
+
+/**** Fixing Bootstrap VS Syntaxhighlighter problem *****/
+.syntaxhighlighter .container:before, .container:after {
+	content: none;	
+}
