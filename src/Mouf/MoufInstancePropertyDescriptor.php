@@ -129,8 +129,9 @@ class MoufInstancePropertyDescriptor {
 	}
 	
 	private function toMoufManagerArray($value, &$isInstance, &$isValue) {
-		if ($value == null) {
+		if ($value === null) {
 			$toStore = null;
+			$isValue = true;
 		} elseif ($value instanceof MoufInstanceDescriptor) {
 			$toStore = $value->getIdentifierName();
 			$isInstance = true;
@@ -213,7 +214,7 @@ class MoufInstancePropertyDescriptor {
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
 			// Let's try to see if it is a "value":
 			$param = $this->moufManager->getParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
-			if ($param != null) {
+			if ($param !== null) {
 				return $param;
 			}
 			
@@ -223,7 +224,7 @@ class MoufInstancePropertyDescriptor {
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
 			// Let's try to see if it is a "value":
 			$param = $this->moufManager->getParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
-			if ($param != null) {
+			if ($param !== null) {
 				return $param;
 			}
 			
