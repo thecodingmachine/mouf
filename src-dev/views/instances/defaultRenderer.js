@@ -1063,10 +1063,12 @@ var MoufDefaultRenderer = (function () {
 								var actionname = extendedAction.name;
 								var actionurl = extendedAction.url;
 								
-								jQuery("<button class='btn btn-success' />").html(actionname).appendTo(btnToolbar)
-								.click(function() {
-									window.location.href = MoufInstanceManager.rootUrl + actionurl + "?name=" + instance.getName();
-								});
+								(function(actionurl) { // This is used to scope actionurl that would be overwritten in the loop.
+									jQuery("<button class='btn btn-success' />").html(actionname).appendTo(btnToolbar)
+									.click(function() {
+										window.location.href = MoufInstanceManager.rootUrl + actionurl + "?name=" + instance.getName();
+									});
+								})(actionurl)
 								
 							}
 						}
