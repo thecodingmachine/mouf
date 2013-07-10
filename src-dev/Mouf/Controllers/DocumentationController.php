@@ -12,12 +12,13 @@ namespace Mouf\Controllers;
 use Michelf\MarkdownExtra;
 
 use dflydev\markdown\MarkdownExtraParser;
-
+use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\Widgets\Menu\MenuItem;
 use Mouf\Composer\ComposerService;
 use Mouf\Composer\PackageInterface;
 use MoufAdmin;
 use Mouf\MoufManager;
+use Mouf\Html\HtmlElement\HtmlBlock;
 
 use Mouf\MoufDocumentationPageDescriptor;
 
@@ -178,6 +179,16 @@ class DocumentationController extends Controller {
 			MoufAdmin::getSplash()->print404("Page not found");
 			return;
 		}
+		
+		$this->contentBlock->addText(
+				"
+				<script>
+				$(document).ready(function() {
+				$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+				});
+				</script>
+				"
+		);
 
 
 		if (strripos($filename, ".html") !== false || strripos($filename, ".md") !== false || strripos($filename, "README") !== false) {

@@ -14,6 +14,8 @@ use Mouf\MoufException;
  * This class can represents many types at one.
  * For instance: @var MyInterface|array<MyInterface2>|null
  * 
+ * Note: this class is Immutable (it cannot be changed after having been created)
+ * 
  * @author David Négrier
  */
 class TypesDescriptor {
@@ -64,7 +66,7 @@ class TypesDescriptor {
 		return self::parseTypeString(null);
 	}
 	
-	private function __construct($types) {
+	private function __construct($types = null) {
 		if (!empty($types)) {
 			$this->analyze($types);
 		}	
@@ -155,15 +157,22 @@ class TypesDescriptor {
 	/**
 	 * Give a fully qualified class name to all the types using declared "use" statements.
 	 * Note: Once resulved, the qualified names always start with a \
+	 * Returns a new TypesDescriptor (TypesDescriptor is an immutable class and therefore cannot be modified)
 	 *
 	 * @param array<string, string> $useMap
 	 * @param string $namespace
+	 * @return TypesDescriptor
 	 */
 	public function resolveType($useMap, $namespace) {
+		$resolvedTypes = array(); 
 		foreach ($this->types as $type) {
 			/* @var $type TypeDescriptor */
-			$type->resolveType($useMap, $namespace);
+			$resolvedTypes[] = $type->resolveType($useMap, $namespace);
 		}
+		$newTypes = new self();
+		$newTypes->types = $resolvedTypes;
+		$newTypes->warningMessage = $this->warningMessage;
+		return $newTypes;
 	}
 
 	/**

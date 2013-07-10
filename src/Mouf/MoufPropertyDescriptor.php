@@ -126,7 +126,7 @@ class MoufPropertyDescriptor {
 				}
 				$varTypeAnnot = $varTypes[0];
 				/* @var $varTypeAnnot varAnnotation */
-				$this->types = $varTypeAnnot->getTypes();
+				$unresolvedTypes = $varTypeAnnot->getTypes();
 				
 				$declaringClass = $property->getDeclaringClass();
 				
@@ -144,10 +144,7 @@ class MoufPropertyDescriptor {
 					$namespace = substr($className, 0, $pos);
 				}
 				
-				$this->types->resolveType($useNamespaces, $namespace);
-				
-				/*$this->type = self::resolveType($this->type, $useNamespaces, $namespace);
-				$this->subType = self::resolveType($this->subType, $useNamespaces, $namespace);*/
+				$this->types = $unresolvedTypes->resolveType($useNamespaces, $namespace);
 			}
 		} elseif ($this->object instanceof MoufReflectionParameterInterface) {
 			$parameter = $this->object;
@@ -192,11 +189,8 @@ class MoufPropertyDescriptor {
 						$namespace = substr($className, 0, $pos);
 					}
 					
-					$this->types = $paramAnnotation->getTypes();
-					$this->types->resolveType($useNamespaces, $namespace);
-					/*$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
-					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
-					$this->keyType = $paramAnnotation->getKeyType();*/
+					$unresolvedTypes = $paramAnnotation->getTypes();
+					$this->types = $unresolvedTypes->resolveType($useNamespaces, $namespace);
 					
 				} else {
 					
@@ -247,11 +241,8 @@ class MoufPropertyDescriptor {
 						$namespace = substr($className, 0, $pos);
 					}
 						
-					$this->types = $paramAnnotation->getTypes();
-					$this->types->resolveType($useNamespaces, $namespace);
-					/*$this->type = self::resolveType($paramAnnotation->getType(), $useNamespaces, $namespace);
-					$this->subType = self::resolveType($paramAnnotation->getSubType(), $useNamespaces, $namespace);
-					$this->keyType = $paramAnnotation->getKeyType();*/
+					$unresolvedTypes = $paramAnnotation->getTypes();
+					$this->types = $unresolvedTypes->resolveType($useNamespaces, $namespace);
 				} else {
 					// There are @param annotation but not for the right variable... Let's use the type instead (if any).
 					$parameters = $method->getParameters();

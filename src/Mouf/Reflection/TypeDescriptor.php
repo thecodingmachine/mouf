@@ -8,6 +8,8 @@ use Mouf\MoufTypeParserException;
 /**
  * This class represents one type.
  * 
+ * Note: this class is Immutable (it cannot be changed after having been created)
+ * 
  * @author David Négrier
  */
 class TypeDescriptor {
@@ -146,49 +148,54 @@ class TypeDescriptor {
 	
 	/**
 	 * Give a fully qualified class name from the $type and declared "use" statements.
-	 * Note: Once resulved, the qualified names always start with a \
-	 *
+	 * Note: Once resolved, the qualified names always start with a \
+	 * Returns a new TypeDescriptor (TypeDescriptor is an immutable class and therefore cannot be modified)
+	 * 
 	 * @param array<string, string> $useMap
 	 * @param string $namespace
-	 * @return unknown|string
+	 * @return TypeDescriptor
 	 */
 	public function resolveType($useMap, $namespace) {
+		$newType = new self();
+		$newType->type = $this->type;
+		$newType->keyType = $this->keyType;
+		
 		if ($this->subType != null) {
-			$this->subType->resolveType($useMap, $namespace);
+			$newType->subType = $this->subType->resolveType($useMap, $namespace);
 		}
 		
-		if ($this->type == null || $this->type == "array" || $this->isPrimitiveType()) {
-			return;
+		if ($newType->type == null || $newType->type == "array" || $newType->isPrimitiveType()) {
+			return $newType;
 		}
 	
-		$index = strpos($this->type, '\\');
+		$index = strpos($newType->type, '\\');
 		if ($index === false) {
-			if (isset($useMap[$this->type])) {
-				$this->type = '\\'.$useMap[$this->type];
-				return;
+			if (isset($useMap[$newType->type])) {
+				$newType->type = '\\'.$useMap[$newType->type];
+				return $newType;
 			} else {
 				if ($namespace) {
-					$this->type = '\\'.$namespace.'\\'.$this->type;
-					return;
+					$newType->type = '\\'.$namespace.'\\'.$newType->type;
+					return $newType;
 				} else {
-					$this->type = '\\'.$this->type;
-					return;
+					$newType->type = '\\'.$newType->type;
+					return $newType;
 				}
 			}
 		}
 		if ($index === 0) {
 			// Starting with \. Already a fully qualified name.
-			return;
+			return $newType;
 		}
-		$leftPart = substr($this->type, 0, $index);
-		$rightPart = substr($this->type, $index);
+		$leftPart = substr($newType->type, 0, $index);
+		$rightPart = substr($newType->type, $index);
 	
 		if (isset($useMap[$leftPart])) {
-			$this->type = '\\'.$useMap[$leftPart].$rightPart;
-			return;
+			$newType->type = '\\'.$useMap[$leftPart].$rightPart;
+			return $newType;
 		} else {
-			$this->type = '\\'.$namespace.'\\'.$this->type;
-			return;
+			$newType->type = '\\'.$namespace.'\\'.$newType->type;
+			return $newType;
 		}
 	}
 	
