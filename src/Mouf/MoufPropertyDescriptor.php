@@ -201,6 +201,12 @@ class MoufPropertyDescriptor {
 						$this->types = TypesDescriptor::parseTypeString("\\".$parameter->getType());
 					}
 				}
+			} else {
+				if ($parameter->isArray()) {
+					$this->types = TypesDescriptor::parseTypeString("array");
+				} elseif ($parameter->getType() != null) {
+					$this->types = TypesDescriptor::parseTypeString("\\".$parameter->getType());
+				}
 			}
 			
 		} else {
