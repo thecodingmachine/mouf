@@ -26,7 +26,7 @@ $(document).ready(function() {
 <div class="alert alert-success">All install tasks have been executed.</div>
 <?php }?>
 
-<table class="table">
+<table class="table table-striped">
 	<tr>
 		<th style="width: 30%">Package</th>
 		<th style="width: 40%">Description</th>
