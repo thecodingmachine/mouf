@@ -81,7 +81,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$composerService = new ComposerService($this->selfedit == "true");
+		$composerService = new ComposerService($this->selfedit == "true", false);
 		
 		$this->packageList = $composerService->getLocalPackages();
 		
@@ -96,7 +96,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 	 * @param string $text
 	 */
 	public function search($text) {
-		$composerService = new ComposerService();
+		$composerService = new ComposerService(false, true);
 		
 		ChunckedUtils::init();
 		
@@ -204,7 +204,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 		
-		$composerService = new ComposerService($this->selfedit == "true");
+		$composerService = new ComposerService($this->selfedit == "true", true);
 		
 		ChunckedUtils::init();
 		
@@ -256,7 +256,7 @@ class InstalledPackagesController extends Controller implements OnPackageFoundIn
 			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
 		}
 	
-		$composerService = new ComposerService($this->selfedit == "true");
+		$composerService = new ComposerService($this->selfedit == "true", true);
 	
 		ChunckedUtils::init();
 	

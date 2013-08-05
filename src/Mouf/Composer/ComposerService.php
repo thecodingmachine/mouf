@@ -58,8 +58,11 @@ class ComposerService {
 	
 	protected $classMap;
 	
-	public function __construct($selfEdit = false) {
+	protected $outputBufferedJs;
+	
+	public function __construct($selfEdit = false, $outputBufferedJs = false) {
 		$this->selfEdit = $selfEdit;
+		$this->outputBufferedJs = $outputBufferedJs;
 		self::registerAutoloader();
 	}
 	
@@ -198,7 +201,11 @@ class ComposerService {
 			
 			$this->configureEnv();
 			
-			$this->io = new MoufJsComposerIO();
+			if ($this->outputBufferedJs) {
+				$this->io = new MoufJsComposerIO();
+			} else {
+				$this->io = new MoufErrorLogComposerIO();
+			}
 			$this->composer = Factory::create($this->io);
 		}
 		return $this->composer;
