@@ -261,6 +261,7 @@ class MoufManager {
 	 * Returns the instance of the specified object.
 	 *
 	 * @param string $instanceName
+	 * @return object
 	 */
 	public function getInstance($instanceName) {
 		if (!isset($this->objectInstances[$instanceName]) || $this->objectInstances[$instanceName] == null) {
@@ -270,12 +271,34 @@ class MoufManager {
 	}
 
 	/**
+	 * Returns the instance of the specified object.
+	 * Alias of "getInstance"
+	 *
+	 * @param string $instanceName
+	 * @return object
+	 */
+	public function get($instanceName) {
+		return $this->getInstance($instanceName);
+	}
+	
+	/**
 	 * Returns true if the instance name passed in parameter is defined in Mouf.
 	 *
 	 * @param string $instanceName
 	 */
 	public function instanceExists($instanceName) {
 		return isset($this->declaredInstances[$instanceName]);
+	}
+	
+	/**
+	 * Returns true if the instance name passed in parameter is defined in Mouf.
+	 * Alias of "instanceExists"
+	 *
+	 * @param string $instanceName
+	 * @return bool
+	 */
+	public function has($instanceName) {
+		return $this->instanceExists($instanceName);
 	}
 
 	/**
