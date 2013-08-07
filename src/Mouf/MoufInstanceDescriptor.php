@@ -306,7 +306,7 @@ class MoufInstanceDescriptor {
 					} elseif (!$param->allowsNull()) {
 						$name = $this->getIdentifierName();
 						if ($this->isAnonymous()) {
-							$name = "anonymous instance if class <strong>".$this->getClassName()."</strong>";
+							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
 						}
 						if ($this->moufManager->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
 							$errors[] = "In instance <em>".$name."</em>, the constructor
