@@ -22,7 +22,7 @@ if ($installPos !== FALSE) {
 
 
 $str = "Allow from all
-Options FollowSymLinks -MultiViews
+Options +FollowSymLinks -MultiViews
 RewriteEngine on
 RewriteBase $uri
 
