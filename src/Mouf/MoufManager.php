@@ -1840,7 +1840,8 @@ class MoufManager {
 		if (isset($this->instanceDescriptors[$name])) {
 			return $this->instanceDescriptors[$name];
 		} elseif (isset($this->declaredInstances[$name])) {
-			return new MoufInstanceDescriptor($this, $name);
+			$this->instanceDescriptors[$name] = new MoufInstanceDescriptor($this, $name);
+			return $this->instanceDescriptors[$name];
 		} else {
 			throw new MoufException("Instance '".$name."' does not exist.");
 		}
