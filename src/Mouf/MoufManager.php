@@ -370,6 +370,9 @@ class MoufManager {
 	public function removeComponent($instanceName) {
 		unset($this->instanceDescriptors[$instanceName]);
 		unset($this->declaredInstances[$instanceName]);
+		if (isset($this->instanceDescriptors[$instanceName])) {
+			unset($this->instanceDescriptors[$instanceName]);
+		}
 		
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["constructor"])) {
@@ -463,7 +466,7 @@ class MoufManager {
 
 		$this->declaredInstances[$newInstanceName] = $this->declaredInstances[$instanceName];
 		unset($this->declaredInstances[$instanceName]);
-
+		
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["constructor"])) {
 				foreach ($declaredInstance["constructor"] as $index=>$propWrapper) {
@@ -532,6 +535,11 @@ class MoufManager {
 					}
 				}
 			}
+		}
+		
+		if (isset($this->instanceDescriptors[$instanceName])) {
+			$this->instanceDescriptors[$newInstanceName] = $this->instanceDescriptors[$instanceName];
+			unset($this->instanceDescriptors[$instanceName]);
 		}
 	}
 
