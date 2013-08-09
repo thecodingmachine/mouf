@@ -234,6 +234,21 @@ class DocumentationController extends Controller {
 			MoufAdmin::getSplash()->print404("Cannot access PHP file through doc");
 			return;
 		} else {
+ 			$extension = pathinfo($filename, PATHINFO_EXTENSION);
+ 			switch (strtolower($extension)) {
+ 				case 'png':
+ 					header("Content-Type: image/png");
+ 					break;
+ 				case 'jpg':
+ 				case 'jpeg':
+ 					header("Content-Type: image/jpeg");
+ 					break;
+ 				case 'gif':
+ 					header("Content-Type: image/gif");
+ 					break;
+ 			}
+			
+ 			header('Content-Length: ' . filesize($filename));
 			readfile($filename);
 			exit;
 		}
@@ -380,4 +395,3 @@ class DocumentationController extends Controller {
 	}
 	
 }
-?>
