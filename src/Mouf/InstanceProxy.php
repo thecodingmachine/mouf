@@ -39,7 +39,7 @@ class InstanceProxy {
 		
 		$response = MoufReflectionProxy::performRequest($url, $postArray);
 		
-		$obj = unserialize($response);
+		$obj = @unserialize($response);
 		
 		if ($obj === false) {
 			throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
