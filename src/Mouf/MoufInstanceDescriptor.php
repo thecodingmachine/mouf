@@ -23,10 +23,10 @@ use Mouf\Reflection\MoufXmlReflectionClass;
 class MoufInstanceDescriptor {
 	
 	/**
-	 * The MoufManager instance owning the component.
-	 * @var MoufManager
+	 * The MoufContainer instance owning the component.
+	 * @var MoufContainer
 	 */
-	private $moufManager;
+	private $moufContainer;
 	
 	/**
 	 * The name of the instance.
@@ -68,14 +68,20 @@ class MoufInstanceDescriptor {
 	private $constructorProperties = array();
 	
 	/**
-	 * The constructor should exclusively be used by MoufManager.
-	 * Use MoufManager::getInstanceDescriptor and MoufManager::createInstance to get instances of this class.
+	 * The constructor should exclusively be used by MoufContainer.
+	 * Use MoufContainer::getInstanceDescriptor and MoufContainer::createInstance to get instances of this class.
 	 * 
-	 * @param MoufManager $moufManager
+	 * @param MoufManager|MoufContainer $moufContainer
 	 * @param unknown_type $name
 	 */
-	public function __construct(MoufManager $moufManager, $name) {
-		$this->moufManager = $moufManager;
+	public function __construct($moufContainer, $name) {
+		// changes applied to accept both MoufManager and MoufContainer (for compatibility purpose).
+		if ($moufContainer instanceof MoufManager) {
+			$moufContainer = $moufContainer->getContainer();
+		}
+		
+		
+		$this->moufContainer = $moufContainer;
 		$this->name = $name;
 	}
 	
@@ -92,16 +98,16 @@ class MoufInstanceDescriptor {
 	 */
 	public function setName($name) {
 		if (empty($name)) {
-			$name = $this->moufManager->getFreeAnonymousName();
+			$name = $this->moufContainer->getFreeAnonymousName();
 		}
 		$unsetWeakness = false;
-		if ($this->moufManager->isInstanceAnonymous($this->name) && !empty($name)) {
+		if ($this->moufContainer->isInstanceAnonymous($this->name) && !empty($name)) {
 			$unsetWeakness = true;
 		}
-		$this->moufManager->renameComponent($this->name, $name);
+		$this->moufContainer->renameInstance($this->name, $name);
 		if ($unsetWeakness) {
-			$this->moufManager->setInstanceWeakness($name, false);
-			$this->moufManager->setInstanceAnonymousness($name, false);
+			$this->moufContainer->setInstanceWeakness($name, false);
+			$this->moufContainer->setInstanceAnonymousness($name, false);
 		}
 		$this->name = $name;
 		return $this;
@@ -112,7 +118,7 @@ class MoufInstanceDescriptor {
 	 * @return string
 	 */
 	public function getName() {
-		if ($this->moufManager->isInstanceAnonymous($this->name)) {
+		if ($this->moufContainer->isInstanceAnonymous($this->name)) {
 			return null;
 		} else {
 			return $this->name;
@@ -133,7 +139,7 @@ class MoufInstanceDescriptor {
 	 * @return string
 	 */
 	public function getClassName() {
-		return $this->moufManager->getInstanceType($this->name);
+		return $this->moufContainer->getInstanceType($this->name);
 	}
 	
 	/**
@@ -141,7 +147,7 @@ class MoufInstanceDescriptor {
 	 * @return bool
 	 */
 	public function isAnonymous() {
-		return $this->moufManager->isInstanceAnonymous($this->name);
+		return $this->moufContainer->isInstanceAnonymous($this->name);
 	}
 	
 	/**
@@ -150,7 +156,7 @@ class MoufInstanceDescriptor {
 	 * @param bool $anonymous
 	 */
 	public function setInstanceAnonymousness($anonymous) {
-		$this->moufManager->setInstanceAnonymousness($this->name, $anonymous);
+		$this->moufContainer->setInstanceAnonymousness($this->name, $anonymous);
 	}
 	
 	/**
@@ -158,7 +164,7 @@ class MoufInstanceDescriptor {
 	 * @return MoufReflectionClass
 	 */
 	public function getClassDescriptor() {
-		return $this->moufManager->getClassDescriptor($this->getClassName());
+		return $this->moufContainer->getReflectionClassManager()->getReflectionClass($this->getClassName());
 	}
 	
 	/**
@@ -204,7 +210,7 @@ class MoufInstanceDescriptor {
 	 */
 	public function getPublicFieldProperty($name) {
 		if (!isset($this->publicProperties[$name])) {
-			$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyByPublicProperty($name));
+			$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyByPublicProperty($name));
 		}
 		return $this->publicProperties[$name];
 	}
@@ -221,11 +227,11 @@ class MoufInstanceDescriptor {
 			$classDescriptor = $this->getClassDescriptor();
 			$methodProperties = $classDescriptor->getInjectablePropertiesBySetter();
 			if (isset($methodProperties[$name])) {
-				$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($name));
+				$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($name));
 			} else {
 				foreach ($methodProperties as $methodProperty) {
 					if ($methodProperty->getName() == $name) {
-						$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($methodProperty->getMethodName()));
+						$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($methodProperty->getMethodName()));
 						break;
 					}
 				}
@@ -243,7 +249,7 @@ class MoufInstanceDescriptor {
 	 */
 	public function getConstructorArgumentProperty($name) {
 		if (!isset($this->constructorProperties[$name])) {
-			$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufManager, $this, $this->getClassDescriptor()->getInjectablePropertyByConstructor($name));
+			$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyByConstructor($name));
 		}
 		return $this->constructorProperties[$name];
 	}
@@ -295,7 +301,7 @@ class MoufInstanceDescriptor {
 			foreach ($params as $param) {
 				/* @var $param MoufReflectionParameter */
 				if (!$param->isOptional()) {
-					if (!$this->moufManager->isParameterSetForConstructor($this->getIdentifierName(), $i)) {
+					if (!$this->moufContainer->isParameterSetForConstructor($this->getIdentifierName(), $i)) {
 						$name = $this->getIdentifierName();
 						if ($this->isAnonymous()) {
 							$name = "anonymous instance of class ".$this->getClassName();
@@ -308,7 +314,7 @@ class MoufInstanceDescriptor {
 						if ($this->isAnonymous()) {
 							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
 						}
-						if ($this->moufManager->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
+						if ($this->moufContainer->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
 							$errors[] = "In instance <em>".$name."</em>, the constructor
 								parameter '".$param->getName()."' is null, but the constructor signature does not allow it to be null.
 								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";

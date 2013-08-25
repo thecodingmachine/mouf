@@ -11,6 +11,7 @@
 /**
  * This file is used to install the Mouf framework by creating the .htaccess file.
  */
+$old = umask(0);
 
 $uri = $_SERVER["REQUEST_URI"];
 
@@ -163,5 +164,5 @@ function install_userinput_to_plainstring($str) {
 
 
 header("Location: ".$uri."/");
-
+umask($old);
 ?>

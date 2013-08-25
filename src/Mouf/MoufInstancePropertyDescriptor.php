@@ -18,10 +18,10 @@ namespace Mouf;
 class MoufInstancePropertyDescriptor {
 	
 	/**
-	 * The MoufManager instance owning the component.
-	 * @var MoufManager
+	 * The MoufContainer instance owning the component.
+	 * @var MoufContainer
 	 */
-	private $moufManager;
+	private $moufContainer;
 	
 	/**
 	 * The instance this property is part of.
@@ -44,14 +44,14 @@ class MoufInstancePropertyDescriptor {
 	private $propertyDescriptor;
 	
 	/**
-	 * The constructor should exclusively be used by MoufManager.
-	 * Use MoufManager::getInstanceDescriptor and MoufManager::createInstance to get instances of this class.
+	 * The constructor should exclusively be used by MoufContainer.
+	 * Use MoufContainer::getInstanceDescriptor and MoufContainer::createInstance to get instances of this class.
 	 *
-	 * @param MoufManager $moufManager
+	 * @param MoufContainer $moufContainer
 	 * @param string $name
 	 */
-	public function __construct(MoufManager $moufManager, MoufInstanceDescriptor $instanceDescriptor, MoufPropertyDescriptor $propertyDescriptor) {
-		$this->moufManager = $moufManager;
+	public function __construct(MoufContainer $moufContainer, MoufInstanceDescriptor $instanceDescriptor, MoufPropertyDescriptor $propertyDescriptor) {
+		$this->moufContainer = $moufContainer;
 		$this->instanceDescriptor = $instanceDescriptor;
 		
 		// Is this a setter or a property or a constructor parameter? Let's find out!
@@ -91,7 +91,7 @@ class MoufInstancePropertyDescriptor {
 		$isInstance = false;
 		$isValue = false;
 		
-		$toStore = $this->toMoufManagerArray($value, $isInstance, $isValue);
+		$toStore = $this->toMoufContainerArray($value, $isInstance, $isValue);
 
 		if ($isValue) {
 			$origin = $this->getOrigin();
@@ -100,27 +100,27 @@ class MoufInstancePropertyDescriptor {
 			}
 			
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
-				$this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
-				$this->moufManager->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
+				$this->moufContainer->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+				$this->moufContainer->setParameter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
-				$this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
-				$this->moufManager->setParameterViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
+				$this->moufContainer->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+				$this->moufContainer->setParameterViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore, $origin);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
-				$this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
-				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "primitive", $origin);
+				$this->moufContainer->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+				$this->moufContainer->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "primitive", $origin);
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
 		} else {
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
-				$this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
-				$this->moufManager->bindComponents($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
+				$this->moufContainer->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+				$this->moufContainer->bindComponents($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
-				$this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
-				$this->moufManager->bindComponentsViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
+				$this->moufContainer->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+				$this->moufContainer->bindComponentsViaSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $toStore);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
-				$this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
-				$this->moufManager->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "object");
+				$this->moufContainer->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+				$this->moufContainer->setParameterViaConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $toStore, "object");
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
@@ -128,7 +128,7 @@ class MoufInstancePropertyDescriptor {
 		return $this;
 	}
 	
-	private function toMoufManagerArray($value, &$isInstance, &$isValue) {
+	private function toMoufContainerArray($value, &$isInstance, &$isValue) {
 		if ($value === null) {
 			$toStore = null;
 			$isValue = true;
@@ -139,7 +139,7 @@ class MoufInstancePropertyDescriptor {
 			// Let's find if there is a MoufInstanceDescriptor in this array...
 			$toStore = array();
 			foreach ($value as $key=>$val) {
-				$toStore[$key] = $this->toMoufManagerArray($val, $isInstance, $isValue);
+				$toStore[$key] = $this->toMoufContainerArray($val, $isInstance, $isValue);
 				if ($isInstance && $isValue) {
 					throw new MoufException("Invalid value passed to setValue. You passed a mix of MoufInstanceDescriptor and other values in the array.");
 				}
@@ -167,10 +167,10 @@ class MoufInstancePropertyDescriptor {
 			return null;
 		}
 		if (is_array($instanceNames)) {
-			$moufManager = $this->moufManager;
-			return self::array_map_deep($instanceNames, function($instanceName) use ($moufManager) {
+			$moufContainer = $this->moufContainer;
+			return self::array_map_deep($instanceNames, function($instanceName) use ($moufContainer) {
 				if ($instanceName != null) {
-					return $moufManager->getInstanceDescriptor($instanceName);
+					return $moufContainer->getInstanceDescriptor($instanceName);
 				} else {
 					return null;
 				}
@@ -178,14 +178,14 @@ class MoufInstancePropertyDescriptor {
 			/*$arrayOfDescriptors = array();
 			foreach ($instanceNames as $key=>$instanceName) {
 				if ($instanceName != null) {
-					$arrayOfDescriptors[$key] = $this->moufManager->getInstanceDescriptor($instanceName);
+					$arrayOfDescriptors[$key] = $this->moufContainer->getInstanceDescriptor($instanceName);
 				} else {
 					$arrayOfDescriptors[$key] = null;
 				}
 			}
 			return $arrayOfDescriptors;*/
 		} else {
-			return $this->moufManager->getInstanceDescriptor($instanceNames);
+			return $this->moufContainer->getInstanceDescriptor($instanceNames);
 		}
 		
 	}
@@ -213,28 +213,28 @@ class MoufInstancePropertyDescriptor {
 		
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
 			// Let's try to see if it is a "value":
-			$param = $this->moufManager->getParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			$param = $this->moufContainer->getParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
 			if ($param !== null) {
 				return $param;
 			}
 			
-			$instanceName = $this->moufManager->getBoundComponentsOnProperty($this->instanceDescriptor->getIdentifierName(), $this->name);
+			$instanceName = $this->moufContainer->getBoundComponentsOnProperty($this->instanceDescriptor->getIdentifierName(), $this->name);
 
 			return $this->toInstanceDescriptor($instanceName);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
 			// Let's try to see if it is a "value":
-			$param = $this->moufManager->getParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			$param = $this->moufContainer->getParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 			if ($param !== null) {
 				return $param;
 			}
 			
-			$instanceName = $this->moufManager->getBoundComponentsOnSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			$instanceName = $this->moufContainer->getBoundComponentsOnSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 
 			return $this->toInstanceDescriptor($instanceName);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
 			// Let's try to see if it is a "value":
-			$argumentType = $this->moufManager->isConstructorParameterObjectOrPrimitive($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
-			$param = $this->moufManager->getParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			$argumentType = $this->moufContainer->isConstructorParameterObjectOrPrimitive($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			$param = $this->moufContainer->getParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 				
 			if ($argumentType == "primitive") {
 				return $param;
@@ -260,11 +260,11 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function isValueSet() {
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
-			return $this->moufManager->isParameterSet($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->isParameterSet($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
-			return $this->moufManager->isParameterSetForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->isParameterSetForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
-			return $this->moufManager->isParameterSetForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			return $this->moufContainer->isParameterSetForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 		} else {
 			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 		}
@@ -278,11 +278,11 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function unsetValue() {
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
-			return $this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
-			return $this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
-			return $this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			return $this->moufContainer->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 		} else {
 			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 		}
@@ -306,11 +306,11 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function getMetaData() {
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
-			return $this->moufManager->getParameterMetadata($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->getParameterMetadata($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
-			return $this->moufManager->getParameterMetadataForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->getParameterMetadataForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
-			return $this->moufManager->getParameterMetadataForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			return $this->moufContainer->getParameterMetadataForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 		} else {
 			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 		}
@@ -327,11 +327,11 @@ class MoufInstancePropertyDescriptor {
 	public function setOrigin($origin) {
 		//if ($this->propertyDescriptor->isPrimitiveType()) {
 			if ($this->propertyDescriptor->isPublicFieldProperty()) {
-				$this->moufManager->setParameterType($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
+				$this->moufContainer->setParameterType($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
 			} elseif ($this->propertyDescriptor->isSetterProperty()) {
-				$this->moufManager->setParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
+				$this->moufContainer->setParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name, $origin);
 			} elseif ($this->propertyDescriptor->isConstructor()) {
-				$this->moufManager->setParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $origin);
+				$this->moufContainer->setParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex(), $origin);
 			} else {
 				throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 			}
@@ -350,11 +350,11 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function getOrigin() {
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
-			return $this->moufManager->getParameterType($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->getParameterType($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
-			return $this->moufManager->getParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			return $this->moufContainer->getParameterTypeForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isConstructor()) {
-			return $this->moufManager->getParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
+			return $this->moufContainer->getParameterTypeForConstructor($this->instanceDescriptor->getIdentifierName(), $this->propertyDescriptor->getParameterIndex());
 		} else {
 			throw new MoufException("Unsupported property type: it is not a public field nor a setter nor a constructor...");
 		}

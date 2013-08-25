@@ -68,9 +68,26 @@ ValidatorMessages = {
 	},
 	turnMessageIntoError: function(container, text) {
 		ValidatorsCounter.incrementError();
-		container.html("<div class='alert alert-error validatorError'>"+text+"</div>");
+		if (typeof(text)=="string") { 
+			container.html("<div class='alert alert-error validatorError'>"+text+"</div>");
+		} else {
+			container.html("<div class='alert alert-error validatorError'></div>").find("div").append(text);
+		}
 
 		return container;
+	},
+	/**
+	 * Returns a jQuery object with the details of the error to print.
+	 */
+	getErrorMsg: function(text, details) {
+		var msg = $("<div>"+text+" <a class='seeErrorDetails' href='#'>See details</a><div style='display:none'><a href='#' class='viewinhtml'><span class='badge badge-important'>View in HTML</span></a><pre></pre></div></div>");
+		msg.find("pre").text(details);
+		msg.find(".viewinhtml").click(function() {
+			$(this).hide();
+			msg.find("pre").html(msg.find("pre").text());
+			return false;
+		});
+		return msg;
 	}
 }
 
@@ -162,7 +179,8 @@ $(document).ready(function() {
 
 							try {
 								if (typeof(json) == "string") {
-									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									//ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									ValidatorMessages.turnMessageIntoError(container, ValidatorMessages.getErrorMsg("Error while running validator for class '"+className+"', invalid message returned.", json));
 									return;
 								}
 								//var json = jQuery.parseJSON(text);
@@ -175,7 +193,8 @@ $(document).ready(function() {
 									ValidatorMessages.turnMessageIntoError(container, json.message).attr("title", "Validator for class '"+className+"'");
 								}
 							} catch (e) {
-								ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+								//ValidatorMessages.turnMessageIntoError(container, "Error while running validator for class '"+className+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+								ValidatorMessages.turnMessageIntoError(container, ValidatorMessages.getErrorMsg("Error while running validator for class '"+className+"', invalid message returned.", json));
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
@@ -201,7 +220,8 @@ $(document).ready(function() {
 
 							try {
 								if (typeof(json) == "string") {
-									ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									//ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(json);
+									ValidatorMessages.turnMessageIntoError(container, ValidatorMessages.getErrorMsg("Error while running validator for instance '"+instanceName+"', invalid message returned.", json));
 									return;
 								}
 								//var json = jQuery.parseJSON(text);
@@ -214,7 +234,8 @@ $(document).ready(function() {
 									ValidatorMessages.turnMessageIntoError(container, json.message).attr("title", "Validator for instance '"+instanceName+"'");
 								}
 							} catch (e) {
-								ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+								//ValidatorMessages.turnMessageIntoError(container, "Error while running validator for instance '"+instanceName+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+								ValidatorMessages.turnMessageIntoError(container, ValidatorMessages.getErrorMsg("Error while running validator for instance '"+instanceName+"', invalid message returned.", text));
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown) {

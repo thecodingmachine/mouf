@@ -60,7 +60,8 @@ class MoufValidatorService implements HtmlElementInterface {
 							ValidatorMessages.turnMessageIntoError(container, json.html);
 						}
 					} catch (e) {
-						ValidatorMessages.turnMessageIntoError(container, "Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><pre style='display:none'></pre>").find("pre").text(text);
+						//ValidatorMessages.turnMessageIntoError(container, "Error while running '"+name+"', invalid message returned. <a class='seeErrorDetails' href='#'>See details</a><div><pre style='display:none'></pre></div>").find("pre").text(text);
+						ValidatorMessages.turnMessageIntoError(container, ValidatorMessages.getErrorMsg("Error while running '"+name+"', invalid message returned.", text));
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
@@ -72,7 +73,8 @@ class MoufValidatorService implements HtmlElementInterface {
 		}
 		jQuery(document).ready(function() {
 			jQuery(document).on("click", ".seeErrorDetails", function(evt) {
-				jQuery(evt.target).parent().find("pre").toggle();
+				jQuery(evt.target).parent().find("div").toggle();
+				return false;
 			});
 			
 <?php 
