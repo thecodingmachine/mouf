@@ -35,6 +35,14 @@
 			    		}
 	    			]
 	    		},
+                {
+	    			"title": "Configuration management",
+	    			"url": "doc/configuration_management.md"
+	    		},
+	    		{
+	    			"title": "Getting started with dependency injection",
+	    			"url": "doc/dependency_injection.md"
+	    		},
 	    		{
 	    			"title": "Creating a Mouf2 package",
 	    			"url": "doc/create_mouf_package.md",
