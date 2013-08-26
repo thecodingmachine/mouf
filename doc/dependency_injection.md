@@ -121,8 +121,13 @@ replace our class with another class (provided they share a common *interface*).
 is now difficult. In particular, we have to create the logger object first, and pass it to the mailer
 object. In this exemple, these are only 2 lines of code, but imagine instanciating a controller that requires
 a mailer, a database connection, a logger, a templating service, etc... Your code creating instances can
-quickly become complex and difficult to maintain. This is the **spaguetti code effect*.
+quickly become complex and difficult to maintain. This is the **spaghetti code effect**.
 
 This is where **Mouf** comes to the rescue.
 
-Mouf will manage the instanciation code for you.
+Mouf will manage the instanciation code for you. Instead of writing spaghetti code, you use Mouf's 
+web-based user interface. You define your instances easily, they are stored in a "container" (this is
+actually one big configuration file managed by Mouf), and you can get your instances from the container 
+easily as well.
+
+[So let's get started!](getting_started_with_di.md).

@@ -35,13 +35,19 @@
 			    		}
 	    			]
 	    		},
+	    		{
+	    			"title": "Getting started with dependency injection",
+	    			"url": "doc/dependency_injection.md",
+	    			"children": [
+	    				{
+			    			"title": "Using Mouf UI to define instances",
+			    			"url": "doc/mouf_di_ui.md"
+			    		}
+	    			]	    			
+	    		},
                 {
 	    			"title": "Configuration management",
 	    			"url": "doc/configuration_management.md"
-	    		},
-	    		{
-	    			"title": "Getting started with dependency injection",
-	    			"url": "doc/dependency_injection.md"
 	    		},
 	    		{
 	    			"title": "Creating a Mouf2 package",
