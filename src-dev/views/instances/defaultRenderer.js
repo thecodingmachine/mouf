@@ -288,7 +288,10 @@ var MoufDefaultRenderer = (function () {
 					moufInstanceProperty.removeArrayElement(_startPosition);
 					jQuery(ui.item).remove();
 				});
-				MoufUI.showBin();
+				// Let's display the bin, unless the drag comes from outside the sortable.
+				if (jQuery(event.currentTarget).hasClass('array')) {
+					MoufUI.showBin();
+				}
 			},
 			stop: function(event, ui) {
 				MoufUI.hideBin();
