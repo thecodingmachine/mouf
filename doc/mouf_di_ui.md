@@ -313,4 +313,3 @@ Want to go further?
 - [Learn how to use annotations to make dependency injection even easier](mouf_annotations.md)
 
 TODO: fill the supported_types.md document with images
-TODO: One doc for the @Important keyword and the @Renderer keyword
