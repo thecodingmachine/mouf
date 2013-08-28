@@ -42,6 +42,14 @@
 	    				{
 			    			"title": "Using Mouf UI to define instances",
 			    			"url": "doc/mouf_di_ui.md"
+			    		},
+			    		{
+			    			"title": "Supported types",
+			    			"url": "doc/supported_types.md"
+			    		},
+			    		{
+			    			"title": "Special annotations",
+			    			"url": "doc/mouf_annotations.md"
 			    		}
 	    			]	    			
 	    		},

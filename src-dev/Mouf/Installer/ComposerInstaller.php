@@ -110,7 +110,10 @@ class ComposerInstaller {
 		fwrite($fp, " * If you are working with a source repository, this file should NOT be commited.\n");
 		fwrite($fp, " */\n");
 		fwrite($fp, "return ".var_export($localInstalls, true).";");
-		fclose($fp);		
+		fclose($fp);
+
+		@chmod($this->globalInstallFile, 0664);
+		@chmod($this->localInstallFile, 0664);
 	}
 	
 	/**

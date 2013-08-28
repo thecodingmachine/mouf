@@ -31,7 +31,7 @@ In the same directory create a <code>composer.json</code> file:
 <pre>
 {
     "require": {
-        "mouf/mouf": ">=2.0-dev"
+        "mouf/mouf": "~2.0"
     },
     "minimum-stability": "dev" 
 }

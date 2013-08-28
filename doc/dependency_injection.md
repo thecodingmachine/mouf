@@ -60,7 +60,7 @@ class Logger {
 
 // Usage:
 $mailer = new Mailer();
-$mailer->sendMail('toto@example.com', 'title', "body');
+$mailer->sendMail('toto@example.com', 'title', 'body');
 ```
 
 This first attempt has a number of **drawbacks**.
@@ -113,7 +113,7 @@ class Logger {
 // Usage => less easy
 $logger = new Logger("logfile.txt");
 $mailer = new Mailer($logger);
-$mailer->sendMail('toto@example.com', 'title', "body');
+$mailer->sendMail('toto@example.com', 'title', 'body');
 ```
 
 This approach is **cleaner**. Because the `Mailer` class is not bound to the `Logger` class, we could
@@ -130,4 +130,4 @@ web-based user interface. You define your instances easily, they are stored in a
 actually one big configuration file managed by Mouf), and you can get your instances from the container 
 easily as well.
 
-[So let's get started!](getting_started_with_di.md).
+[So let's get started!](mouf_di_ui.md)
