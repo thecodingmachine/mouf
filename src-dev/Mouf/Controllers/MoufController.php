@@ -253,6 +253,52 @@ class MoufController extends Controller implements MoufSearchable {
 						if (stripos($instanceList[$instanceName], $query) !== false) {
 							$keepInstance = true;					
 						}
+						// Search also in instance parameters
+						$parameterNames = $this->moufManager->getParameterNames($instanceName);
+						foreach ($parameterNames as $paramName) {
+							$value = $this->moufManager->getParameter($instanceName, $paramName);
+							if (is_array($value)) {
+								array_walk_recursive($value, function($singleValue) use (&$keepInstance, $query) {
+									if (stripos($singleValue, $query) !== false) {
+										$keepInstance = true;
+									}
+								});
+							} else {
+								if (stripos($value, $query) !== false) {
+									$keepInstance = true;
+								}
+							}
+						}
+						$parameterNames = $this->moufManager->getParameterNamesForSetter($instanceName);
+						foreach ($parameterNames as $paramName) {
+							$value = $this->moufManager->getParameterForSetter($instanceName, $paramName);
+							if (is_array($value)) {
+								array_walk_recursive($value, function($singleValue) use (&$keepInstance, $query) {
+									if (stripos($singleValue, $query) !== false) {
+										$keepInstance = true;
+									}
+								});
+							} else {
+								if (stripos($value, $query) !== false) {
+									$keepInstance = true;
+								}
+							}
+						}
+						$parameterNames = $this->moufManager->getParameterNamesForConstructor($instanceName);
+						foreach ($parameterNames as $paramName) {
+							$value = $this->moufManager->getParameterForConstructor($instanceName, $paramName);
+							if (is_array($value)) {
+								array_walk_recursive($value, function($singleValue) use (&$keepInstance, $query) {
+									if (stripos($singleValue, $query) !== false) {
+										$keepInstance = true;
+									}
+								});
+							} else {
+								if (stripos($value, $query) !== false) {
+									$keepInstance = true;
+								}
+							}
+						}
 						if (!$keepPackage && !$keepClass && !$keepInstance) {
 							unset($this->instancesByPackage[$package][$class][$key]);
 						}
