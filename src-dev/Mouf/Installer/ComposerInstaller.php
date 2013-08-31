@@ -239,6 +239,11 @@ class ComposerInstaller {
 		} else {
 			throw new MoufException("Unknown type during install process.");
 		}
+		if (isset($installStep['scope'])) {
+			$installer->setScope($installStep['scope']);
+		} else {
+			$installer->setScope(AbstractInstallTask::SCOPE_GLOBAL);
+		}
 		$installer->setPackage($package);
 		if (isset($installStep['description'])) {
 			$installer->setDescription($installStep['description']);
