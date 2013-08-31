@@ -129,3 +129,4 @@ For instance:
 
 - `string|ValueInterface|array<ValueInterface>` is a valid type
 
+TODO: fill the supported_types.md document with images

@@ -312,4 +312,3 @@ Want to go further?
 - [Learn more about the types supported by Mouf](supported_types.md)
 - [Learn how to use annotations to make dependency injection even easier](mouf_annotations.md)
 
-TODO: fill the supported_types.md document with images
