@@ -1895,5 +1895,47 @@ class MoufManager {
 		}
 		return $this->classDescriptors[$className];
 	}
+	
+	/**
+	* Returns the list of public properties' names configured for this instance.
+	*
+	* @param string $instanceName
+	* @return string[]
+	*/
+	public function getParameterNames($instanceName) {
+		if (isset($this->declaredInstances[$instanceName]["fieldProperties"])) {
+			return array_keys($this->declaredInstances[$instanceName]["fieldProperties"]);
+		} else {
+			return array();
+		}
+	}
+	
+	/**
+	* Returns the list of setters' names configured for this instance.
+	*
+	* @param string $instanceName
+	* @return string[]
+	*/
+	public function getParameterNamesForSetter($instanceName) {
+		if (isset($this->declaredInstances[$instanceName]["setterProperties"])) {
+			return array_keys($this->declaredInstances[$instanceName]["setterProperties"]);
+		} else {
+			return array();
+		}
+	}
+	
+	/**
+	* Returns the list of constructor parameters (index position of the parameter) configured for this instance.
+	*
+	* @param string $instanceName
+	* @return int[]
+	*/
+	public function getParameterNamesForConstructor($instanceName) {
+		if (isset($this->declaredInstances[$instanceName]["constructor"])) {
+			return array_keys($this->declaredInstances[$instanceName]["constructor"]);
+		} else {
+			return array();
+		}
+	}
 }
 ?>
