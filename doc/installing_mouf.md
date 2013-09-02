@@ -1,7 +1,16 @@
+Installing Mouf
+===============
+
+<iframe width="640" height="480" src="//www.youtube.com/embed/19BVLfIuZf0" frameborder="0" allowfullscreen></iframe>
+
 Requirements:
 ---------------------
 To run Mouf 2, you will need PHP 5.3.2+ running on Apache.
 The **php_curl** and **php_openssl** extensions must be enabled, as well as the *mod_rewrite* for Apache.
+
+<div class="alert alert-info"><strong>Note:</strong> Although Mouf only requires PHP 5.3.2+, a set of
+Mouf packages (especially those related to renderers) will require PHP 5.4+, so it might be a good
+idea to start with the highest possible PHP version.</div>
 
 Download Mouf 2:
 --------------------------
