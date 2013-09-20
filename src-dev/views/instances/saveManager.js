@@ -189,7 +189,8 @@ var MoufSaveManager = (function () {
 				changesList: _changesList,
 				encode: "json",
 				selfedit: MoufInstanceManager.selfEdit?"true":"false"
-			}
+			},
+			type: 'POST'
 		}).fail(function(e) {
 			var msg = e;
 			if (e.responseText) {
