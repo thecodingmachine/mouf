@@ -72,12 +72,13 @@ var MoufDefaultRenderer = (function () {
 		
 		var elem = jQuery("<input/>").attr('name', name)
 			.attr("value", value)
+			.attr("placeholder", "empty")
 			.change(function() {
 				moufInstanceProperty.setValue(jQuery(this).val());
 				//alert("value changed in "+findInstance(jQuery(this)).getName() + " for property "+name);
 			});
 		
-		if (value === null) {
+		/*if (value == ) {
 			elem.addClass("null");
 			elem.val("null");
 		}
@@ -87,7 +88,7 @@ var MoufDefaultRenderer = (function () {
 				elem.val("");
 				elem.removeClass("null");
 			}
-		})
+		})*/
 		
 		
 		/*var menu = MoufUI.createMenuIcon([
@@ -713,9 +714,18 @@ var MoufDefaultRenderer = (function () {
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
+				
+				
+				
 				// If this is an array, let's display the instance type.
 				if (isArrayOfObjectType(currentType)) {
 					MoufUI.displayInstanceOfType("#instanceList", moufInstanceProperty.getType().getSubType(), true, true);
+				} else {
+					if (currentType.getType() == 'bool' || currentType.getType() == 'boolean') {
+						moufInstanceProperty.setValue(false);
+					} else {
+						moufInstanceProperty.setValue('');
+					}
 				}
 			}
 		}
