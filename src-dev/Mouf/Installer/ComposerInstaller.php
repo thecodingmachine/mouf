@@ -140,7 +140,7 @@ class ComposerInstaller {
 			
 			// Let's build the directory
 			$oldumask = umask(0);
-			$success = mkdir($directory, 0777, true);
+			$success = mkdir($directory, 0775, true);
 			umask($oldumask);
 			if (!$success) {
 				throw new MoufException("Unable to create directory ".$directory);
