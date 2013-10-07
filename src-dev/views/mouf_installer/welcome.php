@@ -52,12 +52,12 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DI
 }
 ?>
 
-<form action="src/install.php" method="post" class="form-horizontal">
+<form action="<?php echo ROOT_URL; ?>install" method="post" class="form-horizontal">
 
 	<p>Apparently, this is the first time you are running Mouf. You will need to install it.</p>
-	<?php if (file_exists(MOUF_DIR."/../../../mouf/MoufUsers.php")): ?>
+	<?php if (file_exists(MOUF_DIR."/../../../mouf/no_commit/MoufUsers.php")): ?>
 		<p>The <code>MoufUsers.php</code> file has been detected. Logins/passwords from this file will be used to access Mouf.
-		If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>		
+		If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>
 	<?php else: ?>
 				<p>In order to connect to Mouf, you will need to create a login and a password.</p>
 
@@ -82,13 +82,9 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DI
 	</div>
 	
 			<?php endif ?>
-	<p>Please click the install button below. This will create and install a <code>.htaccess</code> file in the <code>vendor/mouf/mouf</code> directory.
-	This will also create a <code>config.php</code> file in your root directory and a <code>mouf</code> directory containing a number of files (if they don't already exist)</p>
+	<p>Please click the install button below. This will create and install a <code>config.php</code> file in your root 
+	directory and a <code>mouf</code> directory containing a number of files (if they don't already exist)</p>
 	<p>Please make sure that the root directory is writable by your web-server.</p>
-	<p>Finally, please make sure that the <strong>Apache Rewrite</strong> module is enabled on your server. Since this install process will create a <code>.htaccess</code> file, 
-	you must make sure it will be taken into account. If after clicking the "Install" button, nothing happens, it is likely that your Apache server
-	has been configured to ignore the <code>.htaccess</code> files. In this case, please dive into your Apache configuration and look for a <code>AllowOverride</code> directive.
-	You should set this directive to: <code>AllowOverride All</code>.</p>
 
 	<input type="submit" value="Install" class="btn btn-primary" />
 </form>

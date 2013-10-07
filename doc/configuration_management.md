@@ -25,10 +25,6 @@ Here is a sample `config.php` file:
  */
 
 /**
- * The ROOT_URL of the Mouf web application. This is the URL, starting and ending with a slash, that you use to access the Mouf administration interface.
- */
-define('ROOT_URL', '/myapp/');
-/**
  * The database host (the IP address or URL of the database server).
  */
 define('DB_HOST', 'localhost');

@@ -19,11 +19,16 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	if (function_exists('apache_getenv')) {
+		define('ROOT_URL', apache_getenv("BASE")."/../../../");
+	}
 	require_once '../../../../../mouf/Mouf.php';
 } else {
+	if (function_exists('apache_getenv')) {
+		define('ROOT_URL', apache_getenv("BASE")."/");
+	}
 	require_once '../../mouf/Mouf.php';
 }
-
 
 // Note: checking rights is done after loading the required files because we need to open the session
 // and only after can we check if it was not loaded before loading it ourselves...

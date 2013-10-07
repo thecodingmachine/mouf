@@ -2689,41 +2689,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'requiredFilesValidator' => 
-  array (
-    'class' => 'Mouf\\Validator\\MoufBasicValidationProvider',
-    'external' => false,
-    'fieldProperties' => 
-    array (
-      'name' => 
-      array (
-        'value' => 'Required files validator',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'url' => 
-      array (
-        'value' => 'src/direct/required_files_validator.php',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'propagatedUrlParameters' => 
-      array (
-        'value' => 
-        array (
-          0 => 'selfedit',
-        ),
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
   'rootController' => 
   array (
     'class' => 'Mouf\\Controllers\\MoufRootController',
@@ -2898,7 +2863,7 @@ $moufManager->addComponentInstances(array (
     array (
       'userFile' => 
       array (
-        'value' => '../../../mouf/MoufUsers.php',
+        'value' => '../../../mouf/no_commit/MoufUsers.php',
         'type' => 'string',
         'metadata' => 
         array (
