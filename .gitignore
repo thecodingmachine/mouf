@@ -3,3 +3,4 @@ vendor/*
 .*~
 config.php
 moufRunningActions.php
+.composer

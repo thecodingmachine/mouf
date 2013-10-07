@@ -92,12 +92,14 @@ class MoufInstallController extends Controller {
 		}
 		
 		
-		// Write Mouf.php:
-		if (!file_exists(__DIR__."/../../../../../../mouf/Mouf.php")) {
+		// Write Mouf.php (always):
+		//if (!file_exists(__DIR__."/../../../../../../mouf/Mouf.php")) {
 			$moufStr = "<?php
 define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
 require_once __DIR__.'/../config.php';
-define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
+if (defined('ROOT_URL')) {
+	define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
+}
 		
 require_once __DIR__.'/../vendor/autoload.php';
 		
@@ -106,7 +108,7 @@ require_once 'MoufComponents.php';
 		
 			file_put_contents(__DIR__."/../../../../../../mouf/Mouf.php", $moufStr);
 			chmod(__DIR__."/../../../../../../mouf/Mouf.php", 0664);
-		}
+		//}
 		
 		
 		

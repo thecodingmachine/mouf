@@ -30,6 +30,7 @@ class InstallUtils {
 		
 		$rootPath = self::findRootPath(getcwd()."/");
 		if ($initMode == self::$INIT_APP) {
+			
 			require_once $rootPath."mouf/Mouf.php";
 		} else {
 			if (file_exists($rootPath."vendor/mouf/mouf/mouf/Mouf.php")) {
