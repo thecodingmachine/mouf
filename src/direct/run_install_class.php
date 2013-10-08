@@ -14,9 +14,20 @@ use Mouf\MoufException;
  * This file is in charge of running the install process for one class.
  */
 
+$rootUrl = $_REQUEST['root_url'];
+$installPackage = $_REQUEST['install_package'];
+$selfedit = $_REQUEST['selfedit'];
 
+define('ROOT_URL', $rootUrl);
 
-require_once __DIR__."/../../../autoload.php";
+if ($selfedit == "true") {
+	chdir(__DIR__.'/../../vendor/'.$installPackage);
+} else {
+	chdir(__DIR__.'/../../../../../vendor/'.$installPackage);
+}
+
+require_once __DIR__."/../../../../autoload.php";
+//require_once __DIR__."/../../../../../mouf/Mouf.php";
 
 use Mouf\Actions\InstallUtils;
 use Mouf\MoufManager;

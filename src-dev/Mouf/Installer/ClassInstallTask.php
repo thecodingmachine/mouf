@@ -73,6 +73,11 @@ class ClassInstallTask extends AbstractInstallTask {
 	 * @return string
 	 */
 	public function getRedirectUrl($selfEdit) {
-		return "src/direct/run_install_class.php?class=".urlencode($this->getClassName())."&selfedit=".($selfEdit?"true":"false");
+		if ($selfEdit) {
+			$rootUrl = ROOT_URL;
+		} else {
+			$rootUrl = ROOT_URL.'../../../';
+		}
+		return "src/direct/run_install_class.php?class=".urlencode($this->getClassName())."&selfedit=".($selfEdit?"true":"false")."&root_url=".urlencode($rootUrl)."&install_package=".$this->getPackage()->getName();
 	}
 }
