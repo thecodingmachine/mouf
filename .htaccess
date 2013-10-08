@@ -20,12 +20,13 @@ DirectoryIndex vendor/mouf/mvc.splash/src/rewrite_missing.php
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
     
-    RewriteRule doc\/view\/ vendor/mouf/mvc.splash/src/splash.php
 
     # If the requested filename exists, and has an allowed extension, simply serve it.
     # We only want to let Apache serve files and not directories.
     #RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule .*((\.(js|ico|gif|jpg|png|css)$)|^vendor|^src/direct/|^src/mouf_router.php) - [L]
+
+    RewriteRule doc\/view\/ src/mouf_router.php
 
     # Rewrite all other queries to the front controller.
     RewriteRule .? %{ENV:BASE}/src/mouf_router.php [L]
