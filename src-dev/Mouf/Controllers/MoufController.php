@@ -85,6 +85,12 @@ class MoufController extends Controller implements MoufSearchable {
 	protected $query;
 	
 	/**
+	 * An anonymous array associating instance name with display instance name.
+	 * @var array<string, string>
+	 */
+	protected $anonymousNames = array();
+	
+	/**
 	 * Redirects the user to the right controller.
 	 * This can be the detail controller, or any other controller, depending on the @ExtendedAction annotation.
 	 * 
@@ -130,20 +136,26 @@ class MoufController extends Controller implements MoufSearchable {
 	 */
 	protected $ajax = false;
 	
+	protected $showAnonymous;
+	
 	/**
 	 * Lists all the instances available, sorted by "package" (directory of the class).
 	 * 
 	 * @Action
 	 * @Logged
 	 */
-	public function defaultAction($selfedit = "false", $query = null) {
+	public function defaultAction($selfedit = "false", $query = null, $show_anonymous = "false") {
 		//$test = new ComposerService();
 		//$test->getClassMap();
+		$showAnonymous = $show_anonymous == "true"; 
+		$this->showAnonymous = $showAnonymous;
+		
 		$classExplorer = new MoufClassExplorer($selfedit == "true");
 		$classMap = $classExplorer->getClassMap();
 		
 		$this->selfedit = $selfedit;
 		$this->query = $query;
+		
 
 		if ($selfedit == "true") {
 			$this->moufManager = MoufManager::getMoufManager();
@@ -202,7 +214,20 @@ class MoufController extends Controller implements MoufSearchable {
 		foreach ($instanceList as $instanceName=>$className) {
 			// Let's remove anonymous classes:
 			if ($this->moufManager->getInstanceDescriptor($instanceName)->isAnonymous()) {
-				continue;
+				if (!$showAnonymous) {
+					continue;
+				} else {
+					// Let's find a name for this anonymous instance
+					$anonInstaceName = $instanceName;
+					// Let's find where the anonymous instance is used.
+					do {
+						$parents = $this->moufManager->getOwnerComponents($anonInstaceName);
+						// There should be only one parent, since this is an anonymous instance
+						$anonInstaceName = current($parents);
+					} while ($this->moufManager->getInstanceDescriptor($anonInstaceName)->isAnonymous());
+
+					$this->anonymousNames[$instanceName] = "Anonymous (parent: ".$anonInstaceName.")";
+				}
 			}
 			$nonAnonymousinstanceList[$instanceName] = $className; 
 			

@@ -7,7 +7,18 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
+if ($this->showAnonymous) {
+	?>
+<a href="<?echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=false" class="btn btn-danger pull-right">Hide anonymous instances</a>
+<?php 
+} else {
+?>
+<a href="<?echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=true" class="btn btn-success pull-right">Show anonymous instances</a>
+<?php 
+}
+
+
 if (empty($this->instancesByPackage)) {
 	echo "<p>No instances found<p>";
 } elseif ($this->query) {
@@ -16,9 +27,11 @@ if (empty($this->instancesByPackage)) {
 <?php 
 } else {
 ?>
-<h1>Available component instances</h1>
+<h1>Available instances</h1>
 <?php 
 }
+
+
 
 if (!$this->ajax && !empty($this->inErrorInstances)) {
 	echo "<div class='error'>";
@@ -36,7 +49,7 @@ foreach ($this->instancesByPackage as $package=>$instancesByClass) {
 	foreach ($instancesByClass as $class=>$instances) {
 		foreach ($instances as $instance) {
 			echo "<a href='".ROOT_URL."ajaxinstance/?name=".plainstring_to_urlprotected($instance)."&selfedit=".$this->selfedit."'>";
-			echo plainstring_to_htmlprotected($instance);
+			echo plainstring_to_htmlprotected(isset($this->anonymousNames[$instance])?$this->anonymousNames[$instance]:$instance);
 			echo "</a> - ".plainstring_to_htmlprotected($class)."<br/>";	
 		}
 	}
