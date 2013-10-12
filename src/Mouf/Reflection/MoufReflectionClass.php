@@ -698,7 +698,9 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	if ($this->useNamespaces === null) {
     		$this->useNamespaces = array();
     		
-    		$contents = file_get_contents($this->getFileName());
+    		// Optim from Doctrine / Symfony 2: let's not analyze the "use" statements after the start of the class!
+    		$contents = $this->getFileContent($this->getFileName(), $this->getStartLine());
+    		//$contents = file_get_contents($this->getFileName());
     		
     		// Optim to avoid doing the token_get_all think that is costly.
     		if (strpos($contents, 'use ') === false) {
@@ -751,6 +753,34 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		
     	}
     	return $this->useNamespaces;
+    }
+    
+    /**
+     * Get the content of the file right up to the given line number.
+     * (thanks to Doctrine Annotations for this piece of code)
+     *
+     * @param string $filename The name of the file to load.
+     * @param int $lineNumber The number of lines to read from file.
+     * @return string The content of the file.
+     */
+    private function getFileContent($filename, $lineNumber)
+    {
+    	if ( ! is_file($filename)) {
+    		return null;
+    	}
+    
+    	$content = '';
+    	$lineCnt = 0;
+    	$file = new \SplFileObject($filename);
+    	while (!$file->eof()) {
+    		if ($lineCnt++ == $lineNumber) {
+    			break;
+    		}
+    
+    		$content .= $file->fgets();
+    	}
+    
+    	return $content;
     }
 }
 ?>
