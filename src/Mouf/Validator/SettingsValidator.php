@@ -37,7 +37,7 @@ class SettingsValidator implements MoufStaticValidatorInterface {
 		
 		if (extension_loaded('apc')) {
 			$shm_size = self::return_bytes(ini_get('apc.shm_size'));
-			error_log ('-----> schm_size:'.$shm_size);
+			//error_log ('-----> schm_size:'.$shm_size);
 			if ($shm_size < 128 * 1024 *1024) {
 				return new MoufValidatorResult(MoufValidatorResult::WARN, "Your APC cache settings are a bit low. This might slow down Mouf. Please edit your php.ini file and change the value of <strong>apc.shm_size</strong> to 256M for example");
 			}
