@@ -57,12 +57,27 @@ $moufManager = MoufManager::getMoufManager();
 
 $response = array("instances"=>array(), "classes"=>array());
 
+define('PROFILE_MOUF', false);
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: Starting get_validators_list: ".date('H:i:s', time()));
+}
+
 $instanceList = $moufManager->findInstances("Mouf\\Validator\\MoufValidatorInterface");
 $response["instances"] = $instanceList;
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: findInstance done, starting getComponentsList: ".date('H:i:s', time()));
+}
 
 // Now, let's get the full list of absolutely all classes implementing "MoufStaticValidatorInterface".
 $classList = Moufspector::getComponentsList("Mouf\\Validator\\MoufStaticValidatorInterface", $selfEdit);
 $response["classes"] = $classList;
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: Ending get_validators_list: ".date('H:i:s', time()));
+}
+
 
 $encode = "php";
 if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]=="json") {

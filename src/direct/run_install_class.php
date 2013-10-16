@@ -41,6 +41,9 @@ $moufManager = MoufManager::getMoufManager();
 
 $name = $_REQUEST['class'];
 
+if (!class_exists($name)) {
+	throw new MoufException("Unable to find class '".$name."'.");
+}
 if (!is_a($name, 'Mouf\\Installer\\PackageInstallerInterface', true)) {
 	throw new MoufException("The class '".$name."' must implement interface Mouf\\Installer\\PackageInstallerInterface");
 }

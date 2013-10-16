@@ -70,9 +70,12 @@ if (is_array($classMap)) {
 		//if (!isset($forbiddenClasses[$className])) {
 			echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
 			echo $className."\n";
-			$refClass = new MoufReflectionClass($className);
+			//$refClass = new MoufReflectionClass($className);
+			$refClass = new \ReflectionClass($className);
+			
 			// Let's also serialize to check all the parameters, fields, etc...
-			$refClass->toJson();
+			// Note: disabled for optimization purposes
+			//$refClass->toJson();
 			
 			// If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
 			echo "DSQRZREZRZER__AFTERINCLUDE\n";
