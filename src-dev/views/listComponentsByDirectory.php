@@ -20,7 +20,9 @@ if ($this->showAnonymous) {
 
 
 if (empty($this->instancesByPackage)) {
-	echo "<p>No instances found<p>";
+?><div class="alert alert-info">No instances found</div>
+<p>Use the <strong>Instances &gt; Create a new instance</strong> menu to populate your app with new instances.</p>
+<?php 
 } elseif ($this->query) {
 ?>
 <h2>Instances list found</h2>
