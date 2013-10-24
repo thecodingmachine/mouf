@@ -33,6 +33,13 @@ if (empty($this->instancesByPackage)) {
 <?php 
 }
 
+$count = 0;
+foreach ($this->instancesByPackage as $package=>$instancesByClass) {
+	$count += count($instancesByClass);
+}
+?>
+Nb instances found: <strong><?php echo $count; ?></strong>
+<?php 
 
 
 if (!$this->ajax && !empty($this->inErrorInstances)) {
