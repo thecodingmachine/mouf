@@ -28,14 +28,12 @@ while (ob_get_level() != 0) {
 }
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
-	if (function_exists('apache_getenv')) {
-		define('ROOT_URL', apache_getenv("BASE")."/../../../");
-	}
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 } else {
-	if (function_exists('apache_getenv')) {
-		define('ROOT_URL', apache_getenv("BASE")."/");
-	}
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	/*require_once '../MoufManager.php';
 	MoufManager::initMoufManager();

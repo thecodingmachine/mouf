@@ -1,9 +1,7 @@
 <?php 
 if (!file_exists(__DIR__.'/../../../../mouf/no_commit/MoufUsers.php')) {
 	
-	if (function_exists('apache_getenv')) {
-		$rootUrl = apache_getenv("BASE")."/";
-	}
+	$rootUrl = $_SERVER['BASE']."/";
 	
 	if ($_SERVER['REQUEST_URI'] != $rootUrl.'install') {
 		define('ROOT_URL', $rootUrl);

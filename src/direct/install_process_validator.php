@@ -22,9 +22,8 @@ ini_set('display_errors', 1);
 // Add E_ERROR to error reporting it it is not already set
 error_reporting(E_ERROR | error_reporting());
 
-if (function_exists('apache_getenv')) {
-	define('ROOT_URL', apache_getenv("BASE")."/");
-}
+define('ROOT_URL', $_SERVER['BASE']."/");
+
 require_once '../../mouf/Mouf.php';
 
 
