@@ -18,14 +18,12 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
-	if (function_exists('apache_getenv')) {
-		define('ROOT_URL', apache_getenv("BASE")."/../../../");
-	}
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../Mouf.php';
 } else {
-	if (function_exists('apache_getenv')) {
-		define('ROOT_URL', apache_getenv("BASE")."/");
-	}
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../MoufManager.php';
 	MoufManager::initMoufManager();
 	require_once '../../MoufUniversalParameters.php';
