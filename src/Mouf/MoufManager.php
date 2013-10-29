@@ -913,7 +913,15 @@ class MoufManager {
 	 * @param int $index
 	 */
 	public function unsetParameterForConstructor($instanceName, $index) {
-		unset($this->declaredInstances[$instanceName]['constructor'][$index]);
+		$max = count($this->declaredInstances[$instanceName]['constructor']);
+		if($index != $max - 1) {
+			// It is forbidden to unset a parameter that is not the last.
+			// Let set null
+			$this->setParameterViaConstructor($instanceName, $index, null, 'primitive');
+		}
+		else {
+			unset($this->declaredInstances[$instanceName]['constructor'][$index]);
+		}
 	}
 	
 
