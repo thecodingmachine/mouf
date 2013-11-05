@@ -126,3 +126,25 @@ When running Mouf for the first time, on Mouf status page, you get this error:
 	&lt;br/&gt;URL in error: &lt;a href='http://localhost:80/project/vendor/mouf/mouf/../../../vendor/mouf/mouf/src/direct/get_class_map.php?selfedit=false'&gt;http://localhost:80/project/vendor/mouf/mouf/../../../vendor/mouf/mouf/src/direct/get_class_map.php?selfedit=false&lt;/a&gt; in /Users/root/Documents/Projet/src/vendor/mouf/mouf/src/Mouf/Reflection/MoufReflectionProxy.php on line 207</div>
 
 This error has been spotted on MacOS X (MAMP) with PHP 5.5 (but might occur on other environments) when the *memory_limit* setting is too low in *php.ini*. Try increasing this limit (to 256M or even higher).
+
+Packages installation seems to be failing, but succeeds after some time
+-----------------------------------------------------------------------
+When installing a package, the status of the package stays to "Awaiting installation".
+After some time, the status misteriously changes to "Done".
+
+This error occurs in PHP 5.5+ (or in PHP 5.x with Zend Optimizer+ installed).
+The status of your packages is stored in a PHP file and the PHP Opcache does not refresh its cache.
+
+You should change this parameter in *php.ini*:
+
+	opcache.revalidate_freq = 0
+
+Page not found on Mouf start-up
+---------------------------------------
+If you are using PHP 5.5, this error could be related to the Opcache.
+Mouf uses Splash as an MVC framework, and Splash relies on annotations.
+Annotations are stored in the PHP Docblock and Opcache sometimes drop those docblocks.
+
+Check your *php.ini* file and change this parameter:
+
+	opcache.save_comments = 1
