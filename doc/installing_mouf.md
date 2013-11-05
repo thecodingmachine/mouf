@@ -65,3 +65,42 @@ You will see the install screen:
 Choose a login and a password to log into Mouf. Then, click the "Install" button. You are done! If the install completed successfully, you should see the Mouf main page:
 
 <img src="images/status_install.png" alt="" />
+
+Defining directory permissions:
+-------------------------------
+One of the most common problems faced when installing Mouf on a Linux environment is 
+managing to share the write permission. Your current user must be able to access and edit the files,
+but Mouf will also need to access and edit some of those files. Since Mouf is a PHP application,
+it will be executed using the "Apache" user (assuming you are using Apache).
+
+The name for the Apache user is usually "www-data" (for Debian/Ubuntu variants), or "apache" (for
+Redhat/CentOS family). 
+
+If you are not sure, and if the file permissions are not correct, the Mouf installer will help you find 
+the name of the Apache user.
+
+The easiest and more portable way of sharing your rights with the Apache user is to be part of the same
+Unix group.
+
+To do this, you can run:
+
+```
+sudo adduser `whoami` www-data
+sudo adduser www-data `whoami`
+```
+
+This will add your current user to the "www-data" group, and add the "www-data" group to your current user.
+Obviously, this assumes the Apache user is "www-data". This might be a different name on your server.
+
+Now, we need to give write access to the group. To do this, you can use this command in your project's root directory:
+
+```
+sudo chmod g+w * -R
+```
+
+###Production servers
+
+Mouf UI is designed to be used on a development environment, not on a production server.
+If you are running a production server (if you are not on a development environment), it is more secure
+to prevent Apache from writing to the application directories (or to open those rights on a very
+restrictive basis). In this scenario, you don't need to share write rights with Apache. 

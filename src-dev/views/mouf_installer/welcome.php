@@ -26,13 +26,38 @@ if (!is_writable(MOUF_DIR) || !is_writable(MOUF_DIR."/../../..") || (file_exists
 			$processUser = posix_getpwuid(posix_geteuid());
 			$processUserName = $processUser['name'];
 		?>
+			<h2>Solution 1 (best solution):</h2>
+		
+			<p>Your current user must be able to access and edit the files,
+but Mouf will also need to access and edit some of those files. Since Mouf is a PHP application,
+it will be executed using the "Apache" user (assuming you are using Apache).</p>
+
+			<p>The name for the Apache user is <strong><?php echo $processUserName; ?></strong></p>
+			
+			<p>The easiest and more portable way of sharing your rights with the Apache user is to be part of the same
+Unix group.</p>
+
+			<p>To do this, you can run:</p>
+
+<pre><code>
+sudo adduser `whoami` www-data<br/>
+sudo adduser www-data `whoami`<br/>
+sudo chmod g+w <?php echo realpath(MOUF_DIR) ?>/* -R
+</code></pre>
+
+<p>This will add your current user to the <strong><?php echo $processUserName; ?></strong> group, and add 
+the <strong><?php echo $processUserName; ?></strong> group to your current user.
+Then it will give write access to the group.</p>
+		
+			<h2>Solution 2:</h2>
+		
 			<p>You can try these commands:</p>
 			<pre>
 			<?php if(!is_writable(MOUF_DIR."/../../..")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../..") ?><br/>
 			<?php }
 			if(!is_writable(MOUF_DIR)) {?>
-sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR);
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR)."<br/>";
 			}
 			if(file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../../mouf");

@@ -54,7 +54,11 @@ ValidatorMessages = {
 		ValidatorsCounter.incrementSuccess();
 		container.html("<div class='alert alert-success validatorSuccess'>"+text+"</div>");
 		if (ValidatorMessages.displayMode != "all") {
-			container.hide();
+			container.find('div.validatorSuccess').hide();
+		} else {
+			setTimeout(function() {
+				container.find('div.validatorSuccess').slideUp(1000);
+			}, 2000);
 		}
 		return container;
 	},

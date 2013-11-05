@@ -10,16 +10,13 @@
 namespace Mouf\Controllers;
 
 use Michelf\MarkdownExtra;
-
-use dflydev\markdown\MarkdownExtraParser;
+use Composer\Package\PackageInterface;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\Widgets\Menu\MenuItem;
 use Mouf\Composer\ComposerService;
-use Mouf\Composer\PackageInterface;
 use MoufAdmin;
 use Mouf\MoufManager;
 use Mouf\Html\HtmlElement\HtmlBlock;
-
 use Mouf\MoufDocumentationPageDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
@@ -283,7 +280,7 @@ class DocumentationController extends Controller {
 	 *  
 	 * @param \Composer\Package\PackageInterface $package
 	 */
-	protected function getDocPages(\Composer\Package\PackageInterface $package) {
+	protected function getDocPages(PackageInterface $package) {
 		$extra = $package->getExtra();
 		
 		$docArray = array();

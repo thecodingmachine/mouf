@@ -145,6 +145,7 @@ class ComposerService {
 			}
 		}
 		
+		// FIXME: $autoloads['files'] seems ignored
 		
 		//var_dump($classMap);
 		$this->classMap = $classMap;
