@@ -102,7 +102,7 @@ Although this is fine with Mouf, you might encounter very disturbing errors in M
 This will increase the Apache stacktrace to 8Mo. You can learn more about it <a href="http://stackoverflow.com/questions/5058845/how-do-i-increase-the-stack-size-for-apache-running-under-windows-7">on StackOverflow</a>.
 
 
-Fatal Error on mouf validation using MAC OSX
+Fatal error on mouf validation using MAC OSX
 ------------------------------------------------------------------------------------
 When installing mouf 2.0, during the validation step, if you run into this error : 
 
@@ -116,3 +116,13 @@ You need to change a configuration file of MAMP. Open the <em>envvars</em> file 
 Comment them (add # in front of each line).
 Restart your server and reload the mouf validation page.
 
+Fatal error on Mouf validation
+------------------------------
+
+When running Mouf for the first time, on Mouf status page, you get this error:
+
+	<div class="alert alert-error">Exception: Unable to unserialize message:
+
+	&lt;br/&gt;URL in error: &lt;a href='http://localhost:80/project/vendor/mouf/mouf/../../../vendor/mouf/mouf/src/direct/get_class_map.php?selfedit=false'&gt;http://localhost:80/project/vendor/mouf/mouf/../../../vendor/mouf/mouf/src/direct/get_class_map.php?selfedit=false&lt;/a&gt; in /Users/root/Documents/Projet/src/vendor/mouf/mouf/src/Mouf/Reflection/MoufReflectionProxy.php on line 207</div>
+
+This error has been spotted on MacOS X (MAMP) with PHP 5.5 (but might occur on other environments) when the *memory_limit* setting is too low in *php.ini*. Try increasing this limit (to 256M or even higher).

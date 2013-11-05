@@ -31,7 +31,11 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	$selfEdit = false;
 	
 } else {
-	define('ROOT_URL', $_SERVER['BASE']."/");
+	if (isset($_SERVER['BASE'])) {
+		define('ROOT_URL', $_SERVER['BASE']."/");
+	} else {
+		define('ROOT_URL', "/");
+	}
 	
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
