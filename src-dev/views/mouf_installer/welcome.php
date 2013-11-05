@@ -39,11 +39,9 @@ Unix group.</p>
 
 			<p>To do this, you can run:</p>
 
-<pre><code>
-sudo adduser `whoami` www-data<br/>
-sudo adduser www-data `whoami`<br/>
-sudo chmod g+w <?php echo realpath(MOUF_DIR) ?>/* -R
-</code></pre>
+<pre><code>sudo adduser `whoami` www-data
+sudo adduser www-data `whoami`
+sudo chmod g+w <?php echo realpath(MOUF_DIR) ?>/* -R</code></pre>
 
 <p>This will add your current user to the <strong><?php echo $processUserName; ?></strong> group, and add 
 the <strong><?php echo $processUserName; ?></strong> group to your current user.
@@ -52,17 +50,16 @@ Then it will give write access to the group.</p>
 			<h2>Solution 2:</h2>
 		
 			<p>You can try these commands:</p>
-			<pre>
-			<?php if(!is_writable(MOUF_DIR."/../../..")) {?>
+			<pre><code><?php if(!is_writable(MOUF_DIR."/../../..")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../..") ?><br/>
-			<?php }
+<?php }
 			if(!is_writable(MOUF_DIR)) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR)."<br/>";
 			}
 			if(file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../../mouf");
 			} ?>
-</pre>
+</code></pre>
 		<?php 
 		}
 		?>
