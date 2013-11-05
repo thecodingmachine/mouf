@@ -1,0 +1,3 @@
+TODO
+
+Explain the MoufManager, the MoufInstanceDescriptor....
