@@ -41,7 +41,7 @@ Unix group.</p>
 
 <pre><code>sudo adduser `whoami` www-data
 sudo adduser www-data `whoami`
-sudo chmod g+w <?php echo realpath(MOUF_DIR) ?>/* -R</code></pre>
+sudo chmod g+w <?php echo realpath(MOUF_DIR."/../../..") ?> -R</code></pre>
 
 <p>This will add your current user to the <strong><?php echo $processUserName; ?></strong> group, and add 
 the <strong><?php echo $processUserName; ?></strong> group to your current user.
