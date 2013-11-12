@@ -75,6 +75,28 @@ public function __construct($a, $b=null) {
 }
 ```
 
+###Showing a property only if it is not empty
+
+Sometimes, you want to show a property if it is set, but hide it if it is empty.
+You can do that using the `@Important Ifset` annotation. This will show the property only if it set (if
+it is different from "default value").
+
+For instance:
+
+```php
+/**
+ * This setter will be displayed in "medium" view only if the value is set.
+ * Otherwise, the developer must step in "big" view to set the value. 
+ * 
+ * @Important IfSet
+ * @param string $value
+ */
+public function setValue($value) {
+	...
+}
+```
+
+
 <a id="addinglogo"></a>
 Adding logos to your instances
 ------------------------------

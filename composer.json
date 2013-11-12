@@ -78,7 +78,21 @@
 			    		{
 			    			"title": "Writing packages documentation",
 			    			"url": "doc/writing_packages_documentation.md"
+			    		},
+			    		{
+			    			"title": "Extending Mouf user interface",
+			    			"url": "doc/extending_mouf_ui.md"
+			    		},
+			    		{
+			    			"title": "Managing instances programmatically",
+			    			"url": "doc/managing_instances_programmatically.md"
+			    		},
+			    		{
+			    			"title": "Utility functions",
+			    			"url": "doc/utility_functions.md"
 			    		}
+			    		
+			    		
 	    			]
 	    		}
 	    		
