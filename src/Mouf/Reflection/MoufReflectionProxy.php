@@ -226,7 +226,7 @@ class MoufReflectionProxy {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		if($post) {
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post, '', '&'));
 		} else {
 			curl_setopt($ch, CURLOPT_POST, false);
 		}

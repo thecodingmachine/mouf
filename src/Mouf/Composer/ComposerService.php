@@ -1,7 +1,7 @@
 <?php 
 namespace Mouf\Composer;
 
-use Composer\Script\EventDispatcher;
+use Composer\EventDispatcher\EventDispatcher;
 
 use Mouf\Installer\MoufUIFileWritter;
 

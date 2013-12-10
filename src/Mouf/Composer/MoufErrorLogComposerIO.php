@@ -1,6 +1,8 @@
 <?php
 namespace Mouf\Composer;
 
+use Composer\Config;
+
 use  Composer\IO\IOInterface;
 
 /**
@@ -172,5 +174,14 @@ class MoufErrorLogComposerIO implements IOInterface {
     public function setAuthentication($repositoryName, $username, $password = null)
     {
         $this->authentications[$repositoryName] = array('username' => $username, 'password' => $password);
+    }
+    
+    /**
+     * Loads authentications from a config instance
+     *
+     * @param Config $config
+     */
+    public function loadConfiguration(Config $config) {
+    	return;
     }
 }
