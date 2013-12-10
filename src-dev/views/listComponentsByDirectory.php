@@ -35,7 +35,9 @@ if (empty($this->instancesByPackage)) {
 
 $count = 0;
 foreach ($this->instancesByPackage as $package=>$instancesByClass) {
-	$count += count($instancesByClass);
+	foreach ($instancesByClass as $class=>$instances) {
+		$count += count($instances);
+	}
 }
 ?>
 Nb instances found: <strong><?php echo $count; ?></strong>
