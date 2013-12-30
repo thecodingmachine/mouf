@@ -17,6 +17,17 @@ You see this error because Mouf2 relies on a package in "dev" mode. You are prob
 Mouf2 is hosted in Github (https://github.com/)
 Just create an account on Github and setup a public/private key as explained here: https://help.github.com/articles/generating-ssh-keys.
 
+Mouf status page displays "Unable to unserialize message" errors after install
+----------------------------------------------
+You just installed Mouf on a remote server and you try to access your Mouf instance using "http://[myserver]/[myapp]/vendor/mouf/mouf".
+You get an error that looks like this: "Unable to unserialize... URL in error... get_class_map.php".
+
+![troubleshooting_domain_name.png](Mouf error on startup)
+
+This error is caused by Mouf introspection mechanism. Mouf must itself trigger requests on the server. To do so, it uses the CURL library. So let's imagine your server URL is "foo.example.com". When you access the status page, the PHP code of Mouf will perform additional queries on "foo.example.com". Most of the time, this works... unless the server does not know its name is "foo.example.com". This can happen if the server is having DNS issues, or if the "foo.example.com" domain name is not shared with the server (for instance if this is a fake domain name that you added on the `/etc/hosts` file of your development environment).
+
+To fix this, make sure that from the server, you can ping the same server using your hostname. So by connecting in SSH to the server and typing `ping foo.example.com`, I should see the IP address of the server.
+
 Composer fails to checkout a project
 -----------------------------------------------------
 You see an error message similar to this:
