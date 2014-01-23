@@ -694,6 +694,21 @@ var MoufInstanceManager = (function() {
 		_renameInstance : function(oldname, newname) {
 			_instances[newname] = _instances[oldname];
 			delete _instances[oldname];
+		},
+		
+		/**
+		 * Generates an anonymous instance name.
+		 * "anonymous" names start with "__anonymous__" and is followed by a number.
+		 * This function will return a name that is not already used.
+		 * 
+		 * The number suffixing "__anonymous__" is returned in a random fashion. This way,
+		 * VCS merges are easier to handle.
+		 */
+		_generateAnonymousInstanceName : function() {
+			var timestamp = new Date();
+			// A randum number between 0 and 1000000
+			var randNum = Math.floor((Math.random()*1000000)); 
+			return "__anonymous__"+randNum+"_"+timestamp.getTime();
 		}
 
 	};
@@ -830,8 +845,7 @@ MoufInstance.prototype.rename = function(newName, callback) {
 	if (newName == "" || newName == null) {
 		this.json["anonymous"] = true;
 
-		var timestamp = new Date();
-		newName = "__anonymous_" + timestamp.getTime();
+		newName = MoufInstanceManager._generateAnonymousInstanceName();
 	} else {
 		this.json["anonymous"] = false;
 	}

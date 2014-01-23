@@ -317,8 +317,7 @@ var MoufDefaultRenderer = (function () {
 					
 					//elem.html("");
 
-					var timestamp = new Date();
-					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+					var newInstance = MoufInstanceManager.newInstance(droppedClass, MoufInstanceManager._generateAnonymousInstanceName(), true);
 					
 					// We add at the end of the array
 					moufInstanceProperty.addArrayElement(null, newInstance.getName());
@@ -678,8 +677,7 @@ var MoufDefaultRenderer = (function () {
 							return;
 						}
 						
-						var timestamp = new Date();
-						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+						var newInstance = MoufInstanceManager.newInstance(droppedClass, MoufInstanceManager._generateAnonymousInstanceName(), true);
 						
 						if (!currentType.isArray()) {
 							moufInstanceProperty.setValue(newInstance.getName());

@@ -1823,12 +1823,15 @@ class MoufManager {
 	 * Returns an "anonymous" name for an instance.
 	 * "anonymous" names start with "__anonymous__" and is followed by a number.
 	 * This function will return a name that is not already used.
+	 * 
+	 * The number suffixing "__anonymous__" is returned in a random fashion. This way,
+	 * VCS merges are easier to handle.
 	 *
 	 * @return string
 	 */
 	public function getFreeAnonymousName() {
 
-		$i=0;
+		$i=rand();
 		do {
 			$anonName = "__anonymous__".$i;
 			if (!isset($this->declaredInstances[$anonName])) {
