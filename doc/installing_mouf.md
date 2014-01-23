@@ -5,12 +5,12 @@ Installing Mouf
 
 Requirements:
 ---------------------
-To run Mouf 2, you will need PHP 5.3.2+ running on Apache.
+To run Mouf 2, you will need PHP 5.3.9+ running on Apache.
 The **php_curl** and **php_openssl** extensions must be enabled, as well as the *mod_rewrite* for Apache.
 
 Your *memory_limit* settings in *php.ini* must be set at least to 256M.
 
-<div class="alert alert-info"><strong>Note:</strong> Although Mouf only requires PHP 5.3.2+, a set of
+<div class="alert alert-info"><strong>Note:</strong> Although Mouf only requires PHP 5.3.9+, a set of
 Mouf packages (especially those related to renderers) will require PHP 5.4+, so it might be a good
 idea to start with the highest possible PHP version.</div>
 
