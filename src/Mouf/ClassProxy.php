@@ -43,7 +43,7 @@ class ClassProxy {
 		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".htmlentities($url)."'>".htmlentities($url)."</a>");
 		}
 		
 		return $obj;
