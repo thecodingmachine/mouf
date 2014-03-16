@@ -10,16 +10,16 @@
 namespace Mouf;
 
 use Mouf\Composer\ComposerService;
-
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Reflection\MoufReflectionClass;
+use Interop\Container\ContainerInterface;
 
 /**
  * The class managing object instanciation in the Mouf framework.
  * Users should use the "Mouf" class instead.
  *
  */
-class MoufManager {
+class MoufManager implements ContainerInterface {
 	const SCOPE_APP = 'app';
 	const SCOPE_ADMIN = 'admin';
 
