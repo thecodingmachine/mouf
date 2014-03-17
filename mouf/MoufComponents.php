@@ -1196,7 +1196,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.9.1.min.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.11.0.min.js',
         ),
         'type' => 'string',
         'metadata' => 
