@@ -3,20 +3,47 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2777e6282e930f5e79888a4c639fdb00",
+    "hash": "1ef32dbc366e87ea22306a36995b814e",
     "packages": [
         {
-            "name": "michelf/php-markdown",
-            "version": "1.3",
+            "name": "container-interop/container-interop",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "fcdd3e0781ae40c2b9847874e0755ff4f5559688"
+                "url": "https://github.com/container-interop/container-interop.git",
+                "reference": "b4274c871bfd1ae8d8e527ba11734f4df1573e48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/fcdd3e0781ae40c2b9847874e0755ff4f5559688",
-                "reference": "fcdd3e0781ae40c2b9847874e0755ff4f5559688",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/b4274c871bfd1ae8d8e527ba11734f4df1573e48",
+                "reference": "b4274c871bfd1ae8d8e527ba11734f4df1573e48",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/Interop/Container/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+            "time": "2014-03-16 14:50:05"
+        },
+        {
+            "name": "michelf/php-markdown",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michelf/php-markdown.git",
+                "reference": "96d8150406f67e683ef4acc09fef91785fef1266"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/96d8150406f67e683ef4acc09fef91785fef1266",
+                "reference": "96d8150406f67e683ef4acc09fef91785fef1266",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +52,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-lib": "1.3.x-dev"
+                    "dev-lib": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -54,7 +81,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2013-04-11 18:53:11"
+            "time": "2013-11-29 17:09:24"
         },
         {
             "name": "mouf/famfamfam",
@@ -104,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.html_element.git",
-                "reference": "fee9942ceff67655cc358662fae88a95f0c9cf9d"
+                "reference": "ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/fee9942ceff67655cc358662fae88a95f0c9cf9d",
-                "reference": "fee9942ceff67655cc358662fae88a95f0c9cf9d",
+                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab",
+                "reference": "ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab",
                 "shasum": ""
             },
             "require": {
@@ -125,7 +152,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\HtmlElement": "src/",
+                    "Mouf\\Utils\\Action": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -146,7 +174,7 @@
                 "interface",
                 "tohtml"
             ],
-            "time": "2013-08-07 11:41:31"
+            "time": "2013-10-29 18:21:58"
         },
         {
             "name": "mouf/html.renderer",
@@ -154,12 +182,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.git",
-                "reference": "36c75353ea998c4f5470d569a821022b1168a046"
+                "reference": "00a9eae967cb5a919cbe676e72db32dddb6ff817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/36c75353ea998c4f5470d569a821022b1168a046",
-                "reference": "36c75353ea998c4f5470d569a821022b1168a046",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/00a9eae967cb5a919cbe676e72db32dddb6ff817",
+                "reference": "00a9eae967cb5a919cbe676e72db32dddb6ff817",
                 "shasum": ""
             },
             "require": {
@@ -202,7 +230,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\Renderer": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -224,7 +252,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2013-10-06 13:21:04"
+            "time": "2013-11-05 10:41:17"
         },
         {
             "name": "mouf/html.renderer.twig-extensions",
@@ -232,12 +260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.twig-extensions.git",
-                "reference": "acd4d97d8da298a6876c4fe4bf7c216c00b39fa2"
+                "reference": "b46189e54a045718bfe63d62b30d7a3eed6c0764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/acd4d97d8da298a6876c4fe4bf7c216c00b39fa2",
-                "reference": "acd4d97d8da298a6876c4fe4bf7c216c00b39fa2",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/b46189e54a045718bfe63d62b30d7a3eed6c0764",
+                "reference": "b46189e54a045718bfe63d62b30d7a3eed6c0764",
                 "shasum": ""
             },
             "require": {
@@ -265,7 +293,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\Renderer\\Twig": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -287,7 +315,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2013-09-19 16:18:42"
+            "time": "2013-10-29 18:21:58"
         },
         {
             "name": "mouf/html.template.bootstrap",
@@ -443,12 +471,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.templateinterface.git",
-                "reference": "f399107269b68e7d42b2cb83b75d93e35c6a2854"
+                "reference": "cf4e9b7fa886f18deea490c12b34e2d0ab8a4cb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.templateinterface/zipball/f399107269b68e7d42b2cb83b75d93e35c6a2854",
-                "reference": "f399107269b68e7d42b2cb83b75d93e35c6a2854",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.templateinterface/zipball/cf4e9b7fa886f18deea490c12b34e2d0ab8a4cb3",
+                "reference": "cf4e9b7fa886f18deea490c12b34e2d0ab8a4cb3",
                 "shasum": ""
             },
             "require": {
@@ -459,7 +487,7 @@
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\Template": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -480,7 +508,7 @@
                 "template",
                 "templateinterface"
             ],
-            "time": "2013-08-02 10:39:45"
+            "time": "2013-10-29 18:21:58"
         },
         {
             "name": "mouf/html.utils.bootstrap",
@@ -539,12 +567,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "3be31e8f1eb913fd32512fa008cf5ab617acfc25"
+                "reference": "2c5f568795d65cdd022812905bd38208388074c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/3be31e8f1eb913fd32512fa008cf5ab617acfc25",
-                "reference": "3be31e8f1eb913fd32512fa008cf5ab617acfc25",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/2c5f568795d65cdd022812905bd38208388074c4",
+                "reference": "2c5f568795d65cdd022812905bd38208388074c4",
                 "shasum": ""
             },
             "require": {
@@ -565,7 +593,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\Utils\\WebLibraryManager": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -589,7 +617,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2013-10-04 14:57:28"
+            "time": "2013-10-29 18:21:58"
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -749,16 +777,16 @@
         },
         {
             "name": "mouf/javascript.jquery.jquery",
-            "version": "1.9.1.x-dev",
+            "version": "1.11.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "b2e0d72b63588b15bf9df286e246419f0b3622f6"
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery.git",
+                "reference": "7bae0fbeb391540906ec0ef5e40da6263e5133a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/b2e0d72b63588b15bf9df286e246419f0b3622f6",
-                "reference": "b2e0d72b63588b15bf9df286e246419f0b3622f6",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/7bae0fbeb391540906ec0ef5e40da6263e5133a3",
+                "reference": "7bae0fbeb391540906ec0ef5e40da6263e5133a3",
                 "shasum": ""
             },
             "require": {
@@ -794,7 +822,7 @@
                 "jquery",
                 "mouf"
             ],
-            "time": "2013-02-14 10:53:39"
+            "time": "2014-02-18 10:06:30"
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -1008,12 +1036,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-installer.git",
-                "reference": "2b573ae0826f8629f011b729237ddf82492b34bb"
+                "reference": "ec30d863405283cc3774b1e65188a791b6ceb9d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/2b573ae0826f8629f011b729237ddf82492b34bb",
-                "reference": "2b573ae0826f8629f011b729237ddf82492b34bb",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/ec30d863405283cc3774b1e65188a791b6ceb9d3",
+                "reference": "ec30d863405283cc3774b1e65188a791b6ceb9d3",
                 "shasum": ""
             },
             "require": {
@@ -1028,7 +1056,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Installer": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1048,7 +1076,7 @@
                 "install",
                 "mouf"
             ],
-            "time": "2013-03-19 17:56:25"
+            "time": "2014-02-26 11:35:20"
         },
         {
             "name": "mouf/mouf-validators-interface",
@@ -1056,12 +1084,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-validators-interface.git",
-                "reference": "8f091ee6fdf895cae21ae7960046bfa6e20bfe7a"
+                "reference": "7678d5c0d4e7113aa4f5345e6896933ff8b5e7ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-validators-interface/zipball/8f091ee6fdf895cae21ae7960046bfa6e20bfe7a",
-                "reference": "8f091ee6fdf895cae21ae7960046bfa6e20bfe7a",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-validators-interface/zipball/7678d5c0d4e7113aa4f5345e6896933ff8b5e7ce",
+                "reference": "7678d5c0d4e7113aa4f5345e6896933ff8b5e7ce",
                 "shasum": ""
             },
             "require": {
@@ -1070,7 +1098,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Validator": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1090,31 +1118,35 @@
                 "mouf",
                 "validators"
             ],
-            "time": "2013-03-27 17:56:20"
+            "time": "2013-10-29 18:21:58"
         },
         {
             "name": "mouf/mvc.splash",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "d1d96f45650bbb13b4f031e6f398cfeb8fa1e44a"
+                "reference": "edfba8daabbbef8dadf44a2694ad958cd2c2f402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/d1d96f45650bbb13b4f031e6f398cfeb8fa1e44a",
-                "reference": "d1d96f45650bbb13b4f031e6f398cfeb8fa1e44a",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/edfba8daabbbef8dadf44a2694ad958cd2c2f402",
+                "reference": "edfba8daabbbef8dadf44a2694ad958cd2c2f402",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.template.bootstrap": ">=2.1, <4.0",
                 "mouf/mouf-validators-interface": "~2.0",
-                "mouf/mvc.splash-common": "4.1.*",
+                "mouf/mvc.splash-common": "4.3.*",
                 "mouf/utils.cache.apc-cache": "~2.1",
                 "mouf/utils.cache.file-cache": "~2.1",
                 "mouf/utils.cache.no-cache": "2.0.*",
+                "mouf/utils.constants.secret": "~1.0",
                 "php": ">=5.3.0",
                 "psr/log": "~1.0"
+            },
+            "provide": {
+                "mouf/mvc.splash-implementation": "4.3.*"
             },
             "type": "mouf-library",
             "extra": {
@@ -1127,7 +1159,7 @@
                             "url": "splashinstall/"
                         },
                         {
-                            "scope": "local",
+                            "scope": "global",
                             "description": "Write .htaccess file.",
                             "type": "url",
                             "url": "splashinstall/writeHtAccess"
@@ -1171,7 +1203,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Mvc\\Splash": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1193,25 +1225,26 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2013-10-06 15:54:00"
+            "time": "2014-03-11 10:22:24"
         },
         {
             "name": "mouf/mvc.splash-common",
-            "version": "4.1.x-dev",
+            "version": "4.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "fd917a2d130f992d3f600faf68d473462c6018b4"
+                "reference": "ff4ebde44654a14cc2219923c0a904ab8db36870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/fd917a2d130f992d3f600faf68d473462c6018b4",
-                "reference": "fd917a2d130f992d3f600faf68d473462c6018b4",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/ff4ebde44654a14cc2219923c0a904ab8db36870",
+                "reference": "ff4ebde44654a14cc2219923c0a904ab8db36870",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.htmlelement": "2.*",
                 "mouf/html.renderer.twig-extensions": "~1.0",
+                "mouf/mvc.splash-implementation": "~4.3",
                 "mouf/utils.action.common-action": "~1.0",
                 "mouf/utils.common.url-interface": "~1.0",
                 "mouf/utils.common.validators": "3.*",
@@ -1234,7 +1267,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Annotations": "src/",
+                    "Mouf\\Mvc\\Splash": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1257,7 +1291,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2013-09-25 10:23:56"
+            "time": "2014-03-11 10:23:42"
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -1355,38 +1389,44 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice.git",
-                "reference": "dee3b20e8734f0c89f10b4ef60a32a11dca5ea96"
+                "reference": "584e393640dba713ebe25a0768d1c633a26a4a60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/dee3b20e8734f0c89f10b4ef60a32a11dca5ea96",
-                "reference": "dee3b20e8734f0c89f10b4ef60a32a11dca5ea96",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/584e393640dba713ebe25a0768d1c633a26a4a60",
+                "reference": "584e393640dba713ebe25a0768d1c633a26a4a60",
                 "shasum": ""
             },
             "require": {
+                "mouf/mouf-validators-interface": "~2.0",
                 "mouf/utils.common.conditioninterface": "2.*",
+                "mouf/utils.constants.secret": "~1.0",
                 "mouf/utils.log.psr.errorlog_logger": "2.*",
                 "mouf/utils.session.session-manager": "~2.1",
+                "mouf/utils.value.value-interface": "~1.0",
                 "php": ">=5.3.0"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "logo": "logo.png",
                     "install": [
                         {
-                            "type": "file",
-                            "file": "src/install.php"
+                            "file": "src/install.php",
+                            "type": "file"
                         }
                     ],
-                    "require-admin": [
-                        "src/MoufUserServiceValidators.php"
-                    ]
+                    "doc": [
+                        {
+                            "title": "Using value objects",
+                            "url": "doc/valueobject.md"
+                        }
+                    ],
+                    "logo": "logo.png"
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Security\\UserService": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1407,7 +1447,7 @@
                 "security",
                 "user"
             ],
-            "time": "2013-10-03 10:57:09"
+            "time": "2014-03-13 14:38:44"
         },
         {
             "name": "mouf/utils.action.action-interface",
@@ -1415,12 +1455,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.action.action-interface.git",
-                "reference": "89653f5e82c6dd4590094eb8855c99f9a87f503b"
+                "reference": "93caf3ceba6c3fc53ed16f6e8b453778e07c9c7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.action.action-interface/zipball/89653f5e82c6dd4590094eb8855c99f9a87f503b",
-                "reference": "89653f5e82c6dd4590094eb8855c99f9a87f503b",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.action.action-interface/zipball/93caf3ceba6c3fc53ed16f6e8b453778e07c9c7a",
+                "reference": "93caf3ceba6c3fc53ed16f6e8b453778e07c9c7a",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1469,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Action": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1451,7 +1491,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2013-05-17 12:07:25"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.action.common-action",
@@ -1459,12 +1499,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.action.common-action.git",
-                "reference": "814a0326739f9d09c76f96db735f399e473774b9"
+                "reference": "0c7a4a91849fed733cb07a7ed317b49cf6bc8dc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.action.common-action/zipball/814a0326739f9d09c76f96db735f399e473774b9",
-                "reference": "814a0326739f9d09c76f96db735f399e473774b9",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.action.common-action/zipball/0c7a4a91849fed733cb07a7ed317b49cf6bc8dc4",
+                "reference": "0c7a4a91849fed733cb07a7ed317b49cf6bc8dc4",
                 "shasum": ""
             },
             "require": {
@@ -1480,7 +1520,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Action": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1500,7 +1540,7 @@
                 "actioninterface",
                 "mouf"
             ],
-            "time": "2013-08-09 11:37:16"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.cache.apc-cache",
@@ -1508,12 +1548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.apc-cache.git",
-                "reference": "a9c28d2ba17b32cd0657e37621894eb0a2047e1c"
+                "reference": "e92716e8e6926acc8a8f2405391372181a37e53a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.apc-cache/zipball/a9c28d2ba17b32cd0657e37621894eb0a2047e1c",
-                "reference": "a9c28d2ba17b32cd0657e37621894eb0a2047e1c",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.apc-cache/zipball/e92716e8e6926acc8a8f2405391372181a37e53a",
+                "reference": "e92716e8e6926acc8a8f2405391372181a37e53a",
                 "shasum": ""
             },
             "require": {
@@ -1537,7 +1577,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Cache": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1558,7 +1598,7 @@
                 "cache",
                 "mouf"
             ],
-            "time": "2013-09-08 18:09:43"
+            "time": "2014-03-10 12:59:48"
         },
         {
             "name": "mouf/utils.cache.cache-interface",
@@ -1566,12 +1606,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.cache-interface.git",
-                "reference": "2e6c4a26b5ab3808bebc84c46c9e602773171439"
+                "reference": "85ed0a965fd18d89c509cfbacb68a240844afc0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/2e6c4a26b5ab3808bebc84c46c9e602773171439",
-                "reference": "2e6c4a26b5ab3808bebc84c46c9e602773171439",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/85ed0a965fd18d89c509cfbacb68a240844afc0a",
+                "reference": "85ed0a965fd18d89c509cfbacb68a240844afc0a",
                 "shasum": ""
             },
             "require": {
@@ -1588,7 +1628,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Cache": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1609,7 +1649,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2013-03-19 22:04:37"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -1617,12 +1657,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.file-cache.git",
-                "reference": "001c42bf9b9020773eac221a039b5c4e266995c5"
+                "reference": "0b3aec796b36f4a7b934b4d4c8b036e53542d560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.file-cache/zipball/001c42bf9b9020773eac221a039b5c4e266995c5",
-                "reference": "001c42bf9b9020773eac221a039b5c4e266995c5",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.file-cache/zipball/0b3aec796b36f4a7b934b4d4c8b036e53542d560",
+                "reference": "0b3aec796b36f4a7b934b4d4c8b036e53542d560",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1684,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Cache": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1665,7 +1705,7 @@
                 "file",
                 "mouf"
             ],
-            "time": "2013-09-08 18:09:12"
+            "time": "2013-11-12 09:33:59"
         },
         {
             "name": "mouf/utils.cache.in-memory-cache",
@@ -1673,12 +1713,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.in-memory-cache.git",
-                "reference": "07d40e3a4be12e033f3255f49f7fc4df808974d2"
+                "reference": "9959a4d822e22dfcf1d79f31ab2f91785cb09cad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.in-memory-cache/zipball/07d40e3a4be12e033f3255f49f7fc4df808974d2",
-                "reference": "07d40e3a4be12e033f3255f49f7fc4df808974d2",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.in-memory-cache/zipball/9959a4d822e22dfcf1d79f31ab2f91785cb09cad",
+                "reference": "9959a4d822e22dfcf1d79f31ab2f91785cb09cad",
                 "shasum": ""
             },
             "require": {
@@ -1688,7 +1728,7 @@
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Cache": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1709,7 +1749,7 @@
                 "in-memory",
                 "mouf"
             ],
-            "time": "2013-07-21 18:06:31"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.cache.no-cache",
@@ -1773,12 +1813,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.common.conditioninterface.git",
-                "reference": "9a24e715e47785ff7d843116692503832d58b5d1"
+                "reference": "61b5d6a0904d02bf0ed8578c195b08fb666f8a65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/9a24e715e47785ff7d843116692503832d58b5d1",
-                "reference": "9a24e715e47785ff7d843116692503832d58b5d1",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.conditioninterface/zipball/61b5d6a0904d02bf0ed8578c195b08fb666f8a65",
+                "reference": "61b5d6a0904d02bf0ed8578c195b08fb666f8a65",
                 "shasum": ""
             },
             "require": {
@@ -1787,7 +1827,7 @@
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Common\\ConditionInterface": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1807,7 +1847,7 @@
                 "condition",
                 "interface"
             ],
-            "time": "2013-07-01 17:32:09"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.common.getvars",
@@ -1859,12 +1899,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.common.url-interface.git",
-                "reference": "7cd91a849578f303eabff3cbac0629e2a457336d"
+                "reference": "2b6aa6502b01fcfe55a8bbb114249c15e3ec6610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.url-interface/zipball/7cd91a849578f303eabff3cbac0629e2a457336d",
-                "reference": "7cd91a849578f303eabff3cbac0629e2a457336d",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.url-interface/zipball/2b6aa6502b01fcfe55a8bbb114249c15e3ec6610",
+                "reference": "2b6aa6502b01fcfe55a8bbb114249c15e3ec6610",
                 "shasum": ""
             },
             "require": {
@@ -1878,7 +1918,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Common\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1900,7 +1940,7 @@
                 "url",
                 "urlinterface"
             ],
-            "time": "2013-05-22 17:04:12"
+            "time": "2013-10-29 18:21:59"
         },
         {
             "name": "mouf/utils.common.validators",
@@ -1908,12 +1948,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.common.validators.git",
-                "reference": "3d5b5d385391bbe3a96f7744ffffbc32cb8804c8"
+                "reference": "6d40d5f64780c2adeb2c7af2ed9fc1fbd36e4b51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.validators/zipball/3d5b5d385391bbe3a96f7744ffffbc32cb8804c8",
-                "reference": "3d5b5d385391bbe3a96f7744ffffbc32cb8804c8",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.validators/zipball/6d40d5f64780c2adeb2c7af2ed9fc1fbd36e4b51",
+                "reference": "6d40d5f64780c2adeb2c7af2ed9fc1fbd36e4b51",
                 "shasum": ""
             },
             "require": {
@@ -1933,7 +1973,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Common\\Validators\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1953,20 +1993,75 @@
                 "utils",
                 "validators"
             ],
-            "time": "2013-07-03 12:27:17"
+            "time": "2013-12-18 11:18:09"
         },
         {
-            "name": "mouf/utils.i18n.fine",
-            "version": "3.0.x-dev",
+            "name": "mouf/utils.constants.secret",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.i18n.fine.git",
-                "reference": "93622dc7ecb301a425543a08f1ad2f191bca1204"
+                "url": "https://github.com/thecodingmachine/utils.constants.secret.git",
+                "reference": "8ed977b1a5dd1caf7641d6ffe0570cccebd768b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/93622dc7ecb301a425543a08f1ad2f191bca1204",
-                "reference": "93622dc7ecb301a425543a08f1ad2f191bca1204",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.constants.secret/zipball/8ed977b1a5dd1caf7641d6ffe0570cccebd768b5",
+                "reference": "8ed977b1a5dd1caf7641d6ffe0570cccebd768b5",
+                "shasum": ""
+            },
+            "require": {
+                "mouf/mouf-installer": "~2.0",
+                "php": ">=5.3.0"
+            },
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "class",
+                            "class": "Mouf\\Utils\\Constants\\SecretInstaller"
+                        }
+                    ],
+                    "logo": "logo.png"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mouf\\Utils\\Constants\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package contains a simple installer for Mouf that will create a constant 'SECRET' in your project and initialize it to some random value.",
+            "homepage": "https://mouf-php.com/packages/mouf/utils.constants.secret",
+            "keywords": [
+                "mouf",
+                "random",
+                "secret"
+            ],
+            "time": "2013-11-05 16:10:29"
+        },
+        {
+            "name": "mouf/utils.i18n.fine",
+            "version": "v3.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/utils.i18n.fine.git",
+                "reference": "08b0a1bb73f66e00fc88e3b63c12cbfdcc73b380"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/08b0a1bb73f66e00fc88e3b63c12cbfdcc73b380",
+                "reference": "08b0a1bb73f66e00fc88e3b63c12cbfdcc73b380",
                 "shasum": ""
             },
             "require": {
@@ -2041,7 +2136,7 @@
                 "internationalisation",
                 "mouf"
             ],
-            "time": "2013-09-23 12:33:13"
+            "time": "2013-10-15 12:32:07"
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
@@ -2049,12 +2144,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger.git",
-                "reference": "a4ed461f7044074e9d0e167a253b22df29bc7898"
+                "reference": "352ad3733757685961818c012187945a4c9d04df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.log.errorlog_logger/zipball/a4ed461f7044074e9d0e167a253b22df29bc7898",
-                "reference": "a4ed461f7044074e9d0e167a253b22df29bc7898",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.errorlog_logger/zipball/352ad3733757685961818c012187945a4c9d04df",
+                "reference": "352ad3733757685961818c012187945a4c9d04df",
                 "shasum": ""
             },
             "require": {
@@ -2079,7 +2174,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Log\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2100,7 +2195,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2013-09-08 18:12:07"
+            "time": "2013-10-29 18:22:00"
         },
         {
             "name": "mouf/utils.log.log_interface",
@@ -2108,12 +2203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.log.log_interface.git",
-                "reference": "89038285c26e00eecec6092e075fb04107eb96db"
+                "reference": "de633ec72221041adfb288c41738bb7314c2f729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.log.log_interface/zipball/89038285c26e00eecec6092e075fb04107eb96db",
-                "reference": "89038285c26e00eecec6092e075fb04107eb96db",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.log_interface/zipball/de633ec72221041adfb288c41738bb7314c2f729",
+                "reference": "de633ec72221041adfb288c41738bb7314c2f729",
                 "shasum": ""
             },
             "require": {
@@ -2128,7 +2223,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Log\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2149,7 +2244,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2013-09-08 18:11:56"
+            "time": "2013-10-29 18:22:00"
         },
         {
             "name": "mouf/utils.log.psr.errorlog_logger",
@@ -2157,12 +2252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.log.psr.errorlog_logger.git",
-                "reference": "5d5166f6a9a7870aad71f9ef2f9f429ef8af4d4b"
+                "reference": "ec7335e729689727bd832f17eb34be5951cedf52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.log.psr.errorlog_logger/zipball/5d5166f6a9a7870aad71f9ef2f9f429ef8af4d4b",
-                "reference": "5d5166f6a9a7870aad71f9ef2f9f429ef8af4d4b",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.log.psr.errorlog_logger/zipball/ec7335e729689727bd832f17eb34be5951cedf52",
+                "reference": "ec7335e729689727bd832f17eb34be5951cedf52",
                 "shasum": ""
             },
             "require": {
@@ -2175,8 +2270,8 @@
                 "mouf": {
                     "install": [
                         {
-                            "type": "file",
-                            "file": "src/install.php"
+                            "type": "class",
+                            "class": "Mouf\\Utils\\Log\\Psr\\ErrorLogLoggerInstaller"
                         }
                     ],
                     "logo": "logo.png"
@@ -2184,7 +2279,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Log\\Psr\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2205,7 +2300,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2013-09-23 16:55:45"
+            "time": "2013-10-29 18:36:52"
         },
         {
             "name": "mouf/utils.session.session-manager",
@@ -2213,12 +2308,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.session.session-manager.git",
-                "reference": "e0741df532329ce9343157c63e35dd0cebde4235"
+                "reference": "737828c9d6ca869dd9298ce9f16fefe5e7b8204e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/e0741df532329ce9343157c63e35dd0cebde4235",
-                "reference": "e0741df532329ce9343157c63e35dd0cebde4235",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/737828c9d6ca869dd9298ce9f16fefe5e7b8204e",
+                "reference": "737828c9d6ca869dd9298ce9f16fefe5e7b8204e",
                 "shasum": ""
             },
             "require": {
@@ -2237,7 +2332,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Action": "src/",
+                    "Mouf\\Utils\\Session\\SessionManager": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2257,7 +2353,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2013-06-19 14:17:44"
+            "time": "2013-10-29 18:22:00"
         },
         {
             "name": "mouf/utils.value.value-interface",
@@ -2265,12 +2361,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.value.value-interface.git",
-                "reference": "8e969f73ce18c3e70efbca6b33b85609bb996a6a"
+                "reference": "3825f2734d2d88b3be1cbd480392cf0170d3170e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.value.value-interface/zipball/8e969f73ce18c3e70efbca6b33b85609bb996a6a",
-                "reference": "8e969f73ce18c3e70efbca6b33b85609bb996a6a",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.value.value-interface/zipball/3825f2734d2d88b3be1cbd480392cf0170d3170e",
+                "reference": "3825f2734d2d88b3be1cbd480392cf0170d3170e",
                 "shasum": ""
             },
             "require": {
@@ -2284,7 +2380,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Utils\\Value": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2305,7 +2401,7 @@
                 "mouf",
                 "value"
             ],
-            "time": "2013-07-10 17:27:51"
+            "time": "2013-10-29 18:22:00"
         },
         {
             "name": "psr/log",
@@ -2347,16 +2443,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.14.0",
+            "version": "v1.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59"
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/224fc55635d544a2ec8edb3592be18db5a093f59",
-                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
                 "shasum": ""
             },
             "require": {
@@ -2365,7 +2461,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -2380,11 +2476,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com"
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
@@ -2392,28 +2496,28 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-03 06:41:20"
+            "time": "2014-02-13 10:19:29"
         }
     ],
     "packages-dev": [
         {
             "name": "phpunit/php-code-coverage",
-            "version": "1.2.13",
+            "version": "1.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "466e7cd2554b4e264c9e3f31216d25ac0e5f3d94"
+                "reference": "69e55e68481cf708a6db43aff0b504e31402fe27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/466e7cd2554b4e264c9e3f31216d25ac0e5f3d94",
-                "reference": "466e7cd2554b4e264c9e3f31216d25ac0e5f3d94",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/69e55e68481cf708a6db43aff0b504e31402fe27",
+                "reference": "69e55e68481cf708a6db43aff0b504e31402fe27",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "phpunit/php-file-iterator": ">=1.3.0@stable",
-                "phpunit/php-text-template": ">=1.1.1@stable",
+                "phpunit/php-text-template": ">=1.2.0@stable",
                 "phpunit/php-token-stream": ">=1.1.3@stable"
             },
             "require-dev": {
@@ -2455,20 +2559,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-09-10 08:14:32"
+            "time": "2014-02-25 03:34:05"
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "1.3.3",
+            "version": "1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "16a78140ed2fc01b945cfa539665fadc6a038029"
+                "reference": "acd690379117b042d1c8af1fafd61bde001bf6bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/16a78140ed2fc01b945cfa539665fadc6a038029",
-                "reference": "16a78140ed2fc01b945cfa539665fadc6a038029",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/acd690379117b042d1c8af1fafd61bde001bf6bb",
+                "reference": "acd690379117b042d1c8af1fafd61bde001bf6bb",
                 "shasum": ""
             },
             "require": {
@@ -2495,25 +2599,25 @@
                 }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
-            "homepage": "http://www.phpunit.de/",
+            "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
             "keywords": [
                 "filesystem",
                 "iterator"
             ],
-            "time": "2012-10-11 11:44:38"
+            "time": "2013-10-10 15:34:57"
         },
         {
             "name": "phpunit/php-text-template",
-            "version": "1.1.4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-text-template.git",
-                "reference": "5180896f51c5b3648ac946b05f9ec02be78a0b23"
+                "reference": "206dfefc0ffe9cebf65c413e3d0e809c82fbf00a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/5180896f51c5b3648ac946b05f9ec02be78a0b23",
-                "reference": "5180896f51c5b3648ac946b05f9ec02be78a0b23",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/206dfefc0ffe9cebf65c413e3d0e809c82fbf00a",
+                "reference": "206dfefc0ffe9cebf65c413e3d0e809c82fbf00a",
                 "shasum": ""
             },
             "require": {
@@ -2544,7 +2648,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2012-10-31 18:15:28"
+            "time": "2014-01-30 17:20:04"
         },
         {
             "name": "phpunit/php-timer",
@@ -2592,16 +2696,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "5220af2a7929aa35cf663d97c89ad3d50cf5fa3e"
+                "reference": "ad4e1e23ae01b483c16f600ff1bebec184588e32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/5220af2a7929aa35cf663d97c89ad3d50cf5fa3e",
-                "reference": "5220af2a7929aa35cf663d97c89ad3d50cf5fa3e",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/ad4e1e23ae01b483c16f600ff1bebec184588e32",
+                "reference": "ad4e1e23ae01b483c16f600ff1bebec184588e32",
                 "shasum": ""
             },
             "require": {
@@ -2638,20 +2742,20 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2013-09-13 04:58:23"
+            "time": "2014-03-03 05:10:30"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "3.7.27",
+            "version": "3.7.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4b024e753e3421837afbcca962c8724c58b39376"
+                "reference": "2752cbb9ea5bd84c2811b34b6953f76965ec7a2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4b024e753e3421837afbcca962c8724c58b39376",
-                "reference": "4b024e753e3421837afbcca962c8724c58b39376",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2752cbb9ea5bd84c2811b34b6953f76965ec7a2f",
+                "reference": "2752cbb9ea5bd84c2811b34b6953f76965ec7a2f",
                 "shasum": ""
             },
             "require": {
@@ -2668,7 +2772,7 @@
                 "symfony/yaml": "~2.0"
             },
             "require-dev": {
-                "pear-pear/pear": "1.9.4"
+                "pear-pear.php.net/pear": "1.9.4"
             },
             "suggest": {
                 "ext-json": "*",
@@ -2712,7 +2816,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-09-16 03:09:52"
+            "time": "2014-02-25 03:47:29"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2765,17 +2869,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.3.5",
+            "version": "v2.4.2",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "6bb881b948368482e1abf1a75c08bcf88a1c5fc3"
+                "reference": "bb6ddaf8956139d1b8c360b4b713ed0138e876b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/6bb881b948368482e1abf1a75c08bcf88a1c5fc3",
-                "reference": "6bb881b948368482e1abf1a75c08bcf88a1c5fc3",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/bb6ddaf8956139d1b8c360b4b713ed0138e876b3",
+                "reference": "bb6ddaf8956139d1b8c360b4b713ed0138e876b3",
                 "shasum": ""
             },
             "require": {
@@ -2784,7 +2888,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
@@ -2799,7 +2903,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -2808,7 +2914,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-22 18:04:39"
+            "time": "2014-01-07 13:28:54"
         }
     ],
     "aliases": [

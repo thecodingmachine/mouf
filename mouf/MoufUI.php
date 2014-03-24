@@ -12,6 +12,5 @@ require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/SplashGener
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/Controllers/Admin/SplashPurgeCacheController.php';
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/Controllers/Admin/SplashAdminApacheConfigureController.php';
 require_once __DIR__.'/../vendor/mouf/mvc.splash/src/Mouf/Mvc/Splash/Controllers/Admin/SplashInstallController.php';
-require_once __DIR__.'/../vendor/mouf/security.userservice/src/MoufUserServiceValidators.php';
 
 ?>
