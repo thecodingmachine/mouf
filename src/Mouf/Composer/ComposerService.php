@@ -113,23 +113,51 @@ class ComposerService {
 		// flatten array
 		$classMap = array();
 		
-		foreach ($autoloads['psr-0'] as $namespace => $paths) {
-			foreach ($paths as $dir) {
-				$dir = $this->getPath($filesystem, $relVendorPath, $vendorPath, $dir);
-				$whitelist = sprintf(
-						'{%s/%s.+(?<!(?<!/)Test\.php)$}',
-						preg_quote(rtrim($dir, '/')),
-						strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
-				);
-				if (!is_dir($dir)) {
-					continue;
+		if (isset($autoloads['psr-0'])) {
+			foreach ($autoloads['psr-0'] as $namespace => $paths) {
+				foreach ($paths as $dir) {
+					$dir = $this->getPath($filesystem, $relVendorPath, $vendorPath, $dir);
+					$whitelist = sprintf(
+							'{%s/%s.+(?<!(?<!/)Test\.php)$}',
+							preg_quote(rtrim($dir, '/')),
+							strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
+					);
+					if (!is_dir($dir)) {
+						continue;
+					}
+					foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
+						if ('' === $namespace || 0 === strpos($class, $namespace)) {
+							$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
+							if (!isset($classMap[$class])) {
+								//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+								$classMap[$class] = $path;
+							}
+						}
+					}
 				}
-				foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
-					if ('' === $namespace || 0 === strpos($class, $namespace)) {
-						$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
-						if (!isset($classMap[$class])) {
-							//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
-							$classMap[$class] = $path;
+			}
+		}
+		
+		// Exactly the same thing for PSR4.
+		if (isset($autoloads['psr-4'])) {
+			foreach ($autoloads['psr-4'] as $namespace => $paths) {
+				foreach ($paths as $dir) {
+					$dir = $this->getPath($filesystem, $relVendorPath, $vendorPath, $dir);
+					$whitelist = sprintf(
+							'{%s/%s.+(?<!(?<!/)Test\.php)$}',
+							preg_quote(rtrim($dir, '/')),
+							strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
+					);
+					if (!is_dir($dir)) {
+						continue;
+					}
+					foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
+						if ('' === $namespace || 0 === strpos($class, $namespace)) {
+							$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
+							if (!isset($classMap[$class])) {
+								//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
+								$classMap[$class] = $path;
+							}
 						}
 					}
 				}

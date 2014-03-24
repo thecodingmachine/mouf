@@ -127,6 +127,7 @@ class MoufUtils {
 	 * @return array<int, array<string, string>>
 	 */
 	public static function getAutoloadNamespaces() {
+		// FIXME: adapt this to PSR-4!
 		$composer = json_decode(file_get_contents(__DIR__."/../../../../../composer.json"), true);
 		
 		if (isset($composer["autoload"]["psr-0"])) {
