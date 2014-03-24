@@ -21,9 +21,19 @@ $selfedit = $_REQUEST['selfedit'];
 define('ROOT_URL', $rootUrl);
 
 if ($selfedit == "true") {
-	chdir(__DIR__.'/../../vendor/'.$installPackage);
+	if (is_dir(__DIR__.'/../../vendor/'.$installPackage)) {
+		chdir(__DIR__.'/../../vendor/'.$installPackage);
+	} else {
+		// The important part is to be in a subdirectory of /vendor/mouf/mouf
+		chdir(__DIR__);
+	}
 } else {
-	chdir(__DIR__.'/../../../../../vendor/'.$installPackage);
+	if (is_dir(__DIR__.'/../../../../../vendor/'.$installPackage)) {
+		chdir(__DIR__.'/../../../../../vendor/'.$installPackage);
+	} else {
+		// The important part is to be in a subdirectory of ROOT_PATH and not in /vendor/mouf/mouf
+		chdir(__DIR__.'/../../../');
+	}
 }
 
 require_once __DIR__."/../../../../autoload.php";
