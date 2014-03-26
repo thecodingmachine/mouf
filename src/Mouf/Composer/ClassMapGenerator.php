@@ -13,6 +13,8 @@
 
 namespace Mouf\Composer;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * ClassMapGenerator
  *
@@ -40,44 +42,46 @@ class ClassMapGenerator
     /**
      * Iterate over all files in the given directory searching for classes
      *
-     * @param Iterator|string $dir       The directory to search in or an iterator
+     * @param \Iterator|string $path      The path to search in or an iterator
      * @param string          $whitelist Regex that matches against the file path
      *
      * @return array A class map array
+     *
+     * @throws \RuntimeException When the path is neither an existing file nor directory
      */
-    public static function createMap($dir, $whitelist = null)
+    public static function createMap($path, $whitelist = null)
     {
-        if (is_string($dir)) {
-            if (is_file($dir)) {
-                $dir = array(new \SplFileInfo($dir));
+        if (is_string($path)) {
+            if (is_file($path)) {
+                $path = array(new \SplFileInfo($path));
+            } elseif (is_dir($path)) {
+                $path = Finder::create()->files()->followLinks()->name('/\.(php|inc)$/')->in($path);
             } else {
-                $dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
+                throw new \RuntimeException(
+                    'Could not scan for classes inside "'.$path.
+                    '" which does not appear to be a file nor a folder'
+                );
             }
         }
 
         $map = array();
 
-        foreach ($dir as $file) {
-            if (!$file->isFile()) {
+        foreach ($path as $file) {
+            $filePath = $file->getRealPath();
+
+            if (!in_array(pathinfo($filePath, PATHINFO_EXTENSION), array('php', 'inc'))) {
                 continue;
             }
 
-            $path = $file->getRealPath();
-
-            if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
+            if ($whitelist && !preg_match($whitelist, strtr($filePath, '\\', '/'))) {
                 continue;
             }
 
-            if ($whitelist && !preg_match($whitelist, strtr($path, '\\', '/'))) {
-                continue;
-            }
-
-            $classes = self::findClasses($path);
+            $classes = self::findClasses($filePath);
 
             foreach ($classes as $class) {
-                $map[$class] = $path;
+                $map[$class] = $filePath;
             }
-
         }
 
         return $map;

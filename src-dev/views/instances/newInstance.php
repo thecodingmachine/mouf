@@ -49,7 +49,7 @@
 		</div>
 		<div class="alert alert-info">
 			<strong>Still nothing?</strong> It is likely Composer cannot find your class. You might not have configured the <a href="http://getcomposer.org/doc/01-basic-usage.md#autoloading">composer autoloader
-			correctly</a>, or you might need to <a href="http://getcomposer.org/doc/03-cli.md#dump-autoload">dump the autoloader</a> after changing the settings or your class might not respect the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 standard</a>...
+			correctly</a>, or you might need to <a href="http://getcomposer.org/doc/03-cli.md#dump-autoload">dump the autoloader</a> after changing the settings or your class might not respect the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 standard</a> or the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md">PSR-4 standard</a>...
 		</div>
 	</div>
 </div>
