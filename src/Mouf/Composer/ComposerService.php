@@ -134,6 +134,7 @@ class ComposerService {
 							if (!isset($classMap[$class])) {
 								//$path = $this->getPathCode($filesystem, $basePath, $vendorPath, $path);
 								//$classMap[$class] = $path.",\n";
+// 								$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 								$classMap[$class] = $path;
 							}
 						}
@@ -146,8 +147,9 @@ class ComposerService {
 			
 		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
+			$dir = $filesystem->normalizePath($filesystem->isAbsolutePath($dir) ? $dir : $basePath.'/'.$dir);
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
-				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
+// 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
 				$classMap[$class] = $path;
 			}
