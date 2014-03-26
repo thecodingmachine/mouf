@@ -304,7 +304,7 @@ class ComposerInstaller {
 			}
 		}
 		
-		throw new MoufException("Unable to find install tasking matching array passed in parameter.");
+		throw new MoufException("Unable to find install task in matching array passed in parameter.");
 	}
 	
 	/**
