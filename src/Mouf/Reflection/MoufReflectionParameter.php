@@ -183,12 +183,18 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     	$result = array();
     	$result['name'] = $this->getName();
     	$result['hasDefault'] = $this->isDefaultValueAvailable();
-    	if ($result['hasDefault']) {
-    		$result['default'] = $this->getDefaultValue();
-    	}
-    	$result['isArray'] = $this->isArray();
-    
+    	
     	try {
+    		if ($result['hasDefault']) {
+    			ob_start();
+    			$result['default'] = $this->getDefaultValue();
+    			$possibleError = ob_get_clean();
+    			if ($possibleError) {
+    				throw new \Exception($possibleError);
+    			}
+    		}
+    		$result['isArray'] = $this->isArray();
+    		
     		// Let's export only the type if we are in a constructor... in order to save time.
     		if ($this->getDeclaringFunction()->isConstructor()) {
     			// TODO: is there a need to instanciate a  MoufPropertyDescriptor?

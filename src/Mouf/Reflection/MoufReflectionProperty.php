@@ -240,7 +240,15 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
 	  		/*$instance = new $className();
 			$property = $this->getName();
 	    	return $instance->$property;*/
+	  		
+	  		// In some cases, the call to getDefaultProperties can log NOTICES
+	  		// in particular if an undefined constant is used as default value.
+	  		ob_start();
 	  		$defaultProperties = $this->refClass->getDefaultProperties();
+	  		$possibleError = ob_get_clean();
+			if ($possibleError) {
+				throw new \Exception($possibleError);	
+			}
 	  		return $defaultProperties[$this->getName()];
     	} else {
     		return null;
@@ -288,14 +296,14 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
     	$result = array();
     	$result['name'] = $this->getName();
     	$result['comment'] = $this->getMoufPhpDocComment()->getJsonArray();
-    	$result['default'] = $this->getDefault();
-    
+    	
     	/*$properties = $this->getAnnotations("Property");
     		if (!empty($properties)) {
     	$result['moufProperty'] = true;*/
     	
     	try {
-    		 
+    		$result['default'] = $this->getDefault();
+    		
 	    	// TODO: is there a need to instanciate a  MoufPropertyDescriptor?
 	    	$moufPropertyDescriptor = new MoufPropertyDescriptor($this);
 	    	$types = $moufPropertyDescriptor->getTypes();
