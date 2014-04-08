@@ -183,19 +183,19 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     	$result = array();
     	$result['name'] = $this->getName();
     	$result['hasDefault'] = $this->isDefaultValueAvailable();
-    	if ($result['hasDefault']) {
-    		// If the default value is an undefined constant, a Notice message will be triggered. Let's catch it.
-    		ob_start();
-    		$result['default'] = $this->getDefaultValue();
-    		$possibleErrors = ob_get_clean();
-    		if ($possibleErrors) {
-    			$result['classinerror'] = $possibleErrors;
-    		}
-    		return $result;
-    	}
-    	$result['isArray'] = $this->isArray();
-    
     	try {
+    		if ($result['hasDefault']) {
+    			// In some cases, the call to getDefaultValue can log NOTICES
+    			// in particular if an undefined constant is used as default value.
+    			ob_start();
+    			$result['default'] = $this->getDefaultValue();
+    			$possibleError = ob_get_clean();
+    			if ($possibleError) {
+    				throw new \Exception($possibleError);
+    			}
+    		}
+    		$result['isArray'] = $this->isArray();
+    		
     		// Let's export only the type if we are in a constructor... in order to save time.
     		if ($this->getDeclaringFunction()->isConstructor()) {
     			// TODO: is there a need to instanciate a  MoufPropertyDescriptor?

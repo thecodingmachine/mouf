@@ -1,5 +1,6 @@
 Welcome to the Mouf 2 framework
 ===============================
+[![Latest Unstable Version](https://poser.pugx.org/mouf/mouf/v/unstable.png)](https://packagist.org/packages/mouf/mouf) [![Total Downloads](https://poser.pugx.org/mouf/mouf/downloads.png)](https://packagist.org/packages/mouf/mouf) [![License](https://poser.pugx.org/mouf/mouf/license.png)](https://packagist.org/packages/mouf/mouf)
 
 What is Mouf?
 -------------
