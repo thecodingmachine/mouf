@@ -150,14 +150,18 @@ class MoufManager implements ContainerInterface {
 	 * @var array<string, array>
 	 */
 	private $declaredInstances = array();
-
-
+	
 	/**
-	 * A list of files to be required (relative to the directory of Mouf.php)
-	 *
+	 * A list of PHP closures used for instantiating instances.
+	 * For instance:
+	 * 
+	 * $closures["instanceName"]["constructor"][4] = function($moufManager) {...}
+	 * 
+	 * All closures are taking the $moufManager has sole and unique parameter.
+	 * 
 	 * @var array
 	 */
-	private $registeredComponents = array();
+	private $closures = array();
 
 	/**
 	 * A list of components name that are external.
@@ -326,6 +330,17 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function addComponentInstances(array $definition) {
 		$this->declaredInstances = array_merge($this->declaredInstances, $definition);
+	}
+	
+	/**
+	 * Sets the array of closures.
+	 * This is used internally to load the state of Mouf very quickly.
+	 * Do not use directly.
+	 * 
+	 * @param array $closures
+	 */
+	public function setClosures(array $closures) {
+		$this->closures = $closures;
 	}
 
 	/**
@@ -572,7 +587,7 @@ class MoufManager implements ContainerInterface {
 				$classDescriptor = new \ReflectionClass($className);
 				
 				$constructorParameters = array();
-				foreach ($constructorParametersArray as $constructorParameterDefinition) {
+				foreach ($constructorParametersArray as $key=>$constructorParameterDefinition) {
 					$value = $constructorParameterDefinition["value"];
 					switch ($constructorParameterDefinition['parametertype']) {
 						case "primitive":
@@ -588,6 +603,9 @@ class MoufManager implements ContainerInterface {
 									break;
 								case "config":
 									$constructorParameters[] = constant($value);
+									break;
+								case "php":
+									$constructorParameters[] = $this->closures[$instanceName]['constructor'][$key]($this);
 									break;
 								default:
 									throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
@@ -636,6 +654,9 @@ class MoufManager implements ContainerInterface {
 						case "config":
 							$object->$key = constant($valueDef["value"]);
 							break;
+						case "php":
+							$object->$key = $this->closures[$instanceName]['fieldProperties'][$key]($this);
+							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
 					}
@@ -657,6 +678,9 @@ class MoufManager implements ContainerInterface {
 							break;
 						case "config":
 							$object->$key(constant($valueDef["value"]));
+							break;
+						case "php":
+							$object->$key($this->closures[$instanceName]['setterProperties'][$key]($this));
 							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
@@ -711,14 +735,14 @@ class MoufManager implements ContainerInterface {
 	 * @param string $instanceName
 	 * @param string $paramName
 	 * @param string $paramValue
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameter($instanceName, $paramName, $paramValue, $type = "string", array $metadata = array()) {
-		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
+		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session. Value passed: '".$type."'");
 		}
-
+		
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["value"] = $paramValue;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["type"] = $type;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["metadata"] = $metadata;
@@ -730,11 +754,11 @@ class MoufManager implements ContainerInterface {
 	 * @param string $instanceName
 	 * @param string $setterName
 	 * @param string $paramValue
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameterViaSetter($instanceName, $setterName, $paramValue, $type = "string", array $metadata = array()) {
-		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
+		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
 		}
 
@@ -744,17 +768,17 @@ class MoufManager implements ContainerInterface {
 	}
 
 	/**
-	 * Binds a parameter to the instance using a construcotr parameter.
+	 * Binds a parameter to the instance using a constructor parameter.
 	 *
 	 * @param string $instanceName
 	 * @param string $index
 	 * @param string $paramValue
 	 * @param string $parameterType Can be one of "primitive" or "object".
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
-		if ($type != "string" && $type != "config" && $type != "request" && $type != "session") {
+		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
 			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
 		}
 
@@ -1146,18 +1170,6 @@ class MoufManager implements ContainerInterface {
 	}
 
 	/**
-	 * This simply adds the passed file to the list of "registered components".
-	 * The list will be required by mouf.php when it is generated using "rewriteMouf" function.
-	 * It s possible to add an autoload parameter to force, never or auto load the file
-	 *
-	 * @param string $fileName
-	 * @param string $autoload
-	 */
-	public function registerComponent($fileName, $autoload = 'auto') {
-		//$this->registeredComponents[$fileName] = array('name' => $fileName, 'autoload' => $autoload);
-	}
-
-	/**
 	 * This function will rewrite the MoufComponents.php file and the MoufRequire.php file (or their "admin" counterpart)
 	 * according to parameters stored in the MoufManager
 	 */
@@ -1185,32 +1197,12 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, " * This is a file automatically generated by the Mouf framework. Do not modify it, as it could be overwritten.\n");
 		fwrite($fp, " */\n");
 		fwrite($fp, "use Mouf\MoufManager;\n");
+		fwrite($fp, "use Interop\Container\ContainerInterface;\n");
 		fwrite($fp, "MoufManager::initMoufManager();\n");
 		fwrite($fp, "\$moufManager = MoufManager::getMoufManager();\n");
 		fwrite($fp, "\n");
 		fwrite($fp, "\$moufManager->getConfigManager()->setConstantsDefinitionArray(".var_export($this->getConfigManager()->getConstantsDefinitionArray(), true).");\n");
 		fwrite($fp, "\n");
-
-		// Declare packages
-		/*fwrite($fp, "\$moufManager->setPackagesByXmlFile(".var_export($this->packagesList, true).");\n");
-		 fwrite($fp, "\n");
-
-		fwrite($fp, "\$moufManager->setPackagesByXmlFileInAdminScope(".var_export($this->packagesListInAdminScope, true).");\n");
-		fwrite($fp, "\n");*/
-
-		// Import external components
-		// FIXME: adapt to composer!!!
-		/*$packageManager = new MoufPackageManager(dirname(__FILE__).'/../plugins');
-		 foreach ($this->packagesList as $fileName) {
-		$package = $packageManager->getPackage($fileName);
-		foreach ($package->getExternalComponentsRequiredFiles() as $requiredFile) {
-		// Please notice that this is a require and not a require_once.
-		// This is because the file could be required twice: one for Mouf and one for the admin.
-		// Therefore, the file should not declare functions or classes.
-		fwrite($fp, "require dirname(__FILE__).'/".$this->pathToMouf."../plugins/".$package->getPackageDirectory()."/".$requiredFile."';\n");
-		}
-		}
-		fwrite($fp, "\n");*/
 
 		// Import all variables
 		fwrite($fp, "\$moufManager->setAllVariables(".var_export($this->variables, true).");\n");
@@ -1231,26 +1223,62 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "\$moufManager->addComponentInstances(".var_export($internalDeclaredInstances, true).");\n");
 		fwrite($fp, "\n");
 
-		// Declare local components
-		foreach ($this->registeredComponents as $registeredComponent => $registeredComponentParameters) {
-			//fwrite($fp, "require_once dirname(__FILE__).'/$registeredComponent';\n");
-			$autoload = 'auto';
-			if(isset($registeredComponentParameters['autoload']))
-				$autoload = $registeredComponentParameters['autoload'];
-			fwrite($fp, "\$moufManager->registerComponent('$registeredComponent', '".$autoload."');\n");
+		// Now, let's export the closures!
+		fwrite($fp, "\$moufManager->setClosures([\n");
+		
+		$targetArray = [];
+		foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
+			if (isset($instanceDesc['constructor'])) {
+				foreach ($instanceDesc['constructor'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						$targetArray[$instanceName]['constructor'][$key] = $param['value'];
+					}
+				}
+			}
+			if (isset($instanceDesc['fieldProperties'])) {
+				foreach ($instanceDesc['fieldProperties'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
+					}
+				}
+			}
+			if (isset($instanceDesc['setterProperties'])) {
+				foreach ($instanceDesc['setterProperties'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
+					}
+				}
+			}
 		}
+		foreach ($targetArray as $instanceName=>$instanceDesc) {
+			fwrite($fp, "	".var_export($instanceName, true)." => [\n");
+			if (isset($instanceDesc['constructor'])) {
+				fwrite($fp, "		'constructor' => [\n");
+				foreach ($instanceDesc['constructor'] as $key=>$code) {
+					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, $code);
+					fwrite($fp, "\n			},\n");
+				}
+				fwrite($fp, "		],\n");
+			}
+			fwrite($fp, "	],\n");
+		}
+		
+		// TODO: filter the type ("php"). get an array that contains only closures. Map on it?
+		fwrite($fp, "]);\n");
+		
 		fwrite($fp, "\n");
 
 		fwrite($fp, "unset(\$moufManager);\n");
 		fwrite($fp, "\n");
 
 		fwrite($fp, "/**
-				* This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
-				* This object can be used to get the objects manage by MOUF.
-				*
-				*/
-				class ".$this->mainClassName." {
-				");
+	* This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
+	* This object can be used to get the objects manage by MOUF.
+	*
+	*/
+	class ".$this->mainClassName." {
+	");
 		$getters = array();
 		foreach ($this->declaredInstances as $name=>$classDesc) {
 			if (!isset($classDesc['class'])) {
@@ -1450,125 +1478,6 @@ class MoufManager implements ContainerInterface {
 
 		return $instancesList;
 
-	}
-
-	/**
-	 * Returns the list of files that will be included by Mouf, relative to the root of the project
-	 *
-	 * @return array<string>
-	 */
-	public function getRegisteredComponentFiles() {
-
-		$fileArray = array();
-		$dirMoufFile = dirname($this->requireFileName);
-		$fulldir = realpath(dirname(__FILE__)."/..");
-		foreach ($this->registeredComponents as $file => $registeredComponentParameters) {
-			$realpathFile = realpath($dirMoufFile."/".$file);
-			$relativeFile = substr($realpathFile, strlen($fulldir)+1);
-			$relativeFile = str_replace("\\", "/", $relativeFile);
-			$fileArray[] = $relativeFile;
-		}
-
-		return $fileArray;
-	}
-
-	/**
-	 * Returns the list of files that will be included by Mouf, relative to the root of the project
-	 * Add parameters of files like autoload
-	 *
-	 * @return array<string, array<string, string>>
-	 */
-	public function getRegisteredComponentFilesParameters() {
-
-		$fileArray = array();
-		$dirMoufFile = dirname($this->requireFileName);
-		$fulldir = realpath(dirname(__FILE__)."/..");
-		foreach ($this->registeredComponents as $file => $registeredComponentParameters) {
-			$realpathFile = realpath($dirMoufFile."/".$file);
-			$relativeFile = substr($realpathFile, strlen($fulldir)+1);
-			$relativeFile = str_replace("\\", "/", $relativeFile);
-			$fileArray[$relativeFile] = $registeredComponentParameters;
-		}
-
-		return $fileArray;
-	}
-
-	/**
-	 * Sets a list of files that will be included by Mouf, relative to the root of the project.
-	 *
-	 * @param array<string> $files
-	 * @param array<string, string> $autoloads List of files in index and autoload value
-	 */
-	public function setRegisteredComponentFiles($files, $autoloads = array()) {
-
-		$dirMoufFile = dirname(dirname(__FILE__)."/".$this->requireFileName);
-		$fulldir = realpath(dirname(__FILE__)."/../");
-		$fulldir = str_replace("\\", "/", $fulldir);
-		// Depending on the version of PHP, we might or might not have a trailing /. Let's add it.
-		if (substr($fulldir, -1) != "/" ) {
-			$fulldir .= "/";
-		}
-
-		$registeredComponentsFile = array();
-		foreach ($files as $file) {
-			$fileFull = $fulldir.$file;
-			$path = $this->createRelativePath($dirMoufFile, $fileFull);
-			$autoload = 'auto';
-			if(isset($autoloads[$file]))
-				$autoload = $autoloads[$file];
-			$registeredComponentsFile[$path] = array('name' => $path, 'autoload' => $autoload);
-		}
-
-		$this->registeredComponents = $registeredComponentsFile;
-	}
-
-	/**
-	 * Adds one file that will be included by Mouf, relative to the root of the project.
-	 *
-	 * @param string $file
-	 * @param string $autoload Autoload parameter, auto by default
-	 */
-	public function addRegisteredComponentFile($file, $autoload = 'auto') {
-		$dirMoufFile = dirname(dirname(__FILE__)."/".$this->requireFileName);
-		$fulldir = realpath(dirname(__FILE__)."/../");
-		$fulldir = str_replace("\\", "/", $fulldir);
-		// Depending on the version of PHP, we might or might not have a trailing /. Let's add it.
-		if (substr($fulldir, -1) != "/" ) {
-			$fulldir .= "/";
-		}
-
-		$fileFull = $fulldir.$file;
-		if (array_key_exists($file, $this->registeredComponents) === false) {
-			$path = $this->createRelativePath($dirMoufFile, $fileFull);
-			$this->registeredComponents[$path] = array('name' => $path, 'autoload' => $autoload);
-		}
-	}
-
-	/**
-	 * Creates a relative path from the directory $fromDirectory (current dir) to the file $toFile.
-	 *
-	 * @param unknown_type $fromDirectory
-	 * @param unknown_type $toFile
-	 */
-	private function createRelativePath($fromDirectory, $toFile) {
-
-		$realPathFromDir = str_replace("\\", "/", realpath($fromDirectory)) ;
-		$realPathToFile = str_replace("\\", "/", realpath($toFile));
-		// Let's find the common root by going through each directory.
-
-		$realPathFromDirArray = explode("/", $realPathFromDir);
-		$realPathToFileArray = explode("/", $realPathToFile);
-
-		while (!empty($realPathFromDirArray) && !empty($realPathToFileArray) && $realPathFromDirArray[0] == $realPathToFileArray[0]) {
-			array_shift($realPathFromDirArray);
-			array_shift($realPathToFileArray);
-		}
-
-		$nbDirsRemaining = count($realPathFromDirArray);
-
-
-		$path = str_repeat("../", $nbDirsRemaining).implode("/", $realPathToFileArray);
-		return $path;
 	}
 
 	/**

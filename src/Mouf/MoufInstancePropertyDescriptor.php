@@ -10,7 +10,7 @@
 namespace Mouf;
 
 /**
- * This object represent an Mouf property of some instance, declared in the Mouf framework.
+ * This object represent a Mouf property of some instance, declared in the Mouf framework.
  * TODO: split this class in 3 subclasses (and do not forget to migrate the unit tests)
  * 
  * @author David Negrier
@@ -318,7 +318,7 @@ class MoufInstancePropertyDescriptor {
 	
 	/**
 	 * Sets the parameter "origin" (where the value that feeds the parameter comes from).
-	 * Can be one of "string|config|request|session"
+	 * Can be one of "string|config|request|session|php"
 	 *
 	 * @param string $origin
 	 * @throws MoufException

@@ -5,7 +5,6 @@ use Mouf\Reflection\MoufReflectionClass;
 
 use Mouf\TestClasses\TestClass1;
 
-require __DIR__.'/../../vendor/autoload.php';
 
 class MoufManagerTest extends \PHPUnit_Framework_TestCase {
 	
@@ -27,6 +26,18 @@ class MoufManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf("Mouf\TestClasses\TestClass2", $instance->getConstructorParamC());
 		$this->assertEquals($instance->getConstructorParamB(), $instance->getConstructorParamC());
 	}
+
+	public function testCallbackInjection() {
+		$container = new MoufManager();
+	
+		$instanceDescriptor = $container->createInstance("Mouf\TestClasses\TestClass1");
+		$instanceDescriptor->getProperty("constructorParamA")->setOrigin('php')->setValue('return [];');
+		$instanceDescriptor->setName("testClass1");
+	
+		// Note: we cannot retrieve the instance without first saving and loading the file.
+		// This is not an issue.
+	}
+	
 	
 	static function main() {
 		$suite = new \PHPUnit_Framework_TestSuite( __CLASS__);

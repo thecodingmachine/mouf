@@ -9,9 +9,8 @@ use Mouf\Reflection\MoufReflectionClass;
 
 use Mouf\TestClasses\TestClass1;
 
-require __DIR__.'/../../../vendor/autoload.php';
-require __DIR__.'/../TestClasses/TestClassA.php';
-require __DIR__.'/../TestClasses/TestSubClassA.php';
+require_once __DIR__.'/../TestClasses/TestClassA.php';
+require_once __DIR__.'/../TestClasses/TestSubClassA.php';
 
 class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
 	
