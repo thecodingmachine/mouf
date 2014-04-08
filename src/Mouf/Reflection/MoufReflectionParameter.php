@@ -184,7 +184,14 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     	$result['name'] = $this->getName();
     	$result['hasDefault'] = $this->isDefaultValueAvailable();
     	if ($result['hasDefault']) {
+    		// If the default value is an undefined constant, a Notice message will be triggered. Let's catch it.
+    		ob_start();
     		$result['default'] = $this->getDefaultValue();
+    		$possibleErrors = ob_get_clean();
+    		if ($possibleErrors) {
+    			$result['classinerror'] = $possibleErrors;
+    		}
+    		return $result;
     	}
     	$result['isArray'] = $this->isArray();
     
