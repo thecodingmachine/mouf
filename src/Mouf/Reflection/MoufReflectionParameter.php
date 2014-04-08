@@ -183,7 +183,6 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     	$result = array();
     	$result['name'] = $this->getName();
     	$result['hasDefault'] = $this->isDefaultValueAvailable();
-    	
     	try {
     		if ($result['hasDefault']) {
     			// In some cases, the call to getDefaultValue can log NOTICES
