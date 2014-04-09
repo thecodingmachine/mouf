@@ -44,6 +44,7 @@ class MoufManager implements ContainerInterface {
 	 * @var MoufManager
 	 */
 	private static $hiddenInstance;
+	
 
 	/**
 	 * Returns the default instance of the MoufManager.
@@ -161,7 +162,7 @@ class MoufManager implements ContainerInterface {
 	 * 
 	 * @var array
 	 */
-	private $closures = array();
+	private $closures;
 
 	/**
 	 * A list of components name that are external.
@@ -236,6 +237,13 @@ class MoufManager implements ContainerInterface {
 	 * @var string
 	 */
 	private $mainClassName;
+	
+	/**
+	 * The instance of the main class
+	 *
+	 * @var string
+	 */
+	private $mainClass;
 
 	/**
 	 * The path to theMouf directory from the mouf file.
@@ -332,16 +340,6 @@ class MoufManager implements ContainerInterface {
 		$this->declaredInstances = array_merge($this->declaredInstances, $definition);
 	}
 	
-	/**
-	 * Sets the array of closures.
-	 * This is used internally to load the state of Mouf very quickly.
-	 * Do not use directly.
-	 * 
-	 * @param array $closures
-	 */
-	public function setClosures(array $closures) {
-		$this->closures = $closures;
-	}
 
 	/**
 	 * Declares a new component.
@@ -568,6 +566,17 @@ class MoufManager implements ContainerInterface {
 		return $this->declaredInstances[$instanceName]['class'];
 	}
 
+	private function getClosures() { 
+		if ($this->mainClass === null){
+			$this->mainClass = new $this->mainClassName();
+		}
+		if ($this->closures === null){
+			$this->closures = $this->mainClass->getClosures();
+		}
+		
+		return $this->closures;
+	}
+	
 	/**
 	 * Instantiate the object (and any object needed on the way)
 	 *
@@ -605,7 +614,8 @@ class MoufManager implements ContainerInterface {
 									$constructorParameters[] = constant($value);
 									break;
 								case "php":
-									$closure = $this->closures[$instanceName]['constructor'][$key];
+									$closures = $this->getClosures();
+									$closure = $closures[$instanceName]['constructor'][$key];
 									$constructorParameters[] = $closure($this);
 									break;
 								default:
@@ -656,8 +666,9 @@ class MoufManager implements ContainerInterface {
 							$object->$key = constant($valueDef["value"]);
 							break;
 						case "php":
-							$closure = $this->closures[$instanceName]['fieldProperties'][$key];
-							$closure->bindTo($object);
+							$closures = $this->getClosures();
+							$closure = $closures[$instanceName]['fieldProperties'][$key];
+							$closure = $closure->bindTo($object);
 							$object->$key = $closure($this);
 							break;
 						default:
@@ -683,8 +694,9 @@ class MoufManager implements ContainerInterface {
 							$object->$key(constant($valueDef["value"]));
 							break;
 						case "php":
-							$closure = $this->closures[$instanceName]['setterProperties'][$key];
-							$closure->bindTo($object);
+							$closures = $this->getClosures();
+							$closure = $closures[$instanceName]['setterProperties'][$key];
+							$closure = $closure->bindTo($object);
 							$object->$key($closure($this));
 							break;
 						default:
@@ -1228,8 +1240,23 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "\$moufManager->addComponentInstances(".var_export($internalDeclaredInstances, true).");\n");
 		fwrite($fp, "\n");
 
+		fwrite($fp, "\n");
+
+		fwrite($fp, "unset(\$moufManager);\n");
+		fwrite($fp, "\n");
+
+		fwrite($fp, "/**
+ * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
+ * This object can be used to get the objects manage by MOUF.
+ *
+ */
+class ".$this->mainClassName." {
+	");
+		
 		// Now, let's export the closures!
-		fwrite($fp, "\$moufManager->setClosures([\n");
+		/***** closures Start ******/
+		fwrite($fp, "public function getClosures() {
+		return [\n");
 		
 		$targetArray = [];
 		foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
@@ -1271,52 +1298,43 @@ class MoufManager implements ContainerInterface {
 			}
 		}
 		foreach ($targetArray as $instanceName=>$instanceDesc) {
-			fwrite($fp, "	".var_export($instanceName, true)." => [\n");
+			fwrite($fp, "			".var_export($instanceName, true)." => [\n");
 			if (isset($instanceDesc['constructor'])) {
-				fwrite($fp, "		'constructor' => [\n");
+				fwrite($fp, "				'constructor' => [\n");
 				foreach ($instanceDesc['constructor'] as $key=>$code) {
-					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
 					fwrite($fp, $code);
-					fwrite($fp, "\n			},\n");
+					fwrite($fp, "\n					},\n");
 				}
-				fwrite($fp, "		],\n");
+				fwrite($fp, "				],\n");
 			}
 			if (isset($instanceDesc['fieldProperties'])) {
-				fwrite($fp, "		'fieldProperties' => [\n");
+				fwrite($fp, "				'fieldProperties' => [\n");
 				foreach ($instanceDesc['fieldProperties'] as $key=>$code) {
-					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
 					fwrite($fp, $code);
-					fwrite($fp, "\n			},\n");
+					fwrite($fp, "\n					},\n");
 				}
-				fwrite($fp, "		],\n");
+				fwrite($fp, "				],\n");
 			}
 			if (isset($instanceDesc['setterProperties'])) {
-				fwrite($fp, "		'setterProperties' => [\n");
+				fwrite($fp, "				'setterProperties' => [\n");
 				foreach ($instanceDesc['setterProperties'] as $key=>$code) {
-					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
 					fwrite($fp, $code);
-					fwrite($fp, "\n			},\n");
+					fwrite($fp, "\n					},\n");
 				}
-				fwrite($fp, "		],\n");
+				fwrite($fp, "				],\n");
 			}
-			fwrite($fp, "	],\n");
+			fwrite($fp, "			],\n");
 		}
 		
 		// TODO: filter the type ("php"). get an array that contains only closures. Map on it?
-		fwrite($fp, "]);\n");
+		fwrite($fp, "		];
+	}\n");
+		/***** closures end ******/
 		
-		fwrite($fp, "\n");
-
-		fwrite($fp, "unset(\$moufManager);\n");
-		fwrite($fp, "\n");
-
-		fwrite($fp, "/**
-	* This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
-	* This object can be used to get the objects manage by MOUF.
-	*
-	*/
-	class ".$this->mainClassName." {
-	");
+		
 		$getters = array();
 		foreach ($this->declaredInstances as $name=>$classDesc) {
 			if (!isset($classDesc['class'])) {
