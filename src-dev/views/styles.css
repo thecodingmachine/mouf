@@ -543,3 +543,6 @@ label .type {
 	content: none;	
 }
 
+pre.error {
+	border-color: red;
+}]

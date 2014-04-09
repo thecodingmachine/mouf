@@ -4,7 +4,8 @@ namespace Mouf\Validator;
 use Mouf\MoufManager;
 
 /**
- * Validates that all instances are assigned to a class that does exist, and that the compulory constructor params are set.
+ * Validates that all instances are assigned to a class that does exist, that the compulory constructor params are set
+ * and that the callback code is valid.
  */
 class InstancesClassValidator implements MoufStaticValidatorInterface {
 

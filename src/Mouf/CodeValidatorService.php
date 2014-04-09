@@ -9,6 +9,7 @@
  */
 namespace Mouf;
 
+use PhpParser\Error;
 // Fix autoloading that is broken for some reason...
 require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
 
@@ -29,11 +30,12 @@ class CodeValidatorService {
 	
 		$parser = new \PhpParser\Parser(new \PhpParser\Lexer());
 	
-		//try {
 		$stmts = $parser->parse($code);
-		/*} catch (PhpParser\Error $e) {
-		 echo 'Parse Error: ', $e->getMessage();
-		}*/
+
+		// If we are here, the code is correct.
+		// Let's add a last check: whether there is a "return" keyword or not.
+		if (stripos($code, "return") === false) {
+			throw new Error("Missing 'return' keyword.", count(explode("\n", $codeString)));
+		}
 	}
 }
-?>

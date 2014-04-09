@@ -770,8 +770,17 @@ var MoufDefaultRenderer = (function () {
 			return field;
 		}
 		var getPHPCodeField = function() {
-			var field = jQuery("<div><pre><code></code></pre><button class='btn btn-mini btn-danger' rel='tooltip' title='Edit'>Edit</button></div>");
-			field.find("code").text(moufInstanceProperty.getValue());
+			var code = moufInstanceProperty.getValue();
+			var field = jQuery("<div><pre><code></code></pre><div class='messageHolder'></div><button class='btn btn-mini btn-danger' rel='tooltip' title='Edit'>Edit</button></div>");
+			field.find("code").text(code);
+			// Let's validate this PHP code.
+			MoufUI.validatePHPCode(code).done(function(result) {
+				if (result.status == 'fail') {
+					field.find("pre").addClass("error");
+					jQuery("<p/>").addClass('alert alert-error').text(result.data.message + " on line " + result.data.line).appendTo(field.find('.messageHolder'));
+				}
+			});
+			
 			field.find("button").click(function() {
 				MoufUI.inputPHPCode(moufInstanceProperty.getValue(), function(code) {
 					moufInstanceProperty.setValue(code, 'php');

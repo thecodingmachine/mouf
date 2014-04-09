@@ -14,6 +14,7 @@ use Mouf\Reflection\MoufReflectionParameter;
 use Mouf\Reflection\MoufReflectionClass;
 
 use Mouf\Reflection\MoufXmlReflectionClass;
+use PhpParser\Error;
 
 /**
  * This object represent an instance declared in the Mouf framework.
@@ -277,7 +278,7 @@ class MoufInstanceDescriptor {
 	}
 
 	/**
-	 * Analyses the instance. Returns array() if everything is alright, are an array of error messages.
+	 * Analyses the instance. Returns array() if everything is alright, or an array of error messages.
 	 * Analysis performed:
 	 * - The compulsory fields in the constructor are indeed filled.
 	 * 
@@ -315,10 +316,61 @@ class MoufInstanceDescriptor {
 						}
 					}
 				}
-				
+				if ($this->moufManager->getParameterTypeForConstructor($this->getIdentifierName(), $i) == 'php') {
+					$name = $this->getIdentifierName();
+					// Ok, we need to check the code.
+					$code = $this->moufManager->getParameterForConstructor($name, $i);
+					try {
+						CodeValidatorService::validateCode($code);
+					} catch (Error $e) {
+						if ($this->isAnonymous()) {
+							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+						}
+						$errors[] = "In instance <em>".$name."</em>, the constructor
+								parameter '".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+					}
+				}		
 				$i++;
 			}
 		}
+		
+		foreach ($classDescriptor->getInjectablePropertiesByPublicProperty() as $propertyName=>$moufProperty) {
+			$property = $this->getPublicFieldProperty($propertyName);
+			if ($property->getOrigin() == 'php') {
+				$code = $property->getValue();
+				try {
+					CodeValidatorService::validateCode($code);
+				} catch (Error $e) {
+					$name = $this->getIdentifierName();
+					if ($this->isAnonymous()) {
+						$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+					}
+					$errors[] = "In instance <em>".$name."</em>, the public property
+								'".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+												<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+				}
+			}
+		}
+		
+		foreach ($classDescriptor->getInjectablePropertiesBySetter() as $propertyName=>$moufProperty) {
+			$property = $this->getSetterProperty($propertyName);
+			if ($property->getOrigin() == 'php') {
+				$code = $property->getValue();
+				try {
+					CodeValidatorService::validateCode($code);
+				} catch (Error $e) {
+					$name = $this->getIdentifierName();
+					if ($this->isAnonymous()) {
+						$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+					}
+					$errors[] = "In instance <em>".$name."</em>, the setter
+								'".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+				}
+			}
+		}
+		
 		return $errors;
 	}
 }
