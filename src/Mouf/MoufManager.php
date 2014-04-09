@@ -605,7 +605,8 @@ class MoufManager implements ContainerInterface {
 									$constructorParameters[] = constant($value);
 									break;
 								case "php":
-									$constructorParameters[] = $this->closures[$instanceName]['constructor'][$key]($this);
+									$closure = $this->closures[$instanceName]['constructor'][$key];
+									$constructorParameters[] = $closure($this);
 									break;
 								default:
 									throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
@@ -655,7 +656,9 @@ class MoufManager implements ContainerInterface {
 							$object->$key = constant($valueDef["value"]);
 							break;
 						case "php":
-							$object->$key = $this->closures[$instanceName]['fieldProperties'][$key]($this);
+							$closure = $this->closures[$instanceName]['fieldProperties'][$key];
+							$closure->bindTo($object);
+							$object->$key = $closure($this);
 							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
@@ -680,7 +683,9 @@ class MoufManager implements ContainerInterface {
 							$object->$key(constant($valueDef["value"]));
 							break;
 						case "php":
-							$object->$key($this->closures[$instanceName]['setterProperties'][$key]($this));
+							$closure = $this->closures[$instanceName]['setterProperties'][$key];
+							$closure->bindTo($object);
+							$object->$key($closure($this));
 							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
@@ -1255,6 +1260,24 @@ class MoufManager implements ContainerInterface {
 			if (isset($instanceDesc['constructor'])) {
 				fwrite($fp, "		'constructor' => [\n");
 				foreach ($instanceDesc['constructor'] as $key=>$code) {
+					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, $code);
+					fwrite($fp, "\n			},\n");
+				}
+				fwrite($fp, "		],\n");
+			}
+			if (isset($instanceDesc['fieldProperties'])) {
+				fwrite($fp, "		'fieldProperties' => [\n");
+				foreach ($instanceDesc['fieldProperties'] as $key=>$code) {
+					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
+					fwrite($fp, $code);
+					fwrite($fp, "\n			},\n");
+				}
+				fwrite($fp, "		],\n");
+			}
+			if (isset($instanceDesc['setterProperties'])) {
+				fwrite($fp, "		'setterProperties' => [\n");
+				foreach ($instanceDesc['setterProperties'] as $key=>$code) {
 					fwrite($fp, "			".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
 					fwrite($fp, $code);
 					fwrite($fp, "\n			},\n");
