@@ -1231,21 +1231,36 @@ class MoufManager implements ContainerInterface {
 			if (isset($instanceDesc['constructor'])) {
 				foreach ($instanceDesc['constructor'] as $key=>$param) {
 					if ($param['type'] == 'php') {
-						$targetArray[$instanceName]['constructor'][$key] = $param['value'];
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['constructor'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', constructor argument '$key': ".$ex->getMessage());
+						}
 					}
 				}
 			}
 			if (isset($instanceDesc['fieldProperties'])) {
 				foreach ($instanceDesc['fieldProperties'] as $key=>$param) {
 					if ($param['type'] == 'php') {
-						$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', public property '$key': ".$ex->getMessage());
+						}
 					}
 				}
 			}
 			if (isset($instanceDesc['setterProperties'])) {
 				foreach ($instanceDesc['setterProperties'] as $key=>$param) {
 					if ($param['type'] == 'php') {
-						$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', setter '$key': ".$ex->getMessage());
+						}
 					}
 				}
 			}

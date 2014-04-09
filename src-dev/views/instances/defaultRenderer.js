@@ -692,7 +692,7 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		// Let's check if we can drop something in the "null" or "default" buttons of this property.
-		var isDroppable = isObjectType(currentType) || (isArrayOfObjectType(currentType) && !currentType.isAssociativeArray());
+		var isDroppable = moufInstanceProperty.getOrigin() != "php" && (isObjectType(currentType) || (isArrayOfObjectType(currentType) && !currentType.isAssociativeArray()));
 		var isPartOfNonAssociativeObjectArray = false;
 		// If this is a sub instance property
 		if (moufInstanceProperty.getParent) {
@@ -769,12 +769,28 @@ var MoufDefaultRenderer = (function () {
 			});
 			return field;
 		}
+		var getPHPCodeField = function() {
+			var field = jQuery("<div><pre><code></code></pre><button class='btn btn-mini btn-danger' rel='tooltip' title='Edit'>Edit</button></div>");
+			field.find("code").text(moufInstanceProperty.getValue());
+			field.find("button").click(function() {
+				MoufUI.inputPHPCode(moufInstanceProperty.getValue(), function(code) {
+					moufInstanceProperty.setValue(code, 'php');
+
+					fieldInnerWrapper.empty();
+					var field = getPHPCodeField();
+					field.appendTo(fieldInnerWrapper);
+				}, MoufInstanceManager.selfEdit);
+			});
+			return field;
+		}
 		
 		var isSubProperty = moufInstanceProperty instanceof MoufInstanceSubProperty;
 		
 		var field;
 		if (moufInstanceProperty.getOrigin() == 'config') {
 			field = getConfigConstantField();
+		} else if (moufInstanceProperty.getOrigin() == 'php') {
+			field = getPHPCodeField();
 		} else if (!isSubProperty && !moufInstanceProperty.isSet()) {
 			field = getNotSetField();
 		} else if (moufInstanceProperty.getValue() === null) {
@@ -811,6 +827,18 @@ var MoufDefaultRenderer = (function () {
 
 						fieldInnerWrapper.empty();
 						var field = getConfigConstantField();
+						field.appendTo(fieldInnerWrapper);
+					}, MoufInstanceManager.selfEdit);
+				}
+			});
+			menuDescriptor.push({
+				label: "Use PHP code",
+				click: function() {
+					MoufUI.inputPHPCode(moufInstanceProperty.getValue(), function(code) {
+						moufInstanceProperty.setValue(code, 'php');
+
+						fieldInnerWrapper.empty();
+						var field = getPHPCodeField();
 						field.appendTo(fieldInnerWrapper);
 					}, MoufInstanceManager.selfEdit);
 				}
@@ -1010,7 +1038,7 @@ var MoufDefaultRenderer = (function () {
 											renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
 										}
 										
-										if (currentType != null) {
+										if (currentType != null || moufInstanceProperty.getOrigin()=='php') {
 											var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
 											renderField(moufInstanceProperty).appendTo(fieldContainer);
 										} else {
@@ -1136,7 +1164,7 @@ var MoufDefaultRenderer = (function () {
 									renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
 								}
 								
-								if (currentType != null) {
+								if (currentType != null || moufInstanceProperty.getOrigin()=='php') {
 									var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
 									renderField(moufInstanceProperty).appendTo(fieldContainer);
 								} else {

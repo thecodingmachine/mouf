@@ -985,7 +985,7 @@ MoufInstanceProperty.prototype.setValue = function(value, origin) {
 	this.json['isset'] = true;
 
 	//var moufProperty = this.getMoufProperty();
-	if (this.type.isArray()) {
+	if (this.type && this.type.isArray()) {
 		if (value === null) {
 			// Let's empty all the elements:
 			this.moufInstanceSubProperties = [];

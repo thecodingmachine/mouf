@@ -87,8 +87,6 @@ foreach ($changesList as $command) {
 		case "setProperty":
 			$instanceName = $command['instance'];
 			$propertyName = $command['property'];
-			$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
-			$type = $types[0];
 			$source = $command['source'];
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
 			
@@ -112,11 +110,17 @@ foreach ($changesList as $command) {
 			if ($command['origin'] == 'config') {
 				$property->setOrigin('config');
 				$property->setValue($command['value']);
+			} elseif ($command['origin'] == 'php') {
+				$property->setOrigin('php');
+				$property->setValue($command['value']);
 			} else if ($command['isset'] == "false") {
 				// Let's unset completely the property
 				$property->setOrigin('string');
 				$property->unsetValue();
 			} else {
+				$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
+				$type = $types[0];
+				
 				$property->setOrigin('string');
 				// Let's set the value
 				if ($command['isNull'] == "true") {

@@ -603,6 +603,46 @@ var MoufUI = (function () {
 		},
 		
 		/**
+		 * Displays a popup to input some PHP code.
+		 */
+		inputPHPCode: function(code, callback, selfedit) {
+			var modal = MoufUI.openPopup("PHP code");
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
+			
+			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
+			jQuery('<code>function(ContainerInterop $container) {</code>')
+				.appendTo(formElem);
+		
+			jQuery('<div id="acephpeditor">').text(code)
+				.appendTo(formElem);
+			jQuery('<code>}</code>')
+				.appendTo(formElem);
+			
+			jQuery("<p>Your code should <strong>return</strong> the value that will be stored in the property. " +
+					"You can access/return other instances using <code>$container->get('otherInstance')</code>.</p>")
+			.appendTo(formElem);
+			
+			var editor = null;
+			setTimeout(function() {
+				editor = ace.edit("acephpeditor");
+				editor.setOptions({
+				    maxLines: 50
+				});
+			    //editor.setTheme("ace/theme/monokai");
+				editor.setTheme("ace/theme/eclipse");
+			    editor.getSession().setMode({path:"ace/mode/php", inline:true});
+			}, 0);
+			
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
+			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Cancel").appendTo(modalFooter);
+			jQuery("<button/>").addClass("btn btn-primary").attr("data-dismiss", "modal").text("Ok").click(function() {
+				callback(editor.getValue());
+			}).appendTo(modalFooter);
+		},
+		
+		/**
 		 * Displays a confirmation popup to delete an instance.
 		 * The MoufInstance object must be passed in parameter.
 		 */
