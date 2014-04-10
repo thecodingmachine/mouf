@@ -145,6 +145,39 @@ class MoufUtils {
 	}
 	
 	/**
+	 * Returns the list of all autoloaded namespaces:
+	 * 
+	 * [
+	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
+	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
+	 * ]
+	 * 
+	 * @return array<int, array<string, string>>
+	 */
+	public static function getAutoloadNamespaces2() {
+		// FIXME: adapt this to PSR-4!
+		$composer = json_decode(file_get_contents(__DIR__."/../../../../../composer.json"), true);
+		
+		$psr = isset($composer["autoload"]["psr-0"]) ? "0" : (isset($composer["autoload"]["psr-4"]) ? "4" : null);
+		if ($psr !== null) {
+			$autoload = $composer["autoload"]["psr-$psr"];
+		}
+		else {
+			return null;
+		}
+		
+		if (self::isAssoc($autoload)) {
+			$ret = self::unfactorizeAutoload(array($autoload));
+		} else {
+			$ret = self::unfactorizeAutoload($autoload);
+		}
+		
+		$ret['psr'] = $psr;
+		
+		return $ret;
+	}
+	
+	/**
 	 * Takes in parameter an array like 
 	 * [{ "Mouf": "src/" }] or [{ "Mouf": ["src/", "src2/"] }] .
 	 * returns
