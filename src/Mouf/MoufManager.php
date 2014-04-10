@@ -703,8 +703,8 @@ class MoufManager implements ContainerInterface {
 							break;
 						case "php":
 							$closures = $this->getClosures();
+							$closure = $closures[$instanceName]['setterProperties'][$key];
 							if ($closure instanceof \Closure) {
-								$closure = $closures[$instanceName]['setterProperties'][$key];
 								$closure = $closure->bindTo($object);
 							} else {
 								throw new MoufException("Parse error in the callback of '$instanceName' setter '$key': ".$closure);
