@@ -603,6 +603,22 @@ var MoufUI = (function () {
 		},
 		
 		/**
+		 * This function returns a closure that will be used to validate PHP code inputed by the user.
+		 * The returned value can be:
+		 * { "status": "success", "data": {} }
+		 * or:
+		 * { "status": "fail", "data": { "line": xxx, "message": "yyy" } }
+		 * 
+		 */
+		validatePHPCode: function(code) {
+			return jQuery.getJSON(MoufInstanceManager.rootUrl+"src/direct/validate_code.php",
+					{encode:"json", selfedit:MoufInstanceManager.selfEdit?"true":"false", code: code})
+			.fail(function(msg) {
+				addMessage("<pre>"+msg.responseText+"</pre>", "error");
+			});
+		},
+		
+		/**
 		 * Displays a popup to input some PHP code.
 		 */
 		inputPHPCode: function(code, callback, selfedit) {
@@ -614,6 +630,9 @@ var MoufUI = (function () {
 			jQuery('<code>function(ContainerInterop $container) {</code>')
 				.appendTo(formElem);
 		
+			if (code == null) {
+				code = "";
+			}
 			jQuery('<div id="acephpeditor">').text(code)
 				.appendTo(formElem);
 			jQuery('<code>}</code>')
@@ -632,6 +651,22 @@ var MoufUI = (function () {
 			    //editor.setTheme("ace/theme/monokai");
 				editor.setTheme("ace/theme/eclipse");
 			    editor.getSession().setMode({path:"ace/mode/php", inline:true});
+			    
+			    editor.commands.addCommand({
+			    	name: 'saveFile',
+			    	bindKey: {
+				    	win: 'Ctrl-S',
+				    	mac: 'Command-S',
+				    	sender: 'editor|cli'
+			    	},
+			    	exec: function(env, args, request) {
+			    		callback(editor.getValue());
+			    	}
+			    });
+			    editor.focus();
+			    /*editor.on('change', function() {
+			    	console.log('change');
+			    });*/
 			}, 0);
 			
 			

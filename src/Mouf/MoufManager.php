@@ -616,7 +616,11 @@ class MoufManager implements ContainerInterface {
 								case "php":
 									$closures = $this->getClosures();
 									$closure = $closures[$instanceName]['constructor'][$key];
-									$constructorParameters[] = $closure($this);
+									if ($closure instanceof \Closure) {
+										$constructorParameters[] = $closure($this);
+									} else {
+										throw new MoufException("Parse error in the callback of '$instanceName' constructor argument '$key': ".$closure);
+									}
 									break;
 								default:
 									throw new MoufException("Invalid type '".$constructorParameterDefinition["type"]."' for object instance '$instanceName'.");
@@ -668,8 +672,12 @@ class MoufManager implements ContainerInterface {
 						case "php":
 							$closures = $this->getClosures();
 							$closure = $closures[$instanceName]['fieldProperties'][$key];
-							$closure = $closure->bindTo($object);
-							$object->$key = $closure($this);
+							if ($closure instanceof \Closure) {
+								$closure = $closure->bindTo($object);
+								$object->$key = $closure($this);
+							} else {
+								throw new MoufException("Parse error in the callback of '$instanceName' property '$key': ".$closure);
+							}
 							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
@@ -695,8 +703,12 @@ class MoufManager implements ContainerInterface {
 							break;
 						case "php":
 							$closures = $this->getClosures();
-							$closure = $closures[$instanceName]['setterProperties'][$key];
-							$closure = $closure->bindTo($object);
+							if ($closure instanceof \Closure) {
+								$closure = $closures[$instanceName]['setterProperties'][$key];
+								$closure = $closure->bindTo($object);
+							} else {
+								throw new MoufException("Parse error in the callback of '$instanceName' setter '$key': ".$closure);
+							}
 							$object->$key($closure($this));
 							break;
 						default:
@@ -999,7 +1011,7 @@ class MoufManager implements ContainerInterface {
 	}
 
 	/**
-	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session" or "request")
+	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session", "request" or "php")
 	 *
 	 * @param string $instanceName
 	 * @param int $index
@@ -1268,6 +1280,7 @@ class ".$this->mainClassName." {
 							$targetArray[$instanceName]['constructor'][$key] = $param['value'];
 						} catch (\PhpParser\Error $ex) {
 							error_log("Error in callback declared code for instance '$instanceName', constructor argument '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['constructor'][$key] = $ex;
 						}
 					}
 				}
@@ -1280,6 +1293,7 @@ class ".$this->mainClassName." {
 							$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
 						} catch (\PhpParser\Error $ex) {
 							error_log("Error in callback declared code for instance '$instanceName', public property '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
 						}
 					}
 				}
@@ -1292,6 +1306,7 @@ class ".$this->mainClassName." {
 							$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
 						} catch (\PhpParser\Error $ex) {
 							error_log("Error in callback declared code for instance '$instanceName', setter '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
 						}
 					}
 				}
@@ -1302,27 +1317,45 @@ class ".$this->mainClassName." {
 			if (isset($instanceDesc['constructor'])) {
 				fwrite($fp, "				'constructor' => [\n");
 				foreach ($instanceDesc['constructor'] as $key=>$code) {
-					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
-					fwrite($fp, $code);
-					fwrite($fp, "\n					},\n");
+					fwrite($fp, "					".var_export($key, true)." => ");
+					if (!$code instanceof \PhpParser\Error) {
+						fwrite($fp, "function(ContainerInterface \$container) {\n						");
+						fwrite($fp, $code);
+						fwrite($fp, "\n					},\n");
+					} else {
+						// If the code is an exception we put the error message instead of a callback in the closures array
+						fwrite($fp, var_export($code->getMessage(), true).",\n");
+					}
 				}
 				fwrite($fp, "				],\n");
 			}
 			if (isset($instanceDesc['fieldProperties'])) {
 				fwrite($fp, "				'fieldProperties' => [\n");
 				foreach ($instanceDesc['fieldProperties'] as $key=>$code) {
-					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
-					fwrite($fp, $code);
-					fwrite($fp, "\n					},\n");
+					fwrite($fp, "					".var_export($key, true)." => ");
+					if (!$code instanceof \PhpParser\Error) {
+						fwrite($fp, "function(ContainerInterface \$container) {\n						");
+						fwrite($fp, $code);
+						fwrite($fp, "\n					},\n");
+					} else {
+						// If the code is an exception we put the error message instead of a callback in the closures array
+						fwrite($fp, var_export($code->getMessage(), true).",\n");
+					}
 				}
 				fwrite($fp, "				],\n");
 			}
 			if (isset($instanceDesc['setterProperties'])) {
 				fwrite($fp, "				'setterProperties' => [\n");
 				foreach ($instanceDesc['setterProperties'] as $key=>$code) {
-					fwrite($fp, "					".var_export($key, true)." => function(ContainerInterface \$container) {\n				");
-					fwrite($fp, $code);
-					fwrite($fp, "\n					},\n");
+					fwrite($fp, "					".var_export($key, true)." => ");
+					if (!$code instanceof \PhpParser\Error) {
+						fwrite($fp, "function(ContainerInterface \$container) {\n						");
+						fwrite($fp, $code);
+						fwrite($fp, "\n					},\n");
+					} else {
+						// If the code is an exception we put the error message instead of a callback in the closures array
+						fwrite($fp, var_export($code->getMessage(), true).",\n");
+					}
 				}
 				fwrite($fp, "				],\n");
 			}
