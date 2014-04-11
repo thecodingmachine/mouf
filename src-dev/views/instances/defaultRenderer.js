@@ -1098,7 +1098,9 @@ MoufDefaultRenderer = (function () {
 						}
 						title.appendTo(wrapper);
 						if (className) {
-							jQuery("<small/>").html(' from class "'+MoufUI.getHtmlClassName(instance.getClassName())+'"').appendTo(title);
+							jQuery("<small class='classNameHolder' />").html(' from class "'+MoufUI.getHtmlClassName(instance.getClassName())+'"').appendTo(title);
+						} else {
+							jQuery("<small class='classNameHolder' />").appendTo(title);
 						}
 						
 						var btnToolbar = jQuery('<div class="btn-toolbar"/>').appendTo(wrapper);
@@ -1247,9 +1249,23 @@ MoufDefaultRenderer = (function () {
 								propertiesList.appendTo(containerForm);
 							}
 						} else {
+							var validateCode = function(code) {
+								// After save, let's validate the code:
+								CodeValidator.validate(code).then(function(result) {
+									jQuery('.classNameHolder').text(' from class "'+MoufUI.getHtmlClassName(result)+'"');
+									jQuery('.phperrormessage').hide();
+								}).onError(function(result) {
+									jQuery('.phperrormessage').html(result);
+									jQuery('.phperrormessage').show();
+									jQuery('.classNameHolder').text("");
+								});
+							}
+							
 							var save = function() {
 								var code = editor.getValue();
-								instance.setCode(code);
+								instance.setCode(code, function() {
+									validateCode(code);
+								});
 							}
 							
 							// We are in PHP mode
@@ -1257,7 +1273,10 @@ MoufDefaultRenderer = (function () {
 							if (code == null) {
 								code = "";
 							}
+							validateCode(code);
 							
+							jQuery('<div class="phperrormessage alert" style="display: none" />')
+								.appendTo(containerForm);
 							jQuery('<code>function(ContainerInterop $container) {</code>')
 								.appendTo(containerForm);
 							jQuery('<div id="acephpeditor">').text(code)

@@ -550,3 +550,7 @@ pre.error {
 span.phperror {
 	background-color: #FF9999;
 }
+
+.alert .xdebug-error {
+	color: black;	
+}

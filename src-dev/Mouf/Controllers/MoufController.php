@@ -540,13 +540,29 @@ class MoufController extends Controller implements MoufSearchable {
 		$this->template->toHtml();
 	}
 	
+	/**
+	 * Performs the action of creating a new instance.
+	 *
+	 * @Action
+	 * @Logged
+	 */
 	public function createInstanceByCode($selfedit = "false", $instanceName=null) {
 		if (!$instanceName) {
 			$this->newInstanceByCallback();
 			return;
 		}
 		
-		// TODO
+		$this->selfedit = $selfedit;
+		
+		if ($selfedit == "true") {
+			$this->moufManager = MoufManager::getMoufManager();
+		} else {
+			$this->moufManager = MoufManager::getMoufManagerHiddenInstance();
+		}
+		
+		$this->moufManager->createInstanceByCode()->setName($instanceName);
+		$this->moufManager->rewriteMouf();
+		header("Location: ".MOUF_URL."ajaxinstance/?name=".urlencode($instanceName)."&selfedit=".$selfedit);
 	}
 }
 ?>

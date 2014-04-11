@@ -812,11 +812,11 @@ MoufInstance.prototype.getCode = function() {
 /**
  * Sets PHP code associated to the instance (if the instance is declared by code).
  */
-MoufInstance.prototype.setCode = function(code) {
+MoufInstance.prototype.setCode = function(code, callback) {
 	this.json["code"] = code;
 	
 	// Let's trigger listeners
-	MoufInstanceManager.fireInstanceChange(this);
+	MoufInstanceManager.fireInstanceChange(this, callback);
 }
 
 /**

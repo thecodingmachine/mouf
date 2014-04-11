@@ -1391,7 +1391,7 @@ class ".$this->mainClassName." {
 		$getters = array();
 		foreach ($this->declaredInstances as $name=>$classDesc) {
 			if (!isset($classDesc['class'])) {
-				if (isset($classDesc['error'])) {
+				if (isset($classDesc['code'])) {
 					continue;
 				}
 				throw new MoufException("No class for instance '$name'");

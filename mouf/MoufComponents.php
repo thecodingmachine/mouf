@@ -411,6 +411,104 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+		'createNewInstanceByPhpCodeMenuItem' =>
+		array (
+				'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
+				'external' => false,
+				'setterProperties' =>
+				array (
+						'setLabel' =>
+						array (
+								'value' => 'Create a new instance by PHP code',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setUrl' =>
+						array (
+								'value' => 'mouf/newInstanceByCallback',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsActive' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsExtended' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssClass' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPriority' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPropagatedUrlParameters' =>
+						array (
+								'value' =>
+								array (
+										0 => 'selfedit',
+								),
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setActivateBasedOnUrl' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+				'setterBinds' =>
+				array (
+						'setAdditionalStyles' =>
+						array (
+								0 => 'createNewInstanceByPhpCodeMenuItemIcon',
+						),
+				),
+		),
+		'createNewInstanceByPhpCodeMenuItemIcon' =>
+		array (
+				'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+				'external' => false,
+				'setterProperties' =>
+				array (
+						'setUrl' =>
+						array (
+								'value' => 'src-dev/views/images/page_white_php.png',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
   'css.moufCssStyles' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
@@ -1123,6 +1221,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'viewDeclaredInstancesMenuItem',
         1 => 'createNewInstanceMenuItem',
+      	2 => 'createNewInstanceByPhpCodeMenuItem',
       ),
     ),
     'setterProperties' => 
@@ -1416,6 +1515,7 @@ $moufManager->addComponentInstances(array (
           4 => 'src-dev/views/instances/moufui.js',
           5 => 'src-dev/views/instances/saveManager.js',
           6 => 'src-dev/views/instances/jquery.scrollintoview.js',
+          7 => 'src-dev/views/instances/codeValidator.js',
         ),
         'type' => 'string',
         'metadata' => 

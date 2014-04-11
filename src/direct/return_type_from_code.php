@@ -51,9 +51,8 @@ if (get_magic_quotes_gpc()==1)
 }
 
 // Let's execute the code and get the return value.
-$fullCode = 'function evaluatedFunction($container) { '.$code;
-$fullCode .= "\n}
-		return evaluatedFunction(Mouf\MoufManager::getMoufManager());";
+$fullCode = 'return function($container) { '.$code;
+$fullCode .= "\n};";
 
 try {
 	CodeValidatorService::validateCode($fullCode);
@@ -62,8 +61,20 @@ try {
 	exit;
 }
 
+class CodeTester {
+	public function getClosure() {
+		global $fullCode;
+		return eval($fullCode);
+	}
+}
+
+
 ob_start();
-$returnedValue = eval($fullCode);
+$codeTester = new CodeTester();
+$closure = $codeTester->getClosure();
+$moufManager = Mouf\MoufManager::getMoufManager();
+$closure = $closure->bindTo($moufManager);
+$returnedValue = $closure($moufManager);
 $error = ob_get_clean();
 if ($error) {
 	echo $error;
@@ -81,6 +92,7 @@ $result = [
 if ($encode == "php") {
 	echo serialize($result);
 } elseif ($encode == "json") {
+	header('Content-Type: application/json');
 	echo json_encode($result);
 }
 
