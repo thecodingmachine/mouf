@@ -189,6 +189,10 @@ foreach ($changesList as $command) {
 		case "deleteInstance":
 			$instanceDescriptor = $moufManager->removeComponent($command['name']);
 			break;
+		case "setInstanceCode":
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($command['name']);
+			$instanceDescriptor->setCode($command['code']);
+			break;
 		default:
 			throw new Exception("Unknown command");
 	}

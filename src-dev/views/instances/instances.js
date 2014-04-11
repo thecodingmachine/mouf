@@ -29,6 +29,11 @@ var MoufInstanceManager = (function() {
 	 * Event handler triggered each time an instance is renamed
 	 */
 	var _renameEventHandler = new Mouf.Observer();
+	
+	/**
+	 * Event handler triggered each time an instance is changed (when setCode is called on it)
+	 */
+	var _instanceChangeEventHandler = new Mouf.Observer();
 
 	/**
 	 * Event handler triggered each time an instance is deleted
@@ -674,6 +679,22 @@ var MoufInstanceManager = (function() {
 			_renameEventHandler.fire(moufInstance, moufInstance, oldName,
 					callback);
 		},
+		
+		/**
+		 * Registers a callback called when the
+		 * the MoufInstance.setCode method is called. If scope is not
+		 * passed, the default scope (this) is the moufInstance object.
+		 * The first argument of the callback is also the moufInstance
+		 * object.The second optional parameter is a callback called when the
+		 * rename has been performed.
+		 */
+		onInstanceChangeInstance : function(callback, scope) {
+			_instanceChangeEventHandler.subscribe(callback, scope);
+		},
+		
+		fireInstanceChange : function(moufInstance, callback) {
+			_instanceChangeEventHandler.fire(moufInstance, moufInstance, callback);
+		},
 
 		/**
 		 * Registers a callback called when the
@@ -775,6 +796,30 @@ MoufInstance.prototype.isAnonymous = function() {
 }
 
 /**
+ * Returns "declarative" if the instance is declared normally, or "php" if it is declared via PHP code.
+ */
+MoufInstance.prototype.getType = function() {
+	return this.json["type"];
+}
+
+/**
+ * Returns PHP code associated to the instance (if the instance is declared by code).
+ */
+MoufInstance.prototype.getCode = function() {
+	return this.json["code"];
+}
+
+/**
+ * Sets PHP code associated to the instance (if the instance is declared by code).
+ */
+MoufInstance.prototype.setCode = function(code) {
+	this.json["code"] = code;
+	
+	// Let's trigger listeners
+	MoufInstanceManager.fireInstanceChange(this);
+}
+
+/**
  * Returns an array of objects of type MoufInstanceProperty that represents the
  * property of this instance.
  */
@@ -867,10 +912,13 @@ MoufInstance.prototype.render = function(/* target, */rendererName) {
 		rendererName = 'small';
 	}
 
-	var classDescriptor = MoufInstanceManager
-			.getLocalClass(this.getClassName());
-	var renderers = classDescriptor.getRenderers();
-	var renderer = renderers[0];
+	var renderer = null;
+	if (this.getClassName()) {
+		var classDescriptor = MoufInstanceManager
+				.getLocalClass(this.getClassName());
+		var renderers = classDescriptor.getRenderers();
+		renderer = renderers[0];
+	}
 	if (renderer == null) {
 		renderer = MoufDefaultRenderer;
 	}

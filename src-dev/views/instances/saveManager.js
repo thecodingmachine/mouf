@@ -1,3 +1,6 @@
+(function(){
+"use strict";
+
 /**
  * The MoufSaveManager class is in charge of saving any changes performed to the instances.
  * It will locally save those changes, then send the changes to the server by batch.
@@ -159,6 +162,20 @@ var MoufSaveManager = (function () {
 		_save();
 	}
 	
+	var _onInstanceChange = function(instance, callback) {
+		var command = {
+			"command": "setInstanceCode",
+			"name": instance.getName(),
+			"code": instance.getCode()
+		};
+		if (callback) {
+			_callbackList.push(callback);
+		}
+		
+		_changesList.push(command);
+		_save();
+	}
+	
 	/**
 	 * Sends the Ajax save request if no other request is pending.
 	 */
@@ -234,6 +251,8 @@ var MoufSaveManager = (function () {
 			MoufInstanceManager.onRenameInstance(_onRenameInstance);
 			// Let's bind the _onDeleteInstance to the deleteInstance event.
 			MoufInstanceManager.onDeleteInstance(_onDeleteInstance);
+			// Let's bind the _onInstanceChangeto the instanceChangeInstance event.
+			MoufInstanceManager.onInstanceChangeInstance(_onInstanceChange);
 		},
 		onSaveStatusChange: function(callback, scope) {
 			_saveStatusChangedEventHandler.subscribe(callback, scope);
@@ -274,3 +293,5 @@ jQuery(function() {
 
 	MoufSaveManager.onSaveStatusChange(_onSaveStatusChange);
 });
+
+})();

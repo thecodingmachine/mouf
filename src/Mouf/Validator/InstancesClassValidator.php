@@ -2,6 +2,7 @@
 namespace Mouf\Validator;
 
 use Mouf\MoufManager;
+use Mouf\MoufInstanceDescriptor;
 
 /**
  * Validates that all instances are assigned to a class that does exist, that the compulory constructor params are set
@@ -23,11 +24,12 @@ class InstancesClassValidator implements MoufStaticValidatorInterface {
 		
 		$errors = array();
 		foreach ($instancesList as $instanceName=>$className) {
-			if (!class_exists($className)) {
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
+			if ($instanceDescriptor->getType() == MoufInstanceDescriptor::TYPE_DECLARATIVE && !class_exists($className)) {
 				$errors[] = "<li>".$instanceName." - Unable to find class: <strong>".$className."</strong> : <a href='".MOUF_URL."mouf/deleteInstance?instanceName=".urlencode($instanceName)."&selfedit=".$selfedit."&returnurl=".urlencode(MOUF_URL."validate/?selfedit=".$selfedit)."' class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</a></li>";
 			} else {
 				// Let's check the constructor arguments.
-				$additionalErrors = $moufManager->getInstanceDescriptor($instanceName)->validate();
+				$additionalErrors = $instanceDescriptor->validate();
 				$errors = array_merge($errors, array_map(function($text) {
 					return '<li>'.$text.'</li>';
 				}, $additionalErrors));

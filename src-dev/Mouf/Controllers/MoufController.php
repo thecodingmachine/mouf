@@ -78,6 +78,14 @@ class MoufController extends Controller implements MoufSearchable {
 	public $inErrorInstances;
 	
 	/**
+	 * Array of all instances declared by PHP code that return a value that is not
+	 * a class we know about (or that trigger an error instead of displaying a value).
+	 *
+	 * @var array<string, string> key: instance name, value: class name.
+	 */
+	public $unkownPhpCodeInstances;
+	
+	/**
 	 * The search query, or null if all instances must be displayed.
 	 * 
 	 * @var string
@@ -218,15 +226,7 @@ class MoufController extends Controller implements MoufSearchable {
 					continue;
 				} else {
 					// Let's find a name for this anonymous instance
-					$anonInstaceName = $instanceName;
-					// Let's find where the anonymous instance is used.
-					do {
-						$parents = $this->moufManager->getOwnerComponents($anonInstaceName);
-						// There should be only one parent, since this is an anonymous instance
-						$anonInstaceName = current($parents);
-					} while ($this->moufManager->getInstanceDescriptor($anonInstaceName)->isAnonymous());
-
-					$this->anonymousNames[$instanceName] = "Anonymous (parent: ".$anonInstaceName.")";
+					$this->anonymousNames[$instanceName] = $this->getAnonymousInstanceName($instanceName);
 				}
 			}
 			$nonAnonymousinstanceList[$instanceName] = $className; 
@@ -253,6 +253,20 @@ class MoufController extends Controller implements MoufSearchable {
 						unset($this->inErrorInstances[$instance]);
 					}
 				}
+			}
+		}
+		
+		$this->unkownPhpCodeInstances = [];
+		foreach ($this->inErrorInstances as $instanceName=>$className) {
+			$code = $this->moufManager->getCode($instanceName);
+			if ($code !== null) {
+				// We are having an instance declared by code that is in error or returning a value that is not a class we know of.
+				// Let's put this in a completely different array.
+				$this->unkownPhpCodeInstances[$instanceName] = [
+					"class"=>$className,
+					"error"=>$this->moufManager->getErrorOnInstanceCode($instanceName)
+				];
+				unset($this->inErrorInstances[$instanceName]);
 			}
 		}
 		
@@ -345,6 +359,25 @@ class MoufController extends Controller implements MoufSearchable {
 			//$this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php", $this);
 			$this->template->toHtml();
 		}
+	}
+	
+	/**
+	 * Returns a printable name for this anonymous instance.
+	 * 
+	 * @param string $instanceName
+	 * @return string
+	 */
+	private function getAnonymousInstanceName($instanceName) {
+		// Let's find a name for this anonymous instance
+		$anonInstanceName = $instanceName;
+		// Let's find where the anonymous instance is used.
+		do {
+			$parents = $this->moufManager->getOwnerComponents($anonInstanceName);
+			// There should be only one parent, since this is an anonymous instance
+			$anonInstanceName = current($parents);
+		} while ($this->moufManager->getInstanceDescriptor($anonInstanceName)->isAnonymous());
+		
+		return "Anonymous (parent: ".$anonInstanceName.")";
 	}
 	
 	/**
@@ -491,6 +524,29 @@ class MoufController extends Controller implements MoufSearchable {
 	 */
 	public function getSearchModuleName() {
 		return "instances list";
+	}
+	
+	/**
+	 * Displays the screen allowing to create a new instance by PHP code.
+	 *
+	 * @Action
+	 * @Logged
+	 */
+	public function newInstanceByCallback($selfedit = "false", $instanceName=null) {
+		$this->instanceName = $instanceName;
+		$this->selfedit = $selfedit;
+	
+		$this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstanceByCallback.php", $this);
+		$this->template->toHtml();
+	}
+	
+	public function createInstanceByCode($selfedit = "false", $instanceName=null) {
+		if (!$instanceName) {
+			$this->newInstanceByCallback();
+			return;
+		}
+		
+		// TODO
 	}
 }
 ?>

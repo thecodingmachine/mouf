@@ -203,11 +203,38 @@ class MoufReflectionProxy {
 		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			echo $response;
+			//echo $response;
 			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\htmlspecialchars($url)."'>".\htmlspecialchars($url)."</a>");
 		}
 		
 		return $obj;
+	}
+	
+	/**
+	 * Returns the "return" fully qualified class name from the code passed in parameter.
+	 * 
+	 * @param string $code
+	 * @param bool $selfEdit
+	 * @throws Exception
+	 * @return string
+	 */
+	public static function getReturnTypeFromCode($code, $selfEdit) {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/return_type_from_code.php";
+
+	
+		$response = self::performRequest($url,
+		[
+			"selfedit"=>($selfEdit)?"true":"false",
+			"code" => $code
+		]);
+	
+		$obj = @unserialize($response);
+	
+		if ($obj === false) {
+			throw new Exception($response);
+		}
+	
+		return $obj["data"]["class"];
 	}
 	
 	

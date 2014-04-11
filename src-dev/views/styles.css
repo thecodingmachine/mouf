@@ -545,4 +545,8 @@ label .type {
 
 pre.error {
 	border-color: red;
-}]
+}
+
+span.phperror {
+	background-color: #FF9999;
+}

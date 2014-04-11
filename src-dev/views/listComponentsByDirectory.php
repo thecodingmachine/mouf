@@ -54,6 +54,17 @@ if (!$this->ajax && !empty($this->inErrorInstances)) {
 	echo "</div>";
 }
 
+if ($this->unkownPhpCodeInstances) {
+	echo "<div class='directorytitle'>Unclassifiable instances declared by PHP code</div>";
+	echo "<div class='directorycontent'>";
+	foreach ($this->unkownPhpCodeInstances as $instance=>$desc) {
+		echo "<a href='".ROOT_URL."ajaxinstance/?name=".plainstring_to_urlprotected($instance)."&selfedit=".$this->selfedit."'>";
+		echo plainstring_to_htmlprotected(isset($this->anonymousNames[$instance])?$this->anonymousNames[$instance]:$instance);
+		echo "</a> - ".(isset($desc['error'])?"<span class='phperror'>".$desc['error']."</span>":$desc['class'])."<br/>";	
+	}
+	echo "</div>";
+}
+
 foreach ($this->instancesByPackage as $package=>$instancesByClass) {
 	echo "<div class='directorytitle'>$package</div>";
 	echo "<div class='directorycontent'>";
