@@ -1280,12 +1280,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "ff4ebde44654a14cc2219923c0a904ab8db36870"
+                "reference": "35c36132a3f8b109c36c5a1a31f882eadf12a4f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/ff4ebde44654a14cc2219923c0a904ab8db36870",
-                "reference": "ff4ebde44654a14cc2219923c0a904ab8db36870",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/35c36132a3f8b109c36c5a1a31f882eadf12a4f5",
+                "reference": "35c36132a3f8b109c36c5a1a31f882eadf12a4f5",
                 "shasum": ""
             },
             "require": {
@@ -1338,7 +1338,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2014-03-11 10:23:42"
+            "time": "2014-04-10 10:55:39"
         },
         {
             "name": "mouf/security.simplelogincontroller",

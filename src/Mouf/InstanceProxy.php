@@ -40,7 +40,7 @@ class InstanceProxy {
 		$response = MoufReflectionProxy::performRequest($url, $postArray);
 		
 		$obj = @unserialize($response);
-		
+		//FIXME : how to handle proxy call that REALLY returns FALSE ?
 		if ($obj === false) {
 			throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
 		}
