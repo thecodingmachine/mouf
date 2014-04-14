@@ -1,3 +1,5 @@
+var MoufSaveManager;
+
 (function(){
 "use strict";
 
@@ -6,7 +8,7 @@
  * It will locally save those changes, then send the changes to the server by batch.
  * It makes sure only one batch is handled at a time.
  */
-var MoufSaveManager = (function () {
+MoufSaveManager = (function () {
 	
 	/**
 	 * Whether a save request is in progress or not.
