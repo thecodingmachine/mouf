@@ -1252,7 +1252,7 @@ MoufDefaultRenderer = (function () {
 							var validateCode = function(code) {
 								// After save, let's validate the code:
 								CodeValidator.validate(code).then(function(result) {
-									jQuery('.classNameHolder').text(' from class "'+MoufUI.getHtmlClassName(result)+'"');
+									jQuery('.classNameHolder').html(' from class "'+MoufUI.getHtmlClassName(result)+'"');
 									jQuery('.phperrormessage').hide();
 								}).onError(function(result) {
 									jQuery('.phperrormessage').html(result);
