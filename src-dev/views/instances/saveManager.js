@@ -80,7 +80,7 @@ MoufSaveManager = (function () {
 		
 		var isBoolean = false;
 		var finalValue = null;
-		if (moufInstanceProperty.getType() && moufInstanceProperty.getType().isArray()) {
+		if (moufInstanceProperty.getType() && moufInstanceProperty.getType().isArray() && moufInstanceProperty.getOrigin() != 'php') {
 			finalValue = _serializeSubProperties(moufInstanceProperty);
 		} else {
 			if (value === true || value === false) {

@@ -1034,7 +1034,7 @@ MoufInstanceProperty.prototype.setValue = function(value, origin) {
 
 	//var moufProperty = this.getMoufProperty();
 	if (this.type && this.type.isArray()) {
-		if (value === null) {
+		if (value === null || origin == 'php') {
 			// Let's empty all the elements:
 			this.moufInstanceSubProperties = [];
 		} else {

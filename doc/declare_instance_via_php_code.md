@@ -138,3 +138,8 @@ be displayed if a syntax error is detected.
 
 As much as possible, please avoid putting complex code in a property declared by callback.
 You should try to keep the code as simple as possible and you should avoid costly calls (like DB requests...)
+
+<div class="alert alert-info">Oh, by the way, if you try you try to use Doctrine in your Mouf projects,
+you might want to give a look at Mouf's [Doctrine DBAL wrapper package](http://mouf-php.com/packages/mouf/database.doctrine-dbal-wrapper/README.md)
+and [Doctrine ORM wrapper package](http://mouf-php.com/packages/mouf/database.doctrine-orm-wrapper/README.md).
+They offer nice graphical interfaces to create DB connections and work with entity managers.</div>
