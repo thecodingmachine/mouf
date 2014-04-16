@@ -1277,7 +1277,7 @@ MoufDefaultRenderer = (function () {
 							
 							jQuery('<div class="phperrormessage alert" style="display: none" />')
 								.appendTo(containerForm);
-							jQuery('<code>function(ContainerInterop $container) {</code>')
+							jQuery('<code>function(ContainerInteface $container) {</code>')
 								.appendTo(containerForm);
 							jQuery('<div id="acephpeditor">').text(code)
 								.appendTo(containerForm);

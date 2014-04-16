@@ -627,7 +627,7 @@ var MoufUI = (function () {
 			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
 			
 			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
-			jQuery('<code>function(ContainerInterop $container) {</code>')
+			jQuery('<code>function(ContainerInteface $container) {</code>')
 				.appendTo(formElem);
 		
 			if (code == null) {

@@ -1,6 +1,8 @@
 Declaring instances using PHP code
 ==================================
 
+<iframe width="853" height="480" src="//www.youtube.com/embed/_PIHPGS15os" frameborder="0" allowfullscreen></iframe>
+
 Common problem faced with Mouf UI
 ---------------------------------
 
@@ -140,6 +142,6 @@ As much as possible, please avoid putting complex code in a property declared by
 You should try to keep the code as simple as possible and you should avoid costly calls (like DB requests...)
 
 <div class="alert alert-info">Oh, by the way, if you try you try to use Doctrine in your Mouf projects,
-you might want to give a look at Mouf's [Doctrine DBAL wrapper package](http://mouf-php.com/packages/mouf/database.doctrine-dbal-wrapper/README.md)
-and [Doctrine ORM wrapper package](http://mouf-php.com/packages/mouf/database.doctrine-orm-wrapper/README.md).
+you might want to give a look at Mouf's <a href="http://mouf-php.com/packages/mouf/database.doctrine-dbal-wrapper/README.md">Doctrine DBAL wrapper package</a>
+and <a href="http://mouf-php.com/packages/mouf/database.doctrine-orm-wrapper/README.md">Doctrine ORM wrapper package</a>.
 They offer nice graphical interfaces to create DB connections and work with entity managers.</div>
