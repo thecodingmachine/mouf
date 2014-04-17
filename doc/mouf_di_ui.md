@@ -8,7 +8,7 @@ We will create 2 instances (a Mailer and a Logger previously discussed in the
 When you log into Mouf, you can see an **Instances** menu. From this menu
 that we will manage our instances.
 
-![Mouf's instances menu](doc/images/instances_menu.png)
+![Mouf's instances menu](images/instances_menu.png)
 
 You can:
 

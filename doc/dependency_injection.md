@@ -5,6 +5,7 @@ At the core of Mouf, there is a high performance graphical dependency injection 
 The whole Mouf framework revolves around that feature, so if you don't know about dependency injection,
 it's time to get a quick course.
 
+
 What is dependency injection, and why bother?
 ---------------------------------------------
 
@@ -18,8 +19,32 @@ a database row, or user input)
 - objects that are almost the same each time your application runs (for instance, an object representing
 a service to send mails, or an object representing a controller)
 
-**Dependency injection** focuses on the second kind of objects. It will help you to instanciate cleanly these objects
-and to reduce the coupling between these objects.
+**Dependency injection** focuses on the second kind of objects. A dependency injection container (DIC) will help you to 
+instanciate cleanly these objects and to reduce the coupling between these objects.
+
+The DIC is in charge of creating/managing instances of the classes you use. 
+Basically, you declare in a configuration file the list of all instances
+you want to use and the DIC will instantiate those for you and manage the dependencies between these
+instances for you. Essentially, you use a **configuration file to declare your instances instead of using PHP code**.
+
+This has a number of advantages (maintainability, testability, self-description...), but soon, you end up with a very 
+complex configuration file. Therefore, in most frameworks out there (Symfony 2, Zend Framework 2...), 
+dependency injection is only used to manage services (about 50 instances per applications top). 
+
+Mouf is **taking dependency injection to a whole new level**. Using a **web-based interface**, 
+you can very easily manage your instances. Therefore, things that where out of the reach of the DI container
+suddenly become likely candidates.
+
+- You have an object representing a datagrid? Put it in Mouf!
+- You have an object representing a column of a table? Put it in Mouf!
+- You have an object representing a SQL request? Put it in Mouf!
+- You have an object representing a form or a form element? Put it in Mouf!
+- ...
+
+You get the idea. Put as many objects as possible in Mouf's container. Mouf takes spaguetti code away
+so you can focus on the real interesting part of your project.
+
+
 
 Without dependency injection, your instances management can go wrong
 --------------------------------------------------------------------

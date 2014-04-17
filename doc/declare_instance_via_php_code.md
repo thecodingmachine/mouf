@@ -124,14 +124,14 @@ Hopefully, we can use the 'Use PHP code' menu of each property to define custom 
 
 ![Use PHP code menu item](images/define_property_by_php_code_menu.png)
 
-Now, you can type pure PHP code that will fille the property:
+Now, you can type pure PHP code that will be injected in the property:
 
 ![Use PHP code menu](images/define_property_by_php_code.png)
 
 Just like in the previous chapter, the PHP code you type is located in a PHP callback that takes one parameter: 
 the container.
-The code of the callback you are typing can return any value to be stored in the property (it can
-by an array, a string, an integer, an object, a resource... what you want!). Do not forget the `return` keyword
+The code of the callback can return any value to be stored in the property (it can
+be an array, a string, an integer, an object, a resource... what you want!). Do not forget the `return` keyword
 at the end of the method.
 
 You can save your code at any moment using "Ctrl-S" or the "Save" button.
@@ -141,7 +141,7 @@ be displayed if a syntax error is detected.
 As much as possible, please avoid putting complex code in a property declared by callback.
 You should try to keep the code as simple as possible and you should avoid costly calls (like DB requests...)
 
-<div class="alert alert-info">Oh, by the way, if you try you try to use Doctrine in your Mouf projects,
-you might want to give a look at Mouf's <a href="http://mouf-php.com/packages/mouf/database.doctrine-dbal-wrapper/README.md">Doctrine DBAL wrapper package</a>
+<div class="alert alert-info">Oh, by the way, if you want to use Doctrine in your Mouf projects,
+you might take a look at Mouf's <a href="http://mouf-php.com/packages/mouf/database.doctrine-dbal-wrapper/README.md">Doctrine DBAL wrapper package</a>
 and <a href="http://mouf-php.com/packages/mouf/database.doctrine-orm-wrapper/README.md">Doctrine ORM wrapper package</a>.
 They offer nice graphical interfaces to create DB connections and work with entity managers.</div>
