@@ -10,11 +10,11 @@
 
 if ($this->showAnonymous) {
 	?>
-<a href="<?echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=false" class="btn btn-danger pull-right">Hide anonymous instances</a>
+<a href="<?php echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=false" class="btn btn-danger pull-right">Hide anonymous instances</a>
 <?php 
 } else {
 ?>
-<a href="<?echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=true" class="btn btn-success pull-right">Show anonymous instances</a>
+<a href="<?php echo ROOT_URL ?>mouf/?selfedit=<?php echo $this->selfedit ?>&query=<?php echo $this->query ?>&show_anonymous=true" class="btn btn-success pull-right">Show anonymous instances</a>
 <?php 
 }
 
