@@ -112,7 +112,9 @@ A typical dynamic install process
 
 Now, let's have a look at a more complex install process. In this sample, the package will ask the user if he wants to create the "myInstance" instance or not. The user will select the choice using 2 buttons ("yes" or "no").
 
-Internally, Mouf is using the <a href="/package/mvc/splash">Splash MVC framework</a>. Therefore, to interact with the user, we will be writing a <a href="/package_doc/mvc/splash/3.2/writing_controllers.html">Splash controller</a>. Here is the controller:
+Internally, Mouf is using the [Splash MVC framework](http://mouf-php.com/packages/mouf/mvc.splash).
+Therefore, to interact with the user, we will be writing a [Splash controller](http://mouf-php.com/packages/mouf/mvc.splash/doc/writing_controllers_manually.md).
+Here is the controller:
 
 ###controller/MyInstallController.php
 
