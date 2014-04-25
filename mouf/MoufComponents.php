@@ -1187,16 +1187,6 @@ $moufManager->addComponentInstances(array (
       'contentBlock' => 'block.content',
     ),
   ),
-  'instance' => 
-  array (
-    'class' => 'Mouf\\Controllers\\MoufInstanceController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
   'instanceMenu' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
