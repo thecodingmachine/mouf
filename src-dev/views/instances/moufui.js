@@ -540,7 +540,9 @@ var MoufUI = (function () {
 		renameInstance: function(instance) {
 			var modal = MoufUI.openPopup("Rename instance");
 			var inputField;
+			var submitButton; 
 			var formElem = jQuery('<form class="form-horizontal">').submit(function() {
+				submitButton.attr('disabled', true);
 				instance.rename(inputField.val(), function() {
 					// When save is performed, let's reload the page with the new URL.
 					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(instance.getName())+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
@@ -560,7 +562,7 @@ var MoufUI = (function () {
 			
 			var modalFooter = jQuery('<div class="modal-footer">').appendTo(formElem);
 			jQuery("<button type='button'/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
-			jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Save changes").appendTo(modalFooter);
+			submitButton = jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Save changes").appendTo(modalFooter);
 		},
 		
 		/**
