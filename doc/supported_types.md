@@ -23,36 +23,41 @@ public function __construct(LoggerInterface $logger) {
 	$this->logger = $logger;
 }
 
-public function __setLogger(LoggerInterface $logger) {
+public function setLogger(LoggerInterface $logger) {
 	$this->logger = $logger;
 }
 ```
 
-Mouf will know that those constructor and setter are expecting a LoggerInterface property.
+Mouf will know that those constructor and setter are expecting a `LoggerInterface` property.
 
 However, type hinting is limited in PHP. If you have more advanced needs, you can use annotations to help you.
 Here are 3 samples:
 
 ```php
 /**
- * @var LoggerInterface
- */
-public $logger;
-
-/**
  * @param LoggerInterface $logger
  */
 public function __construct($logger) {
 	$this->logger = $logger;
 }
+```
 
+```php
 /**
  * @param LoggerInterface $logger
  */
-public function __setLogger(LoggerInterface $logger) {
+public function setLogger(LoggerInterface $logger) {
 	$this->logger = $logger;
 }
 ```
+
+```php
+/**
+ * @var LoggerInterface
+ */
+public $logger;
+```
+
 
 Supported types
 ---------------
@@ -67,6 +72,11 @@ There 4 kind of supported types:
 ###Classes and interfaces
 
 We already saw that classes and interfaces can be used as types in the example above.
+
+In the Mouf user interface, these properties will be displayed like this:
+
+![Object properties](images/property_object.png)
+
 
 ###Primitive types
 
@@ -99,7 +109,17 @@ public $user;
  * @var int
  */
 public $port;
+
+/**
+ * @var bool
+ */
+public $isActive;
 ```
+
+will be rendered this way:
+
+![Primitive properties](images/property_primitive.png)
+
 
 ###Arrays
 
@@ -119,6 +139,9 @@ Here are a bunch of samples:
 
 As you can notice, associative arrays (or maps) can only be achieved using the **array** notation.
 
+Below is a screenshot showing reprensentations of various arrays in Mouf:
+
+![Arrays](images/property_array.png)
 
 ###Mixed types
 
@@ -129,4 +152,7 @@ For instance:
 
 - `string|ValueInterface|array<ValueInterface>` is a valid type
 
-TODO: fill the supported_types.md document with images
+Using the UI, you can choose the type you want to inject by clicking on it.
+Below is a sample screenshot:
+
+![Multitype](images/property_multitype.png)
