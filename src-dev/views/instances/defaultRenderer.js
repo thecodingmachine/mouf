@@ -1211,6 +1211,49 @@ MoufDefaultRenderer = (function () {
 							displayInnerField();
 						}
 						
+						// Let's display the list of missing fields that are declared in the instance
+						// but not in the class (this happens when a variable is removed or renamed from
+						// a class...)
+						_.each(instance.getConstructorArguments(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The constructor argument n°"+property.getName()+" is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this argument existed but was removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
+							}
+						});
+						
+						_.each(instance.getSetters(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The setter <code>"+property.getName()+"</code> is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this setter once existed but was renamed or removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
+							}
+						});
+						
+						_.each(instance.getPublicProperties(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The public property <code>"+property.getName()+"</code> is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this public property once existed but was renamed or removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
+							}
+						});
+						
+						
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						
 						
 						if (instance.getType() != "php") {
 							var moufProperties = classDescriptor.getInjectableConstructorArguments();

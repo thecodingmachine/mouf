@@ -115,7 +115,7 @@ foreach ($changesList as $command) {
 				$property->setValue($command['value']);
 			} else if ($command['isset'] == "false") {
 				// Let's unset completely the property
-				$property->setOrigin('string');
+				//$property->setOrigin('string');
 				$property->unsetValue();
 			} else {
 				$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();

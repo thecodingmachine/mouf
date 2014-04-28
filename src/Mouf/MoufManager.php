@@ -1942,11 +1942,10 @@ class ".$this->mainClassName." {
 	* @return string[]
 	*/
 	public function getParameterNames($instanceName) {
-		if (isset($this->declaredInstances[$instanceName]["fieldProperties"])) {
-			return array_keys($this->declaredInstances[$instanceName]["fieldProperties"]);
-		} else {
-			return array();
-		}
+		return array_merge(
+			isset($this->declaredInstances[$instanceName]["fieldProperties"])?array_keys($this->declaredInstances[$instanceName]["fieldProperties"]):array(),
+			isset($this->declaredInstances[$instanceName]["fieldBinds"])?array_keys($this->declaredInstances[$instanceName]["fieldBinds"]):array()
+		);
 	}
 	
 	/**
@@ -1956,11 +1955,10 @@ class ".$this->mainClassName." {
 	* @return string[]
 	*/
 	public function getParameterNamesForSetter($instanceName) {
-		if (isset($this->declaredInstances[$instanceName]["setterProperties"])) {
-			return array_keys($this->declaredInstances[$instanceName]["setterProperties"]);
-		} else {
-			return array();
-		}
+		return array_merge(
+				isset($this->declaredInstances[$instanceName]["setterProperties"])?array_keys($this->declaredInstances[$instanceName]["setterProperties"]):array(),
+				isset($this->declaredInstances[$instanceName]["setterBinds"])?array_keys($this->declaredInstances[$instanceName]["setterBinds"]):array()
+		);
 	}
 	
 	/**

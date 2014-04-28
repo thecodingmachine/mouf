@@ -37,7 +37,7 @@ class InstancesClassValidator implements MoufStaticValidatorInterface {
 		}
 
 		if ($errors) {
-			$msg = "The following instances are erroneous.<br/><ul>";
+			$msg = "The following instances are erroneous:<br/><ul>";
 			$msg .= implode("\n", $errors);
 			$msg .= "</ul>";
 			return new MoufValidatorResult(MoufValidatorResult::ERROR, $msg);

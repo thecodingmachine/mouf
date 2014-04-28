@@ -1083,6 +1083,14 @@ MoufInstanceProperty.prototype.getMetaData = function() {
 }
 
 /**
+ * Returns if the property is orphan or not. An orphan property is a property that is set
+ * an a public property / setter / constructor argument that no longer exists.
+ */
+MoufInstanceProperty.prototype.isOrphan = function() {
+	return this.json['orphan'];
+}
+
+/**
  * Returns a MoufProperty or a MoufMethod object or a MoufParameter object
  * representing the property.
  * 

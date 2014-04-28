@@ -407,7 +407,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      */
     public function getInjectablePropertyByConstructor($name) {
     	$properties = $this->getInjectablePropertiesByConstructor();
-    	return $properties[$name];
+    	return isset($properties[$name])?$properties[$name]:null;
     }
     
     
@@ -447,7 +447,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      */
     public function getInjectablePropertyByPublicProperty($name) {
     	$properties = $this->getInjectablePropertiesByPublicProperty();
-    	return $properties[$name];
+    	return isset($properties[$name])?$properties[$name]:null;
     }
     
     /**
@@ -513,7 +513,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      */
     public function getInjectablePropertyBySetter($name) {
     	$properties = $this->getInjectablePropertiesBySetter();
-    	return $properties[$name];
+    	return isset($properties[$name])?$properties[$name]:null;
     }
     
     /**

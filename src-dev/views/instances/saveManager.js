@@ -94,7 +94,7 @@ MoufSaveManager = (function () {
 		var command = {
 			"command": "setProperty",
 			"instance": moufInstanceProperty.getInstance().getName(),
-			"property": moufInstanceProperty.getMoufProperty().getName(),
+			"property": moufInstanceProperty.isOrphan()?moufInstanceProperty.getName():moufInstanceProperty.getMoufProperty().getName(),
 			"value": finalValue,
 			"isBoolean": isBoolean,
 			"origin": moufInstanceProperty.getOrigin(),
