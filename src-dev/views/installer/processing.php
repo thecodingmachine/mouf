@@ -2,7 +2,18 @@
 use Mouf\Installer\AbstractInstallTask;
 
 /* @var $this Mouf\Controllers\InstallController */
-$todoFound = false;
+
+// Let's manage the position of the scrollbar in the page when it is displayed.
+// We want to print the last 5 packages installed and the upcoming packages:
+$nextTodoPosition = 0;
+foreach ($this->installs as $installTask) {
+	if ($installTask->getStatus()==AbstractInstallTask::STATUS_TODO) {
+		break;
+	};
+	$nextTodoPosition++;
+}
+
+$count = 0;
 ?>
 <h1>Processing installation</h1>
 
@@ -19,11 +30,10 @@ $todoFound = false;
 		<td><?php echo plainstring_to_htmlprotected($installTask->getPackage()->getName()); ?></td>
 		<td><?php echo plainstring_to_htmlprotected($installTask->getDescription()); ?></td>
 		<td><?php
-		if (!$todoFound && $installTask->getStatus()==AbstractInstallTask::STATUS_TODO) {
-			$todoFound = true;
-			// This is a marker to manage the scrolling in the page.
+		$count++;
+		if ($count - 5 == $nextTodoPosition) {
 			echo '<a name="toinstall"></a>';
-		};
+		}
 		
 		if ($installTask->getStatus()==AbstractInstallTask::STATUS_TODO) {
 			echo '<i class="icon-time"></i> Awaiting installation';
