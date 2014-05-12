@@ -31,7 +31,7 @@ $count = 0;
 		<td><?php echo plainstring_to_htmlprotected($installTask->getDescription()); ?></td>
 		<td><?php
 		$count++;
-		if ($count - 5 == $nextTodoPosition) {
+		if ($count + 5 == $nextTodoPosition) {
 			echo '<a name="toinstall"></a>';
 		}
 		
