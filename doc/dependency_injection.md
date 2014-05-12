@@ -8,21 +8,43 @@ it's time to get a quick course.
 
 What is dependency injection, and why bother?
 ---------------------------------------------
+Dependency injection is a way (a design pattern) to organize the objects of your application cleanly.
+Before diving into DI (dependency injection), let's make a small classificication.
 
-Dependency injection is a way (a design pattern) to organize your application cleanly.
+###Classifying PHP objects
+
 
 A typical PHP application contains a bunch of objects (or instances) that come from classes.
-We can really split those objects into 2 kind of objects:
 
-- objects that are different each time your application runs (for instance, an instance of a class representing 
+![Several kinds of objects in a PHP application](images/several_kinds_of_objects.png)
+
+We can really split those objects into 3 categories:
+
+- **"Value" objects**:
+	- They usually store user data
+	- They are different each time your application runs (for instance, an instance of a class representing 
 a database row, or user input)
-- objects that are almost the same each time your application runs (for instance, an object representing
-a service to send mails, or an object representing a controller)
+- **Components**:
+	- Usually utility classes or widgets (a form element, an object representing a SQL request...)
+	- They are similar for each requests
+- **Services**:
+	- They represent the "business logic" of the application
+	- They are similar for each requests
+	- Usually, there is a single instance for each class (for instance, a database connection,
+	a logger, a mailer, etc...)
+	
+###Dependency injection
 
-**Dependency injection** focuses on the second kind of objects. A dependency injection container (DIC) will help you to 
-instanciate cleanly these objects and to reduce the coupling between these objects.
+A dependency injection container (DIC) will help you to 
+instanciate cleanly objects and to reduce the coupling between these objects.
 
-The DIC is in charge of creating/managing instances of the classes you use. 
+The DIC is in charge of creating/managing instances of the classes you use.
+
+![Instances tree](images/instances_tree.png)
+
+In the example above, you could request a "controller" to the DIC and the DIC would in turn
+create instances of all the services / components that are needed by this controller. 
+ 
 Basically, you declare in a configuration file the list of all instances
 you want to use and the DIC will instantiate those for you and manage the dependencies between these
 instances for you. Essentially, you use a **configuration file to declare your instances instead of using PHP code**.
@@ -44,7 +66,11 @@ suddenly become likely candidates.
 You get the idea. Put as many objects as possible in Mouf's container. Mouf takes spaguetti code away
 so you can focus on the real interesting part of your project.
 
-
+<div class="alert alert-info"><strong>Mouf</strong> is a unique <em>dependency injection
+container</em> (DIC). Most other PHP DIC out there are focusing on <strong>services only</strong>.
+This is either by design, or because the way they are not flexible enough.
+Mouf extends the DIC to <strong>components</strong> and this is what
+makes this framework so special.</div>
 
 Without dependency injection, your instances management can go wrong
 --------------------------------------------------------------------
