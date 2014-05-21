@@ -17,7 +17,8 @@ Mouf solves that problem by providing a nice **web-based UI** to edit your file.
 By solving that problem, Mouf opens a whole new world of possibities where most of your application is 
 declared using a user interface instead of written in pure PHP code. 
 
-Do not take my words as proof, [cgeck out the dependency injection guide](doc/dependency_injection.md).
+Want to learn more about dependency injection? [Check out the dependency injection guide](doc/dependency_injection.md).  
+Want to see Mouf basic principles in action? [Check the introduction to graphical dependency injection video](http://mouf-php.com/packages/mouf/mouf/doc/mouf_di_ui.md).
 
 Getting started
 ---------------
@@ -27,7 +28,7 @@ hundreds of packages available.
 
 - If you are interested in Mouf's core dependency injection framework, stay here! You are at the right place.
 - If you are interested in the global Mouf ecosystem, the MVC library, the database layer, etc..., you might want to start by
-having a look at the [Getting things done with Mouf project](http://mouf-php.com/packages/mouf/getting-things-done-basic-edition/index.md). This
+having a look at the [main packages chart](http://mouf-php.com/skills) or at the  [Getting things done with Mouf project](http://mouf-php.com/packages/mouf/getting-things-done-basic-edition/index.md). This
 is a kind of "distribution" of the most common libraries used with Mouf.
 - You can also be interested integrating extending your project with Mouf. Mouf integrates easily with
 [Wordpress](http://mouf-php.com/packages/mouf/integration.wordpress.moufpress/README.md), 
@@ -56,7 +57,7 @@ Packages
 --------
 
 Mouf provides a user interface to help you manage your composer dependencies.
-Using an extension to the `composer.json` file format, you can extend the Mouf user interface to add features to help your developer.
+Using an extension to the `composer.json` file format, you can [extend the Mouf user interface](doc/extending_mouf_ui.md) to add features to help your developer.
 
 - You are developing a cache package? Add a "Purge" button in Mouf UI to let your developers purge the cache
 - You are developing a database connection? Add a screen to create a new database connection, etc...

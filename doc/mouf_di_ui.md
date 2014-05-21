@@ -9,6 +9,8 @@ You can use Mouf to create any kind of instances from any classes (mostly *servi
 In order not to prove Mouf is truly generic, we will take a completely abstract sample 
 that is not related to web development. Our sample will be about role-playing games!
 
+<a href="http://mouf-php.com/packages/mouf/mouf/doc/mouf_di_ui.md" class="hidden">You are viewing this content from Github (that does not support
+video embedding. Click here to view the video.</a>
 <iframe width="800" height="600" src="//www.youtube.com/embed/UVeD20y5bWI?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
 The playground
@@ -318,6 +320,6 @@ Going further
 
 Want to go further?
 
-- [Learn more about the types supported by Mouf](supported_types.md)
-- [Learn how to use annotations to make dependency injection even easier](mouf_annotations.md)
+<a href="supported_types.md" class="btn btn-primary">Learn more about the types supported by Mouf &gt;</a>
 
+<a href="mouf_annotations.md" class="btn">Learn how to use annotations to make dependency injection even easier &gt;</a>

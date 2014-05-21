@@ -5,6 +5,9 @@ At the core of Mouf, there is a high performance graphical dependency injection 
 The whole Mouf framework revolves around that feature, so if you don't know about dependency injection,
 it's time to get a quick course.
 
+TL;DR?
+------
+Too long to read? <a href="mouf_di_ui.md" class="btn btn-primary">Jump directly to the video &gt;</a>
 
 What is dependency injection, and why bother?
 ---------------------------------------------
@@ -204,4 +207,4 @@ web-based user interface. You define your instances easily, they are stored in a
 actually one big configuration file managed by Mouf), and you can get your instances from the container 
 easily as well.
 
-[So let's get started!](mouf_di_ui.md)
+<a href="mouf_di_ui.md" class="btn btn-primary">So let's get started! &gt;</a>

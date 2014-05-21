@@ -106,3 +106,8 @@ Mouf UI is designed to be used on a development environment, not on a production
 If you are running a production server (if you are not on a development environment), it is more secure
 to prevent Apache from writing to the application directories (or to open those rights on a very
 restrictive basis). In this scenario, you don't need to share write rights with Apache. 
+
+Ready to start?
+---------------
+
+<a href="dependency_injection.md" class="btn btn-primary">Get started with dependency injection &gt;</a>
