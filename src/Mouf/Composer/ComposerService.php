@@ -293,6 +293,7 @@ class ComposerService {
 	
 	/**
 	 * Returns the list of local packages, ordered by dependency.
+	 * @return PackageInterface[]
 	 */
 	public function getLocalPackagesOrderedByDependencies() {
 		$unorderedPackagesList = $this->getLocalPackages();
