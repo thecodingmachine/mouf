@@ -69,6 +69,9 @@ There 4 kind of supported types:
 - Arrays (and associative arrays)
 - Mixed types
 
+Note: if you are using a third party library th at requires injecting a type that is not supported,
+you can always fallback to [injecting values via PHP code](declare_instance_via_php_code.md);
+
 ###Classes and interfaces
 
 We already saw that classes and interfaces can be used as types in the example above.
@@ -137,11 +140,22 @@ Here are a bunch of samples:
 - `array<string,string>` : an associative array of strings
 - `array<string,LoggerInterface>` : an associative array of objects implementing LoggerInterface
 
+- **Unsupported**: `array`. Because Mouf does not know if this is an array of primitive or an array of objects.
+
 As you can notice, associative arrays (or maps) can only be achieved using the **array** notation.
 
 Below is a screenshot showing reprensentations of various arrays in Mouf:
 
 ![Arrays](images/property_array.png)
+
+<div class="alert">If you are trying to create an instance of a class provided by
+ a third party library, it is likely that you will
+have at some point a property whose type is <code>array</code>. Mouf has no clue what can be injected in an
+array (is it an array of strings? of objects? a map? In this case, you can still inject the value
+you want by using the <a href="declare_instance_via_php_code.md">inject property by PHP code</a> 
+option that will let you type some PHP code to fill the property.</div>
+
+
 
 ###Mixed types
 

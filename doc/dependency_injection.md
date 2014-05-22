@@ -5,11 +5,14 @@ At the core of Mouf, there is a high performance graphical dependency injection 
 The whole Mouf framework revolves around that feature, so if you don't know about dependency injection,
 it's time to get a quick course.
 
+TL;DR?
+------
+Too long to read? <a href="mouf_di_ui.md" class="btn btn-primary">Jump directly to the video &gt;</a>
 
 What is dependency injection, and why bother?
 ---------------------------------------------
 Dependency injection is a way (a design pattern) to organize the objects of your application cleanly.
-Before diving into DI (dependency injection), let's make a small classificication.
+Before diving into DI (dependency injection), let's make a small classification.
 
 ###Classifying PHP objects
 
@@ -72,16 +75,27 @@ This is either by design, or because the way they are not flexible enough.
 Mouf extends the DIC to <strong>components</strong> and this is what
 makes this framework so special.</div>
 
-Without dependency injection, your instances management can go wrong
---------------------------------------------------------------------
+Getting your classes ready for dependency injection
+---------------------------------------------------
+In order to use Mouf efficiently, you will have to respect some best practices when designing your classes.
 
-Here is a sample. I have a `Mailer` class in charge of sending mails. I want my class to be able to log
-each mail sent in a file. For this, I want to use the `Logger` class.
+The while idea is quite simple:
+
+<div class="alert alert-info">If you need an instance of a service or a component, try avoiding creating the 
+instance using the <code>new</code> keyword. Instead, pass the requested instance in parameter (to the 
+constructor or a setter), and let Mouf inject the dependency.</div>
+
+
+###Without dependency injection, your instances management can go wrong
+
+
+Here is a sample of what you should NOT do. I have a `Mailer` class in charge of sending mails.
+I want my class to be able to log each mail sent in a file. For this, I want to use the `Logger` class.
 
 The first coding attempt would be something like this:
 
+**Mailer.php**
 ```php
-
 class Mailer {
 	private $logger;
 	
@@ -95,7 +109,10 @@ class Mailer {
 		$this->logger->log("Mail sent");
 	}
 }
+```
 
+**Logger.php**
+```php
 class Logger {
 	private $fp;
 
@@ -108,7 +125,10 @@ class Logger {
 	}
 
 }
+```
 
+**Usage**
+```php
 // Usage:
 $mailer = new Mailer();
 $mailer->sendMail('toto@example.com', 'title', 'body');
@@ -124,13 +144,13 @@ instance of the logger.
 
 Finally, the logfile name should be configurable.
 
-Second try, let's get rid of the dependency
--------------------------------------------
+###Second try, let's get rid of the dependency
+
 
 In this second try, we will move the dependency out of the classes.
 
+**Mailer.php**
 ```php
-
 class Mailer {
 	private $logger;
 	
@@ -147,7 +167,10 @@ class Mailer {
 		$this->logger->log("Mail sent");
 	}
 }
+```
 
+**Logger.php**
+```php
 class Logger {
 	private $fp;
 
@@ -160,7 +183,10 @@ class Logger {
 	}
 
 }
+```
 
+**Usage**
+```php
 // Usage => less easy
 $logger = new Logger("logfile.txt");
 $mailer = new Mailer($logger);
@@ -181,4 +207,4 @@ web-based user interface. You define your instances easily, they are stored in a
 actually one big configuration file managed by Mouf), and you can get your instances from the container 
 easily as well.
 
-[So let's get started!](mouf_di_ui.md)
+<a href="mouf_di_ui.md" class="btn btn-primary">So let's get started! &gt;</a>
