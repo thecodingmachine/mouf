@@ -530,6 +530,15 @@ class ComposerService {
 		$moufUiFileWriter = new MoufUIFileWritter($composer);
 		$moufUiFileWriter->writeMoufUI();
 	}
+	
+	/**
+	 * Returns the Composer config object
+	 * @param string $param
+	 * @return string
+	 */
+	public function getComposerConfig() {
+		return $this->getComposer()->getConfig();
+	}
 }
 
 ?>
