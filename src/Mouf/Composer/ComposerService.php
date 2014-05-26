@@ -293,6 +293,7 @@ class ComposerService {
 	
 	/**
 	 * Returns the list of local packages, ordered by dependency.
+	 * @return PackageInterface[]
 	 */
 	public function getLocalPackagesOrderedByDependencies() {
 		$unorderedPackagesList = $this->getLocalPackages();
@@ -528,6 +529,15 @@ class ComposerService {
 		$composer = $this->getComposer();
 		$moufUiFileWriter = new MoufUIFileWritter($composer);
 		$moufUiFileWriter->writeMoufUI();
+	}
+	
+	/**
+	 * Returns the Composer config object
+	 * @param string $param
+	 * @return string
+	 */
+	public function getComposerConfig() {
+		return $this->getComposer()->getConfig();
 	}
 }
 

@@ -20,6 +20,7 @@ use Mouf\Html\HtmlElement\HtmlBlock;
 use Mouf\MoufDocumentationPageDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Html\Utils\WebLibraryManager\WebLibrary;
 
 /**
  * The controller displaying the documentation related to packages.
@@ -186,7 +187,6 @@ class DocumentationController extends Controller {
 				</script>
 				"
 		);
-
 
 		if (strripos($filename, ".html") !== false || strripos($filename, ".md") !== false || strripos($filename, "README") !== false) {
 			$this->addMenu();
