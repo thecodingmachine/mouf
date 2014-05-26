@@ -1,78 +1,17 @@
-Mouf's supported types
-======================
-
-Supported injection techniques
-------------------------------
-
-When you work with Mouf, you can inject dependencies or parameters in your instances. If you want
-to [use Mouf UI for dependency injection](mouf_di_ui.md), you can use 3 types of injection:
-
-- **Constructor arguments**: any argument in a constructor can be configured in Mouf (actually, any
-  argument that is not compulsory MUST be configured in Mouf, otherwise, Mouf won't be able to
-  instantiate the object)
-- **Public properties**: any public property of a class can be edited using Mouf
-- **Setters**: any setter (a function with one parameter starting with the 3 letters "set") can be
-  called by Mouf.
-
-If you are using *constructor arguments* or *setters*, you can rely on [PHP type hinting](http://php.net/manual/en/language.oop5.typehinting.php).
-
-For instance:
-
-```php
-public function __construct(LoggerInterface $logger) {
-	$this->logger = $logger;
-}
-
-public function setLogger(LoggerInterface $logger) {
-	$this->logger = $logger;
-}
-```
-
-Mouf will know that those constructor and setter are expecting a `LoggerInterface` property.
-
-However, type hinting is limited in PHP. If you have more advanced needs, you can use annotations to help you.
-Here are 3 samples:
-
-```php
-/**
- * @param LoggerInterface $logger
- */
-public function __construct($logger) {
-	$this->logger = $logger;
-}
-```
-
-```php
-/**
- * @param LoggerInterface $logger
- */
-public function setLogger(LoggerInterface $logger) {
-	$this->logger = $logger;
-}
-```
-
-```php
-/**
- * @var LoggerInterface
- */
-public $logger;
-```
-
-
 Supported types
----------------
+===============
 
-There 4 kind of supported types:
+There are 4 kinds of supported types:
 
 - Classes and interfaces
 - Primitive types
 - Arrays (and associative arrays)
 - Mixed types
 
-Note: if you are using a third party library th at requires injecting a type that is not supported,
-you can always fallback to [injecting values via PHP code](declare_instance_via_php_code.md);
+Note: if you are using a third party library that requires injecting a type that is not supported,
+you can always fallback to [injecting values via PHP code](declare_instance_via_php_code.md).
 
-###Classes and interfaces
+##Classes and interfaces
 
 We already saw that classes and interfaces can be used as types in the example above.
 
@@ -81,7 +20,7 @@ In the Mouf user interface, these properties will be displayed like this:
 ![Object properties](images/property_object.png)
 
 
-###Primitive types
+##Primitive types
 
 Mouf supports those primitive types:
 
@@ -124,7 +63,7 @@ will be rendered this way:
 ![Primitive properties](images/property_primitive.png)
 
 
-###Arrays
+##Arrays
 
 You can also inject arrays into properties.
 You can use arrays of primitive types or arrays of objects (but you cannot mix both).
@@ -157,7 +96,7 @@ option that will let you type some PHP code to fill the property.</div>
 
 
 
-###Mixed types
+##Mixed types
 
 Mouf does not support the **mixed** keyword.
 However, you can use a pipe to declare that a property can have many different types.

@@ -37,18 +37,16 @@
 		"mouf" : {
 			"doc" : [{
 					"title" : "Installing Mouf",
-					"url" : "doc/installing_mouf.md",
-					"children" : [{
-							"title" : "Troubleshooting install",
-							"url" : "doc/troubleshooting.md"
-						}
-					]
+					"url" : "doc/installing_mouf.md"
 				}, {
 					"title" : "Getting started with dependency injection",
 					"url" : "doc/dependency_injection.md",
 					"children" : [{
 							"title" : "Using Mouf UI to define instances",
 							"url" : "doc/mouf_di_ui.md"
+						}, {
+							"title" : "Injection techniques",
+							"url" : "doc/injection_techniques.md"
 						}, {
 							"title" : "Supported types",
 							"url" : "doc/supported_types.md"
@@ -91,6 +89,10 @@
 							"url" : "doc/utility_functions.md"
 						}
 					]
+				},
+				{
+					"title" : "Troubleshooting",
+					"url" : "doc/troubleshooting.md"
 				}
 			]
 		}

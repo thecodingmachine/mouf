@@ -13,6 +13,8 @@ that is not related to web development. Our sample will be about role-playing ga
 video embedding. Click here to view the video.</a>
 <iframe width="800" height="600" src="//www.youtube.com/embed/UVeD20y5bWI?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
+**Finished the video? In a hurry?** <a href="injection_techniques.md" class="btn btn-primary">Directly jump to the next video about supported injection techniques</a>
+
 The playground
 --------------
 
@@ -115,6 +117,8 @@ Actually, Mouf can detect 3 types of properties that can be "injected" (it means
 - **Public properties**: any public property of a class can be edited using Mouf
 - **Setters**: any setter (a function with one parameter starting with the 3 letters "set") can be
   called by Mouf.
+  
+You can learn more about those 3 types of injection in the ["Supported injection techniques" page](injection_techniques.md#supportedinjectiontechniques).
 
 In this sample, we are going to create a `Axe` and a `Sword` instance and give it to our hero.
 To do this, we just have to press the orange button next to "leftHandWeapon".
@@ -125,41 +129,11 @@ Here is what happens:
 
 First of all, you can see that Mouf is displaying, in the right column, a way to create new `Axe` and
 `Sword `instances.
-This is because both classes implement the `WeaponInterface` and because the `leftHandWeapon` constrcutor's parameter 
+This is because both classes implement the `WeaponInterface` and because the `leftHandWeapon` constructor's parameter 
 must be a `WeaponInterface`.
 
-Mouf has 2 strategies to infer the type of the parameter:
-
-- It will first look if the parameter has an explicit type. For instance:
-
-  ```php
-  public function __construct(MyClass $parameter);
-  ```
-  
-  In this function, the "MyClass" type is declared in the function signature. It is easy.
-- If the type is not available, Mouf will fallback to annotations to get the type. For instance:
-
-  ```php
-  /**
-   * @param MyClass $parameter
-   */
-  public function __construct($parameter) {
-	$this->parameter = $parameter;
-  }
-  ```
-  
-  The **@param** annotation will be used to define the type of the `$parameter` variable.
-  If we were playing with public fields, we would use:
-  
-  ```php
-  /**
-   * @var MyClass
-   */
-  public $parameter;
-  ```
-
-<div class="alert alert-info"><strong>Heads up!</strong> When writing annotations, it is very important 
-to use the PHPDoc syntax. In particular, your comments must start with /**, not with /* or //!</div>
+Mouf correctly manages to infer the type of each argument of the constructor. [Check the documentation about
+type inference](injection_techniques.md#typeinference) if you want to learn more about the way Mouf does this..
 
 There are many supported types in Mouf (classes, primitive types, arrays, ...). To learn more, check
 the [supported types document](supported_types.md).
@@ -320,6 +294,8 @@ Going further
 
 Want to go further?
 
-<a href="supported_types.md" class="btn btn-primary">Learn more about the types supported by Mouf &gt;</a>
+<a href="injection_techniques.md" class="btn btn-primary">Learn more about the supported injection techniques &gt;</a>
+
+<a href="supported_types.md" class="btn">Learn more about the types supported by Mouf &gt;</a>
 
 <a href="mouf_annotations.md" class="btn">Learn how to use annotations to make dependency injection even easier &gt;</a>
