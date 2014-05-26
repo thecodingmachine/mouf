@@ -142,7 +142,6 @@ class MoufInstancePropertyDescriptor {
 	private function toMoufManagerArray($value, &$isInstance, &$isValue) {
 		if ($value === null) {
 			$toStore = null;
-			$isValue = true;
 		} elseif ($value instanceof MoufInstanceDescriptor) {
 			$toStore = $value->getIdentifierName();
 			$isInstance = true;
