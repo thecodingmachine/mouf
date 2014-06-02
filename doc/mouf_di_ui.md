@@ -13,7 +13,7 @@ that is not related to web development. Our sample will be about role-playing ga
 video embedding. Click here to view the video.</a>
 <iframe width="800" height="600" src="//www.youtube.com/embed/UVeD20y5bWI?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
-**Finished the video? In a hurry?** <a href="injection_techniques.md" class="btn btn-primary">Directly jump to the next video about supported injection techniques</a>
+**Finished the video? In a hurry?** <a href="injection_techniques.md" class="btn btn-primary">Directly jump to the next video about supported injection techniques &gt;</a>
 
 The playground
 --------------

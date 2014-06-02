@@ -87,12 +87,25 @@
 						}, {
 							"title" : "Utility functions",
 							"url" : "doc/utility_functions.md"
+						}, {
+							"title" : "Integrating your package with full-text search",
+							"url" : "doc/full_text_search.md"
+						}, {
+							"title" : "Weak instances",
+							"url" : "doc/weak_instances.md"
 						}
+						
+						
 					]
 				},
 				{
 					"title" : "Troubleshooting",
-					"url" : "doc/troubleshooting.md"
+					"url" : "doc/troubleshooting.md",
+					"children" : [{
+							"title" : "Troubleshooting installation",
+							"url" : "doc/troubleshooting_install.md"
+						}
+					]
 				}
 			]
 		}

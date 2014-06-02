@@ -6,6 +6,8 @@ Supported injection techniques
 video embedding. Click here to view the video.</a>
 <iframe width="853" height="480" src="//www.youtube.com/embed/o-1DW6yQ00I?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
+**Finished the video? In a hurry?** <a href="supported_types.md" class="btn btn-primary">Directly jump to the next video about supported types &gt;</a>
+
 When you work with Mouf, you can inject dependencies or parameters in your instances. If you want
 to [use Mouf UI for dependency injection](mouf_di_ui.md), you can use 3 types of injection:
 
