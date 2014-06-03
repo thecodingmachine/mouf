@@ -598,3 +598,7 @@ span.phperror {
 	margin: 0 0 10px 0;
 	list-style-type: none;
 }
+
+.login_controller ol {
+	list-style-type: none;
+}
