@@ -22,6 +22,9 @@ use Mouf\MoufPropertyDescriptor;
 use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\HtmlElement\HtmlBlock;
+use Mouf\MoufCache;
+use Mouf\ClassProxy;
+use Mouf\DocumentationUtils;
 
 
 /**
@@ -118,10 +121,16 @@ abstract class AbstractMoufInstanceController extends Controller {
 		
 		$viewPropertiesMenuItem = new MenuItem("View properties", ROOT_URL."ajaxinstance/");
 		$viewPropertiesMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));
+		
+		if (!$viewPropertiesMenuItem->isActive()) {
+			// If the view is active, we might as well not display anything!
+			\MoufAdmin::getInstanceMenu()->addChild($viewPropertiesMenuItem);
+			
+		}
+		
 		/*$viewDependencyGraphMenuItem = new MenuItem("View dependency graph", "mouf/displayGraph/");
 		$viewDependencyGraphMenuItem->setPropagatedUrlParameters(array("selfedit", "name"));*/
-		$commonMenuItem = new MenuItem("Common", null, array($viewPropertiesMenuItem/*, $viewDependencyGraphMenuItem*/));
-		\MoufAdmin::getInstanceMenu()->addChild($commonMenuItem);
+		//$commonMenuItem = new MenuItem("<b>Common</b>", null, array($viewPropertiesMenuItem/*, $viewDependencyGraphMenuItem*/));
 		/*$this->template->addRightHtmlElement(new SplashMenu(
 			array(
 			new SplashMenuItem("<b>Common</b>", null, null),
@@ -129,6 +138,49 @@ abstract class AbstractMoufInstanceController extends Controller {
 			new SplashMenuItem("View dependency graph", "mouf/displayGraph/?name=".$name, null, array("selfedit")))));
 		$this->template->addRightFunction(array($this, "displayComponentParents"));
 		*/
+		
+		// Let's find the documentation related to this class.
+		$cache = new MoufCache();
+		
+		$documentationMenuItem = $cache->get('documentationMenuForClass_'.$this->className);
+
+		if ($documentationMenuItem === null) {
+			$documentationMenuItem = new MenuItem("<b>Related documentation</b>");
+			// TODO: hit the documentation menu instead!
+			
+			if ($this->selfedit == "true") {
+				$composerJsonFiles = DocumentationUtils::getRelatedPackages($this->className);
+			} else {
+				$documentationUtils = new ClassProxy('Mouf\\DocumentationUtils');
+				$composerJsonFiles = $documentationUtils->getRelatedPackages($this->className);
+			}
+			
+			foreach ($composerJsonFiles as $composerJsonFile) {
+				$parsedJsonFile = json_decode(file_get_contents($composerJsonFile), true);
+				$extra = isset($parsedJsonFile['extra'])?$parsedJsonFile['extra']:array();
+				$docPages = DocumentationUtils::getDocPages($extra, dirname($composerJsonFile).'/');
+				
+				if (isset($parsedJsonFile['name']) && $docPages) {
+					$packageName = $parsedJsonFile['name'];
+					
+					$packageDocumentation = new MenuItem($packageName);
+					$documentationMenuItem->addMenuItem($packageDocumentation);
+					
+					DocumentationUtils::fillMenu($packageDocumentation, $docPages, $packageName);
+				} else {
+					// This is probably the root package if it has no name.
+					continue;
+				}
+			}
+			// Short lived cache (3 minutes)
+			$cache->set('documentationMenuForClass_'.$this->className, $documentationMenuItem, 180);
+		}
+		
+		if ($documentationMenuItem->getChildren()) {
+			\MoufAdmin::getInstanceMenu()->addChild($documentationMenuItem);
+		}
+		//\MoufAdmin::getBlock_left()->addText("<div id='relatedDocumentation'><b>Related documentation:</b>".var_export($composerJsonFiles, true)."</div>");
+		
 		$this->displayComponentParents();
 	}
 	
@@ -140,8 +192,8 @@ abstract class AbstractMoufInstanceController extends Controller {
 		$componentsList = $this->moufManager->getOwnerComponents($this->instanceName);
 		
 		$this->canBeWeak = false;
-		\MoufAdmin::getBlock_left()->addText("<div id='referredInstances'><b>Referred by:</b></div>");
 		if (!empty($componentsList)) {
+			\MoufAdmin::getBlock_left()->addText("<div id='referredInstances'><b>Referred by:</b></div>");
 			$this->canBeWeak = true;
 			//$children = array();
 			foreach ($componentsList as $component) {

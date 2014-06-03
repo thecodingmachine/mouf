@@ -16,8 +16,6 @@ use Mouf\Html\Utils\WebLibraryManager\WebLibrary;
 
 /**
  * This controller displays the (not so) basic full ajax details page.
- *
- * @Component
  */
 class MoufAjaxInstanceController extends AbstractMoufInstanceController {
 

@@ -21,6 +21,7 @@ use Mouf\MoufDocumentationPageDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Html\Utils\WebLibraryManager\WebLibrary;
+use Mouf\DocumentationUtils;
 
 /**
  * The controller displaying the documentation related to packages.
@@ -85,7 +86,6 @@ class DocumentationController extends Controller {
 	
 	protected $rootPath;
 	
-	private $readMeFiles=array('index.md', 'README.md', 'readme.md', 'README.html', 'README.txt', 'README', 'README.mdown', 'index.html', 'index.htm');
 	
 	/**
 	 * Displays the list of doc files from the packages
@@ -188,7 +188,7 @@ class DocumentationController extends Controller {
 			$root_url = ROOT_URL . rtrim($tailing_url, '/\\');
 		
 			// Let's try to find a README
-			foreach ( $this->readMeFiles as $readme ) {
+			foreach ( DocumentationUtils::$readMeFiles as $readme ) {
 				if (file_exists ( $dir . DIRECTORY_SEPARATOR . $readme )) {
 					header ( 'Location: ' . $root_url . '/' . $readme );
 					return;
@@ -295,7 +295,7 @@ class DocumentationController extends Controller {
 		$docPages = $this->getDocPages($this->package);
 		
 		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getPrettyName());
-		$this->fillMenu($documentationMenuMainItem, $docPages);
+		DocumentationUtils::fillMenu($documentationMenuMainItem, $docPages, $this->package->getName());
 		$this->documentationMenu->addChild($documentationMenuMainItem);
 	}
 	
@@ -321,50 +321,11 @@ class DocumentationController extends Controller {
 	protected function getDocPages(PackageInterface $package) {
 		$extra = $package->getExtra();
 		
-		$docArray = array();
-		
-		// Let's find if there is a README file.
 		$packagePath = $this->rootPath."vendor/".$package->getName()."/";
 		
-		foreach ($this->readMeFiles as $readme) {
-			if (file_exists($packagePath.$readme)) {
-				$docArray[] = array("title"=> "Read me",
-						"url"=>$readme
-				);
-				break;
-			}
-		}
-		
-		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
-			$docArray = array_merge($docArray, $extra['mouf']['doc']);
-		}
-		return $docArray;
+		return DocumentationUtils::getDocPages($extra, $packagePath);
 	}
 	
-	
-	
-	private function fillMenu($menu, array $docPages) {
-		$children = array();
-		foreach ($docPages as $docPage) {
-			/* @var $docPage MoufDocumentationPageDescriptor */
-			
-			if (!isset($docPage['title'])) {
-				continue;
-			}
-			
-			$menuItem = new MenuItem();
-			$menuItem->setLabel($docPage['title']);
-			if (isset($docPage['url'])) {
-				$menuItem->setUrl(ROOT_URL."doc/view/".$this->package->getName()."/".$docPage['url']);
-			}
-			$children[] = $menuItem;
-			
-			if (isset($docPage['children'])) {
-				$this->fillMenu($menuItem, $docPage['children']);
-			}
-		}
-		$menu->setChildren($children);
-	}
 
 	protected function getLink(MoufDocumentationPageDescriptor $documentationPageDescriptor) {
 		$link = $documentationPageDescriptor->getURL();
