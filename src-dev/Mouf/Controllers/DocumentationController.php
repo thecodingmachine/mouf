@@ -85,6 +85,8 @@ class DocumentationController extends Controller {
 	
 	protected $rootPath;
 	
+	private $readMeFiles=array('index.md', 'README.md', 'readme.md', 'README.html', 'README.txt', 'README', 'README.mdown', 'index.html', 'index.htm');
+	
 	/**
 	 * Displays the list of doc files from the packages
 	 * 
@@ -176,6 +178,37 @@ class DocumentationController extends Controller {
 		if (!is_readable($filename)) {
 			MoufAdmin::getSplash()->print404("Page not found");
 			return;
+		}
+		
+		if (is_dir($filename)) {
+			// This is not a file but a directory.
+			// Let's look for a README in it.
+		
+			$dir = rtrim($filename, '/\\');
+			$root_url = ROOT_URL . rtrim($tailing_url, '/\\');
+		
+			// Let's try to find a README
+			foreach ( $this->readMeFiles as $readme ) {
+				if (file_exists ( $dir . DIRECTORY_SEPARATOR . $readme )) {
+					header ( 'Location: ' . $root_url . '/' . $readme );
+					return;
+				}
+			}
+			// If no readme found, let's go on a 404.
+			//$this->addMenu ( $parsedComposerJson, $targetDir, $rootUrl, $packageVersion );
+			/*if ($path) {
+				MoufAdmin::getSplash()->print404("Sorry, this project does not seem to have documentation");
+				//$this->http404Handler->pageNotFound ( "Sorry, this project does not seem to have documentation" );
+				return;
+			} else {*/
+				$this->contentBlock->addText ( "<h4>" . $this->package->getName() . "</h4>" );
+				if ($this->package->getDescription()) {
+					$this->contentBlock->addText ( "<p>" . htmlentities ( $this->package->getDescription(), ENT_QUOTES, 'UTF-8' ) . "</p>" );
+				}
+				$this->contentBlock->addText ( '<div class="alert">Sorry, this project does not seem to have any documentation. Please bang the head of the developers until a proper README is added to this package!</div>' );
+				$this->template->toHtml ();
+				return;
+			//}
 		}
 		
 		$this->contentBlock->addText(
@@ -287,30 +320,14 @@ class DocumentationController extends Controller {
 		
 		// Let's find if there is a README file.
 		$packagePath = $this->rootPath."vendor/".$package->getName()."/";
-		if (file_exists($packagePath."index.md")) {
-			$docArray[] = array("title"=> "Start page",
-						"url"=>"index.md"
-			);
-		}
-		if (file_exists($packagePath."README")) {
-			$docArray[] = array("title"=> "Read me",
-						"url"=>"README"
-			);
-		}
-		if (file_exists($packagePath."README.md")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.md"
-			);
-		}
-		if (file_exists($packagePath."README.html")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.html"
-			);
-		}
-		if (file_exists($packagePath."README.txt")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.txt"
-			);
+		
+		foreach ($this->readMeFiles as $readme) {
+			if (file_exists($packagePath.$readme)) {
+				$docArray[] = array("title"=> "Read me",
+						"url"=>$readme
+				);
+				break;
+			}
 		}
 		
 		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
@@ -364,7 +381,7 @@ class DocumentationController extends Controller {
 	 */
 	public function displayDocDirectory($docPages, $packageName) {
 		?>
-		<ul>
+<ul>
 		<?php 
 		foreach ($docPages as $docPage):
 			$url = $docPage['url'];
@@ -388,7 +405,7 @@ class DocumentationController extends Controller {
 		endforeach;
 		?>
 		</ul>
-		<?php
+<?php
 	}
 	
 }

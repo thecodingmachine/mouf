@@ -700,85 +700,6 @@ $moufManager->addComponentInstances(array (
       'menu' => 'documentationMenu',
     ),
   ),
-  'documentationSubMenu' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterBinds' => 
-    array (
-      'setChildren' => 
-      array (
-        0 => 'viewDocumentationMenuItem',
-      ),
-    ),
-    'setterProperties' => 
-    array (
-      'setLabel' => 
-      array (
-        'value' => 'Documentation',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setUrl' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => true,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '90',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
   'downloadPackages2MenuItem' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
@@ -1258,7 +1179,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '30',
+        'value' => '20',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1880,7 +1801,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'projectSubMenu',
         1 => 'instancesSubMenu',
-        2 => 'packagesSubMenu',
+      	2 => 'documentationSubMenu'
       ),
     ),
   ),
@@ -2508,100 +2429,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'packagesSubMenu' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterBinds' => 
-    array (
-    ),
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => true,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '10',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-    'constructor' => 
-    array (
-      0 => 
-      array (
-        'value' => 'Packages',
-        'parametertype' => 'primitive',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      1 => 
-      array (
-        'value' => NULL,
-        'parametertype' => 'primitive',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      2 => 
-      array (
-        'value' => 
-        array (
-          0 => 'downloadPackages2MenuItem',
-          1 => 'installTasksMenuItem',
-          2 => 'viewDocumentationMenuItem',
-        ),
-        'parametertype' => 'object',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
   'phpInfo' => 
   array (
     'class' => 'Mouf\\Controllers\\PhpInfoController',
@@ -2688,9 +2515,10 @@ $moufManager->addComponentInstances(array (
       'setChildren' => 
       array (
         0 => 'editConfigurationMenuItem',
-        1 => 'analyzeClassesMenuItem',
-        2 => 'moufStatus2MenuItem',
-        3 => 'displayPhpInfoMenuItem',
+      	1 => 'installTasksMenuItem',
+        2 => 'analyzeClassesMenuItem',
+        3 => 'moufStatus2MenuItem',
+        4 => 'displayPhpInfoMenuItem',
       ),
     ),
     'setterProperties' => 
@@ -3137,7 +2965,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setLabel' => 
       array (
-        'value' => 'View packages documentation',
+        'value' => 'View all documentation',
         'type' => 'string',
         'metadata' => 
         array (
@@ -3177,7 +3005,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '',
+        'value' => '90',
         'type' => 'string',
         'metadata' => 
         array (
@@ -3257,6 +3085,70 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'documentationSubMenu' =>
+		array (
+				'class' => 'Mouf\\Menu\\DocumentationMenuItem',
+				'external' => false,
+				'weak' => false,
+				'setterBinds' =>
+				array (
+						'setChildren' =>
+						array (
+								0 => 'viewDocumentationMenuItem',
+						),
+				),
+				'setterProperties' =>
+				array (
+						'setUrl' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsActive' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsExtended' =>
+						array (
+								'value' => true,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssClass' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPriority' =>
+						array (
+								'value' => '999',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPropagatedUrlParameters' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
 ));
 
 

@@ -51,11 +51,11 @@
 							"title" : "Supported types",
 							"url" : "doc/supported_types.md"
 						}, {
-							"title" : "Special annotations",
-							"url" : "doc/mouf_annotations.md"
-						}, {
 							"title" : "Injection via PHP code",
 							"url" : "doc/declare_instance_via_php_code.md"
+						}, {
+							"title" : "Special annotations",
+							"url" : "doc/mouf_annotations.md"
 						}
 					]
 				}, {
