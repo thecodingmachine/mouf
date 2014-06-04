@@ -34,16 +34,16 @@
         },
         {
             "name": "michelf/php-markdown",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "96d8150406f67e683ef4acc09fef91785fef1266"
+                "reference": "de9a19c7bf352d41cc99ed86c3c0ef17e87394b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/96d8150406f67e683ef4acc09fef91785fef1266",
-                "reference": "96d8150406f67e683ef4acc09fef91785fef1266",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/de9a19c7bf352d41cc99ed86c3c0ef17e87394b6",
+                "reference": "de9a19c7bf352d41cc99ed86c3c0ef17e87394b6",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +81,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2013-11-29 17:09:24"
+            "time": "2014-05-05 02:43:50"
         },
         {
             "name": "mouf/famfamfam",
@@ -89,12 +89,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/moufmouf/famfamfam.git",
-                "reference": "5219a3068adf810ae03b32753d03f7af6462f2b0"
+                "reference": "438cac30bdaa0718a04f1ffdf0c078e2d195403f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moufmouf/famfamfam/zipball/5219a3068adf810ae03b32753d03f7af6462f2b0",
-                "reference": "5219a3068adf810ae03b32753d03f7af6462f2b0",
+                "url": "https://api.github.com/repos/moufmouf/famfamfam/zipball/438cac30bdaa0718a04f1ffdf0c078e2d195403f",
+                "reference": "438cac30bdaa0718a04f1ffdf0c078e2d195403f",
                 "shasum": ""
             },
             "require": {
@@ -123,7 +123,7 @@
                 "icons",
                 "silk"
             ],
-            "time": "2013-03-19 21:59:05"
+            "time": "2014-06-03 20:29:43"
         },
         {
             "name": "mouf/html.htmlelement",
@@ -131,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.html_element.git",
-                "reference": "ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab"
+                "reference": "c8272bf308894c0843e7eeaae30746f3f05464f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab",
-                "reference": "ced9dc06dbf274c5f90d30e8d6c4dfbe30c21bab",
+                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/c8272bf308894c0843e7eeaae30746f3f05464f9",
+                "reference": "c8272bf308894c0843e7eeaae30746f3f05464f9",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,7 @@
                 "interface",
                 "tohtml"
             ],
-            "time": "2013-10-29 18:21:58"
+            "time": "2014-06-03 20:28:43"
         },
         {
             "name": "mouf/html.renderer",
@@ -182,12 +182,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.git",
-                "reference": "00a9eae967cb5a919cbe676e72db32dddb6ff817"
+                "reference": "5f3fabfba7abb82f46d4fee1c29039bdccab9dc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/00a9eae967cb5a919cbe676e72db32dddb6ff817",
-                "reference": "00a9eae967cb5a919cbe676e72db32dddb6ff817",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/5f3fabfba7abb82f46d4fee1c29039bdccab9dc0",
+                "reference": "5f3fabfba7abb82f46d4fee1c29039bdccab9dc0",
                 "shasum": ""
             },
             "require": {
@@ -252,7 +252,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2013-11-05 10:41:17"
+            "time": "2014-04-17 11:13:36"
         },
         {
             "name": "mouf/html.renderer.twig-extensions",
@@ -260,12 +260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.twig-extensions.git",
-                "reference": "b46189e54a045718bfe63d62b30d7a3eed6c0764"
+                "reference": "3d4af0b8287af3a7dc2a595e42bc35e26cc9318c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/b46189e54a045718bfe63d62b30d7a3eed6c0764",
-                "reference": "b46189e54a045718bfe63d62b30d7a3eed6c0764",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/3d4af0b8287af3a7dc2a595e42bc35e26cc9318c",
+                "reference": "3d4af0b8287af3a7dc2a595e42bc35e26cc9318c",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +315,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2013-10-29 18:21:58"
+            "time": "2014-04-17 17:14:43"
         },
         {
             "name": "mouf/html.template.bootstrap",
@@ -383,12 +383,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu.git",
-                "reference": "acafd9e034ef7ee2378b4cc2343cb5ce57503ad5"
+                "reference": "29ee1265b57bef6148bbedc4facb2d142feee309"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/acafd9e034ef7ee2378b4cc2343cb5ce57503ad5",
-                "reference": "acafd9e034ef7ee2378b4cc2343cb5ce57503ad5",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/29ee1265b57bef6148bbedc4facb2d142feee309",
+                "reference": "29ee1265b57bef6148bbedc4facb2d142feee309",
                 "shasum": ""
             },
             "require": {
@@ -419,20 +419,20 @@
                 "menu",
                 "mouf"
             ],
-            "time": "2013-08-05 14:55:21"
+            "time": "2014-06-03 20:27:41"
         },
         {
             "name": "mouf/html.template.mouftemplate",
             "version": "2.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate",
-                "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2"
+                "url": "https://github.com/thecodingmachine/html.template.mouftemplate.git",
+                "reference": "2e47823a149fb6a4dfaa97ec945ae6816b23b756"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
-                "reference": "d402437cbd3d2e6de3727622af9875ed4eaa2fd2",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/2e47823a149fb6a4dfaa97ec945ae6816b23b756",
+                "reference": "2e47823a149fb6a4dfaa97ec945ae6816b23b756",
                 "shasum": ""
             },
             "require": {
@@ -463,7 +463,7 @@
                 "mouftemplate",
                 "template"
             ],
-            "time": "2012-11-24 11:46:29"
+            "time": "2014-06-03 20:28:14"
         },
         {
             "name": "mouf/html.template.templateinterface",
@@ -563,20 +563,21 @@
         },
         {
             "name": "mouf/html.utils.weblibrarymanager",
-            "version": "2.0.x-dev",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "2c5f568795d65cdd022812905bd38208388074c4"
+                "reference": "318e1d38bb631b53d17ae5eab57c96e96a7def88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/2c5f568795d65cdd022812905bd38208388074c4",
-                "reference": "2c5f568795d65cdd022812905bd38208388074c4",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/318e1d38bb631b53d17ae5eab57c96e96a7def88",
+                "reference": "318e1d38bb631b53d17ae5eab57c96e96a7def88",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.htmlelement": "~2.0",
+                "mouf/html.utils.weblibrarymanager.component-installer": "2.1.*",
                 "mouf/mouf-installer": "~2.0",
                 "php": ">=5.3.0"
             },
@@ -588,6 +589,9 @@
                             "type": "file",
                             "file": "install.php"
                         }
+                    ],
+                    "require-admin": [
+                        "src/WebLibraryAdmin.php"
                     ]
                 }
             },
@@ -617,7 +621,58 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2013-10-29 18:21:58"
+            "time": "2014-05-28 07:46:16"
+        },
+        {
+            "name": "mouf/html.utils.weblibrarymanager.component-installer",
+            "version": "2.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager.component-installer.git",
+                "reference": "d9eabdc62213fa5adc53110cd2d0ba0796e5f72b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager.component-installer/zipball/d9eabdc62213fa5adc53110cd2d0ba0796e5f72b",
+                "reference": "d9eabdc62213fa5adc53110cd2d0ba0796e5f72b",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "1.0.0",
+                "mouf/html.utils.weblibrarymanager": "~2.1",
+                "php": ">=5.3.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Mouf\\Html\\Utils\\WebLibraryManager\\ComponentInstaller\\ComponentInstallerPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mouf\\Html\\Utils\\WebLibraryManager\\ComponentInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This Mouf package contains a Composer installer that will automatically create WebLibrary instances when a 'component' package is installed in Composer. It is designed to be used only with Mouf's WebLibraryManager.",
+            "homepage": "http://mouf-php/packages/mouf/html.utils.weblibrarymanager.component-installer",
+            "keywords": [
+                "css",
+                "dependencies",
+                "dependency",
+                "html",
+                "javascript",
+                "mouf"
+            ],
+            "time": "2014-05-23 09:59:12"
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -625,12 +680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.menu.git",
-                "reference": "c62f3289b0808544a3d762254addfa1cc84a97c5"
+                "reference": "fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.menu/zipball/c62f3289b0808544a3d762254addfa1cc84a97c5",
-                "reference": "c62f3289b0808544a3d762254addfa1cc84a97c5",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.menu/zipball/fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e",
+                "reference": "fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e",
                 "shasum": ""
             },
             "require": {
@@ -662,7 +717,7 @@
                 "mouf",
                 "template"
             ],
-            "time": "2013-05-18 13:07:02"
+            "time": "2014-04-25 14:27:23"
         },
         {
             "name": "mouf/html.widgets.messageservice",
@@ -876,13 +931,13 @@
             "version": "1.01.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/javascript.jquery.jquery-filetree.git",
-                "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502"
+                "url": "https://github.com/thecodingmachine/javascript.jquery.jquery-filetree.git",
+                "reference": "da68e197c36ee294969508bd118feb4c315b1f37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/cd54be33ad6cb667c116394d35c5bef37ac1a502",
-                "reference": "cd54be33ad6cb667c116394d35c5bef37ac1a502",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery-filetree/zipball/da68e197c36ee294969508bd118feb4c315b1f37",
+                "reference": "da68e197c36ee294969508bd118feb4c315b1f37",
                 "shasum": ""
             },
             "require": {
@@ -920,7 +975,7 @@
                 "jquery filetree",
                 "mouf"
             ],
-            "time": "2012-12-03 09:16:06"
+            "time": "2014-06-03 20:44:49"
         },
         {
             "name": "mouf/javascript.jquery.jquery-ui",
@@ -978,13 +1033,13 @@
             "version": "3.0.83.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/javascript.syntaxhighlighter.git",
-                "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae"
+                "url": "https://github.com/thecodingmachine/javascript.syntaxhighlighter.git",
+                "reference": "6f4499eafbe688f504501ccdc2329edb459150d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
-                "reference": "ed06118562f5777cc4aa9bb93ba2c5f1e35590ae",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.syntaxhighlighter/zipball/6f4499eafbe688f504501ccdc2329edb459150d4",
+                "reference": "6f4499eafbe688f504501ccdc2329edb459150d4",
                 "shasum": ""
             },
             "require": {
@@ -1025,20 +1080,20 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2013-01-14 15:04:52"
+            "time": "2014-06-03 20:45:27"
         },
         {
             "name": "mouf/javascript.underscore",
             "version": "1.3.3.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/javascript.underscore.git",
-                "reference": "9eae854caf24a9be83a055d08af05559088e744f"
+                "url": "https://github.com/thecodingmachine/javascript.underscore.git",
+                "reference": "e1e1122c51c1b1ab8841c75ce4e7cabd857f558c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/9eae854caf24a9be83a055d08af05559088e744f",
-                "reference": "9eae854caf24a9be83a055d08af05559088e744f",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/e1e1122c51c1b1ab8841c75ce4e7cabd857f558c",
+                "reference": "e1e1122c51c1b1ab8841c75ce4e7cabd857f558c",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1130,7 @@
                 "underscore",
                 "underscorejs"
             ],
-            "time": "2012-12-03 09:12:06"
+            "time": "2014-06-03 20:45:03"
         },
         {
             "name": "mouf/mouf-installer",
@@ -1083,12 +1138,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-installer.git",
-                "reference": "ec30d863405283cc3774b1e65188a791b6ceb9d3"
+                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/ec30d863405283cc3774b1e65188a791b6ceb9d3",
-                "reference": "ec30d863405283cc3774b1e65188a791b6ceb9d3",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/75cd4295a831b32aabea0b2bb6f4925da6b6e198",
+                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198",
                 "shasum": ""
             },
             "require": {
@@ -1123,7 +1178,7 @@
                 "install",
                 "mouf"
             ],
-            "time": "2014-02-26 11:35:20"
+            "time": "2014-06-03 20:47:09"
         },
         {
             "name": "mouf/mouf-validators-interface",
@@ -1280,12 +1335,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "35c36132a3f8b109c36c5a1a31f882eadf12a4f5"
+                "reference": "75385442c10bec9ec7eab93f4b0adc1ba1ccf960"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/35c36132a3f8b109c36c5a1a31f882eadf12a4f5",
-                "reference": "35c36132a3f8b109c36c5a1a31f882eadf12a4f5",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/75385442c10bec9ec7eab93f4b0adc1ba1ccf960",
+                "reference": "75385442c10bec9ec7eab93f4b0adc1ba1ccf960",
                 "shasum": ""
             },
             "require": {
@@ -1338,7 +1393,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2014-04-10 10:55:39"
+            "time": "2014-06-03 20:39:30"
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -1346,12 +1401,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.simplelogincontroller.git",
-                "reference": "4e97c0cbf787ba59e7fe81dc08d897b6bde3dd41"
+                "reference": "3a1c779aa5d492bcec0d33a05609d58f0af30b92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/4e97c0cbf787ba59e7fe81dc08d897b6bde3dd41",
-                "reference": "4e97c0cbf787ba59e7fe81dc08d897b6bde3dd41",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/3a1c779aa5d492bcec0d33a05609d58f0af30b92",
+                "reference": "3a1c779aa5d492bcec0d33a05609d58f0af30b92",
                 "shasum": ""
             },
             "require": {
@@ -1383,20 +1438,20 @@
                 "mouf",
                 "security"
             ],
-            "time": "2013-08-26 08:05:10"
+            "time": "2014-06-03 20:30:24"
         },
         {
             "name": "mouf/security.userfiledao",
             "version": "2.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:thecodingmachine/security.userfiledao.git",
-                "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c"
+                "url": "https://github.com/thecodingmachine/security.userfiledao.git",
+                "reference": "7d998e2714e9127f6e722fc7fc672b3abdd090d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
-                "reference": "9bd10c2bb9fcbdd44bfb5bff8eaafc0b4a1d5e4c",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/7d998e2714e9127f6e722fc7fc672b3abdd090d2",
+                "reference": "7d998e2714e9127f6e722fc7fc672b3abdd090d2",
                 "shasum": ""
             },
             "require": {
@@ -1428,7 +1483,7 @@
                 "security",
                 "userdao"
             ],
-            "time": "2012-11-24 11:47:22"
+            "time": "2014-06-03 20:31:23"
         },
         {
             "name": "mouf/security.userservice",
@@ -2355,12 +2410,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.session.session-manager.git",
-                "reference": "737828c9d6ca869dd9298ce9f16fefe5e7b8204e"
+                "reference": "6a1a59731444d71db8882a6e60b9728da2125ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/737828c9d6ca869dd9298ce9f16fefe5e7b8204e",
-                "reference": "737828c9d6ca869dd9298ce9f16fefe5e7b8204e",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/6a1a59731444d71db8882a6e60b9728da2125ce3",
+                "reference": "6a1a59731444d71db8882a6e60b9728da2125ce3",
                 "shasum": ""
             },
             "require": {
@@ -2400,7 +2455,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2013-10-29 18:22:00"
+            "time": "2014-04-25 11:51:35"
         },
         {
             "name": "mouf/utils.value.value-interface",
@@ -2838,20 +2893,22 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "3.7.34",
+            "version": "3.7.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "248d6ce95e6ca7f0e3135252c0b984bbe1f52f19"
+                "reference": "ae6cefd7cc84586a5ef27e04bae11ee940ec63dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/248d6ce95e6ca7f0e3135252c0b984bbe1f52f19",
-                "reference": "248d6ce95e6ca7f0e3135252c0b984bbe1f52f19",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ae6cefd7cc84586a5ef27e04bae11ee940ec63dc",
+                "reference": "ae6cefd7cc84586a5ef27e04bae11ee940ec63dc",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
                 "ext-dom": "*",
+                "ext-json": "*",
                 "ext-pcre": "*",
                 "ext-reflection": "*",
                 "ext-spl": "*",
@@ -2867,9 +2924,6 @@
                 "pear-pear.php.net/pear": "1.9.4"
             },
             "suggest": {
-                "ext-json": "*",
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
                 "phpunit/php-invoker": "~1.1"
             },
             "bin": [
@@ -2908,7 +2962,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-03-28 11:04:36"
+            "time": "2014-04-30 12:24:19"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2961,17 +3015,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.4.3",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd"
+                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd",
-                "reference": "77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b4b09c68ec2f2727574544ef0173684281a5033c",
+                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c",
                 "shasum": ""
             },
             "require": {
@@ -2980,7 +3034,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -3006,7 +3060,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-12 18:29:58"
+            "time": "2014-05-16 14:25:18"
         }
     ],
     "aliases": [
