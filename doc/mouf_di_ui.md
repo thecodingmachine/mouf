@@ -13,7 +13,13 @@ that is not related to web development. Our sample will be about role-playing ga
 video embedding. Click here to view the video.</a>
 <iframe width="800" height="600" src="//www.youtube.com/embed/UVeD20y5bWI?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
-**Finished the video? In a hurry?** <a href="injection_techniques.md" class="btn btn-primary">Directly jump to the next video about supported injection techniques &gt;</a>
+**Finished the video? In a hurry?**
+
+<a href="http://mouf-php.com/skills" class="btn btn-block">Learn what you can do with Mouf on the Skills chart &gt;</a>
+
+<a href="injection_techniques.md" class="btn btn-primary btn-block">Keep learning about dependency injection and the supported injection techniques &gt;</a>
+
+<a href="http://mouf-php.com/packages/mouf/getting-things-done-basic-edition/index.md" class="btn btn-block">Get started with the full-stack MVC framework &gt;</a>
 
 The playground
 --------------

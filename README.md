@@ -30,12 +30,12 @@ hundreds of packages available.
 - If you are interested in the global Mouf ecosystem, the MVC library, the database layer, etc..., you might want to start by
 having a look at the [main packages chart](http://mouf-php.com/skills) or at the  [Getting things done with Mouf project](http://mouf-php.com/packages/mouf/getting-things-done-basic-edition/index.md). This
 is a kind of "distribution" of the most common libraries used with Mouf.
-- You can also be interested integrating extending your project with Mouf. Mouf integrates easily with
+- You can also be interested in extending your existing project with Mouf. Mouf integrates easily with
 [Wordpress](http://mouf-php.com/packages/mouf/integration.wordpress.moufpress/README.md), 
 [Drupal](http://mouf-php.com/packages/mouf/integration.drupal.druplash/README.md), 
 [Symfony 2](http://mouf-php.com/packages/mouf/interop.symfony.di/README.md), 
-[Silex](https://github.com/moufmouf/pimple-interop) or any project compatible with the 
-[container-interop](https://github.com/container-interop/container-interop) project. 
+[Silex](https://github.com/moufmouf/pimple-interop), [Doctrine](http://mouf-php.com/packages/mouf/database.doctrine-orm-wrapper/README.md) 
+or any project compatible with the [container-interop](https://github.com/container-interop/container-interop) project. 
 
 Installation
 ------------
