@@ -140,45 +140,50 @@ abstract class AbstractMoufInstanceController extends Controller {
 		*/
 		
 		// Let's find the documentation related to this class.
-		$cache = new MoufCache();
-		
-		$documentationMenuItem = $cache->get('documentationMenuForClass_'.$this->className);
-
-		if ($documentationMenuItem === null) {
-			$documentationMenuItem = new MenuItem("<b>Related documentation</b>");
-			// TODO: hit the documentation menu instead!
+		// Note: the class name can be null in case of some instances declared via PHP code.
+		if ($this->className) {
 			
-			if ($this->selfedit == "true") {
-				$composerJsonFiles = DocumentationUtils::getRelatedPackages($this->className);
-			} else {
-				$documentationUtils = new ClassProxy('Mouf\\DocumentationUtils');
-				$composerJsonFiles = $documentationUtils->getRelatedPackages($this->className);
-			}
+			$cache = new MoufCache();
 			
-			foreach ($composerJsonFiles as $composerJsonFile) {
-				$parsedJsonFile = json_decode(file_get_contents($composerJsonFile), true);
-				$extra = isset($parsedJsonFile['extra'])?$parsedJsonFile['extra']:array();
-				$docPages = DocumentationUtils::getDocPages($extra, dirname($composerJsonFile).'/');
+			$documentationMenuItem = $cache->get('documentationMenuForClass_'.$this->className);
+	
+			if ($documentationMenuItem === null) {
+				$documentationMenuItem = new MenuItem("<b>Related documentation</b>");
+				// TODO: hit the documentation menu instead!
 				
-				if (isset($parsedJsonFile['name']) && $docPages) {
-					$packageName = $parsedJsonFile['name'];
-					
-					$packageDocumentation = new MenuItem($packageName);
-					$documentationMenuItem->addMenuItem($packageDocumentation);
-					
-					DocumentationUtils::fillMenu($packageDocumentation, $docPages, $packageName);
+				if ($this->selfedit == "true") {
+					$composerJsonFiles = DocumentationUtils::getRelatedPackages($this->className);
 				} else {
-					// This is probably the root package if it has no name.
-					continue;
+					$documentationUtils = new ClassProxy('Mouf\\DocumentationUtils');
+					$composerJsonFiles = $documentationUtils->getRelatedPackages($this->className);
 				}
+				
+				foreach ($composerJsonFiles as $composerJsonFile) {
+					$parsedJsonFile = json_decode(file_get_contents($composerJsonFile), true);
+					$extra = isset($parsedJsonFile['extra'])?$parsedJsonFile['extra']:array();
+					$docPages = DocumentationUtils::getDocPages($extra, dirname($composerJsonFile).'/');
+					
+					if (isset($parsedJsonFile['name']) && $docPages) {
+						$packageName = $parsedJsonFile['name'];
+						
+						$packageDocumentation = new MenuItem($packageName);
+						$documentationMenuItem->addMenuItem($packageDocumentation);
+						
+						DocumentationUtils::fillMenu($packageDocumentation, $docPages, $packageName);
+					} else {
+						// This is probably the root package if it has no name.
+						continue;
+					}
+				}
+				// Short lived cache (3 minutes)
+				$cache->set('documentationMenuForClass_'.$this->className, $documentationMenuItem, 180);
 			}
-			// Short lived cache (3 minutes)
-			$cache->set('documentationMenuForClass_'.$this->className, $documentationMenuItem, 180);
+			
+			if ($documentationMenuItem->getChildren()) {
+				\MoufAdmin::getInstanceMenu()->addChild($documentationMenuItem);
+			}
 		}
 		
-		if ($documentationMenuItem->getChildren()) {
-			\MoufAdmin::getInstanceMenu()->addChild($documentationMenuItem);
-		}
 		//\MoufAdmin::getBlock_left()->addText("<div id='relatedDocumentation'><b>Related documentation:</b>".var_export($composerJsonFiles, true)."</div>");
 		
 		$this->displayComponentParents();
