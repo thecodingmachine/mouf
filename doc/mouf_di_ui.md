@@ -6,7 +6,7 @@ In this document, we will show how to use Mouf DI framework to create and fetch 
 You can use Mouf to create any kind of instances from any classes (mostly *services* and
 *components* as you probably [read in the previous chapter](dependency_injection.md)).
 
-In order not to prove Mouf is truly generic, we will take a completely abstract sample 
+In order to prove Mouf is truly generic, we will take a completely abstract sample 
 that is not related to web development. Our sample will be about role-playing games!
 
 <a href="http://mouf-php.com/packages/mouf/mouf/doc/mouf_di_ui.md" class="hidden">You are viewing this content from Github (that does not support
