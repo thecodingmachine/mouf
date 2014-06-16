@@ -115,11 +115,13 @@ class ClassMapGenerator
             //$classKeywordPos = $results[0][count($results[0])-1][1];
             
             // Jump 2 newlines after the last class keyword.
-            $newLinePos = strpos($contents, "\n", $classKeywordPos+6);
-            if ($newLinePos) {
-	            $newLinePos = strpos($contents, "\n", $newLinePos+1);
+            if (strlen($contents) > $classKeywordPos+6) {
+	            $newLinePos = strpos($contents, "\n", $classKeywordPos+6);
 	            if ($newLinePos) {
-	            	$contents = substr($contents, 0, $newLinePos);
+		            $newLinePos = strpos($contents, "\n", $newLinePos+1);
+		            if ($newLinePos) {
+		            	$contents = substr($contents, 0, $newLinePos);
+		            }
 	            }
             }
             
