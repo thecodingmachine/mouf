@@ -107,7 +107,8 @@ require_once 'MoufComponents.php';
 ?>";
 		
 			file_put_contents(__DIR__."/../../../../../../mouf/Mouf.php", $moufStr);
-			chmod(__DIR__."/../../../../../../mouf/Mouf.php", 0664);
+			// Change rights on Mouf.php, but ignore errors (the file might be writable but still belong to someone else).
+			@chmod(__DIR__."/../../../../../../mouf/Mouf.php", 0664);
 		//}
 		
 		
