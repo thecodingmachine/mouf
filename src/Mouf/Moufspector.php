@@ -30,9 +30,16 @@ class Moufspector {
 	 */
 	public static function getComponentsList($type = null, $selfEdit = false) {
 		//$composerService = new ComposerService($selfEdit);
-		$moufClassExporer = new MoufClassExplorer($selfEdit);
+		$moufClassExplorer = new MoufClassExplorer($selfEdit);
 		
-		$classesList = array_keys($moufClassExporer->getClassMap());
+		$classesList = array_keys($moufClassExplorer->getClassMap());
+		
+		// Let's add the list of PHP inner classes.
+		$innerClasses = get_declared_classes();
+		
+		$classesList = array_merge($classesList, $innerClasses);
+		$classesList = array_flip(array_flip($classesList));
+		
 		//$classesList = get_declared_classes();
 		$componentsList = array();
 		

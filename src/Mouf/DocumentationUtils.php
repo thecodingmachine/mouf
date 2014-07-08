@@ -44,9 +44,12 @@ class DocumentationUtils {
 			$classDescriptor = new \ReflectionClass($class);
 			$file = $classDescriptor->getFileName();
 			
-			// Let's find the package this class/interface/trait belongs to.
-			$composerJsonFile = self::getRelatedPackage($file);
-			$relatedPackages[$composerJsonFile] = $composerJsonFile;
+			// If this is not a PHP internal class
+			if ($file) {
+				// Let's find the package this class/interface/trait belongs to.
+				$composerJsonFile = self::getRelatedPackage($file);
+				$relatedPackages[$composerJsonFile] = $composerJsonFile;
+			}
 		}
 		
 		return array_values($relatedPackages);
