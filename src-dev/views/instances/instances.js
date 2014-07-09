@@ -13,7 +13,9 @@ var MoufInstanceManager = (function() {
 	// The list of callbacks to be called when all the files will be loaded
 	// Note: some callback might wait longer that they need, this is slightly
 	// suboptimal to wait for all the files to be loaded.
-	var _callbackWhenFilesLoaded = []
+	var _callbackWhenFilesLoaded = [];
+	// Prefix of anonymous instances (used to reduce conflicts when working in teams)
+	var anonymousPrefix = '';
 
 	/**
 	 * Event handler triggered each time a property of an instance is changed
@@ -729,7 +731,14 @@ var MoufInstanceManager = (function() {
 			var timestamp = new Date();
 			// A randum number between 0 and 1000000
 			var randNum = Math.floor((Math.random()*1000000)); 
-			return "__anonymous__"+randNum+"_"+timestamp.getTime();
+			return "__anonymous__"+anonymousPrefix+"_"+randNum+"_"+timestamp.getTime();
+		},
+		
+		/**
+		 * Sets the prefix of anonymous instances (used to reduce conflicts when working in teams)
+		 */
+		setAnonymousPrefix: function(prefix) {
+			anonymousPrefix = prefix
 		}
 
 	};
