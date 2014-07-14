@@ -28,6 +28,10 @@ class DocumentationUtils {
 	 * @return string[]
 	 */
 	public static function getRelatedPackages($className) {
+		if (!class_exists($className)) {
+			return [];
+		}
+		
 		$classes = class_parents($className);
 		array_unshift($classes, $className);
 		
