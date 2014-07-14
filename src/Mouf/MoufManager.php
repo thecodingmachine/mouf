@@ -1858,7 +1858,7 @@ class ".$this->mainClassName." {
 
 		$i=rand();
 		do {
-			$anonName = "__anonymous__".$i;
+			$anonName = "__anonymous__".UniqueIdService::getUniqueId()."_".$i;
 			if (!isset($this->declaredInstances[$anonName])) {
 				break;
 			}
