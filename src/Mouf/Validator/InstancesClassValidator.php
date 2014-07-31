@@ -27,6 +27,8 @@ class InstancesClassValidator implements MoufStaticValidatorInterface {
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
 			if ($instanceDescriptor->getType() == MoufInstanceDescriptor::TYPE_DECLARATIVE && !class_exists($className)) {
 				$errors[] = "<li>".$instanceName." - Unable to find class: <strong>".$className."</strong> : <a href='".MOUF_URL."mouf/deleteInstance?instanceName=".urlencode($instanceName)."&selfedit=".$selfedit."&returnurl=".urlencode(MOUF_URL."validate/?selfedit=".$selfedit)."' class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</a></li>";
+			} elseif ($instanceDescriptor->getType() == MoufInstanceDescriptor::TYPE_PHP && $className != null && !class_exists($className)) {
+				$errors[] = "<li>".$instanceName." - Unable to find class '<strong>".$className."</strong>' in instance defined by PHP code : <a href='".MOUF_URL."mouf/deleteInstance?instanceName=".urlencode($instanceName)."&selfedit=".$selfedit."&returnurl=".urlencode(MOUF_URL."validate/?selfedit=".$selfedit)."' class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</a></li>";
 			} else {
 				// Let's check the constructor arguments.
 				$additionalErrors = $instanceDescriptor->validate();
