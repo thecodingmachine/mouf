@@ -328,7 +328,11 @@ class MoufReflectionProxy {
 	}
 	
 	public static function getLocalUrlToProject(){
-		if (isset($_SERVER['HTTPS'])) {
+		// Let's try to detect the HTTPS protocol.
+		// It can be tricky because $_SERVER['HTTPS'] is not always set.
+		// (see: http://stackoverflow.com/questions/452375/detecting-https-requests-in-php )
+		if (isset($_SERVER['HTTPS']) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+ 				$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') || $_SERVER['SERVER_PORT'] == 443) {
 			$url = "https://".$_SERVER['SERVER_NAME'].MOUF_URL;
 		} else {
 			$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].MOUF_URL;
