@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "05d11f513b15d0feac09074336ded5ee",
+    "hash": "5fd3348503c6f5950677d16432da2588",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1565,6 +1565,52 @@
             "time": "2014-06-04 16:08:19"
         },
         {
+            "name": "mouf/security.userservice-splash",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/security.userservice-splash.git",
+                "reference": "8cd33757d6fd0ebd3b0903be62c16991e07bf78d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/8cd33757d6fd0ebd3b0903be62c16991e07bf78d",
+                "reference": "8cd33757d6fd0ebd3b0903be62c16991e07bf78d",
+                "shasum": ""
+            },
+            "require": {
+                "mouf/mvc.splash-common": "4.*",
+                "mouf/security.userservice": "2.*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package contains a set of class to bind the Splash MVC framework (>=v4.0) with the UserService component. It features: a @Logged annotation to restrict access to logged users only.",
+            "homepage": "https://github.com/thecodingmachine/security.userservice-splash",
+            "keywords": [
+                "mouf",
+                "security",
+                "splash",
+                "user"
+            ],
+            "time": "2014-03-27 14:49:53"
+        },
+        {
             "name": "mouf/utils.action.action-interface",
             "version": "v1.0.0",
             "source": {
@@ -2603,16 +2649,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.15.1",
+            "version": "v1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
+                "reference": "8ce37115802e257a984a82d38254884085060024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
-                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
+                "reference": "8ce37115802e257a984a82d38254884085060024",
                 "shasum": ""
             },
             "require": {
@@ -2621,7 +2667,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15-dev"
+                    "dev-master": "1.16-dev"
                 }
             },
             "autoload": {
@@ -2656,7 +2702,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-02-13 10:19:29"
+            "time": "2014-07-05 12:19:05"
         }
     ],
     "packages-dev": [
@@ -3028,17 +3074,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.5.0",
+            "version": "v2.5.2",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c"
+                "reference": "f868ecdbcc0276b6158dfbf08b9e98ce07f014e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b4b09c68ec2f2727574544ef0173684281a5033c",
-                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/f868ecdbcc0276b6158dfbf08b9e98ce07f014e1",
+                "reference": "f868ecdbcc0276b6158dfbf08b9e98ce07f014e1",
                 "shasum": ""
             },
             "require": {
@@ -3073,7 +3119,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-16 14:25:18"
+            "time": "2014-07-09 09:05:48"
         }
     ],
     "aliases": [
