@@ -12,6 +12,7 @@ namespace Mouf\Controllers;
 use Mouf\Html\HtmlElement\HtmlBlock;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Reflection\MoufReflectionProxy;
 
 /**
  * The controller that will call all validators on Mouf.
@@ -54,6 +55,14 @@ class MoufValidatorController extends Controller {
 	 * @Logged
 	 */
 	public function defaultAction($selfedit = "false") {
+		// Before running the other validation steps, we should make sure we can successfully cURL
+		// into the server, from the server.
+		if (!MoufReflectionProxy::checkConnection()) {
+			$this->contentBlock->addFile(ROOT_PATH."src-dev/views/connection-problem.php", $this);
+			$this->template->toHtml();
+			return;
+		}
+		
 		if ($selfedit == "true") {
 			
 		}

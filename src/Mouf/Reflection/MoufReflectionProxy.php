@@ -237,6 +237,26 @@ class MoufReflectionProxy {
 		return $obj["data"]["class"];
 	}
 	
+	/**
+	 * Checks if the CURL connection does work or not.
+	 * In the case we are trying to access a remote server, if the server does not know its own hostname,
+	 * the request will fail. This can happen if the DNS has been configured in the /etc/hosts file
+	 * of the client and not on the server. 
+	 * 
+	 * @return bool
+	 */
+	public static function checkConnection() {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/test_connection.php";
+	
+		$response = self::performRequest($url);
+		
+		if ($response == 'ok') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	
 	/**
 	 * Performs a request using CURL using GET or POST methods and returns the result.

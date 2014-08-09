@@ -25,6 +25,7 @@ if (!isset($_SESSION)) {
 }
 
 if (!isset($_SESSION['MoufMoufUserId'])) {
+	header('HTTP/1.1 403 Forbidden');
 	echo 'Error! You must be logged in to access this screen';
 	exit;
 }
