@@ -148,6 +148,24 @@ MoufSaveManager = (function () {
 	}
 	
 	/**
+	 * Callback called when an instance is duplicated
+	 */
+	var _onDuplicateInstance = function(instance, duplicateName, callback) {
+		
+		var command = {
+			"command": "duplicateInstance",
+			"name": instance.getName(),
+			"duplicateName": duplicateName
+		};
+		if (callback) {
+			_callbackList.push(callback);
+		}
+		
+		_changesList.push(command);
+		_save();
+	}
+	
+	/**
 	 * Callback called when an instance is deleted
 	 */
 	var _onDeleteInstance = function(instance, callback) {
@@ -251,6 +269,8 @@ MoufSaveManager = (function () {
 			MoufInstanceManager.onNewInstance(_onNewInstance);
 			// Let's bind the _onRenameInstance to the renameInstance event.
 			MoufInstanceManager.onRenameInstance(_onRenameInstance);
+			// Let's bind the _onDuplicateInstance to the duplicateInstance event.
+			MoufInstanceManager.onDuplicateInstance(_onDuplicateInstance);
 			// Let's bind the _onDeleteInstance to the deleteInstance event.
 			MoufInstanceManager.onDeleteInstance(_onDeleteInstance);
 			// Let's bind the _onInstanceChangeto the instanceChangeInstance event.

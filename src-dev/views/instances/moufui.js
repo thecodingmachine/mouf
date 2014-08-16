@@ -566,6 +566,39 @@ var MoufUI = (function () {
 		},
 		
 		/**
+		 * Displays a popup to duplicate an instance.
+		 * The MoufInstance object must be passed in parameter.
+		 */
+		duplicateInstance: function(instance) {
+			var modal = MoufUI.openPopup("Duplicate instance");
+			var inputField;
+			var submitButton; 
+			var formElem = jQuery('<form class="form-horizontal">').submit(function() {
+				submitButton.attr('disabled', true);
+				var duplicateName = inputField.val();
+				instance.duplicate(duplicateName, function() {
+					// When save is performed, let's reload the page with the new URL.
+					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(duplicateName)+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
+				});
+				return false;
+			}).appendTo(modal);
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(formElem);
+			
+			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
+			var label = jQuery('<label class="control-label" for="name">').text("Copy name ").appendTo(divControlGroup);
+			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
+			inputField = jQuery('<input type="text">')
+				.val(instance.getName()+" (copy)")
+				.appendTo(divControlGroup);
+			
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(formElem);
+			jQuery("<button type='button'/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
+			submitButton = jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Duplicate").appendTo(modalFooter);
+		},
+		
+		/**
 		 * Displays a popup to rename an instance.
 		 * The MoufInstance object must be passed in parameter.
 		 */

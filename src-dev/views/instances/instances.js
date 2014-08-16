@@ -33,6 +33,11 @@ var MoufInstanceManager = (function() {
 	var _renameEventHandler = new Mouf.Observer();
 	
 	/**
+	 * Event handler triggered each time an instance is duplicated
+	 */
+	var _duplicateEventHandler = new Mouf.Observer();
+	
+	/**
 	 * Event handler triggered each time an instance is changed (when setCode is called on it)
 	 */
 	var _instanceChangeEventHandler = new Mouf.Observer();
@@ -683,6 +688,23 @@ var MoufInstanceManager = (function() {
 		},
 		
 		/**
+		 * Registers a callback called when the MoufInstance::duplicate method is
+		 * called. If scope is not passed, the default scope (this) is the
+		 * moufInstanceProperty object. The first argument of the callback is
+		 * also the moufInstance object and the second is the name of
+		 * the duplicated instance. The third optional parameter is a callback called when
+		 * the rename has been performed.
+		 */
+		onDuplicateInstance : function(callback, scope) {
+			_duplicateEventHandler.subscribe(callback, scope);
+		},
+
+		fireDuplicate : function(moufInstance, duplicateName, callback) {
+			_duplicateEventHandler.fire(moufInstance, moufInstance, duplicateName,
+					callback);
+		},
+		
+		/**
 		 * Registers a callback called when the
 		 * the MoufInstance.setCode method is called. If scope is not
 		 * passed, the default scope (this) is the moufInstance object.
@@ -910,6 +932,19 @@ MoufInstance.prototype.rename = function(newName, callback) {
 
 	// Let's trigger listeners
 	MoufInstanceManager.fireRename(this, oldName, callback);
+}
+
+/**
+ * Duplicates the instance. duplicateName is the name for the duplicated instance.
+ * callback is an optionnal callback called when the save is performed.
+ */
+MoufInstance.prototype.duplicate = function(duplicateName, callback) {
+	if (duplicateName == "" || duplicateName == null) {
+		throw "It is not allowed to set an empty name for a duplicated instance";
+	}
+
+	// Let's trigger listeners
+	MoufInstanceManager.fireDuplicate(this, duplicateName, callback);
 }
 
 /**

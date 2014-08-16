@@ -1523,6 +1523,9 @@ class ".$this->mainClassName." {
 	 * @return array<string, comp(s)> where comp(s) is a string or an array<string> if there are many components for that property. The key of the array is the name of the property.
 	 */
 	public function getBoundComponents($instanceName) {
+		// FIXME: not accounting for components bound in constructor
+		// it is likely this method is not used anymore
+		// TODO: check usage and remove.
 		$binds = array();
 		if (isset($this->declaredInstances[$instanceName]) && isset($this->declaredInstances[$instanceName]['fieldBinds'])) {
 			$binds = $this->declaredInstances[$instanceName]['fieldBinds'];
@@ -1612,16 +1615,81 @@ class ".$this->mainClassName." {
 	 * Duplicates an instance.
 	 *
 	 * @param string $srcInstanceName The name of the source instance.
-	 * @param string $destInstanceName The name of the new instance.
+	 * @param string $destInstanceName The name of the new instance (can be null if we are duplicating an anonymous instance)
+	 * @return string the destination instance name
 	 */
-	public function duplicateInstance($srcInstanceName, $destInstanceName) {
+	public function duplicateInstance($srcInstanceName, $destInstanceName = null) {
 		if (!isset($this->declaredInstances[$srcInstanceName])) {
 			throw new MoufException("Error while duplicating instance: unable to find source instance ".$srcInstanceName);
 		}
+		if ($destInstanceName == null) {
+			if (!$this->isInstanceAnonymous($srcInstanceName)) {
+				throw new MoufException("Error while duplicating instance: you need to give a destination name.");
+			}
+			$destInstanceName = $this->getFreeAnonymousName();
+		}
+		
 		if (isset($this->declaredInstances[$destInstanceName])) {
 			throw new MoufException("Error while duplicating instance: the dest instance already exists: ".$destInstanceName);
 		}
 		$this->declaredInstances[$destInstanceName] = $this->declaredInstances[$srcInstanceName];
+		
+		// TODO: special case: if an instance is pointing to itself, it might be a good idea to keep the copy
+		// pointing to the copy instead of the original.
+		
+		// We should also recursively duplicate anonymous instances:
+		if (isset($this->declaredInstances[$destInstanceName]["fieldBinds"])) {
+			foreach ($this->declaredInstances[$destInstanceName]["fieldBinds"] as $key=>$boundInstance) {
+				if (is_array($boundInstance)) {
+					foreach ($boundInstance as $key2=>$item) {
+						if ($this->isInstanceAnonymous($item)) {
+							$this->declaredInstances[$destInstanceName]["fieldBinds"][$key][$key2] = $this->duplicateInstance($item);
+						}
+					}
+				} else {
+					if ($this->isInstanceAnonymous($boundInstance)) {
+						$this->declaredInstances[$destInstanceName]["fieldBinds"][$key] = $this->duplicateInstance($boundInstance);
+					}
+				}
+			}
+		}
+
+		if (isset($this->declaredInstances[$destInstanceName]["setterBinds"])) {
+			foreach ($this->declaredInstances[$destInstanceName]["setterBinds"] as $key=>$boundInstance) {
+				if (is_array($boundInstance)) {
+					foreach ($boundInstance as $key2=>$item) {
+						if ($this->isInstanceAnonymous($item)) {
+							$this->declaredInstances[$destInstanceName]["setterBinds"][$key][$key2] = $this->duplicateInstance($item);
+						}
+					}
+				} else {
+					if ($this->isInstanceAnonymous($boundInstance)) {
+						$this->declaredInstances[$destInstanceName]["setterBinds"][$key] = $this->duplicateInstance($boundInstance);
+					}
+				}
+			}
+		}
+		
+		if (isset($this->declaredInstances[$destInstanceName]["constructor"])) {
+			foreach ($this->declaredInstances[$destInstanceName]["constructor"] as $index=>$parameter) {
+				if ($parameter['parametertype'] == 'object' && $parameter['type'] == 'string') {
+					$boundInstance = $parameter['value'];
+					if (is_array($boundInstance)) {
+						foreach ($boundInstance as $key2=>$item) {
+							if ($this->isInstanceAnonymous($item)) {
+								$this->declaredInstances[$destInstanceName]["constructor"][$index][$key2] = $this->duplicateInstance($item);
+							}
+						}
+					} else {
+						if ($this->isInstanceAnonymous($boundInstance)) {
+							$this->declaredInstances[$destInstanceName]["constructor"][$index] = $this->duplicateInstance($boundInstance);
+						}
+					}
+				}
+			}
+		}
+				
+		return $destInstanceName;
 	}
 
 	/**

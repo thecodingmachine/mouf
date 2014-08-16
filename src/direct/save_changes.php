@@ -186,6 +186,12 @@ foreach ($changesList as $command) {
 			$instanceDescriptor->setName($command['newname']);
 			$instanceDescriptor->setInstanceAnonymousness($command['isAnonymous'] == "true");
 			break;
+		case "duplicateInstance":
+			$moufManager->duplicateInstance($command['name'], $command['duplicateName']);
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($command['duplicateName']);
+			$instanceDescriptor->setInstanceAnonymousness(false);
+			$moufManager->setInstanceWeakness($command['duplicateName'], false);
+			break;
 		case "deleteInstance":
 			$instanceDescriptor = $moufManager->removeComponent($command['name']);
 			break;

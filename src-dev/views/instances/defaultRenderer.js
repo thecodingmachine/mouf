@@ -1109,6 +1109,10 @@ MoufDefaultRenderer = (function () {
 							.click(function() {
 								MoufUI.renameInstance(instance);
 							});
+						jQuery("<button class='btn btn-success'><i class='icon-plus-sign icon-white'></i> Duplicate</button>").appendTo(btnToolbar)
+							.click(function() {
+								MoufUI.duplicateInstance(instance);
+							});
 						jQuery("<button class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</button>").appendTo(btnToolbar)
 							.click(function() {
 								MoufUI.deleteInstance(instance);
