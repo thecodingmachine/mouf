@@ -539,6 +539,7 @@ class MoufInstanceDescriptor {
 										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
 					}
 				} else {
+					$name = $this->getIdentifierName();
 					$errors[] = "In instance <em>".$name."</em>, parameters are injected in the constructor but the constructor does not exist. It is likely it once existed but was removed.
 										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
 				}
