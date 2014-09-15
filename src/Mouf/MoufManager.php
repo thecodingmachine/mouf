@@ -1782,6 +1782,10 @@ class ".$this->mainClassName." {
 	 * @param string $instanceName
 	 */
 	public function walkForGarbageCollection($instanceName) {
+        // In case the instance does not exist (this could happen after a failed merge or a manual edit of MoufComponents.php...)
+        if (!isset($this->declaredInstances[$instanceName])) {
+            return;
+        }
 		$instance = &$this->declaredInstances[$instanceName];
 		if (isset($instance['noGarbageCollect']) && $instance['noGarbageCollect'] == true) {
 			// No need to go through already visited nodes.
