@@ -89,9 +89,10 @@ class MoufManager implements ContainerInterface {
 			//self::$defaultInstance->requireFileName = "../MoufRequire.php";
 			self::$defaultInstance->adminUiFileName = "../../../../../mouf/MoufUI.php";
 			self::$defaultInstance->mainClassName = "Mouf";
-			//self::$defaultInstance->pathToMouf = "mouf/";
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
+			// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
+			self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 		}
 	}
 
@@ -110,8 +111,16 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
-		//self::$defaultInstance->pathToMouf = "";
+		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
+		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 	}
+	
+	/**
+	 * If set, all dependencies lookup will be delegated to this container.
+	 * 
+	 * @var ContainerInterface
+	 */
+	protected $delegateLookupContainer;
 
 	/**
 	 * The config manager (that writes the config.php file).
@@ -174,26 +183,6 @@ class MoufManager implements ContainerInterface {
 	 */
 	private $externalComponents = array();
 
-	/**
-	 * The list of packages that are enabled.
-	 * The list contains the path to the package.xml file from the plugins directory.
-	 * The list is ordered per dependencies.
-	 *
-	 * @var array<string>
-	 */
-	private $packagesList = array();
-
-	/**
-	 * The list of packages that are enabled in admin scope.
-	 * The list contains the path to the package.xml file from the plugins directory.
-	 * The list is ordered per dependencies.
-	 * This list is filled in the MoufManager instance of the APP scope, and is always
-	 * empty in the MoufManager instance of the ADMIN scope
-	 *
-	 * @var array<string>
-	 */
-	private $packagesListInAdminScope = array();
-
 
 	/**
 	 * A list of variables that are stored in Mouf. Variables can contain anything, and are used by some modules for different
@@ -247,21 +236,6 @@ class MoufManager implements ContainerInterface {
 	private $mainClass;
 
 	/**
-	 * The path to theMouf directory from the mouf file.
-	 * For instance: "mouf/" is the Mouf.php file is in the root directory of the webapp.
-	 *
-	 * @var string
-	 */
-	private $pathToMouf;
-
-	/**
-	 * A list of classes autoloadable that are stored in Mouf.
-	 *
-	 * @var array<className, fileName>
-	 */
-	private $autoloadableClasses;
-
-	/**
 	 * Returns the config manager (the service in charge of writing the config.php file).
 	 *
 	 * @return MoufConfigManager
@@ -276,7 +250,7 @@ class MoufManager implements ContainerInterface {
 	 * @param string $instanceName
 	 * @return object
 	 */
-	public function getInstance($instanceName) {
+	public function get($instanceName) {
 		if (!isset($this->objectInstances[$instanceName]) || $this->objectInstances[$instanceName] == null) {
 			$this->instantiateComponent($instanceName);
 		}
@@ -285,13 +259,13 @@ class MoufManager implements ContainerInterface {
 
 	/**
 	 * Returns the instance of the specified object.
-	 * Alias of "getInstance"
+	 * Alias of "get"
 	 *
 	 * @param string $instanceName
 	 * @return object
 	 */
-	public function get($instanceName) {
-		return $this->getInstance($instanceName);
+	public function getInstance($instanceName) {
+		return $this->get($instanceName);
 	}
 	
 	/**
@@ -599,7 +573,7 @@ class MoufManager implements ContainerInterface {
 				}
 				$closures = $this->getClosures();
 				$closure = $closures[$instanceName];
-				$instance = $closure($this);
+				$instance = $closure($this->delegateLookupContainer);
 				$this->objectInstances[$instanceName] = $instance;
 				return $instance;
 			}
@@ -633,7 +607,7 @@ class MoufManager implements ContainerInterface {
 									$closures = $this->getClosures();
 									$closure = $closures[$instanceName]['constructor'][$key];
 									if ($closure instanceof \Closure) {
-										$constructorParameters[] = $closure($this);
+										$constructorParameters[] = $closure($this->delegateLookupContainer);
 									} else {
 										throw new MoufException("Parse error in the callback of '$instanceName' constructor argument '$key': ".$closure);
 									}
@@ -647,7 +621,7 @@ class MoufManager implements ContainerInterface {
 								$tmpArray = array();
 								foreach ($value as $keyInstanceName=>$valueInstanceName) {
 									if ($valueInstanceName !== null) {
-										$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+										$tmpArray[$keyInstanceName] = $this->delegateLookupContainer->get($valueInstanceName);
 									} else {
 										$tmpArray[$keyInstanceName] = null;
 									}
@@ -655,7 +629,7 @@ class MoufManager implements ContainerInterface {
 								$constructorParameters[] = $tmpArray;
 							} else {
 								if ($value !== null) {
-									$constructorParameters[] = $this->getInstance($value);
+									$constructorParameters[] = $this->delegateLookupContainer->get($value);
 								} else {
 									$constructorParameters[] = null;
 								}
@@ -690,7 +664,7 @@ class MoufManager implements ContainerInterface {
 							$closure = $closures[$instanceName]['fieldProperties'][$key];
 							if ($closure instanceof \Closure) {
 								$closure = $closure->bindTo($object);
-								$object->$key = $closure($this);
+								$object->$key = $closure($this->delegateLookupContainer);
 							} else {
 								throw new MoufException("Parse error in the callback of '$instanceName' property '$key': ".$closure);
 							}
@@ -725,7 +699,7 @@ class MoufManager implements ContainerInterface {
 							} else {
 								throw new MoufException("Parse error in the callback of '$instanceName' setter '$key': ".$closure);
 							}
-							$object->$key($closure($this));
+							$object->$key($closure($this->delegateLookupContainer));
 							break;
 						default:
 							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
@@ -739,14 +713,14 @@ class MoufManager implements ContainerInterface {
 						$tmpArray = array();
 						foreach ($value as $keyInstanceName=>$valueInstanceName) {
 							if ($valueInstanceName !== null) {
-								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+								$tmpArray[$keyInstanceName] = $this->get($valueInstanceName);
 							} else {
 								$tmpArray[$keyInstanceName] = null;
 							}
 						}
 						$object->$key = $tmpArray;
 					} else {
-						$object->$key = $this->getInstance($value);
+						$object->$key = $this->get($value);
 					}
 				}
 			}
@@ -757,14 +731,14 @@ class MoufManager implements ContainerInterface {
 						$tmpArray = array();
 						foreach ($value as $keyInstanceName=>$valueInstanceName) {
 							if ($valueInstanceName !== null) {
-								$tmpArray[$keyInstanceName] = $this->getInstance($valueInstanceName);
+								$tmpArray[$keyInstanceName] = $this->get($valueInstanceName);
 							} else {
 								$tmpArray[$keyInstanceName] = null;
 							}
 						}
 						$object->$key($tmpArray);
 					} else {
-						$object->$key($this->getInstance($value));
+						$object->$key($this->get($value));
 					}
 				}
 			}
@@ -1413,7 +1387,7 @@ class ".$this->mainClassName." {
 			fwrite($fp, "	 * @return $className\n");
 			fwrite($fp, "	 */\n");
 			fwrite($fp, "	 public static function ".$getter."() {\n");
-			fwrite($fp, "	 	return MoufManager::getMoufManager()->getInstance(".var_export($name,true).");\n");
+			fwrite($fp, "	 	return MoufManager::getMoufManager()->get(".var_export($name,true).");\n");
 			fwrite($fp, "	 }\n\n");
 		}
 		fwrite($fp, "}\n");
@@ -2133,4 +2107,15 @@ class ".$this->mainClassName." {
 		}
 		return $fullyQualifiedClassName;
 	}
+	
+	/**
+	 * If set, all dependencies lookup will be delegated to this container.
+	 * 
+	 * @param ContainerInterface $delegateLookupContainer        	
+	 */
+	public function setDelegateLookupContainer(ContainerInterface $delegateLookupContainer) {
+		$this->delegateLookupContainer = $delegateLookupContainer;
+		return $this;
+	}
+	
 }
