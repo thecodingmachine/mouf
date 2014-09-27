@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5fd3348503c6f5950677d16432da2588",
+    "hash": "50c83bb7a53ea9ad41c601f398e9255f",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1225,16 +1225,16 @@
         },
         {
             "name": "mouf/mvc.splash",
-            "version": "v4.3.0",
+            "version": "v4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "edfba8daabbbef8dadf44a2694ad958cd2c2f402"
+                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/edfba8daabbbef8dadf44a2694ad958cd2c2f402",
-                "reference": "edfba8daabbbef8dadf44a2694ad958cd2c2f402",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/fd988413802baef0c0e4a0c2c1809d59deec280a",
+                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a",
                 "shasum": ""
             },
             "require": {
@@ -1328,7 +1328,7 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2014-03-11 10:22:24"
+            "time": "2014-08-28 14:14:15"
         },
         {
             "name": "mouf/mvc.splash-common",
@@ -3120,17 +3120,11 @@
             "time": "2014-08-05 09:00:40"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "nikic/php-parser": 10
     },
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "platform": [],
+    "platform-dev": []
 }
