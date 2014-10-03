@@ -129,6 +129,13 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     public function getClass()
     {
     	try {
+    		$className = $this->getClassName();
+    		if ($className == null){
+    			return null;
+    		}else if (!class_exists($className)){
+    			error_log(var_export($className, true));
+	    		throw new MoufException("Error while analyzing @param annotation for parameter {$this->paramName} in '{$this->getDeclaringClass()->getName()}::{$this->getDeclaringFunction()->getName()}': class '$className' could not be found");
+    		}
 	        $refClass = parent::getClass();
 	        if (null === $refClass) {
 	            return null;
@@ -139,6 +146,15 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
         
         $moufRefClass = new MoufReflectionClass($refClass->getName());
         return $moufRefClass;
+    }
+    
+    /**
+     * Retrieve only the class name without requiring the class to exist 
+     * @return string|null
+     */
+    function getClassName() {
+    	preg_match('/\[\s\<\w+?>\s([\w]+)/s', $this->__toString(), $matches);
+    	return isset($matches[1]) ? $matches[1] : null;
     }
     
     /**
