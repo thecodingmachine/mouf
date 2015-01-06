@@ -39,19 +39,20 @@ Mouf requires that file to be at this exact place.</div>
 ### Using Composer to download Mouf
 At this point, you should have a composer.phar file at the root of your project.
 In the same directory create a <code>composer.json</code> file:
-<pre>
+
+```
 {
     "require": {
         "mouf/mouf": "~2.0"
-    },
-    "minimum-stability": "dev" 
+    } 
 }
-</pre>
+```
 
 and finally, from the command line, at the root of your project, run:
-<pre>
+
+```
 php composer.phar install
-</pre>
+```
 
 For Windows users, make sure your "php.exe" file is part of [your PATH environment variable](http://www.php.net/manual/en/faq.installation.php#faq.installation.addtopath).
 
@@ -84,7 +85,7 @@ the name of the Apache user.
 The easiest and more portable way of sharing your rights with the Apache user is to be part of the same
 Unix group.
 
-To do this, you can run:
+To do this, you can run (on Ubuntu/Debian flavored Linux):
 
 ```
 sudo adduser `whoami` www-data

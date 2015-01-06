@@ -22,8 +22,7 @@ The first thing to do is to declare the namespace in `composer.json`:
         "psr-0": {
             "Mouf\\Sample": "src/"
         }
-    },
-    "minimum-stability": "dev" 
+    }
 }
 ````
 
