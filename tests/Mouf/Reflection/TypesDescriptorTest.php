@@ -32,7 +32,7 @@ class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$types = TypesDescriptor::parseTypeString("test<tata,titi>|toto[]|MyType");
 		
 		$typesList = $types->getTypes();
-		
+
 		$this->assertEquals(3, count($typesList));
 		$this->assertEquals("test", $typesList[0]->getType());
 		$this->assertEquals("tata", $typesList[0]->getKeyType());
@@ -80,6 +80,28 @@ class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(true, $subType->isArray());
         $this->assertEquals(false, $subType->isAssociativeArray());
         $this->assertEquals("string", $subType->getSubType()->getType());
+
+        $types7 = TypesDescriptor::parseTypeString("array<int, array<string> >");
+        $typesList7 = $types7->getTypes();
+        $this->assertEquals("array", $typesList7[0]->getType());
+        $this->assertEquals(true, $typesList7[0]->isArray());
+        $this->assertEquals(true, $typesList7[0]->isAssociativeArray());
+        $subType = $typesList7[0]->getSubType();
+        $this->assertEquals("int", $typesList7[0]->getKeyType());
+        $this->assertEquals(true, $subType->isArray());
+        $this->assertEquals(false, $subType->isAssociativeArray());
+        $this->assertEquals("string", $subType->getSubType()->getType());
+
+        $types8 = TypesDescriptor::parseTypeString("array<int, array< array<string, string> > >");
+        $typesList8 = $types8->getTypes();
+        $this->assertEquals("array", $typesList8[0]->getType());
+        $this->assertEquals(true, $typesList8[0]->isArray());
+        $this->assertEquals(true, $typesList8[0]->isAssociativeArray());
+        $subType = $typesList8[0]->getSubType();
+        $this->assertEquals("int", $typesList8[0]->getKeyType());
+        $this->assertEquals(true, $subType->isArray());
+        $this->assertEquals(false, $subType->isAssociativeArray());
+        $this->assertEquals(true, $subType->getSubType()->isArray());
     }
 	
 	public function testLocalCache() {

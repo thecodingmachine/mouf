@@ -75,13 +75,23 @@ class TypesDescriptor {
 	private function analyze($types) {
 		try {
 			$tokens = self::runLexer($types);
-			
-			while ($tokens) {
-				if ($tokens[0]['token'] == 'T_OR') {
-					array_shift($tokens);
-				}
-				
-				$this->types[] = TypeDescriptor::parseTokens($tokens);
+            $first = true;
+
+            while ($tokens) {
+
+                if ($tokens[0]['token'] == 'T_WHITESPACE') {
+                    array_shift($tokens);
+                    continue;
+                }
+
+                if (!$first) {
+                    if($tokens[0]['token'] == 'T_OR'){
+                        array_shift($tokens);
+                    }
+                }
+
+                $this->types[] = TypeDescriptor::parseTokens($tokens);
+                $first = false;
 			}
 		} catch (MoufTypeParserException $e) {
 			throw new MoufTypeParserException("Error while parsing type string: '".$types."': ".$e->getMessage(), 0, $e);
@@ -115,14 +125,14 @@ class TypesDescriptor {
 		
 		return false;
 	}
-	
-	/**
-	 * Runs the analysis
-	 * 
-	 * @param string $source
-	 * @throws \Exception
-	 * @return array
-	 */
+
+    /**
+     * Runs the analysis
+     *
+     * @param $line
+     * @throws MoufException
+     * @return array
+     */
 	public static function runLexer($line) {
 		$tokens = array();
 		$offset = 0;
