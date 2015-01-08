@@ -69,7 +69,18 @@ class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals("string", $typesList5[0]->getKeyType());
 		$this->assertEquals("string", $typesList5[0]->getSubType()->getType());
 		$this->assertEquals(1, count($typesList5));
-	}
+
+        $types6 = TypesDescriptor::parseTypeString("array<int, string[]>");
+        $typesList6 = $types6->getTypes();
+        $this->assertEquals("array", $typesList6[0]->getType());
+        $this->assertEquals(true, $typesList6[0]->isArray());
+        $this->assertEquals(true, $typesList6[0]->isAssociativeArray());
+        $subType = $typesList6[0]->getSubType();
+        $this->assertEquals("int", $typesList6[0]->getKeyType());
+        $this->assertEquals(true, $subType->isArray());
+        $this->assertEquals(false, $subType->isAssociativeArray());
+        $this->assertEquals("string", $subType->getSubType()->getType());
+    }
 	
 	public function testLocalCache() {
 		$types = TypesDescriptor::parseTypeString("test<tata,titi>|toto[]|MyType");
@@ -117,6 +128,7 @@ class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$result = $types3->getCompatibleTypeForInstance("ma string");
 		$this->assertEquals(null, $result);
 
+
 		/*$instanceDescriptorStub = $this->getMock('Mouf\\MoufInstanceDescriptor', array(), array(new MoufManager(), "name"));
 
 		$instanceDescriptorStub->expects($this->any())
@@ -131,4 +143,13 @@ class TypesDescriptorTest extends \PHPUnit_Framework_TestCase {
 		*/
 		
 	}
+
+    static function main() {
+        $suite = new \PHPUnit_Framework_TestSuite( __CLASS__);
+        \PHPUnit_TextUI_TestRunner::run( $suite);
+    }
+}
+
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    TypesDescriptorTest::main();
 }
