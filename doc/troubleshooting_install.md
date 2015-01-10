@@ -78,20 +78,6 @@ Have a look at your phar settings. In your _php.ini_ file, try the following set
 
 <div class="warning"><strong>Warning!</strong> On many PHP installs, there are 2 php.ini files. One applies to Apache and the other one to the command line interface. Because Composer is used by both the CLI and Apache, you should modify both php.ini files.</div>
 
-<a name="moufmanager_notfound"></a>
-The "class 'Mouf\\MoufManager' not found" error
-----------------------------------------------------------------------
-Mouf works most of the time, but at times, you get a strange error;
-
-	PHP Notice:  Trying to get property of non-object in /var/www/vendor/composer/ClassLoader.php on line 218
-	PHP Warning:  Invalid argument supplied for foreach() in /var/www/vendor/composer/ClassLoader.php on line 218
-	PHP Notice:  Trying to get property of non-object in /var/www/vendor/composer/ClassLoader.php on line 228
-	PHP Warning:  Invalid argument supplied for foreach() in /var/www/vendor/composer/ClassLoader.php on line 228
-	PHP Notice:  Trying to get property of non-object in /var/www/vendor/composer/ClassLoader.php on line 234
-	PHP Fatal error:  Class 'Mouf\\MoufManager' not found in /var/www/mouf/MoufComponents.php on line 6
-
-We have found this error can be triggerred by a bug in PHP 5.3.3. It might be related to APC, although we are not sure. Try upgrading PHP to the latest version and reinstalling APC. This should solve this problem.
-
 <a name="composer_hangs"></a>
 Composer hangs while checking out some project
 ------------------------------------------------------------------------

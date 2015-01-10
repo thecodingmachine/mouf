@@ -19,6 +19,129 @@ $moufManager->setAllVariables(array (
 ));
 
 $moufManager->addComponentInstances(array (
+		'packageRenderer_mouf/security.simplelogincontroller' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\FileBasedRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'vendor/mouf/security.simplelogincontroller/src/templates',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						1 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						2 =>
+						array (
+								'value' => 'package',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						3 =>
+						array (
+								'value' => 0,
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		
+		
+		
+		
+		'rendererCacheService' =>
+		array (
+				'class' => 'Mouf\\Utils\\Cache\\InMemoryCache',
+				'external' => false,
+				'weak' => false,
+				'fieldBinds' =>
+				array (
+						'chainWith' => 'apcCacheService',
+				),
+		),
+		'defaultRenderer' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\AutoChainRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		'bootstrapRenderer' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\FileBasedRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'vendor/mouf/html.template.bootstrap/src/templates',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						1 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						2 =>
+						array (
+								'value' => 'template',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						3 =>
+						array (
+								'value' => 0,
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		
   '__anonymous_1351271275513' => 
   array (
     'class' => 'Mouf\\Html\\Template\\Menus\\BootstrapMenuRenderer',
@@ -259,12 +382,6 @@ $moufManager->addComponentInstances(array (
   'block.right' => 
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
-    'external' => false,
-    'weak' => false,
-  ),
-  'bootstrapMessageRenderer' => 
-  array (
-    'class' => 'Mouf\\Html\\Template\\Messages\\BootstrapMessageRenderer',
     'external' => false,
     'weak' => false,
   ),
@@ -1578,6 +1695,11 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'simpleloginview' => 
+  array (
+    'class' => 'Mouf\\Security\\Views\\SimpleLoginView',
+    'external' => false,
+  ),
   'login' => 
   array (
     'class' => 'Mouf\\Controllers\\MoufLoginController',
@@ -1591,6 +1713,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'loginWelcomeMessage',
       ),
+    		'simpleLoginView' => 'simpleloginview'
     ),
     'fieldProperties' => 
     array (
@@ -1847,7 +1970,6 @@ $moufManager->addComponentInstances(array (
     'fieldBinds' => 
     array (
       'messageProvider' => 'userMessageService',
-      'messageRenderer' => 'bootstrapMessageRenderer',
     ),
   ),
   'miscellaneousSubMenu' => 
@@ -1956,6 +2078,8 @@ $moufManager->addComponentInstances(array (
       'setRight' => 'block.right',
       'setContent' => 'block.content',
       'setWebLibraryManager' => 'defaultWebLibraryManager',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
@@ -2030,6 +2154,8 @@ $moufManager->addComponentInstances(array (
       'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
@@ -2213,6 +2339,8 @@ $moufManager->addComponentInstances(array (
       'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
