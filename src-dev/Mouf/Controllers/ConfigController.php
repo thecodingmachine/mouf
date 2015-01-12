@@ -90,6 +90,7 @@ class ConfigController extends Controller {
 	 *
 	 * @Action
 	 * @Logged
+	 * @Post
 	 */
 	public function saveConfig($selfedit = "false") {
 		$this->selfedit = $selfedit;

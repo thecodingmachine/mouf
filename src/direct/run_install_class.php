@@ -14,9 +14,30 @@ use Mouf\MoufException;
  * This file is in charge of running the install process for one class.
  */
 
+$rootUrl = $_REQUEST['root_url'];
+$installPackage = $_REQUEST['install_package'];
+$selfedit = $_REQUEST['selfedit'];
 
+define('ROOT_URL', $rootUrl);
 
-require_once __DIR__."/../../../autoload.php";
+if ($selfedit == "true") {
+	if (is_dir(__DIR__.'/../../vendor/'.$installPackage)) {
+		chdir(__DIR__.'/../../vendor/'.$installPackage);
+	} else {
+		// The important part is to be in a subdirectory of /vendor/mouf/mouf
+		chdir(__DIR__);
+	}
+} else {
+	if (is_dir(__DIR__.'/../../../../../vendor/'.$installPackage)) {
+		chdir(__DIR__.'/../../../../../vendor/'.$installPackage);
+	} else {
+		// The important part is to be in a subdirectory of ROOT_PATH and not in /vendor/mouf/mouf
+		chdir(__DIR__.'/../../../');
+	}
+}
+
+require_once __DIR__."/../../../../autoload.php";
+//require_once __DIR__."/../../../../../mouf/Mouf.php";
 
 use Mouf\Actions\InstallUtils;
 use Mouf\MoufManager;
@@ -30,7 +51,10 @@ $moufManager = MoufManager::getMoufManager();
 
 $name = $_REQUEST['class'];
 
-if (!is_a($name, 'Mouf\Installer\PackageInstallerInterface', true)) {
+if (!class_exists($name)) {
+	throw new MoufException("Unable to find class '".$name."'.");
+}
+if (!is_a($name, 'Mouf\\Installer\\PackageInstallerInterface', true)) {
 	throw new MoufException("The class '".$name."' must implement interface Mouf\\Installer\\PackageInstallerInterface");
 }
 

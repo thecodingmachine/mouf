@@ -17,13 +17,18 @@ error_reporting(E_ERROR | error_reporting());
 // This validator checks that all the config parameters defined are present in the config.php file.
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
+	
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
-	$selfEdit = true;
+	$selfEdit = true;	
 }
 
 // Note: checking rights is done after loading the required files because we need to open the session

@@ -20,10 +20,14 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;

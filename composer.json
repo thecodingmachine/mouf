@@ -1,67 +1,111 @@
 {
-    "name": "mouf/mouf",
-    "description": "The Mouf PHP framework: an open-source PHP framework providing an easy way to download, install, use and reuse components, with a graphical user interface.",
-    "keywords": ["mouf", "dependency injection", "DI", "IOC", "inversion of control", "framework"],
-    "homepage": "http://mouf-php.com",
-    "type": "mouf-framework",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "David Négrier",
-            "email": "d.negrier@thecodingmachine.com",
-            "homepage": "http://mouf-php.com"
-        }
-    ],
-    "require": {
-    	"php": ">=5.3.0",
-    	"mouf/mouf-installer": "~2.0",
-    	"mouf/mouf-validators-interface": "~2.0"
-    },
-    "autoload": {
-        "psr-0": {
-            "Mouf": "src/"
-        }
-    },
-    "extra": {
-        "mouf": {
-            "doc": [
-                {
-	    			"title": "Installing Mouf",
-	    			"url": "doc/installing_mouf.md",
-	    			"children": [
-	    				{
-			    			"title": "Troubleshooting install",
-			    			"url": "doc/troubleshooting.md"
-			    		}
-	    			]
-	    		},
-	    		{
-	    			"title": "Creating a Mouf2 package",
-	    			"url": "doc/create_mouf_package.md",
-	    			"children": [
-	    			    {
-			    			"title": "Writing a validator",
-			    			"url": "doc/writing_mouf_validator.md",
-			    			"children": [
-			    				{
-					    			"title": "Legacy validators",
-					    			"url": "doc/mouf_legacy_validators.md"
-					    		}
-			    			]
-			    		},
-			    		{
-			    			"title": "Writing an install process",
-			    			"url": "doc/install_process.md"
-			    		},
-			    		{
-			    			"title": "Writing packages documentation",
-			    			"url": "doc/writing_packages_documentation.md"
-			    		}
-	    			]
-	    		}
-	    		
-            ]
-        }
-        
-    }
+	"name" : "mouf/mouf",
+	"description" : "The Mouf PHP framework: an open-source PHP framework providing an easy way to download, install, use and reuse components, with a graphical user interface.",
+	"keywords" : [
+		"mouf",
+		"dependency injection",
+		"DI",
+		"IOC",
+		"inversion of control",
+		"framework"
+	],
+	"homepage" : "http://mouf-php.com",
+	"support" : {
+		"issues" : "https://github.com/thecodingmachine/mouf/issues",
+		"source" : "https://github.com/thecodingmachine/mouf/"
+	},
+	"type" : "mouf-framework",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "David Négrier",
+			"email" : "d.negrier@thecodingmachine.com",
+			"homepage" : "http://mouf-php.com"
+		}
+	],
+	"require" : {
+		"php" : ">=5.3.9",
+		"mouf/mouf-installer" : "~2.0",
+		"mouf/mouf-validators-interface" : "~2.0",
+		"container-interop/container-interop" : "~1.0",
+		"symfony/filesystem" : ">=2.3, <4.0"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Mouf" : "src/"
+		}
+	},
+	"extra" : {
+		"mouf" : {
+			"doc" : [{
+					"title" : "Installing Mouf",
+					"url" : "doc/installing_mouf.md"
+				}, {
+					"title" : "Getting started with dependency injection",
+					"url" : "doc/dependency_injection.md",
+					"children" : [{
+							"title" : "Using Mouf UI to define instances",
+							"url" : "doc/mouf_di_ui.md"
+						}, {
+							"title" : "Injection techniques",
+							"url" : "doc/injection_techniques.md"
+						}, {
+							"title" : "Supported types",
+							"url" : "doc/supported_types.md"
+						}, {
+							"title" : "Injection via PHP code",
+							"url" : "doc/declare_instance_via_php_code.md"
+						}, {
+							"title" : "Special annotations",
+							"url" : "doc/mouf_annotations.md"
+						}
+					]
+				}, {
+					"title" : "Configuration management",
+					"url" : "doc/configuration_management.md"
+				}, {
+					"title" : "Creating a Mouf2 package",
+					"url" : "doc/create_mouf_package.md",
+					"children" : [{
+							"title" : "Writing a validator",
+							"url" : "doc/writing_mouf_validator.md",
+							"children" : [{
+									"title" : "Legacy validators",
+									"url" : "doc/mouf_legacy_validators.md"
+								}
+							]
+						}, {
+							"title" : "Writing an install process",
+							"url" : "doc/install_process.md"
+						}, {
+							"title" : "Writing packages documentation",
+							"url" : "doc/writing_packages_documentation.md"
+						}, {
+							"title" : "Extending Mouf user interface",
+							"url" : "doc/extending_mouf_ui.md"
+						}, {
+							"title" : "Managing instances programmatically",
+							"url" : "doc/managing_instances_programmatically.md"
+						}, {
+							"title" : "Utility functions",
+							"url" : "doc/utility_functions.md"
+						}, {
+							"title" : "Integrating your package with full-text search",
+							"url" : "doc/full_text_search.md"
+						}, {
+							"title" : "Weak instances",
+							"url" : "doc/weak_instances.md"
+						}
+					]
+				}, {
+					"title" : "Troubleshooting",
+					"url" : "doc/troubleshooting.md",
+					"children" : [{
+							"title" : "Troubleshooting installation",
+							"url" : "doc/troubleshooting_install.md"
+						}
+					]
+				}
+			]
+		}
+	}
 }

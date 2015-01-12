@@ -10,18 +10,18 @@
 namespace Mouf;
 
 use Mouf\Composer\ComposerService;
-
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Reflection\MoufReflectionClass;
 use Mouf\Reflection\MoufReflectionClassManager;
 use Mouf\Reflection\MoufXmlReflectionClassManager;
+use Interop\Container\ContainerInterface;
 
 /**
  * The class managing object instanciation in the Mouf framework.
  * Users should use the "Mouf" class instead.
  *
  */
-class MoufManager {
+class MoufManager implements ContainerInterface {
 	const SCOPE_APP = 'app';
 	const SCOPE_ADMIN = 'admin';
 
@@ -46,6 +46,7 @@ class MoufManager {
 	 * @var MoufManager
 	 */
 	private static $hiddenInstance;
+	
 
 	/**
 	 * Returns the default instance of the MoufManager.
@@ -90,6 +91,7 @@ class MoufManager {
 			//self::$defaultInstance->requireFileName = "../MoufRequire.php";
 			self::$defaultInstance->adminUiFileName = "../../../../../mouf/MoufUI.php";
 			self::$defaultInstance->mainClassName = "Mouf";
+
 			self::$defaultInstance->containerConfigFile = __DIR__."/../../../../../mouf/instances.php";
 			self::$defaultInstance->containerStaticClassDir = "../../../../../src";
 			self::$defaultInstance->container = new MoufContainer(new MoufReflectionClassManager());
@@ -97,8 +99,11 @@ class MoufManager {
 				self::$defaultInstance->container->load(__DIR__."/../../../../../mouf/instances.php");
 			}
 			//self::$defaultInstance->pathToMouf = "mouf/";
+
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
+			// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
+			self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 		}
 	}
 
@@ -118,6 +123,7 @@ class MoufManager {
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
+
 		self::$defaultInstance->containerConfigFile = __DIR__."/../../mouf/instances.php";
 		self::$defaultInstance->containerStaticClassDir = "../../src";
 		self::$defaultInstance->container = new MoufContainer(new MoufReflectionClassManager());
@@ -125,7 +131,17 @@ class MoufManager {
 			self::$defaultInstance->container->load(__DIR__."/../../mouf/instances.php");
 		}
 		//self::$defaultInstance->pathToMouf = "";
+
+		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
+		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 	}
+	
+	/**
+	 * If set, all dependencies lookup will be delegated to this container.
+	 * 
+	 * @var ContainerInterface
+	 */
+	protected $delegateLookupContainer;
 
 	/**
 	 * The config manager (that writes the config.php file).
@@ -178,6 +194,7 @@ class MoufManager {
 	 * $instanceDefinitionArray["weak"] = true|false (if true, object can be garbage collected if not referenced)
 	 * $instanceDefinitionArray["anonymous"] = true|false (if true, object name should not be displayed. Object becomes "weak")
 	 * $instanceDefinitionArray["external"] = true|false
+	 * $instanceDefinitionArray["code"] = "php code"|empty (if this is an instance declared via code, "code" is some PHP code to create the instance). Otherwise, the property is not set.
 	 *
 	 * $property["type"] = "string|config|request|session";
 	 * $property["value"] = $value;
@@ -186,14 +203,18 @@ class MoufManager {
 	 * @var array<string, array>
 	 */
 	private $declaredInstances = array();
-
-
+	
 	/**
-	 * A list of files to be required (relative to the directory of Mouf.php)
-	 *
+	 * A list of PHP closures used for instantiating instances.
+	 * For instance:
+	 * 
+	 * $closures["instanceName"]["constructor"][4] = function($moufManager) {...}
+	 * 
+	 * All closures are taking the $moufManager has sole and unique parameter.
+	 * 
 	 * @var array
 	 */
-	private $registeredComponents = array();
+	private $closures;
 
 	/**
 	 * A list of components name that are external.
@@ -203,26 +224,6 @@ class MoufManager {
 	 * @var array<string>
 	 */
 	private $externalComponents = array();
-
-	/**
-	 * The list of packages that are enabled.
-	 * The list contains the path to the package.xml file from the plugins directory.
-	 * The list is ordered per dependencies.
-	 *
-	 * @var array<string>
-	 */
-	private $packagesList = array();
-
-	/**
-	 * The list of packages that are enabled in admin scope.
-	 * The list contains the path to the package.xml file from the plugins directory.
-	 * The list is ordered per dependencies.
-	 * This list is filled in the MoufManager instance of the APP scope, and is always
-	 * empty in the MoufManager instance of the ADMIN scope
-	 *
-	 * @var array<string>
-	 */
-	private $packagesListInAdminScope = array();
 
 
 	/**
@@ -268,21 +269,13 @@ class MoufManager {
 	 * @var string
 	 */
 	private $mainClassName;
-
+	
 	/**
-	 * The path to theMouf directory from the mouf file.
-	 * For instance: "mouf/" is the Mouf.php file is in the root directory of the webapp.
+	 * The instance of the main class
 	 *
 	 * @var string
 	 */
-	private $pathToMouf;
-
-	/**
-	 * A list of classes autoloadable that are stored in Mouf.
-	 *
-	 * @var array<className, fileName>
-	 */
-	private $autoloadableClasses;
+	private $mainClass;
 
 	/**
 	 * Returns the config manager (the service in charge of writing the config.php file).
@@ -308,19 +301,19 @@ class MoufManager {
 	 * @param string $instanceName
 	 * @return object
 	 */
-	public function getInstance($instanceName) {
+	public function get($instanceName) {
 		return $this->container->get($instanceName);
 	}
 
 	/**
 	 * Returns the instance of the specified object.
-	 * Alias of "getInstance"
+	 * Alias of "get"
 	 *
 	 * @deprecated
 	 * @param string $instanceName
 	 * @return object
 	 */
-	public function get($instanceName) {
+	public function getInstance($instanceName) {
 		return $this->container->get($instanceName);
 	}
 	
@@ -369,6 +362,7 @@ class MoufManager {
 	public function addComponentInstances(array $definition) {
 		$this->container->addComponentInstances($definition);
 	}
+	
 
 	/**
 	 * Declares a new component.
@@ -425,7 +419,7 @@ class MoufManager {
 	 * @param string $instanceName
 	 * @param string $paramName
 	 * @param string $paramValue
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameter($instanceName, $paramName, $paramValue, $type = "string", array $metadata = array()) {
@@ -439,7 +433,7 @@ class MoufManager {
 	 * @param string $instanceName
 	 * @param string $setterName
 	 * @param string $paramValue
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameterViaSetter($instanceName, $setterName, $paramValue, $type = "string", array $metadata = array()) {
@@ -447,14 +441,14 @@ class MoufManager {
 	}
 
 	/**
-	 * Binds a parameter to the instance using a construcotr parameter.
+	 * Binds a parameter to the instance using a constructor parameter.
 	 *
 	 * @deprecated
 	 * @param string $instanceName
 	 * @param string $index
 	 * @param string $paramValue
 	 * @param string $parameterType Can be one of "primitive" or "object".
-	 * @param string $type Can be one of "string|config|request|session"
+	 * @param string $type Can be one of "string|config|request|session|php"
 	 * @param array $metadata An array containing metadata
 	 */
 	public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
@@ -576,7 +570,7 @@ class MoufManager {
 	 * @return boolean
 	 */
 	public function isParameterSetForConstructor($instanceName, $index) {
-		return isset($this->declaredInstances[$instanceName]['constructor'][$index]);
+		return $this->container->isParameterSetForConstructor($instanceName, $index);
 	}
 	
 	/**
@@ -587,10 +581,8 @@ class MoufManager {
 	 * @param int $index
 	 */
 	public function unsetParameterForConstructor($instanceName, $index) {
-		return $this->container->
-		unset($this->declaredInstances[$instanceName]['constructor'][$index]);
-	}
-	
+		return $this->container->unsetParameterForConstructor($instanceName, $index);
+	}	
 
 	/**
 	 * Returns the type for the given parameter (can be one of "string", "config", "session" or "request")
@@ -617,7 +609,7 @@ class MoufManager {
 	}
 
 	/**
-	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session" or "request")
+	 * Returns the type for the given parameter that has been set using a setter (can be one of "string", "config", "session", "request" or "php")
 	 *
 	 * @deprecated
 	 * @param string $instanceName
@@ -821,6 +813,7 @@ class MoufManager {
 		fwrite($fp, " * This is a file automatically generated by the Mouf framework. Do not modify it, as it could be overwritten.\n");
 		fwrite($fp, " */\n");
 		fwrite($fp, "use Mouf\MoufManager;\n");
+		fwrite($fp, "use Interop\Container\ContainerInterface;\n");
 		fwrite($fp, "MoufManager::initMoufManager();\n");
 		fwrite($fp, "\$moufManager = MoufManager::getMoufManager();\n");
 		fwrite($fp, "\n");
@@ -858,7 +851,6 @@ class MoufManager {
 		$selfEdit = ($this->scope == MoufManager::SCOPE_ADMIN);
 		$composerService = new ComposerService($selfEdit);
 		$composerService->rewriteMoufUi();
-
 	}
 
 	/**
@@ -905,6 +897,7 @@ class MoufManager {
 	 * @return array<string, comp(s)> where comp(s) is a string or an array<string> if there are many components for that property. The key of the array is the name of the property.
 	 */
 	public function getBoundComponents($instanceName) {
+		// TODO: check usage and remove.
 		return $this->container->getBoundComponents($instanceName);
 	}
 
@@ -918,7 +911,6 @@ class MoufManager {
 	public function getOwnerComponents($instanceName) {
 		return $this->container->getOwnerComponents($instanceName);
 	}
-
 
 	/**
 	 * Returns the name of a Mouf instance from the object.
@@ -938,7 +930,8 @@ class MoufManager {
 	 *
 	 * @deprecated
 	 * @param string $srcInstanceName The name of the source instance.
-	 * @param string $destInstanceName The name of the new instance.
+	 * @param string $destInstanceName The name of the new instance (can be null if we are duplicating an anonymous instance)
+	 * @return string the destination instance name
 	 */
 	public function duplicateInstance($srcInstanceName, $destInstanceName) {
 		return $this->container->duplicateInstance($srcInstanceName, $destInstanceName);
@@ -1061,6 +1054,9 @@ class MoufManager {
 	 * Returns an "anonymous" name for an instance.
 	 * "anonymous" names start with "__anonymous__" and is followed by a number.
 	 * This function will return a name that is not already used.
+	 * 
+	 * The number suffixing "__anonymous__" is returned in a random fashion. This way,
+	 * VCS merges are easier to handle.
 	 *
 	 * @deprecated
 	 * @return string
@@ -1099,7 +1095,7 @@ class MoufManager {
 	public function createInstance($className, $mode = self::DECLARE_ON_EXIST_EXCEPTION) {
 		return $this->container->createInstance($className, $mode);
 	}
-
+	
 	/**
 	 * A list of descriptors.
 	 *
@@ -1134,5 +1130,125 @@ class MoufManager {
 	public function getClassDescriptor($name) {
 		return $this->container->getReflectionClassManager()->getReflectionClass($name);
 	}
+	
+	/**
+	* Returns the list of public properties' names configured for this instance.
+	*
+	* @param string $instanceName
+	* @return string[]
+	*/
+	public function getParameterNames($instanceName) {
+		return array_merge(
+			isset($this->declaredInstances[$instanceName]["fieldProperties"])?array_keys($this->declaredInstances[$instanceName]["fieldProperties"]):array(),
+			isset($this->declaredInstances[$instanceName]["fieldBinds"])?array_keys($this->declaredInstances[$instanceName]["fieldBinds"]):array()
+		);
+	}
+	
+	/**
+	* Returns the list of setters' names configured for this instance.
+	*
+	* @param string $instanceName
+	* @return string[]
+	*/
+	public function getParameterNamesForSetter($instanceName) {
+		return array_merge(
+				isset($this->declaredInstances[$instanceName]["setterProperties"])?array_keys($this->declaredInstances[$instanceName]["setterProperties"]):array(),
+				isset($this->declaredInstances[$instanceName]["setterBinds"])?array_keys($this->declaredInstances[$instanceName]["setterBinds"]):array()
+		);
+	}
+	
+	/**
+	* Returns the list of constructor parameters (index position of the parameter) configured for this instance.
+	*
+	* @param string $instanceName
+	* @return int[]
+	*/
+	public function getParameterNamesForConstructor($instanceName) {
+		if (isset($this->declaredInstances[$instanceName]["constructor"])) {
+			return array_keys($this->declaredInstances[$instanceName]["constructor"]);
+		} else {
+			return array();
+		}
+	}
+	
+	/**
+	 * Creates a new instance declared by PHP code.
+	 *
+	 * @return MoufInstanceDescriptor
+	 */
+	public function createInstanceByCode() {
+		$name = $this->getFreeAnonymousName();
+	
+		$this->declaredInstances[$name]["weak"] = false;
+		$this->declaredInstances[$name]["comment"] = "";
+		$this->declaredInstances[$name]["class"] = null;
+		$this->declaredInstances[$name]["external"] = false;
+		$this->declaredInstances[$name]["code"] = "";
+		$this->setInstanceAnonymousness($name, true);
+	
+		return $this->getInstanceDescriptor($name);
+	}
+	
+	/**
+	 * For instance created via callback (created using `createInstanceByCode`), 
+	 * sets the PHP code to be executed to create the instances.
+	 * 
+	 * @param string $instanceName
+	 * @param string $code
+	 */
+	public function setCode($instanceName, $code) {
+		if (!isset($this->declaredInstances[$instanceName])) {
+			throw new MoufException("Instance '$instanceName' does not exist.");
+		}
+		if (!isset($this->declaredInstances[$instanceName]["code"])) {
+			throw new MoufException("Instance '$instanceName' has not been created using `createInstanceByCode`. It cannot have a PHP code attached to it.");
+		}
+		$this->declaredInstances[$instanceName]["code"] = $code;
+		$this->findInstanceByCallbackType($instanceName);
+	}
+	
+	/**
+	 * Returns a string containing the PHP code that will be executed to instantiate this instance (if 
+	 * PHP code was passed using setCode), or "null" if this is a "normal" instance.
+	 * 
+	 * @param string $instanceName
+	 * @return string|NULL
+	 */
+	public function getCode($instanceName) {
+		return $this->container->getCode($instanceName);
+	}
+	
+	/**
+	 * Returns any error that would have been triggered by executing the php code that creates the instance (if 
+	 * PHP code was passed using setCode), or "null" if this is a "normal" instance or there is no error.
+	 * 
+	 * @param string $instanceName
+	 * @return string
+	 */
+	public function getErrorOnInstanceCode($instanceName) {
+		return $this->container->getErrorOnInstanceCode($instanceName);
+		
+	}
+	
+	/**
+	 * Returns the type of an instance defined by callback.
+	 * For this, the instanciation code will be executed and the result will be returned.
+	 *
+	 * @param string $instanceName The name of the instance to analyze.
+	 * @return string
+	 */
+	private function findInstanceByCallbackType($instanceName) {
+		return $this->container->findInstanceByCallbackType($instanceName);
+	}
+	
+	/**
+	 * If set, all dependencies lookup will be delegated to this container.
+	 * 
+	 * @param ContainerInterface $delegateLookupContainer        	
+	 */
+	public function setDelegateLookupContainer(ContainerInterface $delegateLookupContainer) {
+		$this->delegateLookupContainer = $delegateLookupContainer;
+		return $this;
+	}
+	
 }
-?>

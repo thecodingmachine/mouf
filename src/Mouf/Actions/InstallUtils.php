@@ -30,6 +30,7 @@ class InstallUtils {
 		
 		$rootPath = self::findRootPath(getcwd()."/");
 		if ($initMode == self::$INIT_APP) {
+			
 			require_once $rootPath."mouf/Mouf.php";
 		} else {
 			if (file_exists($rootPath."vendor/mouf/mouf/mouf/Mouf.php")) {
@@ -74,7 +75,7 @@ class InstallUtils {
 	public static function continueInstall($selfEdit = false) {
 		// Let's try to get the URL right based on the context.
 		
-		header("Location: ".MOUF_URL."installer/installTaskDone?selfedit=".(($selfEdit)?"true":"false"));
+		header("Location: ".MOUF_URL."installer/installTaskDone?selfedit=".(($selfEdit)?"true":"false")."#toinstall");
 	}
 	
 	public static function massCreate($classes, $moufManager){
@@ -108,7 +109,7 @@ class InstallUtils {
 	 * Throws an exception if the instance exist and is not of the requested class.
 	 * 
 	 * @param string $instanceName
-	 * @param string $className
+	 * @param string $className The name of the class of the instance to create. Set it to null if you want to create an instance by PHP code.
 	 * @param MoufManager $moufManager
 	 * @return MoufInstanceDescriptor
 	 */
@@ -118,11 +119,15 @@ class InstallUtils {
 		}
 		if ($moufManager->instanceExists($instanceName)) {
 			$instance = $moufManager->getInstanceDescriptor($instanceName);
-			if ($instance->getClassName() != $className) {
+			if ($className != null && $instance->getClassName() != $className) {
 				throw new MoufException("Invalid instance while installing package. The existing '$instanceName' instance should be a '$className'. Instead, we found an instance of the '{$instance->getClassName()}' class.");
 			}
 		} else {
-			$instance = $moufManager->createInstance($className);
+			if ($className != null) {
+				$instance = $moufManager->createInstance($className);
+			} else {
+				$instance = $moufManager->createInstanceByCode();
+			}
 			$instance->setName($instanceName);
 		}
 		return $instance;

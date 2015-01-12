@@ -14,6 +14,7 @@ use Mouf\Reflection\MoufReflectionParameter;
 use Mouf\Reflection\MoufReflectionClass;
 
 use Mouf\Reflection\MoufXmlReflectionClass;
+use PhpParser\Error;
 
 /**
  * This object represent an instance declared in the Mouf framework.
@@ -21,6 +22,11 @@ use Mouf\Reflection\MoufXmlReflectionClass;
  * @author David Negrier
  */
 class MoufInstanceDescriptor {
+	
+	// Instance declared via PHP code
+	const TYPE_PHP = 'php';
+	// Instance declared via property injection in constructor/setters/public properties
+	const TYPE_DECLARATIVE = 'declarative';
 	
 	/**
 	 * The MoufContainer instance owning the component.
@@ -210,7 +216,12 @@ class MoufInstanceDescriptor {
 	 */
 	public function getPublicFieldProperty($name) {
 		if (!isset($this->publicProperties[$name])) {
-			$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyByPublicProperty($name));
+			$propertyDescriptor = $this->getClassDescriptor()->getInjectablePropertyByPublicProperty($name);
+			if ($propertyDescriptor) {
+				$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $propertyDescriptor);
+			} else {
+				$this->publicProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, null, "publicproperty", $name);
+			}
 		}
 		return $this->publicProperties[$name];
 	}
@@ -229,11 +240,17 @@ class MoufInstanceDescriptor {
 			if (isset($methodProperties[$name])) {
 				$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($name));
 			} else {
+				$found = false;
 				foreach ($methodProperties as $methodProperty) {
 					if ($methodProperty->getName() == $name) {
 						$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyBySetter($methodProperty->getMethodName()));
+						$found = true;
 						break;
 					}
+				}
+				if (!$found) {
+					// This must be an orphan
+					$this->setterProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, null, "setter", $name);
 				}
 			}
 		}
@@ -249,7 +266,12 @@ class MoufInstanceDescriptor {
 	 */
 	public function getConstructorArgumentProperty($name) {
 		if (!isset($this->constructorProperties[$name])) {
-			$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $this->getClassDescriptor()->getInjectablePropertyByConstructor($name));
+			$propertyDescriptor = $this->getClassDescriptor()->getInjectablePropertyByConstructor($name);
+			if ($propertyDescriptor) {
+				$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, $propertyDescriptor);
+			} else {
+				$this->constructorProperties[$name] = new MoufInstancePropertyDescriptor($this->moufContainer, $this, null, "constructorargument", $name);
+			}
 		}
 		return $this->constructorProperties[$name];
 	}
@@ -259,70 +281,288 @@ class MoufInstanceDescriptor {
 	 * @return array
 	 */
 	public function toJson() {
-		$classDescriptor = $this->getClassDescriptor();
 		$instanceArray['name'] = $this->name;
 		$instanceArray['class'] = $this->getClassName();
 		$instanceArray['anonymous'] = $this->isAnonymous();
+		$instanceArray['type'] = $this->getType();
 		
-		$instanceArray['constructorArguments'] = array();
-		foreach ($classDescriptor->getInjectablePropertiesByConstructor() as $propertyName=>$moufProperty) {
-			$instanceArray['constructorArguments'][$propertyName] = $this->getConstructorArgumentProperty($propertyName)->toJson();
-		}
-
-		$instanceArray['properties'] = array();
-		foreach ($classDescriptor->getInjectablePropertiesByPublicProperty() as $propertyName=>$moufProperty) {
-			$instanceArray['properties'][$propertyName] = $this->getPublicFieldProperty($propertyName)->toJson();
-		}
-		
-		$instanceArray['setters'] = array();
-		foreach ($classDescriptor->getInjectablePropertiesBySetter() as $propertyName=>$moufProperty) {
-			$instanceArray['setters'][$propertyName] = $this->getSetterProperty($propertyName)->toJson();
+		if ($instanceArray['type'] == self::TYPE_DECLARATIVE) {
+			$classDescriptor = $this->getClassDescriptor();
+			
+			$instanceArray['constructorArguments'] = array();
+			foreach ($classDescriptor->getInjectablePropertiesByConstructor() as $propertyName=>$moufProperty) {
+				$instanceArray['constructorArguments'][$propertyName] = $this->getConstructorArgumentProperty($propertyName)->toJson();
+			}
+	
+			$instanceArray['properties'] = array();
+			foreach ($classDescriptor->getInjectablePropertiesByPublicProperty() as $propertyName=>$moufProperty) {
+				$instanceArray['properties'][$propertyName] = $this->getPublicFieldProperty($propertyName)->toJson();
+			}
+			
+			$instanceArray['setters'] = array();
+			foreach ($classDescriptor->getInjectablePropertiesBySetter() as $propertyName=>$moufProperty) {
+				$instanceArray['setters'][$propertyName] = $this->getSetterProperty($propertyName)->toJson();
+			}
+			
+			// Now, let's search for properties that would be declared in the configuration but that
+			// would not exist in the code (this can happen if the property has been renamed in the code)
+			$definedPublicProperties = $this->moufContainer->getParameterNames($this->name);
+			if ($definedPublicProperties) {
+				$missingPublicProperties = array_diff($definedPublicProperties, array_keys($instanceArray['properties']));
+				foreach ($missingPublicProperties as $missingPublicPropertyName) {
+					$instanceArray['properties'][$missingPublicPropertyName] = [
+						'warning' => "The public property '".$missingPublicPropertyName."' is declared but does not exist. It is likely it once existed but was renamed or removed.",
+						'orphan' => true,
+						'type' => null,
+						'value' => null,
+						'isset' => true,
+						'origin' => null,
+						'metadata' => null
+					];
+				}
+			}
+			
+			$definedSetters = $this->moufContainer->getParameterNamesForSetter($this->name);
+			if ($definedSetters) {
+				$missingSetters = array_diff($definedSetters, array_keys($instanceArray['setters']));
+				foreach ($missingSetters as $missingSetterName) {
+					$instanceArray['setters'][$missingSetterName] = [
+					'warning' => "The setter '".$missingSetterName."' is declared but does not exist. It is likely it once existed but was renamed or removed.",
+					'orphan' => true,
+					'type' => null,
+					'value' => null,
+					'isset' => true,
+					'origin' => null,
+					'metadata' => null
+					];
+				}
+			}
+				
+			$definedConstructorArguments = $this->moufContainer->getParameterNamesForConstructor($this->name);
+			if ($definedConstructorArguments) {
+				$constructor = $classDescriptor->getConstructor();
+				if ($constructor) {
+					$nbParameters = $classDescriptor->getConstructor()->getNumberOfParameters();
+				} else {
+					$nbParameters = 0;
+				}
+				$missingConstructorArguments = array_filter($definedConstructorArguments, function($nb) use ($nbParameters) { return $nbParameters <= $nb; });
+				foreach ($missingConstructorArguments as $missingConstructorArgument) {
+					$instanceArray['constructorArguments'][$missingConstructorArgument] = [
+					'warning' => "The constructor argument n°'".$missingConstructorArgument."' is declared but does not exist. It is likely it once existed but was removed.",
+					'orphan' => true,
+					'type' => null,
+					'value' => null,
+					'isset' => true,
+					'origin' => null,
+					'metadata' => null
+					];
+				}
+			}
+			
+		} else {
+			$instanceArray['code'] = $this->getCode();
 		}
 		
 		return $instanceArray;
 	}
+	
+	/**
+	 * You can set PHP code that returns the instance.
+	 * This completely replaces all other properties.
+	 * The PHP code must be passed as a string and must return a value using the "return" keyword.
+	 * It must NOT start with <?php 
+	 * 
+	 * @param string $code
+	 */
+	public function setCode($code) {
+		$this->moufContainer->setCode($this->getIdentifierName(), $code);
+	}
+	
+	/**
+	 * Returns MoufInstanceDescriptor::TYPE_DECLARATIVE if the instance has been declared via "setCode" or MoufInstanceDescriptor::TYPE_PHP otherwise.
+	 * 
+	 * @return string
+	 */
+	public function getType() {
+		if ($this->moufContainer->getCode($this->getIdentifierName())===null) {
+			return self::TYPE_DECLARATIVE;
+		} else {
+			return self::TYPE_PHP;
+		}
+	}
+	
+	/**
+	 * Returns the string containing the PHP code to be executed to instantiate the instance, if "setCode" is used.
+	 */
+	public function getCode() {
+		return $this->moufContainer->getCode($this->getIdentifierName());
+	}
 
 	/**
-	 * Analyses the instance. Returns array() if everything is alright, are an array of error messages.
+	 * Analyses the instance. Returns array() if everything is alright, or an array of error messages.
 	 * Analysis performed:
 	 * - The compulsory fields in the constructor are indeed filled.
 	 * 
 	 * @return string[]
 	 */
 	public function validate() {
-		$classDescriptor = $this->getClassDescriptor();
-		$constructor = $classDescriptor->getConstructor();
 		$errors = array();
-		if ($constructor) {
-			$params = $constructor->getParameters();
+		if ($this->getType() == self::TYPE_DECLARATIVE) {
+			$classDescriptor = $this->getClassDescriptor();
+			$constructor = $classDescriptor->getConstructor();
 			
-			$i=0;
-			
-			foreach ($params as $param) {
-				/* @var $param MoufReflectionParameter */
-				if (!$param->isOptional()) {
-					if (!$this->moufContainer->isParameterSetForConstructor($this->getIdentifierName(), $i)) {
-						$name = $this->getIdentifierName();
-						if ($this->isAnonymous()) {
-							$name = "anonymous instance of class ".$this->getClassName();
+			if ($constructor) {
+				$params = $constructor->getParameters();
+				
+				$i=0;
+				
+				foreach ($params as $param) {
+					/* @var $param MoufReflectionParameter */
+					if (!$param->isOptional()) {
+						if (!$this->moufContainer->isParameterSetForConstructor($this->getIdentifierName(), $i)) {
+							$name = $this->getIdentifierName();
+							if ($this->isAnonymous()) {
+								$name = "anonymous instance of class ".$this->getClassName();
+							}
+							$errors[] = "In instance <em>".$name."</em>, the constructor
+									parameter '".$param->getName()."' is compulsory.
+									<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+						} elseif (!$param->allowsNull()) {
+							$name = $this->getIdentifierName();
+							if ($this->isAnonymous()) {
+								$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+							}
+							if ($this->moufContainer->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
+								$errors[] = "In instance <em>".$name."</em>, the constructor
+									parameter '".$param->getName()."' is null, but the constructor signature does not allow it to be null.
+									<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+							}
 						}
-						$errors[] = "In instance <em>".$name."</em>, the constructor
-								parameter '".$param->getName()."' is compulsory.
-								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
-					} elseif (!$param->allowsNull()) {
+					}
+					if ($this->moufContainer->getParameterTypeForConstructor($this->getIdentifierName(), $i) == 'php') {
+						$name = $this->getIdentifierName();
+						// Ok, we need to check the code.
+						$code = $this->moufContainer->getParameterForConstructor($name, $i);
+						try {
+							CodeValidatorService::validateCode($code);
+						} catch (Error $e) {
+							if ($this->isAnonymous()) {
+								$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+							}
+							$errors[] = "In instance <em>".$name."</em>, the constructor
+									parameter '".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+									<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+						}
+					}		
+					$i++;
+				}
+			}
+			
+			foreach ($classDescriptor->getInjectablePropertiesByPublicProperty() as $propertyName=>$moufProperty) {
+				$property = $this->getPublicFieldProperty($propertyName);
+				if ($property->getOrigin() == 'php') {
+					$code = $property->getValue();
+					try {
+						CodeValidatorService::validateCode($code);
+					} catch (Error $e) {
 						$name = $this->getIdentifierName();
 						if ($this->isAnonymous()) {
 							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
 						}
-						if ($this->moufContainer->getParameterForConstructor($this->getIdentifierName(), $i) === null) {
-							$errors[] = "In instance <em>".$name."</em>, the constructor
-								parameter '".$param->getName()."' is null, but the constructor signature does not allow it to be null.
-								<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
-						}
+						$errors[] = "In instance <em>".$name."</em>, the public property
+									'".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+													<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
 					}
 				}
+			}
+			
+			foreach ($classDescriptor->getInjectablePropertiesBySetter() as $propertyName=>$moufProperty) {
+				$property = $this->getSetterProperty($propertyName);
+				if ($property->getOrigin() == 'php') {
+					$code = $property->getValue();
+					try {
+						CodeValidatorService::validateCode($code);
+					} catch (Error $e) {
+						$name = $this->getIdentifierName();
+						if ($this->isAnonymous()) {
+							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+						}
+						$errors[] = "In instance <em>".$name."</em>, the setter
+									'".$param->getName()."' is using PHP code that contains a parse error: <em>{$e->getMessage()}</em>.
+											<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+					}
+				}
+			}
+			
+			// Now, let's check that the MoufManager instance definition is not using properties that where once declared
+			// but that no longer exist in the class:
+			
+			$definedPublicProperties = $this->moufContainer->getParameterNames($this->name);
+			if ($definedPublicProperties) {
+				$missingPublicProperties = array_diff($definedPublicProperties, array_keys($classDescriptor->getInjectablePropertiesByPublicProperty()));
+				foreach ($missingPublicProperties as $missingPublicPropertyName) {
+					$name = $this->getIdentifierName();
+					if ($this->isAnonymous()) {
+						$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+					}
+					
+					$errors[] = "In instance <em>".$name."</em>, the public property
+								'".$missingPublicPropertyName."' is declared but does not exist. It is likely it once existed but was renamed or removed.
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+				}
+			}
+			
+			$definedSetters = $this->moufContainer->getParameterNamesForSetter($this->name);
+			if ($definedSetters) {
+				$missingSetters = array_diff($definedSetters, array_keys($classDescriptor->getInjectablePropertiesBySetter()));
+				foreach ($missingSetters as $missingSetterName) {
+					$name = $this->getIdentifierName();
+					if ($this->isAnonymous()) {
+						$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+					}
 				
-				$i++;
+					$errors[] = "In instance <em>".$name."</em>, the setter
+								'".$missingSetterName."()' is declared but does not exist. It is likely it once existed but was renamed or removed.
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+				}
+			}
+			
+			$definedConstructorArguments = $this->moufContainer->getParameterNamesForConstructor($this->name);
+			if ($definedConstructorArguments) {
+				$constructor = $classDescriptor->getConstructor();
+				if ($constructor) {
+					$nbParameters = $classDescriptor->getConstructor()->getNumberOfParameters();
+					$missingConstructorArguments = array_filter($definedConstructorArguments, function($nb) use ($nbParameters) { return $nbParameters <= $nb; });
+					foreach ($missingConstructorArguments as $missingArgument) {
+						$name = $this->getIdentifierName();
+						if ($this->isAnonymous()) {
+							$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+						}
+					
+						$errors[] = "In instance <em>".$name."</em>, the constructor argument
+								n°".$missingArgument." is used but does not exist. It is likely it once existed but was removed.
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+					}
+				} else {
+					$name = $this->getIdentifierName();
+					$errors[] = "In instance <em>".$name."</em>, parameters are injected in the constructor but the constructor does not exist. It is likely it once existed but was removed.
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
+				}
+				
+				
+			}
+				
+		} else {
+			$error = $this->moufContainer->getErrorOnInstanceCode($this->getIdentifierName());
+			if ($error) {
+				$name = $this->getIdentifierName();
+				if ($this->isAnonymous()) {
+					$name = "anonymous instance from class <strong>".$this->getClassName()."</strong>";
+				}
+				$errors[] = "The instance <em>".$name."</em> is declared by PHP code and is throwing an error message:
+								$error
+										<a href='".MOUF_URL."ajaxinstance/?name=".urlencode($this->getIdentifierName())."' class='btn btn-success'><i class='icon-pencil icon-white'></i> Edit</a>";
 			}
 		}
 		return $errors;

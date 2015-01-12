@@ -540,7 +540,9 @@ var MoufUI = (function () {
 		renameInstance: function(instance) {
 			var modal = MoufUI.openPopup("Rename instance");
 			var inputField;
+			var submitButton; 
 			var formElem = jQuery('<form class="form-horizontal">').submit(function() {
+				submitButton.attr('disabled', true);
 				instance.rename(inputField.val(), function() {
 					// When save is performed, let's reload the page with the new URL.
 					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(instance.getName())+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
@@ -560,7 +562,40 @@ var MoufUI = (function () {
 			
 			var modalFooter = jQuery('<div class="modal-footer">').appendTo(formElem);
 			jQuery("<button type='button'/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
-			jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Save changes").appendTo(modalFooter);
+			submitButton = jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Save changes").appendTo(modalFooter);
+		},
+		
+		/**
+		 * Displays a popup to duplicate an instance.
+		 * The MoufInstance object must be passed in parameter.
+		 */
+		duplicateInstance: function(instance) {
+			var modal = MoufUI.openPopup("Duplicate instance");
+			var inputField;
+			var submitButton; 
+			var formElem = jQuery('<form class="form-horizontal">').submit(function() {
+				submitButton.attr('disabled', true);
+				var duplicateName = inputField.val();
+				instance.duplicate(duplicateName, function() {
+					// When save is performed, let's reload the page with the new URL.
+					window.location.href = MoufInstanceManager.rootUrl+"ajaxinstance/?name="+encodeURIComponent(duplicateName)+"&selfedit="+(MoufInstanceManager.selfEdit?"true":"false");
+				});
+				return false;
+			}).appendTo(modal);
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(formElem);
+			
+			var divControlGroup = jQuery('<div class="control-group">').appendTo(formElem);
+			var label = jQuery('<label class="control-label" for="name">').text("Copy name ").appendTo(divControlGroup);
+			var divControls = jQuery('<div class="controls">').appendTo(divControlGroup);
+			inputField = jQuery('<input type="text">')
+				.val(instance.getName()+" (copy)")
+				.appendTo(divControlGroup);
+			
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(formElem);
+			jQuery("<button type='button'/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Close").appendTo(modalFooter);
+			submitButton = jQuery("<button type='submit'/>").addClass("btn btn-primary").text("Duplicate").appendTo(modalFooter);
 		},
 		
 		/**
@@ -599,6 +634,81 @@ var MoufUI = (function () {
 			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Cancel").appendTo(modalFooter);
 			jQuery("<button/>").addClass("btn btn-primary").attr("data-dismiss", "modal").text("Ok").click(function() {
 				callback(selectField.val());
+			}).appendTo(modalFooter);
+		},
+		
+		/**
+		 * This function returns a closure that will be used to validate PHP code inputed by the user.
+		 * The returned value can be:
+		 * { "status": "success", "data": {} }
+		 * or:
+		 * { "status": "fail", "data": { "line": xxx, "message": "yyy" } }
+		 * 
+		 */
+		validatePHPCode: function(code) {
+			return jQuery.getJSON(MoufInstanceManager.rootUrl+"src/direct/validate_code.php",
+					{encode:"json", selfedit:MoufInstanceManager.selfEdit?"true":"false", code: code})
+			.fail(function(msg) {
+				addMessage("<pre>"+msg.responseText+"</pre>", "error");
+			});
+		},
+		
+		/**
+		 * Displays a popup to input some PHP code.
+		 */
+		inputPHPCode: function(code, callback, selfedit) {
+			var modal = MoufUI.openPopup("PHP code");
+			
+			var modalBody = jQuery('<div class="modal-body">').appendTo(modal);
+			
+			var formElem = jQuery('<form class="form-horizontal">').appendTo(modalBody);
+			jQuery('<code>function(ContainerInteface $container) {</code>')
+				.appendTo(formElem);
+		
+			if (code == null) {
+				code = "";
+			}
+			jQuery('<div id="acephpeditor">').text(code)
+				.appendTo(formElem);
+			jQuery('<code>}</code>')
+				.appendTo(formElem);
+			
+			jQuery("<p>Your code should <strong>return</strong> the value that will be stored in the property. " +
+					"You can access/return other instances using <code>$container->get('otherInstance')</code>.</p>")
+			.appendTo(formElem);
+			
+			var editor = null;
+			setTimeout(function() {
+				editor = ace.edit("acephpeditor");
+				editor.setOptions({
+				    maxLines: 50
+				});
+			    //editor.setTheme("ace/theme/monokai");
+				editor.setTheme("ace/theme/eclipse");
+			    editor.getSession().setMode({path:"ace/mode/php", inline:true});
+			    
+			    editor.commands.addCommand({
+			    	name: 'saveFile',
+			    	bindKey: {
+				    	win: 'Ctrl-S',
+				    	mac: 'Command-S',
+				    	sender: 'editor|cli'
+			    	},
+			    	exec: function(env, args, request) {
+			    		callback(editor.getValue());
+			    	}
+			    });
+			    editor.focus();
+			    /*editor.on('change', function() {
+			    	console.log('change');
+			    });*/
+			}, 0);
+			
+			
+			var modalFooter = jQuery('<div class="modal-footer">').appendTo(modal);
+			jQuery("<button/>").addClass("btn").attr("data-dismiss", "modal").attr("aria-hidden", "true").text("Cancel").appendTo(modalFooter);
+			jQuery("<button/>").addClass("btn btn-primary").attr("data-dismiss", "modal").text("Ok").click(function() {
+				callback(editor.getValue());
 			}).appendTo(modalFooter);
 		},
 		

@@ -1,4 +1,5 @@
 <?php
+use Mouf\UniqueIdService;
 /*
  * This file is part of the Mouf core package.
  *
@@ -15,6 +16,7 @@
 <div id="renderedInstance"></div>
 
 <script type="text/javascript">
+MoufInstanceManager.setAnonymousPrefix(<?php echo json_encode(UniqueIdService::getUniqueId()); ?>);
 
 MoufInstanceManager.getInstance(<?php echo json_encode($this->instanceName) ?>).then(function(instance) {
 	instance.render('big').appendTo(jQuery("#renderedInstance"));

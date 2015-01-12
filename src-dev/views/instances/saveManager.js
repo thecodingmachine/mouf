@@ -1,9 +1,14 @@
+var MoufSaveManager;
+
+(function(){
+"use strict";
+
 /**
  * The MoufSaveManager class is in charge of saving any changes performed to the instances.
  * It will locally save those changes, then send the changes to the server by batch.
  * It makes sure only one batch is handled at a time.
  */
-var MoufSaveManager = (function () {
+MoufSaveManager = (function () {
 	
 	/**
 	 * Whether a save request is in progress or not.
@@ -75,7 +80,7 @@ var MoufSaveManager = (function () {
 		
 		var isBoolean = false;
 		var finalValue = null;
-		if (moufInstanceProperty.getType().isArray()) {
+		if (moufInstanceProperty.getType() && moufInstanceProperty.getType().isArray() && moufInstanceProperty.getOrigin() != 'php') {
 			finalValue = _serializeSubProperties(moufInstanceProperty);
 		} else {
 			if (value === true || value === false) {
@@ -89,15 +94,17 @@ var MoufSaveManager = (function () {
 		var command = {
 			"command": "setProperty",
 			"instance": moufInstanceProperty.getInstance().getName(),
-			"property": moufInstanceProperty.getMoufProperty().getName(),
+			"property": moufInstanceProperty.isOrphan()?moufInstanceProperty.getName():moufInstanceProperty.getMoufProperty().getName(),
 			"value": finalValue,
 			"isBoolean": isBoolean,
 			"origin": moufInstanceProperty.getOrigin(),
 			"isset": moufInstanceProperty.isSet(),
 			"source": moufInstanceProperty.getSource(),
 			"isNull": (finalValue === null),
-			"type": moufInstanceProperty.getType().toString()
 		};
+		if (moufInstanceProperty.getType()) {
+			command.type = moufInstanceProperty.getType().toString();
+		}
 				
 		_changesList.push(command);
 				
@@ -141,6 +148,24 @@ var MoufSaveManager = (function () {
 	}
 	
 	/**
+	 * Callback called when an instance is duplicated
+	 */
+	var _onDuplicateInstance = function(instance, duplicateName, callback) {
+		
+		var command = {
+			"command": "duplicateInstance",
+			"name": instance.getName(),
+			"duplicateName": duplicateName
+		};
+		if (callback) {
+			_callbackList.push(callback);
+		}
+		
+		_changesList.push(command);
+		_save();
+	}
+	
+	/**
 	 * Callback called when an instance is deleted
 	 */
 	var _onDeleteInstance = function(instance, callback) {
@@ -148,6 +173,20 @@ var MoufSaveManager = (function () {
 		var command = {
 			"command": "deleteInstance",
 			"name": instance.getName()
+		};
+		if (callback) {
+			_callbackList.push(callback);
+		}
+		
+		_changesList.push(command);
+		_save();
+	}
+	
+	var _onInstanceChange = function(instance, callback) {
+		var command = {
+			"command": "setInstanceCode",
+			"name": instance.getName(),
+			"code": instance.getCode()
 		};
 		if (callback) {
 			_callbackList.push(callback);
@@ -189,7 +228,8 @@ var MoufSaveManager = (function () {
 				changesList: _changesList,
 				encode: "json",
 				selfedit: MoufInstanceManager.selfEdit?"true":"false"
-			}
+			},
+			type: 'POST'
 		}).fail(function(e) {
 			var msg = e;
 			if (e.responseText) {
@@ -229,8 +269,12 @@ var MoufSaveManager = (function () {
 			MoufInstanceManager.onNewInstance(_onNewInstance);
 			// Let's bind the _onRenameInstance to the renameInstance event.
 			MoufInstanceManager.onRenameInstance(_onRenameInstance);
+			// Let's bind the _onDuplicateInstance to the duplicateInstance event.
+			MoufInstanceManager.onDuplicateInstance(_onDuplicateInstance);
 			// Let's bind the _onDeleteInstance to the deleteInstance event.
 			MoufInstanceManager.onDeleteInstance(_onDeleteInstance);
+			// Let's bind the _onInstanceChangeto the instanceChangeInstance event.
+			MoufInstanceManager.onInstanceChangeInstance(_onInstanceChange);
 		},
 		onSaveStatusChange: function(callback, scope) {
 			_saveStatusChangedEventHandler.subscribe(callback, scope);
@@ -271,3 +315,5 @@ jQuery(function() {
 
 	MoufSaveManager.onSaveStatusChange(_onSaveStatusChange);
 });
+
+})();

@@ -42,7 +42,10 @@ class InstanceProxy {
 		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			// Is this an unserialized "false" or an error in unserialization?
+			if ($response != serialize(false)) { 
+				throw new MoufException("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".plainstring_to_htmlprotected($url)."'>".plainstring_to_htmlprotected($url)."</a>");
+			}
 		}
 		
 		return $obj;

@@ -22,9 +22,13 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 	$selfEdit = false;
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	$selfEdit = true;
 }
@@ -83,8 +87,6 @@ foreach ($changesList as $command) {
 		case "setProperty":
 			$instanceName = $command['instance'];
 			$propertyName = $command['property'];
-			$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
-			$type = $types[0];
 			$source = $command['source'];
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
 			
@@ -108,11 +110,17 @@ foreach ($changesList as $command) {
 			if ($command['origin'] == 'config') {
 				$property->setOrigin('config');
 				$property->setValue($command['value']);
+			} elseif ($command['origin'] == 'php') {
+				$property->setOrigin('php');
+				$property->setValue($command['value']);
 			} else if ($command['isset'] == "false") {
 				// Let's unset completely the property
-				$property->setOrigin('string');
+				//$property->setOrigin('string');
 				$property->unsetValue();
 			} else {
+				$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
+				$type = $types[0];
+				
 				$property->setOrigin('string');
 				// Let's set the value
 				if ($command['isNull'] == "true") {
@@ -178,8 +186,18 @@ foreach ($changesList as $command) {
 			$instanceDescriptor->setName($command['newname']);
 			$instanceDescriptor->setInstanceAnonymousness($command['isAnonymous'] == "true");
 			break;
+		case "duplicateInstance":
+			$moufManager->duplicateInstance($command['name'], $command['duplicateName']);
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($command['duplicateName']);
+			$instanceDescriptor->setInstanceAnonymousness(false);
+			$moufManager->setInstanceWeakness($command['duplicateName'], false);
+			break;
 		case "deleteInstance":
 			$instanceDescriptor = $moufManager->removeComponent($command['name']);
+			break;
+		case "setInstanceCode":
+			$instanceDescriptor = $moufManager->getInstanceDescriptor($command['name']);
+			$instanceDescriptor->setCode($command['code']);
 			break;
 		default:
 			throw new Exception("Unknown command");

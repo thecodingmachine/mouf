@@ -37,6 +37,7 @@ foreach ($this->packageList as $package):
 	    		<h4 class="media-heading">
 				<?php echo $package->getPrettyName() ?> <small><?php echo $package->getPrettyVersion() ?></small>
 				</h4>
+				<p><small><?php echo htmlentities($package->getDescription(), ENT_QUOTES, 'UTF-8'); ?></small></p>
 		
 		<?php 
 		$this->displayDocDirectory($docPages, $package->getName());

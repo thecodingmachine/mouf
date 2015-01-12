@@ -37,11 +37,27 @@ class SettingsValidator implements MoufStaticValidatorInterface {
 		
 		if (extension_loaded('apc')) {
 			$shm_size = self::return_bytes(ini_get('apc.shm_size'));
-			error_log ('-----> schm_size:'.$shm_size);
 			if ($shm_size < 128 * 1024 *1024) {
 				return new MoufValidatorResult(MoufValidatorResult::WARN, "Your APC cache settings are a bit low. This might slow down Mouf. Please edit your php.ini file and change the value of <strong>apc.shm_size</strong> to 256M for example");
 			}
 		}
+		
+		if (extension_loaded('Zend OPcache')) {
+			$op_validate_timestamp = ini_get('opcache.validate_timestamps');
+			if($op_validate_timestamp == 0) {
+				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not revalidate files automatically. If it is a development environment, please edit your php.ini file and change the value of <strong>opcache.validate_timestamps</strong> to 1.");
+			}
+			
+			$op_freq = ini_get('opcache.revalidate_freq');
+			if ($op_freq != 0) {
+				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not revalidate files on each call. If it is a development environment, please edit your php.ini file and change the value of <strong>opcache.revalidate_freq</strong> to 0.");
+			}
+						
+			if (ini_get('opcache.save_comments') == 0) {
+				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not store comments therefore annotations. Please edit your php.ini file and change the value of <strong>opcache.save_comments</strong> to 1.");
+			}
+		}
+		
 		return new MoufValidatorResult(MoufValidatorResult::SUCCESS, "Your php settings are ok.");
 	}
 	

@@ -542,3 +542,63 @@ label .type {
 .syntaxhighlighter .container:before, .container:after {
 	content: none;	
 }
+
+pre.error {
+	border-color: red;
+}
+
+span.phperror {
+	background-color: #FF9999;
+}
+
+.alert .xdebug-error {
+	color: black;	
+}
+
+
+
+
+
+/* Images in documentation */
+
+.staticwebsite p > img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: 5px solid #393939;
+	border-radius: 5px;
+	padding: 5px;
+	background-color: white;
+	webkit-filter: grayscale(30%) sepia(30%);
+	-moz-filter: grayscale(30%) sepia(30%);
+	-o-filter: grayscale(30%) sepia(30%);
+	-ms-filter: grayscale(30%) sepia(30%);
+	filter: grayscale(30%) sepia(30%);
+	box-shadow: 0px 0px 30px #777;
+	
+	
+    transition-property: all;
+	transition-duration: .5s; /* on aurait pu écrire 500ms également */
+	transition-timing-function: ease-in;
+	transition-delay: 0s;
+}
+
+.staticwebsite p > img:hover {
+	filter: grayscale(0%) sepia(0%);
+	-webkit-filter: grayscale(0%) sepia(0%);
+	-moz-filter: grayscale(0%) sepia(0%);
+	-o-filter: grayscale(0%) sepia(0%);
+	-ms-filter: grayscale(0%) sepia(0%);
+	filter: grayscale(0%) sepia(0%);
+	
+	box-shadow: 0px 0px 30px #555;
+}
+
+#sidebar-left > .well > ul.menu {
+	margin: 0 0 10px 0;
+	list-style-type: none;
+}
+
+.login_controller ol {
+	list-style-type: none;
+}

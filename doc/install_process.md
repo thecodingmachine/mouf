@@ -26,15 +26,21 @@ The install process is declared in the composer.json file. Here is a sample:
         "mouf": {
     	    "install": [
     		    {
-    			"type": "file",
-    			"file": "src/install.php",
-    			"scope": "global",
+    			"type": "class",
+    			"class": "MyPackage\\MyClass",
+    			"scope": "local",
     			"description": "My description"
     		    },
     		    {
     			"type": "url",
     			"url": "dbconnectioninstall",
     			"scope": "local",
+    			"description": "My description"
+    		    },
+    		    {
+    			"type": "file",
+    			"file": "src/install.php",
+    			"scope": "global",
     			"description": "My description"
     		    }
     	    ]
@@ -43,70 +49,72 @@ The install process is declared in the composer.json file. Here is a sample:
 }
 ```
 
-The first important thing to notice is that the type of the package is "mouf-library". This is important, because if you don't set the type to "mouf-library", the install process will be ignored.
-In this sample, you can see an install process can contain several steps. Each step is either a file (that will be executed directly), or an URL (that will be called in the install process).
+The first important thing to notice is that the type of the package is `mouf-library`. 
+This is important, because if you don't set the type to `mouf-library`, the install process will be ignored.
+In this sample, you can see an install process can contain several steps. 
+Each step is either a class (that contains an `install` method), an URL (that will be called in the install process), or a file (that will be executed in the install process).
 
-- <b>File:</b> The file is relative to the root of the package
-- <b>URL:</b> The page is relative to Mouf's URL
+- **Class:** you must give the fully-qualified name of the class (e.g. with the namespace)
+- **URL:** The page is relative to Mouf's URL
+- **File:** (*deprecated*) The file is relative to the root of the package
 
 There are 2 more parameters that are optional:
 
 - *comment*: This is a simple comment that will be displayed on the Mouf page that lists installation items.
-- *scope*: The scope is either "local" or "global". If an installation is declared "global", the installation has
+- *scope*: The scope is either `local` or `global`. If an installation is declared "global", the installation has
   to be performed once when the package is installed. Then, if you share your code with other people, the install
   process will not need to be run. If the scope is "local", each time someone will install your code, Mouf will
   propose to run the install process again. This is very useful if you have some files that need to be written
   and that depends on the environment, etc...  
 
-A typical install file
-----------------------
+A typical install class
+-----------------------
 
-If you opt for a silent install, we advise you to use the "file" approach. Here is a typical install file:
+If you opt for a silent install, we advise you to use the `class` approach. Here is a typical install class:
 
 ```php
-require_once __DIR__."/../../../autoload.php";
+<?php
+namespace Mouf\Utils\Log\Psr;
 
-use Mouf\Actions\InstallUtils;
+use Mouf\Installer\PackageInstallerInterface;
 use Mouf\MoufManager;
 
-// Let's init Mouf
-InstallUtils::init(InstallUtils::$INIT_APP);
+/**
+ * A logger class that writes messages into the php error_log.
+ */
+class ErrorLogLoggerInstaller implements PackageInstallerInterface {
 
-// Let's create the instance
-$moufManager = MoufManager::getMoufManager();
-if (!$moufManager->instanceExists("errorLogLogger")) {
-	
-	$errorLogLogger = $moufManager->createInstance("Mouf\\Utils\\Log\\ErrorLogLogger");
-	// Let's set a name for this instance (otherwise, it would be anonymous)
-	$errorLogLogger->setName("errorLogLogger");
-	$errorLogLogger->getProperty("level")->setValue(4);
-	/*$moufManager->declareComponent("errorLogLogger", "ErrorLogLogger");
-	$moufManager->setParameter("errorLogLogger", "level", 4);*/
+	/**
+	 * (non-PHPdoc)
+	 * @see \Mouf\Installer\PackageInstallerInterface::install()
+	 */
+	public static function install(MoufManager $moufManager) {
+		if (!$moufManager->instanceExists("psr.errorLogLogger")) {
+			$errorLogLogger = $moufManager->createInstance("Mouf\\Utils\\Log\\Psr\\ErrorLogLogger");
+			
+			// Let's set a name for this instance (otherwise, it would be anonymous)
+			$errorLogLogger->setName("psr.errorLogLogger");
+			$errorLogLogger->getProperty("level")->setValue('warning');
+		}
+		
+		// Let's rewrite the MoufComponents.php file to save the component
+		$moufManager->rewriteMouf();
+	}
 }
-
-// Let's rewrite the MoufComponents.php file to save the component
-$moufManager->rewriteMouf();
-
-// Finally, let's continue the install
-InstallUtils::continueInstall();
 ```
 
-The parts of this code that are specific to install lies in the <b>InstallUtils</b> class.
-
-The <code>InstallUtils::init</code> static method will load Mouf. In the case of an install process, you can load Mouf in 2 different "contexts".
-
-- Using <code>InstallUtils::init(InstallUtils::$INIT_APP);</code>, you can load Mouf in the context of the application that is developed. This is useful if you want to create a new instance in our application. This is what we are doing in the sample.
-- Using <code>InstallUtils::init(InstallUtils::$INIT_ADMIN);</code>, you can load Mouf in the context of the Mouf administration interface. This is useful if you have special actions to perform in the context of the admin (like adding a menu, etc...)
-
-The second important part of this code is the call to <code>InstallUtils::continueInstall()</code> method.
-This call is required to continue the global install process. If you do not call <code>InstallUtils::continueInstall()</code>, the process to enable your package will halt.
+The `install` method will be called by the Mouf's when the user triggers the installation.
+Each `install` method is triggered in its own process, and is run *in the context of the application*.
+This means you can access any classes of the application if required.
 
 A typical dynamic install process
 ---------------------------------
 
 Now, let's have a look at a more complex install process. In this sample, the package will ask the user if he wants to create the "myInstance" instance or not. The user will select the choice using 2 buttons ("yes" or "no").
 
-Internally, Mouf is using the <a href="/package/mvc/splash">Splash MVC framework</a>. Therefore, to interact with the user, we will be writing a <a href="/package_doc/mvc/splash/3.2/writing_controllers.html">Splash controller</a>. Here is the controller:
+Internally, Mouf is using the [Splash MVC framework](http://mouf-php.com/packages/mouf/mvc.splash).
+Therefore, to interact with the user, we will be writing a [Splash controller](http://mouf-php.com/packages/mouf/mvc.splash/doc/writing_controllers_manually.md).
+Here is the controller:
 
 ###controller/MyInstallController.php
 
@@ -272,3 +280,49 @@ It is very useful to display install pages, where you want your user to stay on 
 
 That's it for the dynamic install process. You should now know enough to create your own install processes.
 Do not hesitate to <a href="http://mouf-php.com/packages/mouf/mvc.splash/index.md">learn more about Splash</a> if you want to write complex controllers.
+
+
+A typical install file
+----------------------
+
+<div class="alert">This is a legacy approach and has been superseded by the "class" technique.</div>
+
+If you opt for a silent install, we can use the "file" approach. Here is a typical install file:
+
+```php
+require_once __DIR__."/../../../autoload.php";
+
+use Mouf\Actions\InstallUtils;
+use Mouf\MoufManager;
+
+// Let's init Mouf
+InstallUtils::init(InstallUtils::$INIT_APP);
+
+// Let's create the instance
+$moufManager = MoufManager::getMoufManager();
+if (!$moufManager->instanceExists("errorLogLogger")) {
+	
+	$errorLogLogger = $moufManager->createInstance("Mouf\\Utils\\Log\\ErrorLogLogger");
+	// Let's set a name for this instance (otherwise, it would be anonymous)
+	$errorLogLogger->setName("errorLogLogger");
+	$errorLogLogger->getProperty("level")->setValue(4);
+	/*$moufManager->declareComponent("errorLogLogger", "ErrorLogLogger");
+	$moufManager->setParameter("errorLogLogger", "level", 4);*/
+}
+
+// Let's rewrite the MoufComponents.php file to save the component
+$moufManager->rewriteMouf();
+
+// Finally, let's continue the install
+InstallUtils::continueInstall();
+```
+
+The parts of this code that are specific to install lies in the **InstallUtils** class.
+
+The <code>InstallUtils::init</code> static method will load Mouf. In the case of an install process, you can load Mouf in 2 different "contexts".
+
+- Using <code>InstallUtils::init(InstallUtils::$INIT_APP);</code>, you can load Mouf in the context of the application that is developed. This is useful if you want to create a new instance in our application. This is what we are doing in the sample.
+- Using <code>InstallUtils::init(InstallUtils::$INIT_ADMIN);</code>, you can load Mouf in the context of the Mouf administration interface. This is useful if you have special actions to perform in the context of the admin (like adding a menu, etc...)
+
+The second important part of this code is the call to <code>InstallUtils::continueInstall()</code> method.
+This call is required to continue the global install process. If you do not call <code>InstallUtils::continueInstall()</code>, the process to enable your package will halt.

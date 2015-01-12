@@ -5,7 +5,7 @@ use Mouf\MoufUtils;
 
 /**
  * The proxy server.
- * Executes a passed database method and returns the result.
+ * Executes a passed method of an instance and returns the result.
  * The user must be logged in Mouf to be able to run this script. 
  */
 
@@ -19,10 +19,14 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;
@@ -37,17 +41,25 @@ if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]="json") {
 	$encode = "json";
 }
 
-$instance = $_REQUEST["instance"];
+if (isset($_REQUEST["instance"])) {
+	$instance = $_REQUEST["instance"];
+}
+if (isset($_REQUEST["class"])) {
+	$class = $_REQUEST["class"];
+}
 $method = $_REQUEST["method"];
 $args = $_REQUEST["args"];
 if (get_magic_quotes_gpc()==1)
 {
-	$instance = stripslashes($instance);
+	if (isset($_REQUEST["instance"])) {
+		$instance = stripslashes($instance);
+	}
+	if (isset($_REQUEST["class"])) {
+		$class = stripslashes($class);
+	}
 	$method = stripslashes($method);
 	$args = stripslashes($args);
 }
-
-$instanceObj = MoufManager::getMoufManager()->getInstance($instance);
 
 if ($encode == "php") {
 	$arguments = unserialize($args);
@@ -58,7 +70,12 @@ if ($encode == "php") {
 	exit;
 }
 
-$result = call_user_func_array(array($instanceObj, $method), $arguments);
+if (isset($_REQUEST["instance"])) {
+	$instanceObj = MoufManager::getMoufManager()->getInstance($instance);
+	$result = call_user_func_array(array($instanceObj, $method), $arguments);
+} else {
+	$result = call_user_func_array(array($class, $method), $arguments);
+}
 
 if ($encode == "php") {
 	echo serialize($result);

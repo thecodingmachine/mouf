@@ -110,7 +110,10 @@ class ComposerInstaller {
 		fwrite($fp, " * If you are working with a source repository, this file should NOT be commited.\n");
 		fwrite($fp, " */\n");
 		fwrite($fp, "return ".var_export($localInstalls, true).";");
-		fclose($fp);		
+		fclose($fp);
+
+		@chmod($this->globalInstallFile, 0664);
+		@chmod($this->localInstallFile, 0664);
 	}
 	
 	/**
@@ -137,7 +140,7 @@ class ComposerInstaller {
 			
 			// Let's build the directory
 			$oldumask = umask(0);
-			$success = mkdir($directory, 0777, true);
+			$success = mkdir($directory, 0775, true);
 			umask($oldumask);
 			if (!$success) {
 				throw new MoufException("Unable to create directory ".$directory);
@@ -236,6 +239,11 @@ class ComposerInstaller {
 		} else {
 			throw new MoufException("Unknown type during install process.");
 		}
+		if (isset($installStep['scope'])) {
+			$installer->setScope($installStep['scope']);
+		} else {
+			$installer->setScope(AbstractInstallTask::SCOPE_GLOBAL);
+		}
 		$installer->setPackage($package);
 		if (isset($installStep['description'])) {
 			$installer->setDescription($installStep['description']);
@@ -296,7 +304,7 @@ class ComposerInstaller {
 			}
 		}
 		
-		throw new MoufException("Unable to find install tasking matching array passed in parameter.");
+		throw new MoufException("Unable to find install task in matching array passed in parameter.");
 	}
 	
 	/**

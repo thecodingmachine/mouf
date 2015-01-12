@@ -26,18 +26,40 @@ if (!is_writable(MOUF_DIR) || !is_writable(MOUF_DIR."/../../..") || (file_exists
 			$processUser = posix_getpwuid(posix_geteuid());
 			$processUserName = $processUser['name'];
 		?>
+			<h2>Solution 1 (best solution):</h2>
+		
+			<p>Your current user must be able to access and edit the files,
+but Mouf will also need to access and edit some of those files. Since Mouf is a PHP application,
+it will be executed using the "Apache" user (assuming you are using Apache).</p>
+
+			<p>The name for the Apache user is <strong><?php echo $processUserName; ?></strong></p>
+			
+			<p>The easiest and more portable way of sharing your rights with the Apache user is to be part of the same
+Unix group.</p>
+
+			<p>To do this, you can run:</p>
+
+<pre><code>sudo adduser `whoami` www-data
+sudo adduser www-data `whoami`
+sudo chmod g+w <?php echo realpath(MOUF_DIR."/../../..") ?> -R</code></pre>
+
+<p>This will add your current user to the <strong><?php echo $processUserName; ?></strong> group, and add 
+the <strong><?php echo $processUserName; ?></strong> group to your current user.
+Then it will give write access to the group.</p>
+		
+			<h2>Solution 2:</h2>
+		
 			<p>You can try these commands:</p>
-			<pre>
-			<?php if(!is_writable(MOUF_DIR."/../../..")) {?>
+			<pre><code><?php if(!is_writable(MOUF_DIR."/../../..")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../..") ?><br/>
-			<?php }
+<?php }
 			if(!is_writable(MOUF_DIR)) {?>
-sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR);
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR)."<br/>";
 			}
 			if(file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf")) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../../mouf");
 			} ?>
-</pre>
+</code></pre>
 		<?php 
 		}
 		?>
@@ -52,12 +74,12 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DI
 }
 ?>
 
-<form action="src/install.php" method="post" class="form-horizontal">
+<form action="<?php echo ROOT_URL; ?>install" method="post" class="form-horizontal">
 
 	<p>Apparently, this is the first time you are running Mouf. You will need to install it.</p>
-	<?php if (file_exists(MOUF_DIR."/../../../mouf/MoufUsers.php")): ?>
+	<?php if (file_exists(MOUF_DIR."/../../../mouf/no_commit/MoufUsers.php")): ?>
 		<p>The <code>MoufUsers.php</code> file has been detected. Logins/passwords from this file will be used to access Mouf.
-		If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>		
+		If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>
 	<?php else: ?>
 				<p>In order to connect to Mouf, you will need to create a login and a password.</p>
 
@@ -82,13 +104,9 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DI
 	</div>
 	
 			<?php endif ?>
-	<p>Please click the install button below. This will create and install a <code>.htaccess</code> file in the <code>vendor/mouf/mouf</code> directory.
-	This will also create a <code>config.php</code> file in your root directory and a <code>mouf</code> directory containing a number of files (if they don't already exist)</p>
+	<p>Please click the install button below. This will create and install a <code>config.php</code> file in your root 
+	directory and a <code>mouf</code> directory containing a number of files (if they don't already exist)</p>
 	<p>Please make sure that the root directory is writable by your web-server.</p>
-	<p>Finally, please make sure that the <strong>Apache Rewrite</strong> module is enabled on your server. Since this install process will create a <code>.htaccess</code> file, 
-	you must make sure it will be taken into account. If after clicking the "Install" button, nothing happens, it is likely that your Apache server
-	has been configured to ignore the <code>.htaccess</code> files. In this case, please dive into your Apache configuration and look for a <code>AllowOverride</code> directive.
-	You should set this directive to: <code>AllowOverride All</code>.</p>
 
 	<input type="submit" value="Install" class="btn btn-primary" />
 </form>

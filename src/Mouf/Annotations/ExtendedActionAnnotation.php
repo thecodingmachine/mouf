@@ -10,9 +10,11 @@
 namespace Mouf\Annotations;
 
 
+use Mouf\MoufException;
+
 /**
  * The @ExtendedAction annotation.
- * This annotation is used in @Components classes to provide additional screens to configure the component.
+ * This annotation is used in classes to provide additional screens to configure the component.
  * 
  * The ExtendedAction annotation takes a JSON array in attribute in this form: @ExtendedAction {"name":"Edit", "url":"mouf/mysqlconnectionedit", "default":true}
  * 

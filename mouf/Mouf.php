@@ -24,6 +24,13 @@ if (file_exists(__DIR__ . '/../../../composer/autoload_namespaces.php')) {
 	}
 }
 
+if (file_exists(__DIR__ . '/../../../composer/autoload_psr4.php')) {
+	$map = require __DIR__ . '/../../../composer/autoload_psr4.php';
+	foreach ($map as $namespace => $path) {
+		$loader->addPsr4($namespace, $path);
+	}
+}
+
 if (file_exists(__DIR__ . '/../../../composer/autoload_classmap.php')) {
 	$classMap = require __DIR__ . '/../../../composer/autoload_classmap.php';
 	if ($classMap) {
@@ -50,9 +57,9 @@ require_once 'MoufComponents.php';
 
 define('ROOT_PATH', realpath(__DIR__."/..").DIRECTORY_SEPARATOR);
 
-if (file_exists(__DIR__.'/../config.php')) {
+/*if (file_exists(__DIR__.'/../config.php')) {
 	require_once __DIR__.'/../config.php';
-}
+}*/
 
 define('MOUF_URL', ROOT_URL);
 

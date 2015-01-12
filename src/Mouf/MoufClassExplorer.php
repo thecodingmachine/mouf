@@ -62,7 +62,16 @@ class MoufClassExplorer {
 			return;
 		}
 		
+		if (defined('PROFILE_MOUF') && constant('PROFILE_MOUF') == true) {
+			error_log("PROFILING: MoufClassExplorer::analyze : Start : ".date('H:i:s', time()));
+		}
+		
 		$classMap = MoufReflectionProxy::getClassMap($this->selfEdit);
+
+		if (defined('PROFILE_MOUF') && constant('PROFILE_MOUF') == true) {
+			error_log("PROFILING: MoufClassExplorer::analyze : finished MoufReflectionProxy::getClassMap: ".date('H:i:s', time()));
+		}
+		
 		
 		do {
 			$notYetAnalysedClassMap = $classMap;
@@ -136,6 +145,10 @@ class MoufClassExplorer {
 			$this->cacheService->set("forbidden.classes.".__DIR__."/".json_encode($this->selfEdit), $this->forbiddenClasses, 30*60);
 		}
 		
+		if (defined('PROFILE_MOUF') && constant('PROFILE_MOUF') == true) {
+			error_log("PROFILING: MoufClassExplorer::analyze : finished analyze: ".date('H:i:s', time()));
+		}
+		
 		$this->dataAvailable = true;
 	}
 	
@@ -168,7 +181,7 @@ class MoufClassExplorer {
 		if ($this->classMap) {
 			return $this->classMap;
 		}
-		
+
 		if ($this->useCache) {
 			// Cache duration: 30 minutes.
 			$this->classMap = $this->cacheService->get("mouf.classMap.".__DIR__."/".json_encode($this->selfEdit));

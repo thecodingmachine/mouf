@@ -124,6 +124,7 @@ class MoufUtils {
 	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
 	 * ]
 	 * 
+	 * @deprecated Use ClassNameMapper instead
 	 * @return array<int, array<string, string>>
 	 */
 	public static function getAutoloadNamespaces() {
@@ -141,6 +142,39 @@ class MoufUtils {
 		} else {
 			return self::unfactorizeAutoload($autoload);
 		}		
+	}
+	
+	/**
+	 * Returns the list of all autoloaded namespaces:
+	 * 
+	 * [
+	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
+	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
+	 * ]
+	 * 
+	 * @deprecated Use ClassNameMapper instead
+	 * @return array<int, array<string, string>>
+	 */
+	public static function getAutoloadNamespaces2() {
+		$composer = json_decode(file_get_contents(__DIR__."/../../../../../composer.json"), true);
+		
+		$psr = isset($composer["autoload"]["psr-0"]) ? "0" : (isset($composer["autoload"]["psr-4"]) ? "4" : null);
+		if ($psr !== null) {
+			$autoload = $composer["autoload"]["psr-$psr"];
+		}
+		else {
+			return null;
+		}
+		
+		if (self::isAssoc($autoload)) {
+			$ret = self::unfactorizeAutoload(array($autoload));
+		} else {
+			$ret = self::unfactorizeAutoload($autoload);
+		}
+		
+		$ret['psr'] = $psr;
+		
+		return $ret;
 	}
 	
 	/**

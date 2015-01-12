@@ -10,7 +10,7 @@
 namespace Mouf;
 
 /**
- * This object represent an Mouf property of some instance, declared in the Mouf framework.
+ * This object represent a Mouf property of some instance, declared in the Mouf framework.
  * TODO: split this class in 3 subclasses (and do not forget to migrate the unit tests)
  * 
  * @author David Negrier
@@ -43,14 +43,19 @@ class MoufInstancePropertyDescriptor {
 	 */
 	private $propertyDescriptor;
 	
+	private $orphanType;
+	
 	/**
 	 * The constructor should exclusively be used by MoufContainer.
 	 * Use MoufContainer::getInstanceDescriptor and MoufContainer::createInstance to get instances of this class.
 	 *
 	 * @param MoufContainer $moufContainer
-	 * @param string $name
+	 * @param MoufInstanceDescriptor $instanceDescriptor
+	 * @param MoufPropertyDescriptor $propertyDescriptor Note: this can be null if the property is "orphan".
+	 * @param string $orphanType If this property is orphan, this is the type of the property: "publicproperty", "setter" or "constructorargument".
+	 * @param string $orphanName If this property is orphan, this is the name of the property
 	 */
-	public function __construct(MoufContainer $moufContainer, MoufInstanceDescriptor $instanceDescriptor, MoufPropertyDescriptor $propertyDescriptor) {
+	public function __construct(MoufContainer $moufContainer, MoufInstanceDescriptor $instanceDescriptor, MoufPropertyDescriptor $propertyDescriptor = null, $orphanType = null, $orphanName = null) {
 		$this->moufContainer = $moufContainer;
 		$this->instanceDescriptor = $instanceDescriptor;
 		
@@ -67,10 +72,15 @@ class MoufInstancePropertyDescriptor {
 			$name = $setterName;
 		}*/
 
-		if ($propertyDescriptor->isSetterProperty()) {
-			$this->name = $propertyDescriptor->getMethodName();
+		if ($propertyDescriptor) {
+			if ($propertyDescriptor->isSetterProperty()) {
+				$this->name = $propertyDescriptor->getMethodName();
+			} else {
+				$this->name = $propertyDescriptor->getName();
+			}
 		} else {
-			$this->name = $propertyDescriptor->getName();
+			$this->orphanType = $orphanType;
+			$this->name = $orphanName;
 		}
 		
 		$this->propertyDescriptor = $propertyDescriptor;
@@ -131,7 +141,6 @@ class MoufInstancePropertyDescriptor {
 	private function toMoufContainerArray($value, &$isInstance, &$isValue) {
 		if ($value === null) {
 			$toStore = null;
-			$isValue = true;
 		} elseif ($value instanceof MoufInstanceDescriptor) {
 			$toStore = $value->getIdentifierName();
 			$isInstance = true;
@@ -277,6 +286,18 @@ class MoufInstancePropertyDescriptor {
 	 * @return boolean
 	 */
 	public function unsetValue() {
+		if ($this->isOrphan()) {
+			if ($this->orphanType == "publicproperty") {
+				return $this->moufManager->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			} elseif ($this->orphanType == "setter") {
+				return $this->moufManager->unsetParameterForSetter($this->instanceDescriptor->getIdentifierName(), $this->name);
+			} elseif ($this->orphanType == "constructorargument") {
+				return $this->moufManager->unsetParameterForConstructor($this->instanceDescriptor->getIdentifierName(), $this->name);
+			} else {
+				throw new MoufException("Unsupported orphan type: it is not a public field nor a setter nor a constructor...");
+			}
+		}
+		
 		if ($this->propertyDescriptor->isPublicFieldProperty()) {
 			return $this->moufContainer->unsetParameter($this->instanceDescriptor->getIdentifierName(), $this->name);
 		} elseif ($this->propertyDescriptor->isSetterProperty()) {
@@ -296,7 +317,7 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function setMetaData($array) {
 		// TODO!
-		throw new Exception("Not implemented yet");
+		throw new \Exception("Not implemented yet");
 	}
 	
 	/**
@@ -318,7 +339,7 @@ class MoufInstancePropertyDescriptor {
 	
 	/**
 	 * Sets the parameter "origin" (where the value that feeds the parameter comes from).
-	 * Can be one of "string|config|request|session"
+	 * Can be one of "string|config|request|session|php"
 	 *
 	 * @param string $origin
 	 * @throws MoufException
@@ -367,6 +388,17 @@ class MoufInstancePropertyDescriptor {
 	 */
 	public function getPropertyDescriptor() {
 		return $this->propertyDescriptor;
+	}
+	
+	/**
+	 * Returns "true" if the instance property is "orphan".
+	 * A property is orphan if it points to a public property / setter / constructor argument that
+	 * no longer exists.
+	 * 
+	 * @return boolean
+	 */
+	public function isOrphan() {
+		return $this->orphanType != null;
 	}
 	
 	/**

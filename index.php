@@ -12,6 +12,6 @@ define('ROOT_URL', $_SERVER["REQUEST_URI"]);
 
 require_once __DIR__.'/mouf/Mouf.php';
 
-MoufAdmin::getMoufInstallController()->index();
+MoufAdmin::getMoufInstallController()->htaccessNotDetected();
 exit;
 ?>

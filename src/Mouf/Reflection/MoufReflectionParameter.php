@@ -2,7 +2,7 @@
 /*
  * This file is part of the Mouf core package.
  *
- * (c) 2012 David Negrier <david@mouf-php.com>
+ * (c) 2012-2013 David Negrier <david@mouf-php.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -28,7 +28,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     /**
      * reflection instance of routine containing this parameter
      *
-     * @var  stubReflectionRoutine
+     * @var  MoufReflectionMethod
      */
     protected $refRoutine;
     /**
@@ -43,12 +43,16 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
      *
      * @param  string|array|MoufReflectionMethod  $routine    name or reflection instance of routine
      * @param  string                              $paramName  name of parameter to reflect
+     * @param MoufReflectionClass $reflectionClass
      */
-    public function __construct($routine, $paramName)
+    public function __construct($routine, $paramName, MoufReflectionClass $reflectionClass)
     {
         if ($routine instanceof MoufReflectionMethod) {
             $this->refRoutine  = $routine;
-            $this->routineName = array($routine->getDeclaringClass()->getName(), $routine->getName());
+           	// Note: we cannot infer the name of the class from $routine->getDeclaringClass()->getName()
+           	// Indeed, the name of the method can change depending on the class (if the class is a trait
+           	// and the method is renamed in the class using the trait).
+           	$this->routineName = array($reflectionClass->getName(), $routine->getName());
         } /*elseif ($routine instanceof MoufReflectionFunction) {
             $this->refRoutine  = $routine;
             $this->routineName = $routine->getName();
@@ -179,12 +183,19 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     	$result = array();
     	$result['name'] = $this->getName();
     	$result['hasDefault'] = $this->isDefaultValueAvailable();
-    	if ($result['hasDefault']) {
-    		$result['default'] = $this->getDefaultValue();
-    	}
-    	$result['isArray'] = $this->isArray();
-    
     	try {
+    		if ($result['hasDefault']) {
+    			// In some cases, the call to getDefaultValue can log NOTICES
+    			// in particular if an undefined constant is used as default value.
+    			ob_start();
+    			$result['default'] = $this->getDefaultValue();
+    			$possibleError = ob_get_clean();
+    			if ($possibleError) {
+    				throw new \Exception($possibleError);
+    			}
+    		}
+    		$result['isArray'] = $this->isArray();
+    		
     		// Let's export only the type if we are in a constructor... in order to save time.
     		if ($this->getDeclaringFunction()->isConstructor()) {
     			// TODO: is there a need to instanciate a  MoufPropertyDescriptor?

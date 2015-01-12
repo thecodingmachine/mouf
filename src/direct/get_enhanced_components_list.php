@@ -28,8 +28,12 @@ while (ob_get_level() != 0) {
 }
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	/*require_once '../MoufManager.php';
 	MoufManager::initMoufManager();

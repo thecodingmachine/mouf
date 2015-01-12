@@ -19,6 +19,129 @@ $moufManager->setAllVariables(array (
 ));
 
 $moufManager->addComponentInstances(array (
+		'packageRenderer_mouf/security.simplelogincontroller' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\FileBasedRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'vendor/mouf/security.simplelogincontroller/src/templates',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						1 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						2 =>
+						array (
+								'value' => 'package',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						3 =>
+						array (
+								'value' => 0,
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		
+		
+		
+		
+		'rendererCacheService' =>
+		array (
+				'class' => 'Mouf\\Utils\\Cache\\InMemoryCache',
+				'external' => false,
+				'weak' => false,
+				'fieldBinds' =>
+				array (
+						'chainWith' => 'apcCacheService',
+				),
+		),
+		'defaultRenderer' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\AutoChainRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		'bootstrapRenderer' =>
+		array (
+				'class' => 'Mouf\\Html\\Renderer\\FileBasedRenderer',
+				'external' => false,
+				'weak' => false,
+				'constructor' =>
+				array (
+						0 =>
+						array (
+								'value' => 'vendor/mouf/html.template.bootstrap/src/templates',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						1 =>
+						array (
+								'value' => 'rendererCacheService',
+								'parametertype' => 'object',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						2 =>
+						array (
+								'value' => 'template',
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						3 =>
+						array (
+								'value' => 0,
+								'parametertype' => 'primitive',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
+		
   '__anonymous_1351271275513' => 
   array (
     'class' => 'Mouf\\Html\\Template\\Menus\\BootstrapMenuRenderer',
@@ -262,12 +385,6 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'weak' => false,
   ),
-  'bootstrapMessageRenderer' => 
-  array (
-    'class' => 'Mouf\\Html\\Template\\Messages\\BootstrapMessageRenderer',
-    'external' => false,
-    'weak' => false,
-  ),
   'config' => 
   array (
     'class' => 'Mouf\\Controllers\\ConfigController',
@@ -411,6 +528,104 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+		'createNewInstanceByPhpCodeMenuItem' =>
+		array (
+				'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
+				'external' => false,
+				'setterProperties' =>
+				array (
+						'setLabel' =>
+						array (
+								'value' => 'Create a new instance by PHP code',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setUrl' =>
+						array (
+								'value' => 'mouf/newInstanceByCallback',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsActive' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsExtended' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssClass' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPriority' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPropagatedUrlParameters' =>
+						array (
+								'value' =>
+								array (
+										0 => 'selfedit',
+								),
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setActivateBasedOnUrl' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+				'setterBinds' =>
+				array (
+						'setAdditionalStyles' =>
+						array (
+								0 => 'createNewInstanceByPhpCodeMenuItemIcon',
+						),
+				),
+		),
+		'createNewInstanceByPhpCodeMenuItemIcon' =>
+		array (
+				'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
+				'external' => false,
+				'setterProperties' =>
+				array (
+						'setUrl' =>
+						array (
+								'value' => 'src-dev/views/images/page_white_php.png',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
   'css.moufCssStyles' => 
   array (
     'class' => 'Mouf\\Html\\Utils\\WebLibraryManager\\WebLibrary',
@@ -600,85 +815,6 @@ $moufManager->addComponentInstances(array (
     'fieldBinds' => 
     array (
       'menu' => 'documentationMenu',
-    ),
-  ),
-  'documentationSubMenu' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterBinds' => 
-    array (
-      'setChildren' => 
-      array (
-        0 => 'viewDocumentationMenuItem',
-      ),
-    ),
-    'setterProperties' => 
-    array (
-      'setLabel' => 
-      array (
-        'value' => 'Documentation',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setUrl' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => true,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '90',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
     ),
   ),
   'downloadPackages2MenuItem' => 
@@ -1089,16 +1225,6 @@ $moufManager->addComponentInstances(array (
       'contentBlock' => 'block.content',
     ),
   ),
-  'instance' => 
-  array (
-    'class' => 'Mouf\\Controllers\\MoufInstanceController',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'template' => 'moufTemplate',
-      'contentBlock' => 'block.content',
-    ),
-  ),
   'instanceMenu' => 
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\Menu',
@@ -1123,6 +1249,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'viewDeclaredInstancesMenuItem',
         1 => 'createNewInstanceMenuItem',
+      	2 => 'createNewInstanceByPhpCodeMenuItem',
       ),
     ),
     'setterProperties' => 
@@ -1169,7 +1296,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '30',
+        'value' => '20',
         'type' => 'string',
         'metadata' => 
         array (
@@ -1196,7 +1323,7 @@ $moufManager->addComponentInstances(array (
       array (
         'value' => 
         array (
-          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.9.1.min.js',
+          0 => 'vendor/mouf/javascript.jquery.jquery/jquery-1.11.0.min.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1416,6 +1543,7 @@ $moufManager->addComponentInstances(array (
           4 => 'src-dev/views/instances/moufui.js',
           5 => 'src-dev/views/instances/saveManager.js',
           6 => 'src-dev/views/instances/jquery.scrollintoview.js',
+          7 => 'src-dev/views/instances/codeValidator.js',
         ),
         'type' => 'string',
         'metadata' => 
@@ -1567,6 +1695,11 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'simpleloginview' => 
+  array (
+    'class' => 'Mouf\\Security\\Views\\SimpleLoginView',
+    'external' => false,
+  ),
   'login' => 
   array (
     'class' => 'Mouf\\Controllers\\MoufLoginController',
@@ -1580,6 +1713,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'loginWelcomeMessage',
       ),
+    		'simpleLoginView' => 'simpleloginview'
     ),
     'fieldProperties' => 
     array (
@@ -1790,7 +1924,7 @@ $moufManager->addComponentInstances(array (
       array (
         0 => 'projectSubMenu',
         1 => 'instancesSubMenu',
-        2 => 'packagesSubMenu',
+      	2 => 'documentationSubMenu'
       ),
     ),
   ),
@@ -1836,7 +1970,6 @@ $moufManager->addComponentInstances(array (
     'fieldBinds' => 
     array (
       'messageProvider' => 'userMessageService',
-      'messageRenderer' => 'bootstrapMessageRenderer',
     ),
   ),
   'miscellaneousSubMenu' => 
@@ -1945,6 +2078,8 @@ $moufManager->addComponentInstances(array (
       'setRight' => 'block.right',
       'setContent' => 'block.content',
       'setWebLibraryManager' => 'defaultWebLibraryManager',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
@@ -2019,6 +2154,8 @@ $moufManager->addComponentInstances(array (
       'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
@@ -2202,6 +2339,8 @@ $moufManager->addComponentInstances(array (
       'setLeft' => 'block.left',
       'setRight' => 'block.right',
       'setContent' => 'block.content',
+    		'setTemplateRenderer' => 'bootstrapRenderer',
+    		'setDefaultRenderer' => 'defaultRenderer',
     ),
     'fieldProperties' => 
     array (
@@ -2418,100 +2557,6 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'packagesSubMenu' => 
-  array (
-    'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItem',
-    'external' => false,
-    'setterBinds' => 
-    array (
-    ),
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsActive' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setIsExtended' => 
-      array (
-        'value' => true,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setCssClass' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPriority' => 
-      array (
-        'value' => '10',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-    'constructor' => 
-    array (
-      0 => 
-      array (
-        'value' => 'Packages',
-        'parametertype' => 'primitive',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      1 => 
-      array (
-        'value' => NULL,
-        'parametertype' => 'primitive',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      2 => 
-      array (
-        'value' => 
-        array (
-          0 => 'downloadPackages2MenuItem',
-          1 => 'installTasksMenuItem',
-          2 => 'viewDocumentationMenuItem',
-        ),
-        'parametertype' => 'object',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
   'phpInfo' => 
   array (
     'class' => 'Mouf\\Controllers\\PhpInfoController',
@@ -2598,9 +2643,10 @@ $moufManager->addComponentInstances(array (
       'setChildren' => 
       array (
         0 => 'editConfigurationMenuItem',
-        1 => 'analyzeClassesMenuItem',
-        2 => 'moufStatus2MenuItem',
-        3 => 'displayPhpInfoMenuItem',
+      	1 => 'installTasksMenuItem',
+        2 => 'analyzeClassesMenuItem',
+        3 => 'moufStatus2MenuItem',
+        4 => 'displayPhpInfoMenuItem',
       ),
     ),
     'setterProperties' => 
@@ -2683,41 +2729,6 @@ $moufManager->addComponentInstances(array (
         'type' => 'string',
         'value' => 'src-dev/views/codeCacheButton.php',
         'parametertype' => 'primitive',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
-  'requiredFilesValidator' => 
-  array (
-    'class' => 'Mouf\\Validator\\MoufBasicValidationProvider',
-    'external' => false,
-    'fieldProperties' => 
-    array (
-      'name' => 
-      array (
-        'value' => 'Required files validator',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'url' => 
-      array (
-        'value' => 'src/direct/required_files_validator.php',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'propagatedUrlParameters' => 
-      array (
-        'value' => 
-        array (
-          0 => 'selfedit',
-        ),
-        'type' => 'string',
         'metadata' => 
         array (
         ),
@@ -2898,7 +2909,7 @@ $moufManager->addComponentInstances(array (
     array (
       'userFile' => 
       array (
-        'value' => '../../../mouf/MoufUsers.php',
+        'value' => '../../../mouf/no_commit/MoufUsers.php',
         'type' => 'string',
         'metadata' => 
         array (
@@ -3082,7 +3093,7 @@ $moufManager->addComponentInstances(array (
     array (
       'setLabel' => 
       array (
-        'value' => 'View packages documentation',
+        'value' => 'View all documentation',
         'type' => 'string',
         'metadata' => 
         array (
@@ -3122,7 +3133,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '',
+        'value' => '90',
         'type' => 'string',
         'metadata' => 
         array (
@@ -3202,6 +3213,70 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+  'documentationSubMenu' =>
+		array (
+				'class' => 'Mouf\\Menu\\DocumentationMenuItem',
+				'external' => false,
+				'weak' => false,
+				'setterBinds' =>
+				array (
+						'setChildren' =>
+						array (
+								0 => 'viewDocumentationMenuItem',
+						),
+				),
+				'setterProperties' =>
+				array (
+						'setUrl' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsActive' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setIsExtended' =>
+						array (
+								'value' => true,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setCssClass' =>
+						array (
+								'value' => '',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPriority' =>
+						array (
+								'value' => '999',
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+						'setPropagatedUrlParameters' =>
+						array (
+								'value' => false,
+								'type' => 'string',
+								'metadata' =>
+								array (
+								),
+						),
+				),
+		),
 ));
 
 

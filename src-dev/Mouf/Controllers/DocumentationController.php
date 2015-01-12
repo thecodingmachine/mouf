@@ -10,19 +10,18 @@
 namespace Mouf\Controllers;
 
 use Michelf\MarkdownExtra;
-
-use dflydev\markdown\MarkdownExtraParser;
+use Composer\Package\PackageInterface;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\Widgets\Menu\MenuItem;
 use Mouf\Composer\ComposerService;
-use Mouf\Composer\PackageInterface;
 use MoufAdmin;
 use Mouf\MoufManager;
 use Mouf\Html\HtmlElement\HtmlBlock;
-
 use Mouf\MoufDocumentationPageDescriptor;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Html\Utils\WebLibraryManager\WebLibrary;
+use Mouf\DocumentationUtils;
 
 /**
  * The controller displaying the documentation related to packages.
@@ -86,6 +85,7 @@ class DocumentationController extends Controller {
 	protected $package;
 	
 	protected $rootPath;
+	
 	
 	/**
 	 * Displays the list of doc files from the packages
@@ -180,6 +180,37 @@ class DocumentationController extends Controller {
 			return;
 		}
 		
+		if (is_dir($filename)) {
+			// This is not a file but a directory.
+			// Let's look for a README in it.
+		
+			$dir = rtrim($filename, '/\\');
+			$root_url = ROOT_URL . rtrim($tailing_url, '/\\');
+		
+			// Let's try to find a README
+			foreach ( DocumentationUtils::$readMeFiles as $readme ) {
+				if (file_exists ( $dir . DIRECTORY_SEPARATOR . $readme )) {
+					header ( 'Location: ' . $root_url . '/' . $readme );
+					return;
+				}
+			}
+			// If no readme found, let's go on a 404.
+			//$this->addMenu ( $parsedComposerJson, $targetDir, $rootUrl, $packageVersion );
+			/*if ($path) {
+				MoufAdmin::getSplash()->print404("Sorry, this project does not seem to have documentation");
+				//$this->http404Handler->pageNotFound ( "Sorry, this project does not seem to have documentation" );
+				return;
+			} else {*/
+				$this->contentBlock->addText ( "<h4>" . $this->package->getName() . "</h4>" );
+				if ($this->package->getDescription()) {
+					$this->contentBlock->addText ( "<p>" . htmlentities ( $this->package->getDescription(), ENT_QUOTES, 'UTF-8' ) . "</p>" );
+				}
+				$this->contentBlock->addText ( '<div class="alert">Sorry, this project does not seem to have any documentation. Please bang the head of the developers until a proper README is added to this package!</div>' );
+				$this->template->toHtml ();
+				return;
+			//}
+		}
+		
 		$this->contentBlock->addText(
 				"
 				<script>
@@ -190,8 +221,8 @@ class DocumentationController extends Controller {
 				"
 		);
 
-
 		if (strripos($filename, ".html") !== false || strripos($filename, ".md") !== false || strripos($filename, "README") !== false) {
+			$previousNextButtonsHtml = $this->getPreviousNextButtons($docPath, $this->package, ROOT_URL.'doc/view/'.$groupName.'/'.$packageName.'/');
 			$this->addMenu();
 			
 			$fileStr = file_get_contents($filename);
@@ -206,6 +237,8 @@ class DocumentationController extends Controller {
 				
 				// Let's parse and transform markdown format in HTML
 				$fileStr = $markdownParser->transform($fileStr);
+				
+				$fileStr = $previousNextButtonsHtml.$fileStr.$previousNextButtonsHtml;
 				
 				$this->contentBlock->addText('<div class="staticwebsite">'.$fileStr.'</div>');
 				$this->template->toHtml();
@@ -224,6 +257,8 @@ class DocumentationController extends Controller {
 						return '<div class="staticwebsite">'.$partBody.'</div>';
 					}
 					$body = substr($partBody, 0, $bodyEndTag);
+					
+					$body = $previousNextButtonsHtml.$body.$previousNextButtonsHtml;
 		
 					$this->contentBlock->addText('<div class="staticwebsite">'.$body.'</div>');
 					$this->template->toHtml();
@@ -260,7 +295,7 @@ class DocumentationController extends Controller {
 		$docPages = $this->getDocPages($this->package);
 		
 		$documentationMenuMainItem = new MenuItem("Documentation for ".$this->package->getPrettyName());
-		$this->fillMenu($documentationMenuMainItem, $docPages);
+		DocumentationUtils::fillMenu($documentationMenuMainItem, $docPages, $this->package->getName());
 		$this->documentationMenu->addChild($documentationMenuMainItem);
 	}
 	
@@ -283,69 +318,14 @@ class DocumentationController extends Controller {
 	 *  
 	 * @param \Composer\Package\PackageInterface $package
 	 */
-	protected function getDocPages(\Composer\Package\PackageInterface $package) {
+	protected function getDocPages(PackageInterface $package) {
 		$extra = $package->getExtra();
 		
-		$docArray = array();
-		
-		// Let's find if there is a README file.
 		$packagePath = $this->rootPath."vendor/".$package->getName()."/";
-		if (file_exists($packagePath."index.md")) {
-			$docArray[] = array("title"=> "Start page",
-						"url"=>"index.md"
-			);
-		}
-		if (file_exists($packagePath."README")) {
-			$docArray[] = array("title"=> "Read me",
-						"url"=>"README"
-			);
-		}
-		if (file_exists($packagePath."README.md")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.md"
-			);
-		}
-		if (file_exists($packagePath."README.html")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.html"
-			);
-		}
-		if (file_exists($packagePath."README.txt")) {
-			$docArray[] = array("title"=> "Read me",
-					"url"=>"README.txt"
-			);
-		}
 		
-		if (isset($extra['mouf']['doc']) && is_array($extra['mouf']['doc'])) {
-			$docArray = array_merge($docArray, $extra['mouf']['doc']);
-		}
-		return $docArray;
+		return DocumentationUtils::getDocPages($extra, $packagePath);
 	}
 	
-	
-	
-	private function fillMenu($menu, array $docPages) {
-		$children = array();
-		foreach ($docPages as $docPage) {
-			/* @var $docPage MoufDocumentationPageDescriptor */
-			
-			if (!isset($docPage['title'])) {
-				continue;
-			}
-			
-			$menuItem = new MenuItem();
-			$menuItem->setLabel($docPage['title']);
-			if (isset($docPage['url'])) {
-				$menuItem->setUrl(ROOT_URL."doc/view/".$this->package->getName()."/".$docPage['url']);
-			}
-			$children[] = $menuItem;
-			
-			if (isset($docPage['children'])) {
-				$this->fillMenu($menuItem, $docPage['children']);
-			}
-		}
-		$menu->setChildren($children);
-	}
 
 	protected function getLink(MoufDocumentationPageDescriptor $documentationPageDescriptor) {
 		$link = $documentationPageDescriptor->getURL();
@@ -367,7 +347,7 @@ class DocumentationController extends Controller {
 	 */
 	public function displayDocDirectory($docPages, $packageName) {
 		?>
-		<ul>
+<ul>
 		<?php 
 		foreach ($docPages as $docPage):
 			$url = $docPage['url'];
@@ -391,7 +371,42 @@ class DocumentationController extends Controller {
 		endforeach;
 		?>
 		</ul>
-		<?php
+<?php
+	}
+	
+	private function getPreviousNextButtons($path, $package, $rootUrl) {
+		$extra = $package->getExtra();
+		if (isset($extra['mouf']['doc'])) {
+			// TODO: suboptimal, getDocPages is called twice. We should pass $docPages directly in parameter.
+			$docPages = $this->getDocPages($package);
+				
+			// Let's flatten the doc array (to find previous and next in children or parents.
+			$flatDocArray = $this->flattenDocArray($docPages);
+			for ($i = 0; $i<count($flatDocArray); $i++) {
+				if ($flatDocArray[$i]['url'] == $path) {
+					$html = '<div>';
+					if ($i > 0) {
+						$html .= '<a href="'.$rootUrl.$flatDocArray[$i-1]['url'].'" class="btn btn-mini"><i class="icon-chevron-left"></i> '.$flatDocArray[$i-1]['title'].'</a>';
+					}
+					if ($i < count($flatDocArray) - 1) {
+						$html .= '<a href="'.$rootUrl.$flatDocArray[$i+1]['url'].'" class="btn btn-mini pull-right">'.$flatDocArray[$i+1]['title'].' <i class="icon-chevron-right"></i></a>';
+					}
+					$html .= '</div>';
+					return $html;
+				}
+			}
+		}
+		return "";
+	}
+	
+	private function flattenDocArray(array $docArray) {
+		$docs = array();
+		foreach ($docArray as $doc) {
+			$docs[] = $doc;
+			if (isset($doc['children']))
+				$docs = array_merge($docs, $this->flattenDocArray($doc['children']));
+		}
+		return $docs;
 	}
 	
 }

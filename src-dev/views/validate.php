@@ -54,7 +54,11 @@ ValidatorMessages = {
 		ValidatorsCounter.incrementSuccess();
 		container.html("<div class='alert alert-success validatorSuccess'>"+text+"</div>");
 		if (ValidatorMessages.displayMode != "all") {
-			container.hide();
+			container.find('div.validatorSuccess').hide();
+		} else {
+			setTimeout(function() {
+				container.find('div.validatorSuccess').slideUp(1000);
+			}, 2000);
 		}
 		return container;
 	},
@@ -150,6 +154,10 @@ $(document).ready(function() {
 	.fail(
 			function(jqXHR, textStatus, e) {
 				var msg = "Status code: " + textStatus + " - " + e;
+				if (jqXHR.status == 0) {
+					console.log("Ajax request probably interrupted by page change: "+msg);
+					return;
+				}
                                 
 				//addMessage("<pre>"+msg+"</pre>", "error");
                                 $("#loadingValidatorsIndicator").removeClass('loading').addClass('alert alert-error').text("An error occured while loading validators for classes and instances : "+msg);

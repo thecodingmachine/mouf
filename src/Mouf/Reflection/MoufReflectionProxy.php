@@ -203,11 +203,58 @@ class MoufReflectionProxy {
 		$obj = @unserialize($response);
 		
 		if ($obj === false) {
-			echo $response;
+			//echo $response;
 			throw new Exception("Unable to unserialize message:\n".$response."\n<br/>URL in error: <a href='".\htmlspecialchars($url)."'>".\htmlspecialchars($url)."</a>");
 		}
 		
 		return $obj;
+	}
+	
+	/**
+	 * Returns the "return" fully qualified class name from the code passed in parameter.
+	 * 
+	 * @param string $code
+	 * @param bool $selfEdit
+	 * @throws Exception
+	 * @return string
+	 */
+	public static function getReturnTypeFromCode($code, $selfEdit) {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/return_type_from_code.php";
+
+	
+		$response = self::performRequest($url,
+		[
+			"selfedit"=>($selfEdit)?"true":"false",
+			"code" => $code
+		]);
+	
+		$obj = @unserialize($response);
+	
+		if ($obj === false) {
+			throw new Exception($response);
+		}
+	
+		return $obj["data"]["class"];
+	}
+	
+	/**
+	 * Checks if the CURL connection does work or not.
+	 * In the case we are trying to access a remote server, if the server does not know its own hostname,
+	 * the request will fail. This can happen if the DNS has been configured in the /etc/hosts file
+	 * of the client and not on the server. 
+	 * 
+	 * @return bool
+	 */
+	public static function checkConnection() {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/test_connection.php";
+	
+		$response = self::performRequest($url);
+		
+		if ($response == 'ok') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	
@@ -226,7 +273,7 @@ class MoufReflectionProxy {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		if($post) {
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post, '', '&'));
 		} else {
 			curl_setopt($ch, CURLOPT_POST, false);
 		}
@@ -301,7 +348,11 @@ class MoufReflectionProxy {
 	}
 	
 	public static function getLocalUrlToProject(){
-		if (isset($_SERVER['HTTPS'])) {
+		// Let's try to detect the HTTPS protocol.
+		// It can be tricky because $_SERVER['HTTPS'] is not always set.
+		// (see: http://stackoverflow.com/questions/452375/detecting-https-requests-in-php )
+		if (isset($_SERVER['HTTPS']) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+ 				$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') || $_SERVER['SERVER_PORT'] == 443) {
 			$url = "https://".$_SERVER['SERVER_NAME'].MOUF_URL;
 		} else {
 			$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].MOUF_URL;

@@ -1,7 +1,7 @@
 <?php 
 namespace Mouf\Composer;
 
-use Composer\Script\EventDispatcher;
+use Composer\EventDispatcher\EventDispatcher;
 
 use Mouf\Installer\MoufUIFileWritter;
 
@@ -105,6 +105,7 @@ class ComposerService {
 		$vendorPath = strtr(realpath($config->get('vendor-dir')), '\\', '/');
 		$targetDir = $vendorPath.'/'.$targetDir;
 		$filesystem->ensureDirectoryExists($targetDir);
+		$basePath = $filesystem->normalizePath(realpath(getcwd()));
 		$relVendorPath = $filesystem->findShortestPath(getcwd(), $vendorPath, true);
 		//$vendorPathCode = $filesystem->findShortestPathCode(realpath($targetDir), $vendorPath, true);
 		//$vendorPathToTargetDirCode = $filesystem->findShortestPathCode($vendorPath, realpath($targetDir), true);
@@ -113,38 +114,48 @@ class ComposerService {
 		// flatten array
 		$classMap = array();
 		
-		foreach ($autoloads['psr-0'] as $namespace => $paths) {
-			foreach ($paths as $dir) {
-				$dir = $this->getPath($filesystem, $relVendorPath, $vendorPath, $dir);
-				$whitelist = sprintf(
-						'{%s/%s.+(?<!(?<!/)Test\.php)$}',
-						preg_quote(rtrim($dir, '/')),
-						strpos($namespace, '_') === false ? preg_quote(strtr($namespace, '\\', '/')) : ''
-				);
-				if (!is_dir($dir)) {
-					continue;
-				}
-				foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
-					if ('' === $namespace || 0 === strpos($class, $namespace)) {
-						$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
-						if (!isset($classMap[$class])) {
-							//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
-							$classMap[$class] = $path;
+		
+		
+		// Scan the PSR-0/4 directories for class files, and add them to the class map
+		foreach (array('psr-0', 'psr-4') as $psrType) {
+			foreach ($autoloads[$psrType] as $namespace => $paths) {
+				foreach ($paths as $dir) {
+					$dir = $filesystem->normalizePath($filesystem->isAbsolutePath($dir) ? $dir : $basePath.'/'.$dir);
+					if (!is_dir($dir)) {
+						continue;
+					}
+					$whitelist = sprintf(
+							'{%s/%s.+(?<!(?<!/)Test\.php)$}',
+							preg_quote($dir),
+							($psrType === 'psr-0' && strpos($namespace, '_') === false) ? preg_quote(strtr($namespace, '\\', '/')) : ''
+					);
+					foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
+						if ('' === $namespace || 0 === strpos($class, $namespace)) {
+							if (!isset($classMap[$class])) {
+								//$path = $this->getPathCode($filesystem, $basePath, $vendorPath, $path);
+								//$classMap[$class] = $path.",\n";
+// 								$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
+								$classMap[$class] = $path;
+							}
 						}
 					}
 				}
 			}
 		}
-	
+		
+		
+			
 		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
+			$dir = $filesystem->normalizePath($filesystem->isAbsolutePath($dir) ? $dir : $basePath.'/'.$dir);
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
-				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
+// 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
 				$classMap[$class] = $path;
 			}
 		}
 		
+		// FIXME: $autoloads['files'] seems ignored
 		
 		//var_dump($classMap);
 		$this->classMap = $classMap;
@@ -152,7 +163,7 @@ class ComposerService {
 		
 		
 	}
-
+	
 	/**
 	 * Forces autoloading all classes for current context.
 	 */
@@ -238,7 +249,7 @@ class ComposerService {
 	 * @param unknown_type $path
 	 * @return string
 	 */
-	protected function getPath(Filesystem $filesystem, $relVendorPath, $vendorPath, $path)
+	/*protected function getPath(Filesystem $filesystem, $relVendorPath, $vendorPath, $path)
 	{
 		$path = strtr($path, '\\', '/');
 		if (!$filesystem->isAbsolutePath($path)) {
@@ -251,7 +262,7 @@ class ComposerService {
 		}
 	
 		return $path;
-	}
+	}*/
 	
 	/**
 	 * Returns an array of Composer packages currently installed.
@@ -282,6 +293,7 @@ class ComposerService {
 	
 	/**
 	 * Returns the list of local packages, ordered by dependency.
+	 * @return PackageInterface[]
 	 */
 	public function getLocalPackagesOrderedByDependencies() {
 		$unorderedPackagesList = $this->getLocalPackages();
@@ -517,6 +529,15 @@ class ComposerService {
 		$composer = $this->getComposer();
 		$moufUiFileWriter = new MoufUIFileWritter($composer);
 		$moufUiFileWriter->writeMoufUI();
+	}
+	
+	/**
+	 * Returns the Composer config object
+	 * @param string $param
+	 * @return string
+	 */
+	public function getComposerConfig() {
+		return $this->getComposer()->getConfig();
 	}
 }
 

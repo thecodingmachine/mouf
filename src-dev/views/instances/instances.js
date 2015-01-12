@@ -13,7 +13,9 @@ var MoufInstanceManager = (function() {
 	// The list of callbacks to be called when all the files will be loaded
 	// Note: some callback might wait longer that they need, this is slightly
 	// suboptimal to wait for all the files to be loaded.
-	var _callbackWhenFilesLoaded = []
+	var _callbackWhenFilesLoaded = [];
+	// Prefix of anonymous instances (used to reduce conflicts when working in teams)
+	var anonymousPrefix = '';
 
 	/**
 	 * Event handler triggered each time a property of an instance is changed
@@ -29,6 +31,16 @@ var MoufInstanceManager = (function() {
 	 * Event handler triggered each time an instance is renamed
 	 */
 	var _renameEventHandler = new Mouf.Observer();
+	
+	/**
+	 * Event handler triggered each time an instance is duplicated
+	 */
+	var _duplicateEventHandler = new Mouf.Observer();
+	
+	/**
+	 * Event handler triggered each time an instance is changed (when setCode is called on it)
+	 */
+	var _instanceChangeEventHandler = new Mouf.Observer();
 
 	/**
 	 * Event handler triggered each time an instance is deleted
@@ -674,6 +686,39 @@ var MoufInstanceManager = (function() {
 			_renameEventHandler.fire(moufInstance, moufInstance, oldName,
 					callback);
 		},
+		
+		/**
+		 * Registers a callback called when the MoufInstance::duplicate method is
+		 * called. If scope is not passed, the default scope (this) is the
+		 * moufInstanceProperty object. The first argument of the callback is
+		 * also the moufInstance object and the second is the name of
+		 * the duplicated instance. The third optional parameter is a callback called when
+		 * the rename has been performed.
+		 */
+		onDuplicateInstance : function(callback, scope) {
+			_duplicateEventHandler.subscribe(callback, scope);
+		},
+
+		fireDuplicate : function(moufInstance, duplicateName, callback) {
+			_duplicateEventHandler.fire(moufInstance, moufInstance, duplicateName,
+					callback);
+		},
+		
+		/**
+		 * Registers a callback called when the
+		 * the MoufInstance.setCode method is called. If scope is not
+		 * passed, the default scope (this) is the moufInstance object.
+		 * The first argument of the callback is also the moufInstance
+		 * object.The second optional parameter is a callback called when the
+		 * rename has been performed.
+		 */
+		onInstanceChangeInstance : function(callback, scope) {
+			_instanceChangeEventHandler.subscribe(callback, scope);
+		},
+		
+		fireInstanceChange : function(moufInstance, callback) {
+			_instanceChangeEventHandler.fire(moufInstance, moufInstance, callback);
+		},
 
 		/**
 		 * Registers a callback called when the
@@ -694,6 +739,28 @@ var MoufInstanceManager = (function() {
 		_renameInstance : function(oldname, newname) {
 			_instances[newname] = _instances[oldname];
 			delete _instances[oldname];
+		},
+		
+		/**
+		 * Generates an anonymous instance name.
+		 * "anonymous" names start with "__anonymous__" and is followed by a number.
+		 * This function will return a name that is not already used.
+		 * 
+		 * The number suffixing "__anonymous__" is returned in a random fashion. This way,
+		 * VCS merges are easier to handle.
+		 */
+		_generateAnonymousInstanceName : function() {
+			var timestamp = new Date();
+			// A randum number between 0 and 1000000
+			var randNum = Math.floor((Math.random()*1000000)); 
+			return "__anonymous__"+anonymousPrefix+"_"+randNum+"_"+timestamp.getTime();
+		},
+		
+		/**
+		 * Sets the prefix of anonymous instances (used to reduce conflicts when working in teams)
+		 */
+		setAnonymousPrefix: function(prefix) {
+			anonymousPrefix = prefix
 		}
 
 	};
@@ -757,6 +824,30 @@ MoufInstance.prototype.getName = function() {
  */
 MoufInstance.prototype.isAnonymous = function() {
 	return this.json["anonymous"];
+}
+
+/**
+ * Returns "declarative" if the instance is declared normally, or "php" if it is declared via PHP code.
+ */
+MoufInstance.prototype.getType = function() {
+	return this.json["type"];
+}
+
+/**
+ * Returns PHP code associated to the instance (if the instance is declared by code).
+ */
+MoufInstance.prototype.getCode = function() {
+	return this.json["code"];
+}
+
+/**
+ * Sets PHP code associated to the instance (if the instance is declared by code).
+ */
+MoufInstance.prototype.setCode = function(code, callback) {
+	this.json["code"] = code;
+	
+	// Let's trigger listeners
+	MoufInstanceManager.fireInstanceChange(this, callback);
 }
 
 /**
@@ -830,8 +921,7 @@ MoufInstance.prototype.rename = function(newName, callback) {
 	if (newName == "" || newName == null) {
 		this.json["anonymous"] = true;
 
-		var timestamp = new Date();
-		newName = "__anonymous_" + timestamp.getTime();
+		newName = MoufInstanceManager._generateAnonymousInstanceName();
 	} else {
 		this.json["anonymous"] = false;
 	}
@@ -845,6 +935,19 @@ MoufInstance.prototype.rename = function(newName, callback) {
 }
 
 /**
+ * Duplicates the instance. duplicateName is the name for the duplicated instance.
+ * callback is an optionnal callback called when the save is performed.
+ */
+MoufInstance.prototype.duplicate = function(duplicateName, callback) {
+	if (duplicateName == "" || duplicateName == null) {
+		throw "It is not allowed to set an empty name for a duplicated instance";
+	}
+
+	// Let's trigger listeners
+	MoufInstanceManager.fireDuplicate(this, duplicateName, callback);
+}
+
+/**
  * Renders the instance to the display, and returns that object as an in-memory
  * jQuery object.
  */
@@ -853,10 +956,13 @@ MoufInstance.prototype.render = function(/* target, */rendererName) {
 		rendererName = 'small';
 	}
 
-	var classDescriptor = MoufInstanceManager
-			.getLocalClass(this.getClassName());
-	var renderers = classDescriptor.getRenderers();
-	var renderer = renderers[0];
+	var renderer = null;
+	if (this.getClassName()) {
+		var classDescriptor = MoufInstanceManager
+				.getLocalClass(this.getClassName());
+		var renderers = classDescriptor.getRenderers();
+		renderer = renderers[0];
+	}
 	if (renderer == null) {
 		renderer = MoufDefaultRenderer;
 	}
@@ -971,8 +1077,8 @@ MoufInstanceProperty.prototype.setValue = function(value, origin) {
 	this.json['isset'] = true;
 
 	//var moufProperty = this.getMoufProperty();
-	if (this.type.isArray()) {
-		if (value === null) {
+	if (this.type && this.type.isArray()) {
+		if (value === null || origin == 'php') {
 			// Let's empty all the elements:
 			this.moufInstanceSubProperties = [];
 		} else {
@@ -1018,6 +1124,14 @@ MoufInstanceProperty.prototype.getOrigin = function() {
  */
 MoufInstanceProperty.prototype.getMetaData = function() {
 	return this.json['metadata'];
+}
+
+/**
+ * Returns if the property is orphan or not. An orphan property is a property that is set
+ * an a public property / setter / constructor argument that no longer exists.
+ */
+MoufInstanceProperty.prototype.isOrphan = function() {
+	return this.json['orphan'];
 }
 
 /**

@@ -227,7 +227,7 @@ class MoufReflectionMethod extends \ReflectionMethod implements MoufReflectionMe
         $parameters     = parent::getParameters();
         $moufParameters = array();
         foreach ($parameters as $parameter) {
-            $moufParameters[] = new MoufReflectionParameter($this, $parameter->getName());
+            $moufParameters[] = new MoufReflectionParameter($this, $parameter->getName(), $this->refClass);
         }
         
         return $moufParameters;

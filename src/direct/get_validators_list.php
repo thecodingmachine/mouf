@@ -25,13 +25,18 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
+	
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
-	$selfEdit = true;
+	$selfEdit = true;	
 }
 
 // Note: checking rights is done after loading the required files because we need to open the session
@@ -50,12 +55,27 @@ $moufManager = MoufManager::getMoufManager();
 
 $response = array("instances"=>array(), "classes"=>array());
 
+define('PROFILE_MOUF', false);
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: Starting get_validators_list: ".date('H:i:s', time()));
+}
+
 $instanceList = $moufManager->findInstances("Mouf\\Validator\\MoufValidatorInterface");
 $response["instances"] = $instanceList;
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: findInstance done, starting getComponentsList: ".date('H:i:s', time()));
+}
 
 // Now, let's get the full list of absolutely all classes implementing "MoufStaticValidatorInterface".
 $classList = Moufspector::getComponentsList("Mouf\\Validator\\MoufStaticValidatorInterface", $selfEdit);
 $response["classes"] = $classList;
+
+if (PROFILE_MOUF) {
+	error_log("PROFILING: Ending get_validators_list: ".date('H:i:s', time()));
+}
+
 
 $encode = "php";
 if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]=="json") {

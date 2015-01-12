@@ -19,11 +19,14 @@ ini_set('display_errors', 1);
 error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
+	define('ROOT_URL', $_SERVER['BASE']."/../../../");
+	
 	require_once '../../../../../mouf/Mouf.php';
 } else {
+	define('ROOT_URL', $_SERVER['BASE']."/");
+	
 	require_once '../../mouf/Mouf.php';
 }
-
 
 // Note: checking rights is done after loading the required files because we need to open the session
 // and only after can we check if it was not loaded before loading it ourselves...
@@ -39,20 +42,24 @@ $moufManager = MoufManager::getMoufManager();
 // In this case, the CURL call is not needed since the getInstanceDescriptor and the getClassDescriptor are
 // in the same scope.
 $instanceDescriptor = $moufManager->getInstanceDescriptor($_REQUEST["name"]);
-$classDescriptor = $instanceDescriptor->getClassDescriptor();
+
 
 $response = array();
 
 $response["instances"][$instanceDescriptor->getIdentifierName()] = $instanceDescriptor->toJson();
 
+
 // We send back class data with instance data... this saves one request.
 // Now, let's embed the class and all the parents with this instance.
-$classArray = array();
-do {
-	$classArray[$classDescriptor->getName()] = $classDescriptor->toJson();
-	$classDescriptor = $classDescriptor->getParentClass();
-} while ($classDescriptor != null);
-$response["classes"] = $classArray;
+if ($instanceDescriptor->getClassName()) {
+	$classDescriptor = $instanceDescriptor->getClassDescriptor();
+	$classArray = array();
+	do {
+		$classArray[$classDescriptor->getName()] = $classDescriptor->toJson();
+		$classDescriptor = $classDescriptor->getParentClass();
+	} while ($classDescriptor != null);
+	$response["classes"] = $classArray;
+}
 
 if ($encode == "php") {
 	echo serialize($response);

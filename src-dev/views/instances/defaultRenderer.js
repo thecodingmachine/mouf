@@ -1,10 +1,13 @@
+var MoufDefaultRenderer;
 
+(function(){
+"use strict";
 
 /**
  * The default renderer if no renderer is to be found.
  * This renderer is in charge of rendering instances (small, medium, big) and classes.
  */
-var MoufDefaultRenderer = (function () {
+MoufDefaultRenderer = (function () {
 
 	/**
 	 * Returns the CSS class applying to a class descriptor (used for drag'n'drop)
@@ -40,9 +43,14 @@ var MoufDefaultRenderer = (function () {
 	 * The wrapper is returned as an "in-memory" jQuery element.
 	 */
 	var getInstanceWrapper = function(instanceDescriptor) {
-		var classDescriptor = MoufInstanceManager.getLocalClass(instanceDescriptor.getClassName());
-
-		return getClassWrapper(classDescriptor).addClass("instance").data("instance", instanceDescriptor);
+		if (instanceDescriptor.getClassName()) {
+			var classDescriptor = MoufInstanceManager.getLocalClass(instanceDescriptor.getClassName());
+	
+			return getClassWrapper(classDescriptor).addClass("instance").data("instance", instanceDescriptor);
+		} else {
+			// If this is PHP code that returns no class
+			return jQuery("<div/>");
+		}
 	}
 	
 
@@ -72,12 +80,13 @@ var MoufDefaultRenderer = (function () {
 		
 		var elem = jQuery("<input/>").attr('name', name)
 			.attr("value", value)
+			.attr("placeholder", "empty")
 			.change(function() {
 				moufInstanceProperty.setValue(jQuery(this).val());
 				//alert("value changed in "+findInstance(jQuery(this)).getName() + " for property "+name);
 			});
 		
-		if (value === null) {
+		/*if (value == ) {
 			elem.addClass("null");
 			elem.val("null");
 		}
@@ -87,7 +96,7 @@ var MoufDefaultRenderer = (function () {
 				elem.val("");
 				elem.removeClass("null");
 			}
-		})
+		})*/
 		
 		
 		/*var menu = MoufUI.createMenuIcon([
@@ -288,7 +297,10 @@ var MoufDefaultRenderer = (function () {
 					moufInstanceProperty.removeArrayElement(_startPosition);
 					jQuery(ui.item).remove();
 				});
-				MoufUI.showBin();
+				// Let's display the bin, unless the drag comes from outside the sortable.
+				if (jQuery(event.currentTarget).hasClass('array')) {
+					MoufUI.showBin();
+				}
 			},
 			stop: function(event, ui) {
 				MoufUI.hideBin();
@@ -313,8 +325,7 @@ var MoufDefaultRenderer = (function () {
 					
 					//elem.html("");
 
-					var timestamp = new Date();
-					var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+					var newInstance = MoufInstanceManager.newInstance(droppedClass, MoufInstanceManager._generateAnonymousInstanceName(), true);
 					
 					// We add at the end of the array
 					moufInstanceProperty.addArrayElement(null, newInstance.getName());
@@ -674,8 +685,7 @@ var MoufDefaultRenderer = (function () {
 							return;
 						}
 						
-						var timestamp = new Date();
-						var newInstance = MoufInstanceManager.newInstance(droppedClass, "__anonymous_"+timestamp.getTime(), true);
+						var newInstance = MoufInstanceManager.newInstance(droppedClass, MoufInstanceManager._generateAnonymousInstanceName(), true);
 						
 						if (!currentType.isArray()) {
 							moufInstanceProperty.setValue(newInstance.getName());
@@ -690,7 +700,7 @@ var MoufDefaultRenderer = (function () {
 		}
 		
 		// Let's check if we can drop something in the "null" or "default" buttons of this property.
-		var isDroppable = isObjectType(currentType) || (isArrayOfObjectType(currentType) && !currentType.isAssociativeArray());
+		var isDroppable = moufInstanceProperty.getOrigin() != "php" && (isObjectType(currentType) || (isArrayOfObjectType(currentType) && !currentType.isAssociativeArray()));
 		var isPartOfNonAssociativeObjectArray = false;
 		// If this is a sub instance property
 		if (moufInstanceProperty.getParent) {
@@ -710,9 +720,18 @@ var MoufDefaultRenderer = (function () {
 				fieldInnerWrapper.empty();
 				var field = renderInnerField(moufInstanceProperty);
 				field.appendTo(fieldInnerWrapper);
+				
+				
+				
 				// If this is an array, let's display the instance type.
 				if (isArrayOfObjectType(currentType)) {
 					MoufUI.displayInstanceOfType("#instanceList", moufInstanceProperty.getType().getSubType(), true, true);
+				} else {
+					if (currentType.getType() == 'bool' || currentType.getType() == 'boolean') {
+						moufInstanceProperty.setValue(false);
+					} else {
+						moufInstanceProperty.setValue('');
+					}
 				}
 			}
 		}
@@ -758,12 +777,37 @@ var MoufDefaultRenderer = (function () {
 			});
 			return field;
 		}
+		var getPHPCodeField = function() {
+			var code = moufInstanceProperty.getValue();
+			var field = jQuery("<div><pre><code></code></pre><div class='messageHolder'></div><button class='btn btn-mini btn-danger' rel='tooltip' title='Edit'>Edit</button></div>");
+			field.find("code").text(code);
+			// Let's validate this PHP code.
+			MoufUI.validatePHPCode(code).done(function(result) {
+				if (result.status == 'fail') {
+					field.find("pre").addClass("error");
+					jQuery("<p/>").addClass('alert alert-error').text(result.data.message + " on line " + result.data.line).appendTo(field.find('.messageHolder'));
+				}
+			});
+			
+			field.find("button").click(function() {
+				MoufUI.inputPHPCode(moufInstanceProperty.getValue(), function(code) {
+					moufInstanceProperty.setValue(code, 'php');
+
+					fieldInnerWrapper.empty();
+					var field = getPHPCodeField();
+					field.appendTo(fieldInnerWrapper);
+				}, MoufInstanceManager.selfEdit);
+			});
+			return field;
+		}
 		
 		var isSubProperty = moufInstanceProperty instanceof MoufInstanceSubProperty;
 		
 		var field;
 		if (moufInstanceProperty.getOrigin() == 'config') {
 			field = getConfigConstantField();
+		} else if (moufInstanceProperty.getOrigin() == 'php') {
+			field = getPHPCodeField();
 		} else if (!isSubProperty && !moufInstanceProperty.isSet()) {
 			field = getNotSetField();
 		} else if (moufInstanceProperty.getValue() === null) {
@@ -800,6 +844,18 @@ var MoufDefaultRenderer = (function () {
 
 						fieldInnerWrapper.empty();
 						var field = getConfigConstantField();
+						field.appendTo(fieldInnerWrapper);
+					}, MoufInstanceManager.selfEdit);
+				}
+			});
+			menuDescriptor.push({
+				label: "Use PHP code",
+				click: function() {
+					MoufUI.inputPHPCode(moufInstanceProperty.getValue(), function(code) {
+						moufInstanceProperty.setValue(code, 'php');
+
+						fieldInnerWrapper.empty();
+						var field = getPHPCodeField();
 						field.appendTo(fieldInnerWrapper);
 					}, MoufInstanceManager.selfEdit);
 				}
@@ -965,7 +1021,7 @@ var MoufDefaultRenderer = (function () {
 									}
 									
 									var fieldGlobalElem = jQuery("<div/>").appendTo(propertiesList);;
-									var displayInnerField = function(moufProperty) {
+									var displayInnerField = function(moufProperty, fieldGlobalElem) {
 										jQuery("<label/>").text(moufProperty.getPropertyName()).appendTo(fieldGlobalElem);
 										var fieldElem = jQuery("<div/>").addClass('fieldContainer')
 											.data("moufProperty", moufProperty)
@@ -992,14 +1048,14 @@ var MoufDefaultRenderer = (function () {
 										var onChangeType = function(newType) {
 											fieldGlobalElem.empty();
 											moufInstanceProperty.setType(newType);
-											displayInnerField(moufProperty);
+											displayInnerField(moufProperty, fieldGlobalElem);
 										}
 										
 										if (types.getTypes().length > 1) {
 											renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
 										}
 										
-										if (currentType != null) {
+										if (currentType != null || moufInstanceProperty.getOrigin()=='php') {
 											var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
 											renderField(moufInstanceProperty).appendTo(fieldContainer);
 										} else {
@@ -1016,7 +1072,7 @@ var MoufDefaultRenderer = (function () {
 										//renderField(moufInstanceProperty).appendTo(fieldElem);
 										
 									}
-									displayInnerField(moufProperty);
+									displayInnerField(moufProperty, fieldGlobalElem);
 								}
 							}
 
@@ -1030,18 +1086,22 @@ var MoufDefaultRenderer = (function () {
 				"big" : {
 					title: "Big",
 					renderer: function(instance) {
-						var classDescriptor = MoufInstanceManager.getLocalClass(instance.getClassName());
-						
 						var wrapper = getInstanceWrapper(instance).addClass("biginstance");
 						
-						var title = jQuery("<h1/>")
+						var title = jQuery("<h1/>");
+						var className = instance.getClassName();
+						
 						if (!instance.isAnonymous()) {
 							title.text('Instance "'+instance.getName()+'"');
 						} else {
 							title.text('Anonymous instance');
 						}
 						title.appendTo(wrapper);
-						jQuery("<small/>").html(' from class "'+MoufUI.getHtmlClassName(instance.getClassName())+'"').appendTo(title);
+						if (className) {
+							jQuery("<small class='classNameHolder' />").html(' from class "'+MoufUI.getHtmlClassName(instance.getClassName())+'"').appendTo(title);
+						} else {
+							jQuery("<small class='classNameHolder' />").appendTo(title);
+						}
 						
 						var btnToolbar = jQuery('<div class="btn-toolbar"/>').appendTo(wrapper);
 						
@@ -1049,27 +1109,36 @@ var MoufDefaultRenderer = (function () {
 							.click(function() {
 								MoufUI.renameInstance(instance);
 							});
+						jQuery("<button class='btn btn-success'><i class='icon-plus-sign icon-white'></i> Duplicate</button>").appendTo(btnToolbar)
+							.click(function() {
+								MoufUI.duplicateInstance(instance);
+							});
 						jQuery("<button class='btn btn-danger'><i class='icon-remove icon-white'></i> Delete</button>").appendTo(btnToolbar)
 							.click(function() {
 								MoufUI.deleteInstance(instance);
 							});
 						// Let's find any extended action
-						var annotations = classDescriptor.getAnnotations();
-						var extendedActions = annotations['ExtendedAction'];
-						if (extendedActions) {
-							for (var i=0; i<extendedActions.length; i++) {
-								var extendedActionStr = extendedActions[i];
-								var extendedAction = jQuery.parseJSON(extendedActionStr);
-								var actionname = extendedAction.name;
-								var actionurl = extendedAction.url;
-								
-								(function(actionurl) { // This is used to scope actionurl that would be overwritten in the loop.
-									jQuery("<button class='btn btn-success' />").html(actionname).appendTo(btnToolbar)
-									.click(function() {
-										window.location.href = MoufInstanceManager.rootUrl + actionurl + "?name=" + instance.getName();
-									});
-								})(actionurl)
-								
+						// Note: classes declared in PHP and in error do not have a class
+						
+						if (className) {
+							var classDescriptor = MoufInstanceManager.getLocalClass(instance.getClassName());
+							var annotations = classDescriptor.getAnnotations();
+							var extendedActions = annotations['ExtendedAction'];
+							if (extendedActions) {
+								for (var i=0; i<extendedActions.length; i++) {
+									var extendedActionStr = extendedActions[i];
+									var extendedAction = jQuery.parseJSON(extendedActionStr);
+									var actionname = extendedAction.name;
+									var actionurl = extendedAction.url;
+									
+									(function(actionurl) { // This is used to scope actionurl that would be overwritten in the loop.
+										jQuery("<button class='btn btn-success' />").html(actionname).appendTo(btnToolbar)
+										.click(function() {
+											window.location.href = MoufInstanceManager.rootUrl + actionurl + "?name=" + instance.getName();
+										});
+									})(actionurl)
+									
+								}
 							}
 						}
 						
@@ -1079,7 +1148,9 @@ var MoufDefaultRenderer = (function () {
 							.addClass("form-horizontal")
 							.appendTo(wrapper);
 						
-						jQuery("<div/>").addClass("classComment").html(classDescriptor.getComment()).appendTo(containerForm);
+						if (className) {
+							jQuery("<div/>").addClass("classComment").html(classDescriptor.getComment()).appendTo(containerForm);
+						}
 						
 						var displayField = function(moufProperty) {
 							var fieldGlobalElem = jQuery("<div/>").addClass("control-group").appendTo(propertiesList);
@@ -1125,7 +1196,7 @@ var MoufDefaultRenderer = (function () {
 									renderTypesSelector(types, currentType, onChangeType).appendTo(fieldElem);
 								}
 								
-								if (currentType != null) {
+								if (currentType != null || moufInstanceProperty.getOrigin()=='php') {
 									var fieldContainer = jQuery("<div/>").addClass('fieldContainer').appendTo(fieldElem);
 									renderField(moufInstanceProperty).appendTo(fieldContainer);
 								} else {
@@ -1144,42 +1215,158 @@ var MoufDefaultRenderer = (function () {
 							displayInnerField();
 						}
 						
-						var moufProperties = classDescriptor.getInjectableConstructorArguments();
-						if (moufProperties.length != 0) {
-							jQuery("<h3/>").text('Constructor arguments').appendTo(containerForm);
-							var propertiesList = jQuery("<div/>").addClass('propertieslist');
-							// For each Mouf property, let's display a field.
-							for (var i=0; i<moufProperties.length; i++) {
-								var moufProperty = moufProperties[i];
-								displayField(moufProperty);
+						// Let's display the list of missing fields that are declared in the instance
+						// but not in the class (this happens when a variable is removed or renamed from
+						// a class...)
+						_.each(instance.getConstructorArguments(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The constructor argument n°"+property.getName()+" is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this argument existed but was removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
 							}
-							propertiesList.appendTo(containerForm);
-						}
-
-						var moufProperties = classDescriptor.getInjectableSetters();
-						if (moufProperties.length != 0) {
-							jQuery("<h3/>").text('Setters').appendTo(containerForm);
-							var propertiesList = jQuery("<div/>").addClass('propertieslist');
-							// For each Mouf property, let's display a field.
-							for (var i=0; i<moufProperties.length; i++) {
-								var moufProperty = moufProperties[i];
-								displayField(moufProperty);
+						});
+						
+						_.each(instance.getSetters(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The setter <code>"+property.getName()+"</code> is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this setter once existed but was renamed or removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
 							}
-							propertiesList.appendTo(containerForm);
-						}
-
-						var moufProperties = classDescriptor.getInjectablePublicProperties();
-						if (moufProperties.length != 0) {
-							jQuery("<h3/>").text('Public properties').appendTo(containerForm);
-							var propertiesList = jQuery("<div/>").addClass('propertieslist');
-							// For each Mouf property, let's display a field.
-							for (var i=0; i<moufProperties.length; i++) {
-								var moufProperty = moufProperties[i];
-								displayField(moufProperty);
+						});
+						
+						_.each(instance.getPublicProperties(), function(property) {
+							if (property.isOrphan()) {
+								var alertMsg = jQuery("<div/>").addClass("alert clearfix").html("The public property <code>"+property.getName()+"</code> is defined in this instance but is not part of the class <code>"+className+"</code>. It is likely that this public property once existed but was renamed or removed.").appendTo(containerForm);
+								jQuery("<button/>").addClass("btn btn-danger pull-right").html("<i class='icon-white icon-remove'></i> Remove").prependTo(alertMsg)
+									.click(function() {
+										property.unSet();
+										jQuery(this).parent('.alert').remove();
+									});
 							}
-							propertiesList.appendTo(containerForm);
+						});
+						
+						
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						// CONTINUE HERE
+						
+						
+						if (instance.getType() != "php") {
+							var moufProperties = classDescriptor.getInjectableConstructorArguments();
+							if (moufProperties.length != 0) {
+								jQuery("<h3/>").text('Constructor arguments').appendTo(containerForm);
+								var propertiesList = jQuery("<div/>").addClass('propertieslist');
+								// For each Mouf property, let's display a field.
+								for (var i=0; i<moufProperties.length; i++) {
+									var moufProperty = moufProperties[i];
+									displayField(moufProperty);
+								}
+								propertiesList.appendTo(containerForm);
+							}
+	
+							var moufProperties = classDescriptor.getInjectableSetters();
+							if (moufProperties.length != 0) {
+								jQuery("<h3/>").text('Setters').appendTo(containerForm);
+								var propertiesList = jQuery("<div/>").addClass('propertieslist');
+								// For each Mouf property, let's display a field.
+								for (var i=0; i<moufProperties.length; i++) {
+									var moufProperty = moufProperties[i];
+									displayField(moufProperty);
+								}
+								propertiesList.appendTo(containerForm);
+							}
+	
+							var moufProperties = classDescriptor.getInjectablePublicProperties();
+							if (moufProperties.length != 0) {
+								jQuery("<h3/>").text('Public properties').appendTo(containerForm);
+								var propertiesList = jQuery("<div/>").addClass('propertieslist');
+								// For each Mouf property, let's display a field.
+								for (var i=0; i<moufProperties.length; i++) {
+									var moufProperty = moufProperties[i];
+									displayField(moufProperty);
+								}
+								propertiesList.appendTo(containerForm);
+							}
+						} else {
+							var validateCode = function(code) {
+								// After save, let's validate the code:
+								CodeValidator.validate(code).then(function(result) {
+									jQuery('.classNameHolder').html(' from class "'+MoufUI.getHtmlClassName(result)+'"');
+									jQuery('.phperrormessage').hide();
+								}).onError(function(result) {
+									jQuery('.phperrormessage').html(result);
+									jQuery('.phperrormessage').show();
+									jQuery('.classNameHolder').text("");
+								});
+							}
+							
+							var save = function() {
+								var code = editor.getValue();
+								instance.setCode(code, function() {
+									validateCode(code);
+								});
+							}
+							
+							// We are in PHP mode
+							var code = instance.getCode();
+							if (code == null) {
+								code = "";
+							}
+							validateCode(code);
+							
+							jQuery('<div class="phperrormessage alert" style="display: none" />')
+								.appendTo(containerForm);
+							jQuery('<code>function(ContainerInteface $container) {</code>')
+								.appendTo(containerForm);
+							jQuery('<div id="acephpeditor">').text(code)
+								.appendTo(containerForm);
+							jQuery('<code>}</code>')
+								.appendTo(containerForm);
+							
+							var saveDiv = jQuery("<div class='btn-toolbar' />").appendTo(containerForm);
+							jQuery("<button class='btn btn-primary'><i class='icon-file icon-white'></i> Save</button>")
+								.appendTo(saveDiv)
+								.click(save);
+						
+							
+							jQuery("<p>Your code should <strong>return</strong> the instance. " +
+									"You can access/return other instances using <code>$container->get('otherInstance')</code>.</p>")
+							.appendTo(containerForm);
+							
+							var editor = null;
+							setTimeout(function() {
+								editor = ace.edit("acephpeditor");
+								editor.setOptions({
+								    maxLines: 50
+								});
+							    //editor.setTheme("ace/theme/monokai");
+								editor.setTheme("ace/theme/eclipse");
+							    editor.getSession().setMode({path:"ace/mode/php", inline:true});
+							    
+							    editor.commands.addCommand({
+							    	name: 'saveFile',
+							    	bindKey: {
+								    	win: 'Ctrl-S',
+								    	mac: 'Command-S',
+								    	sender: 'editor|cli'
+							    	},
+							    	exec: save
+							    });
+							    editor.focus();
+							    /*editor.on('change', function() {
+							    	console.log('change');
+							    });*/
+							}, 0);
 						}
-
+						
 						//wrapper.appendTo(parent);
 						return wrapper;
 					}
@@ -1204,4 +1391,6 @@ var MoufDefaultRenderer = (function () {
 			return wrapper;
 		}
 	}
+})();
+
 })();
