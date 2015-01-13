@@ -1131,6 +1131,17 @@ class MoufManager implements ContainerInterface {
 		return $this->container->getReflectionClassManager()->getReflectionClass($name);
 	}
 	
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	// FIXME: MOVE THIS TO MoufContainer!!!!!
+	
 	/**
 	* Returns the list of public properties' names configured for this instance.
 	*
@@ -1138,10 +1149,7 @@ class MoufManager implements ContainerInterface {
 	* @return string[]
 	*/
 	public function getParameterNames($instanceName) {
-		return array_merge(
-			isset($this->declaredInstances[$instanceName]["fieldProperties"])?array_keys($this->declaredInstances[$instanceName]["fieldProperties"]):array(),
-			isset($this->declaredInstances[$instanceName]["fieldBinds"])?array_keys($this->declaredInstances[$instanceName]["fieldBinds"]):array()
-		);
+		return $this->container->getParameterNames($instanceName);
 	}
 	
 	/**
@@ -1151,10 +1159,7 @@ class MoufManager implements ContainerInterface {
 	* @return string[]
 	*/
 	public function getParameterNamesForSetter($instanceName) {
-		return array_merge(
-				isset($this->declaredInstances[$instanceName]["setterProperties"])?array_keys($this->declaredInstances[$instanceName]["setterProperties"]):array(),
-				isset($this->declaredInstances[$instanceName]["setterBinds"])?array_keys($this->declaredInstances[$instanceName]["setterBinds"]):array()
-		);
+		return $this->container->getParameterNamesForSetter($instanceName);
 	}
 	
 	/**
@@ -1164,11 +1169,7 @@ class MoufManager implements ContainerInterface {
 	* @return int[]
 	*/
 	public function getParameterNamesForConstructor($instanceName) {
-		if (isset($this->declaredInstances[$instanceName]["constructor"])) {
-			return array_keys($this->declaredInstances[$instanceName]["constructor"]);
-		} else {
-			return array();
-		}
+		return $this->container->getParameterNamesForConstructor($instanceName);
 	}
 	
 	/**
@@ -1177,16 +1178,7 @@ class MoufManager implements ContainerInterface {
 	 * @return MoufInstanceDescriptor
 	 */
 	public function createInstanceByCode() {
-		$name = $this->getFreeAnonymousName();
-	
-		$this->declaredInstances[$name]["weak"] = false;
-		$this->declaredInstances[$name]["comment"] = "";
-		$this->declaredInstances[$name]["class"] = null;
-		$this->declaredInstances[$name]["external"] = false;
-		$this->declaredInstances[$name]["code"] = "";
-		$this->setInstanceAnonymousness($name, true);
-	
-		return $this->getInstanceDescriptor($name);
+		return $this->container->createInstanceByCode();
 	}
 	
 	/**
@@ -1197,14 +1189,7 @@ class MoufManager implements ContainerInterface {
 	 * @param string $code
 	 */
 	public function setCode($instanceName, $code) {
-		if (!isset($this->declaredInstances[$instanceName])) {
-			throw new MoufException("Instance '$instanceName' does not exist.");
-		}
-		if (!isset($this->declaredInstances[$instanceName]["code"])) {
-			throw new MoufException("Instance '$instanceName' has not been created using `createInstanceByCode`. It cannot have a PHP code attached to it.");
-		}
-		$this->declaredInstances[$instanceName]["code"] = $code;
-		$this->findInstanceByCallbackType($instanceName);
+		return $this->container->setCode($instanceName, $code);
 	}
 	
 	/**

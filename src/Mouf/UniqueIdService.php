@@ -39,7 +39,7 @@ class UniqueIdService {
 					
 			$branch = exec('git rev-parse --abbrev-ref HEAD');
 			
-			$totalString = $macAddress.ROOT_PATH.$branch;
+			$totalString = $macAddress.__DIR__.$branch;
 			$md5 = md5($totalString);
 			
 			// Only keep the first 4 characters to keep the ID short.

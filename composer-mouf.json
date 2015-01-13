@@ -35,6 +35,9 @@
     "autoload": {
         "psr-0": {"Mouf": ["src/", "src-dev/", "tests/"]}
     },
+    "autoload-dev": {
+        "psr-4": {"GeneratedClasses\\" : "tests/GeneratedClasses/"}
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
