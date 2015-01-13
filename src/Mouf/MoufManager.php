@@ -357,6 +357,7 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function addComponentInstances(array $definition) {
 		$this->container->addComponentInstances($definition);
+		$this->container->write();
 	}
 	
 

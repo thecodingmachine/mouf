@@ -1,12 +1,12 @@
 <?php
 /*
  * This file is part of the Mouf core package.
-*
-* (c) 2012-2013 David Negrier <david@mouf-php.com>
-*
-* For the full copyright and license information, please view the LICENSE.txt
-* file that was distributed with this source code.
-*/
+ *
+ * (c) 2012-2015 David Negrier <david@mouf-php.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 namespace Mouf;
 
 use Mouf\Composer\ComposerService;
@@ -1310,7 +1310,9 @@ return ".var_export($internalDeclaredInstances, true).";\n";
 
 
 		$classCode .= "
+use Interop\Container\ContainerInterface;
 use Mouf\MoufContainer;
+use Mouf\Reflection\ReflectionClassManagerInterface;
 
 class $shortClassName extends MoufContainer {
 
@@ -1456,7 +1458,7 @@ class $shortClassName extends MoufContainer {
 			$classCode .= "    /**\n";
 			$classCode .= "     * @return $className\n";
 			$classCode .= "     */\n";
-			$classCode .= "    public static function ".$getter."() {\n";
+			$classCode .= "    public function ".$getter."() {\n";
 			$classCode .= "        return \$this->get(".var_export($name,true).");\n";
 			$classCode .= "    }\n\n";
 		}
