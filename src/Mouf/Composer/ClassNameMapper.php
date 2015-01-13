@@ -75,10 +75,10 @@ class ClassNameMapper
 	 * @param string $composerJsonPath
 	 * @return \Mouf\Composer\ClassNameMapper
 	 */
-	public static function createFromComposerFile($composerJsonPath, $rootPath = null) {
+	public static function createFromComposerFile($composerJsonPath, $rootPath = null, $useAutoloadDev = false) {
 		$classNameMapper = new ClassNameMapper();
 		
-		$classNameMapper->loadComposerFile($composerJsonPath, $rootPath);
+		$classNameMapper->loadComposerFile($composerJsonPath, $rootPath, $useAutoloadDev);
 		
 		return $classNameMapper;
 	}
@@ -88,7 +88,7 @@ class ClassNameMapper
 	 * @param string $composerJsonPath Path to the composer file
 	 * @param string $rootPath Root path of the project (or null)
 	 */
-	public function loadComposerFile($composerJsonPath, $rootPath = null) {
+	public function loadComposerFile($composerJsonPath, $rootPath = null, $useAutoloadDev = false) {
 		$composer = json_decode(file_get_contents($composerJsonPath), true);
 		
 		if ($rootPath) {
@@ -126,6 +126,39 @@ class ClassNameMapper
 				$this->registerPsr4Namespace($namespace, $paths);
 			}
 		}
+		
+		if ($useAutoloadDev) {
+			if (isset($composer["autoload-dev"]["psr-0"])) {
+				$psr0 = $composer["autoload-dev"]["psr-0"];
+				foreach ($psr0 as $namespace => $paths) {
+					if ($relativePath != null) {
+						if (!is_array($paths)) {
+							$paths = [$paths];
+						}
+						$paths = array_map(function($path) use ($relativePath) {
+							return rtrim($relativePath,'\\/').'/'.ltrim($path, '\\/');
+						}, $paths);
+					}
+					$this->registerPsr0Namespace($namespace, $paths);
+				}
+			}
+			
+			if (isset($composer["autoload-dev"]["psr-4"])) {
+				$psr4 = $composer["autoload-dev"]["psr-4"];
+				foreach ($psr4 as $namespace => $paths) {
+					if ($relativePath != null) {
+						if (!is_array($paths)) {
+							$paths = [$paths];
+						}
+						$paths = array_map(function($path) use ($relativePath) {
+							return rtrim($relativePath,'\\/').'/'.ltrim($path, '\\/');
+						}, $paths);
+					}
+					$this->registerPsr4Namespace($namespace, $paths);
+				}
+			}
+		}
+		
 		return $this;
 	}
 	

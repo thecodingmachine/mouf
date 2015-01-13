@@ -18,7 +18,8 @@ class ClassNameUtils
 	 */
 	public static function getNamespace($fullyQualifiedClassName) {
 		$fullyQualifiedClassName = ltrim($fullyQualifiedClassName, '\\');
-		if ($lastNsPos = strripos($tmpClassName, '\\') !== false) {
+		$lastNsPos = strripos($fullyQualifiedClassName, '\\');
+		if ($lastNsPos !== false) {
 			return substr($fullyQualifiedClassName, 0, $lastNsPos);
 		} else {
 			return null;
@@ -33,7 +34,8 @@ class ClassNameUtils
 	 */
 	public static function getClassName($fullyQualifiedClassName) {
 		$fullyQualifiedClassName = ltrim($fullyQualifiedClassName, '\\');
-		if ($lastNsPos = strripos($tmpClassName, '\\') !== false) {
+		$lastNsPos = strripos($fullyQualifiedClassName, '\\');
+		if ($lastNsPos !== false) {
 			return substr($fullyQualifiedClassName, $lastNsPos+1);
 		} else {
 			return $fullyQualifiedClassName;

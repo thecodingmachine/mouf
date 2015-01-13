@@ -10,7 +10,14 @@ use Mouf\Reflection\MoufReflectionClassManager;
 class MoufContainerTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testConstructor() {
-		$container = new MoufContainer("GeneratedClasses\\Container", new MoufReflectionClassManager());
+		if (file_exists(__DIR__."/../GeneratedClasses/instances.php")) {
+			unlink(__DIR__."/../GeneratedClasses/instances.php");
+		}
+		if (file_exists(__DIR__."/../GeneratedClasses/Container.php")) {
+			unlink(__DIR__."/../GeneratedClasses/Container.php");
+		}
+		
+		$container = new MoufContainer(__DIR__."/../GeneratedClasses/instances.php", "GeneratedClasses\\Container", new MoufReflectionClassManager());
 		
 		$instanceDescriptorClass2 = $container->createInstance("Mouf\TestClasses\TestClass2");
 		
@@ -29,7 +36,14 @@ class MoufContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCallbackInjection() {
-		$container = new MoufContainer("GeneratedClasses\\Container", new MoufReflectionClassManager());
+		if (file_exists(__DIR__."/../GeneratedClasses/instances.php")) {
+			unlink(__DIR__."/../GeneratedClasses/instances.php");
+		}
+		if (file_exists(__DIR__."/../GeneratedClasses/Container.php")) {
+			unlink(__DIR__."/../GeneratedClasses/Container.php");
+		}
+		
+		$container = new MoufContainer(__DIR__."/../GeneratedClasses/instances.php", "GeneratedClasses\\Container", new MoufReflectionClassManager());
 	
 		$instanceDescriptor = $container->createInstance("Mouf\TestClasses\TestClass1");
 		$instanceDescriptor->getProperty("constructorParamA")->setOrigin('php')->setValue('return [];');
@@ -47,11 +61,36 @@ class MoufContainerTest extends \PHPUnit_Framework_TestCase {
 			unlink(__DIR__."/../GeneratedClasses/Container.php");
 		}
 		
-		MoufContainer::createContainer(__DIR__."/../GeneratedClasses/instances.php", "GeneratedClasses\\Container");
+		MoufContainer::createContainer(__DIR__."/../GeneratedClasses/instances.php", "GeneratedClasses\\Container", __DIR__."/../GeneratedClasses/Container.php");
 		
-		$this->assertTrue(file_exists(__DIR__."/../GeneratedClasses/instances.php"), "The configuration file exists");
-		$this->assertTrue(file_exists(__DIR__."/../GeneratedClasses/Container.php"), "The generated class file exists");
+		$this->assertTrue(file_exists(__DIR__."/../GeneratedClasses/instances.php"), "The configuration file is not found");
+		$this->assertTrue(file_exists(__DIR__."/../GeneratedClasses/Container.php"), "The generated class file is not found");
 		
+	}
+	
+	public function testWrite() {
+		if (file_exists(__DIR__."/../GeneratedClasses/instances.php")) {
+			unlink(__DIR__."/../GeneratedClasses/instances.php");
+		}
+		if (file_exists(__DIR__."/../GeneratedClasses/Container.php")) {
+			unlink(__DIR__."/../GeneratedClasses/Container.php");
+		}
+		
+		$container = new MoufContainer(__DIR__."/../GeneratedClasses/instances.php", "GeneratedClasses\\Container", new MoufReflectionClassManager(), null, __DIR__."/../GeneratedClasses/Container.php");
+	
+		$instanceDescriptorClass2 = $container->createInstance("Mouf\TestClasses\TestClass2");
+	
+		$instanceDescriptor = $container->createInstance("Mouf\TestClasses\TestClass1");
+		$instanceDescriptor->getProperty("constructorParamA")->setValue(1);
+		$instanceDescriptor->getProperty("constructorParamB")->setValue($instanceDescriptorClass2);
+		$instanceDescriptor->getProperty("constructorParamC")->setValue($instanceDescriptorClass2);
+		$instanceDescriptor->setName("testClass1");
+		
+		$container->write();
+		
+		$container2 = new \GeneratedClasses\Container();
+		$testClass1 = $container2->get('testClass1');
+		$this->assertInstanceOf("Mouf\TestClasses\TestClass1", $testClass1);
 	}
 	
 	

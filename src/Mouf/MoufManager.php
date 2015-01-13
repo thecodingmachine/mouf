@@ -88,17 +88,15 @@ class MoufManager implements ContainerInterface {
 			self::$defaultInstance = new MoufManager();
 			self::$defaultInstance->configManager = new MoufConfigManager("../../../../../config.php");
 			self::$defaultInstance->componentsFileName = "../../../../../mouf/MoufComponents.php";
-			//self::$defaultInstance->requireFileName = "../MoufRequire.php";
 			self::$defaultInstance->adminUiFileName = "../../../../../mouf/MoufUI.php";
 			self::$defaultInstance->mainClassName = "Mouf";
 
 			self::$defaultInstance->containerConfigFile = __DIR__."/../../../../../mouf/instances.php";
 			self::$defaultInstance->containerStaticClassDir = "../../../../../src";
-			self::$defaultInstance->container = new MoufContainer(new MoufReflectionClassManager());
-			if (file_exists(__DIR__."/../../../../../mouf/instances.php")) {
+			self::$defaultInstance->container = new MoufContainer(__DIR__."/../../../../../mouf/instances.php", "Mouf", new MoufReflectionClassManager(), null, __DIR__."/../../../../../src/Mouf.php");
+			/*if (file_exists(__DIR__."/../../../../../mouf/instances.php")) {
 				self::$defaultInstance->container->load(__DIR__."/../../../../../mouf/instances.php");
-			}
-			//self::$defaultInstance->pathToMouf = "mouf/";
+			}*/
 
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
@@ -119,18 +117,16 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance = new MoufManager();
 		self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
 		self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
-		//self::$defaultInstance->requireFileName = "MoufAdminRequire.php";
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
 
 		self::$defaultInstance->containerConfigFile = __DIR__."/../../mouf/instances.php";
 		self::$defaultInstance->containerStaticClassDir = "../../src";
-		self::$defaultInstance->container = new MoufContainer(new MoufReflectionClassManager());
-		if (file_exists(__DIR__."/../../mouf/instances.php")) {
+		self::$defaultInstance->container = new MoufContainer(__DIR__."/../../mouf/instances.php", "Mouf\\AdminContainer", new MoufReflectionClassManager(), null, __DIR__."/../../src-dev/Mouf/AdminContainer.php");
+		/*if (file_exists(__DIR__."/../../mouf/instances.php")) {
 			self::$defaultInstance->container->load(__DIR__."/../../mouf/instances.php");
-		}
-		//self::$defaultInstance->pathToMouf = "";
+		}*/
 
 		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
 		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
@@ -287,7 +283,7 @@ class MoufManager implements ContainerInterface {
 	}
 	
 	/**
-	 * Returns the Mouf DI container associated to TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+	 * Returns the default Mouf DI container
 	 * @return \Mouf\MoufContainer
 	 */
 	public function getContainer() {
@@ -788,25 +784,10 @@ class MoufManager implements ContainerInterface {
 			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
 		}
 		
-		if ((file_exists($this->containerConfigFile) && !is_writable($this->containerConfigFile)) || (!file_exists($this->containerConfigFile) && !is_writable(dirname($this->containerConfigFile)))) {
-			throw new MoufException("Error, unable to write file ".$this->containerConfigFile);
-		}
+		// Let's first write the container files.
+		$this->container->write();
 		
-		if ((file_exists($this->containerStaticClassDir.'/'.$this->mainClassName.'.php') && !is_writable($this->containerStaticClassDir.'/'.$this->mainClassName.'.php')) || (!file_exists($this->containerStaticClassDir.'/'.$this->mainClassName.'.php') && !is_writable(dirname($this->containerStaticClassDir.'/'.$this->mainClassName.'.php')))) {
-			throw new MoufException("Error, unable to write file ".$this->containerStaticClassDir.'/'.$this->mainClassName.'.php');
-		}
-		
-		 
-		
-		/*if (!is_writable(dirname(dirname(__FILE__)."/".$this->requireFileName)) || (file_exists(dirname(__FILE__)."/".$this->requireFileName) && !is_writable(dirname(__FILE__)."/".$this->requireFileName))) {
-			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->requireFileName));
-		$filename = basename(dirname(__FILE__)."/".$this->requireFileName);
-		throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
-		}*/
-
-		// Let's start by garbage collecting weak instances.
-		$this->purgeUnreachableWeakInstances();
-
+		// Then let's write the old "MoufComponents.php" file.
 		$fp = fopen(dirname(__FILE__)."/".$this->componentsFileName, "w");
 		fwrite($fp, "<?php\n");
 		fwrite($fp, "/**\n");
@@ -824,28 +805,10 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "\$moufManager->setAllVariables(".var_export($this->variables, true).");\n");
 		fwrite($fp, "\n");
 
-		// Declare all components in one instruction
-		/*$internalDeclaredInstances = array();
-		foreach ($this->declaredInstances as $name=>$declaredInstance) {
-			if (!isset($declaredInstance["external"]) || !$declaredInstance["external"]) {
-				$internalDeclaredInstances[$name] = $declaredInstance;
-			}
-		}
-
-		// Sort all instances by key. This way, new instances are not added at the end of the array,
-		// and this reduces the number of conflicts when working in team with a version control system.
-		ksort($internalDeclaredInstances);
-
-		fwrite($fp, "\$moufManager->addComponentInstances(".var_export($internalDeclaredInstances, true).");\n");
-		fwrite($fp, "\n");
-		*/
-		
 		fwrite($fp, "unset(\$moufManager);\n");
 		fwrite($fp, "\n");
 
 		fclose($fp);
-		
-		$this->container->write($this->containerConfigFile, $this->mainClassName, $this->containerStaticClassDir);
 		
 		// Note: rewriting MoufUI here is useless, since it is only modified on update or install of packages.
 		$selfEdit = ($this->scope == MoufManager::SCOPE_ADMIN);

@@ -4,3 +4,4 @@ vendor/*
 config.php
 moufRunningActions.php
 .composer
+tests/GeneratedClasses/*

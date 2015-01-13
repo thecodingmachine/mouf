@@ -21,6 +21,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use PhpParser\Node\Stmt\TraitUseAdaptation\Alias;
 use Mouf\Composer\ClassNameUtils;
 use Mouf\Reflection\MoufReflectionClassManager;
+use GeneratedClasses\Container;
 
 /**
  * This class is managing object instanciation in the Mouf framework.
@@ -148,7 +149,8 @@ class MoufContainer implements ContainerInterface {
 	 * @param ReflectionClassManagerInterface $reflectionClassManager The object in charge of fetching class descriptor instances. Only used in edition mode.
 	 * @param ContainerInterface $delegateLookupContainer The container that should be used to perform dependency lookups (see ContainerInterop delegate lookup feeture for more info).
 	 */
-	public function __construct($mainClassName, ReflectionClassManagerInterface $reflectionClassManager = null, ContainerInterface $delegateLookupContainer = null, $mainClassFile = null) {
+	public function __construct($configFile, $mainClassName, ReflectionClassManagerInterface $reflectionClassManager = null, ContainerInterface $delegateLookupContainer = null, $mainClassFile = null) {
+		$this->configFile = $configFile;
 		$this->mainClassName = $mainClassName;
 		$this->reflectionClassManager = $reflectionClassManager;
 		if ($reflectionClassManager === null) {
@@ -162,25 +164,33 @@ class MoufContainer implements ContainerInterface {
 			$this->delegateLookupContainer = $this;
 		}
 		$this->mainClassFile = $mainClassFile;
+		
+		if (file_exists($configFile)) {
+			$this->declaredInstances = require $configFile;
+		}
 	}
 	
 	/**
 	 * Returns the class file (and eventually computes it).
 	 * 
-	 * @throws \MoufException
+	 * @throws MoufException
 	 * @return string
 	 */
 	protected function getMainClassFile() {
 		if ($this->mainClassFile === null) {
-			$classNameMapper = ClassNameMapper::createFromComposerFile(__DIR__.'/../../../../../composer.json');
-			$possibleFiles = $classNameMapper->getPossibleFileNames($this->mainClass);
-			
-			if (count($possibleFiles) == 0) {
-				throw new \MoufException("No autoload settings detected for class '".$this->mainClass."' in your composer.json file. Please add a PSR-0 or PSR-4 autoloader compatible with '".$this->mainClass."' and run 'php composer.phar dumpautoload'.");
-			}
-			$this->mainClassFile = $possibleFiles[0];
+			$this->mainClassFile = self::getClassFileFromClassName($this->mainClass);
 		}
 		return $this->mainClassFile;
+	}
+	
+	protected static function getClassFileFromClassName($className) {
+		$classNameMapper = ClassNameMapper::createFromComposerFile(__DIR__.'/../../../../../composer.json');
+		$possibleFiles = $classNameMapper->getPossibleFileNames($className);
+			
+		if (count($possibleFiles) == 0) {
+			throw new MoufException("No autoload settings detected for class '".$className."' in your composer.json file. Please add a PSR-0 or PSR-4 autoloader compatible with '".$className."' and run 'php composer.phar dumpautoload'.");
+		}
+		return $possibleFiles[0];
 	}
 	
 	/**
@@ -189,11 +199,11 @@ class MoufContainer implements ContainerInterface {
 	 * 
 	 * @param string $fileName
 	 */
-	public function load($fileName) {
+	/*public function load($fileName) {
 		$this->objectInstances = array();
 		$this->declaredInstances = require $fileName;
 		$this->configFile = $fileName;
-	}
+	}*/
 	
 	/**
 	 * Sets the reflection class manager, after instanciation.
@@ -1122,7 +1132,7 @@ class MoufContainer implements ContainerInterface {
 	 * @param array $paramValue an array of names of instance to bind to.
 	 */
 	public function bindComponentsViaSetter($instanceName, $setterName, $paramValue) {
-			if ($paramValue == null) {
+		if ($paramValue == null) {
 			unset($this->declaredInstances[$instanceName]["setterBinds"][$setterName]);
 		} else {
 			$this->declaredInstances[$instanceName]["setterBinds"][$setterName] = $paramValue;
@@ -1130,64 +1140,69 @@ class MoufContainer implements ContainerInterface {
 	}
 	
 	/**
+	 * Creates a NEW container (will reset any container with same settings).
 	 * A container is made of 2 parts: a config file, and a class (representing the container with all instances loaded).
 	 * 
 	 * @param string $configFile
 	 * @param string $className
-	 * @param string $classFile
+	 * @param string $classFile (optional) The path to the generated class. If not passed, the path will be infered from composer autoloading settings.
 	 */
 	public static function createContainer($configFile, $className, $classFile = null) {
-		self::setupFile($configFile);
-		if ($classFile == null) {
-			$classNameMapper = ClassNameMapper::createFromComposerFile(__DIR__.'/../../../../../composer.json');
-			$possibleFiles = $classNameMapper->getPossibleFileNames($className);
+		$container = new MoufContainer($configFile, $className, new MoufReflectionClassManager(), null, $classFile);
+		$container->write($configFile, $className, $classFile);		
+		
+// 		$fs = new Filesystem();
+// 		self::setupFile($configFile);
+// 		if ($classFile == null) {
+// 			$classNameMapper = ClassNameMapper::createFromComposerFile(__DIR__.'/../../../../../composer.json');
+// 			$possibleFiles = $classNameMapper->getPossibleFileNames($className);
 				
-			if (count($possibleFiles) == 0) {
-				throw new \MoufException("No autoload settings detected for class '".$this->mainClass."' in your composer.json file. Please add a PSR-0 or PSR-4 autoloader compatible with '".$this->mainClass."' and run 'php composer.phar dumpautoload'.");
-			}
-			$classFile = $possibleFiles[0];
-		}
-		self::setupFile($classFile);
+// 			if (count($possibleFiles) == 0) {
+// 				throw new MoufException("No autoload settings detected for class '".$className."' in your composer.json file. Please add a PSR-0 or PSR-4 autoloader compatible with '".$className."' and run 'php composer.phar dumpautoload'.");
+// 			}
+// 			$classFile = $possibleFiles[0];
+// 		}
+// 		self::setupFile($classFile);
 		
-		$fs->dumpFile($configFile, "<?php
-/**
- * This is a file automatically generated by the Mouf framework and contains
- * the list of instances of the container.
- *
- * Do not modify it, as it could be overwritten.
- */
+// 		$fs->dumpFile($configFile, "<?php
+// /**
+//  * This is a file automatically generated by the Mouf framework and contains
+//  * the list of instances of the container.
+//  *
+//  * Do not modify it, as it could be overwritten.
+//  */
 
-return array();");
+// return array();");
 		
-		$namespace = ClassNameUtils::getNamespace($className);
-		$shortClassName = ClassNameUtils::getClassName($className);
+// 		$namespace = ClassNameUtils::getNamespace($className);
+// 		$shortClassName = ClassNameUtils::getClassName($className);
 		
-		$classCode = "<?php
-/**
- * This is a file automatically generated by the Mouf framework and contains
- * the list of instances of the container.
- *
- * Do not modify it, as it could be overwritten.
- */
+// 		$classCode = "<?php
+// /**
+//  * This is a file automatically generated by the Mouf framework and contains
+//  * the list of instances of the container.
+//  *
+//  * Do not modify it, as it could be overwritten.
+//  */
 
-";
-		if ($namespace) {
-			$classCode .= "namespace $namespace;\n\n";
-		}
+// ";
+// 		if ($namespace) {
+// 			$classCode .= "namespace $namespace;\n\n";
+// 		}
 
-		$classCode .= "
+// 		$classCode .= "
 
-use Mouf\MoufContainer;
+// use Mouf\MoufContainer;
 
-class $shortClassName extends MoufContainer {
+// class $shortClassName extends MoufContainer {
 
-    public function __construct(ContainerInterface \$delegateLookupContainer = null, ReflectionClassManagerInterface \$reflectionClassManager = null) {
-        parent::__construct(".var_export($className, true).", \$reflectionClassManager, \$delegateLookupContainer);
-    }
-}
-";
+//     public function __construct(ContainerInterface \$delegateLookupContainer = null, ReflectionClassManagerInterface \$reflectionClassManager = null) {
+//         parent::__construct(__CLASS__, \$reflectionClassManager, \$delegateLookupContainer);
+//     }
+// }
+// ";
 		
-		$fs->dumpFile($configFile, $classCode);
+// 		$fs->dumpFile($classFile, $classCode);
 	}
 	
 	/**
@@ -1225,38 +1240,34 @@ class $shortClassName extends MoufContainer {
 	 * parameter.
 	 * 
 	 * @param string $fileName (optionnal): the file name of the configuration.
-	 * @param string $staticClassName (optionnal): the name of the class generated.
-	 * @param string $staticClassDirectory (optionnal): the directory of the static class file, relative to the directory of this file (if the class has a namespace, this directory should not contain the namespace part). It should not end with a /.
+	 * @param string $className (optionnal): the name of the class generated.
+	 * @param string $classFile (optionnal): the path to the class file, relative to the directory of this file (if the class has a namespace, this directory should not contain the namespace part). It should not end with a /.
 	 * @throws MoufException
 	 */
-	public function write($filename = null, $staticClassName = null, $staticClassDirectory = null) {
-		if ($filename == null) {
+	public function write($filename = null, $className = null, $classFile = null) {
+		$fs = new Filesystem();
+		
+		if ($filename === null) {
 			$filename = $this->configFile;
 		}
-		
-		if ((file_exists($filename) && !is_writable($filename)) || (!file_exists($filename) && !is_writable(dirname($filename)))) {
-			$dirname = realpath(dirname($filename));
-			$filename = basename($filename);
-			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
-		}
-		
-		if ($staticClassName) {
-			$staticClassFileName = $staticClassDirectory.'/'.str_replace('\\', '/', $staticClassName).'.php';
-			if ((file_exists(__DIR__."/".$staticClassFileName) && !is_writable(__DIR__."/".$staticClassFileName)) || (!file_exists(__DIR__."/".$staticClassFileName) && !is_writable(dirname(__DIR__."/".$staticClassFileName)))) {
-				throw new MoufException("Error, unable to write file ".$staticClassFileName);
+		if ($classFile === null) {
+			if ($className === null) {
+				$classFile = $this->getMainClassFile();
+			} else {
+				$classFile = self::getClassFileFromClassName($className);
 			}
 		}
-
+		if ($className === null) {
+			$className = $this->mainClassName;
+		}
+		
+		self::setupFile($filename);
+		self::setupFile($classFile);
+		
 		// Let's start by garbage collecting weak instances.
 		$this->purgeUnreachableWeakInstances();
 
-		$fp = fopen($filename, "w");
-		fwrite($fp, "<?php\n");
-		fwrite($fp, "/**\n");
-		fwrite($fp, " * This is a file automatically generated by the Mouf framework.\n");
-		fwrite($fp, " * Unless you know what you are doing, do not modify it, as it could be overwritten.\n");
-		fwrite($fp, " */\n");
-
+		//////////////////////// Lets generate the Config file ///////////////////////
 		// Declare all components in one instruction
 		$internalDeclaredInstances = array();
 		foreach ($this->declaredInstances as $name=>$declaredInstance) {
@@ -1264,175 +1275,194 @@ class $shortClassName extends MoufContainer {
 				$internalDeclaredInstances[$name] = $declaredInstance;
 			}
 		}
-
+		
 		// Sort all instances by key. This way, new instances are not added at the end of the array,
 		// and this reduces the number of conflicts when working in team with a version control system.
 		ksort($internalDeclaredInstances);
-
-		fwrite($fp, "return ".var_export($internalDeclaredInstances, true).";\n");
-		fwrite($fp, "\n");
-
-		fclose($fp);
 		
-		if ($staticClassFileName) {
-			$fp2 = fopen(__DIR__."/".$staticClassFileName, "w");
-
-			fwrite($fp2, "/**
- * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
- * This object can be used to get the objects manage by MOUF.
+		$code = "<?php
+/**
+ * This is a file automatically generated by the Mouf framework and contains
+ * the list of instances of the container.
  *
+ * Unless you know what you are doing, do not modify it, as it could be overwritten.
  */
-use Mouf\MoufManager;
-					
- class ".$staticClassName." {
- ");
-			// Now, let's export the closures!
-			/***** closures Start ******/
-			fwrite($fp2, "public function getClosures() {
-			return [\n");
-			
-			$targetArray = [];
-			foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
-				if (isset($instanceDesc['constructor'])) {
-					foreach ($instanceDesc['constructor'] as $key=>$param) {
-						if ($param['type'] == 'php') {
-							try {
-								CodeValidatorService::validateCode($param['value']);
-								$targetArray[$instanceName]['constructor'][$key] = $param['value'];
-							} catch (\PhpParser\Error $ex) {
-								error_log("Error in callback declared code for instance '$instanceName', constructor argument '$key': ".$ex->getMessage());
-								$targetArray[$instanceName]['constructor'][$key] = $ex;
-							}
+		
+return ".var_export($internalDeclaredInstances, true).";\n";
+		
+		$fs->dumpFile($filename, $code);
+		
+		//////////////////////// Lets generate the class file ///////////////////////
+		$namespace = ClassNameUtils::getNamespace($className);
+		$shortClassName = ClassNameUtils::getClassName($className);
+		
+		$classCode = "<?php
+/**
+ * This is a file automatically generated by the Mouf framework and contains
+ * the class representing the container.
+ *
+ * Do not modify it, as it could be overwritten.
+ */
+";
+		if ($namespace) {
+			$classCode .= "namespace $namespace;\n\n";
+		}
+
+
+		$classCode .= "
+use Mouf\MoufContainer;
+
+class $shortClassName extends MoufContainer {
+
+    public function __construct(ContainerInterface \$delegateLookupContainer = null, ReflectionClassManagerInterface \$reflectionClassManager = null) {
+        parent::__construct(__DIR__.".var_export("/".$fs->makePathRelative(dirname($filename), dirname($classFile)).basename($filename), true).", __CLASS__, \$reflectionClassManager, \$delegateLookupContainer);
+    }
+
+";
+		// Now, let's export the closures!
+		/***** closures Start ******/
+		$classCode .= "    public function getClosures() {
+		return [\n";
+		
+		$targetArray = [];
+		foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
+			if (isset($instanceDesc['constructor'])) {
+				foreach ($instanceDesc['constructor'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['constructor'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', constructor argument '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['constructor'][$key] = $ex;
 						}
 					}
+				}
+			}
+			if (isset($instanceDesc['fieldProperties'])) {
+				foreach ($instanceDesc['fieldProperties'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', public property '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
+						}
+					}
+				}
+			}
+			if (isset($instanceDesc['setterProperties'])) {
+				foreach ($instanceDesc['setterProperties'] as $key=>$param) {
+					if ($param['type'] == 'php') {
+						try {
+							CodeValidatorService::validateCode($param['value']);
+							$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
+						} catch (\PhpParser\Error $ex) {
+							error_log("Error in callback declared code for instance '$instanceName', setter '$key': ".$ex->getMessage());
+							$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
+						}
+					}
+				}
+			}
+			if (isset($instanceDesc['code']) && !isset($instanceDesc['error'])) {
+				$targetArray[$instanceName] = $instanceDesc['code'];
+			}
+		}
+		foreach ($targetArray as $instanceName=>$instanceDesc) {
+			// If the whole instance is a PHP declaration
+			if (is_string($instanceDesc)) {
+				$classCode .=  "            ".var_export($instanceName, true)." => function(ContainerInterface \$container) {\n				";
+				$classCode .= $instanceDesc;
+				$classCode .= "\n            },\n";
+			} else {
+				// If properties are a PHP declaration
+				$classCode .= "            ".var_export($instanceName, true)." => [\n";
+				if (isset($instanceDesc['constructor'])) {
+					$classCode .= "                'constructor' => [\n";
+					foreach ($instanceDesc['constructor'] as $key=>$code) {
+						$classCode .= "                    ".var_export($key, true)." => ";
+						if (!$code instanceof \PhpParser\Error) {
+							$classCode .= "function(ContainerInterface \$container) {\n                        ";
+							$classCode .= $code;
+							$classCode .= "\n                },\n";
+						} else {
+							// If the code is an exception we put the error message instead of a callback in the closures array
+							$classCode .= var_export($code->getMessage(), true).",\n";
+						}
+					}
+					$classCode .= "                ],\n";
 				}
 				if (isset($instanceDesc['fieldProperties'])) {
-					foreach ($instanceDesc['fieldProperties'] as $key=>$param) {
-						if ($param['type'] == 'php') {
-							try {
-								CodeValidatorService::validateCode($param['value']);
-								$targetArray[$instanceName]['fieldProperties'][$key] = $param['value'];
-							} catch (\PhpParser\Error $ex) {
-								error_log("Error in callback declared code for instance '$instanceName', public property '$key': ".$ex->getMessage());
-								$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
-							}
+					$classCode .= "                'fieldProperties' => [\n";
+					foreach ($instanceDesc['fieldProperties'] as $key=>$code) {
+						$classCode .= "                    ".var_export($key, true)." => ";
+						if (!$code instanceof \PhpParser\Error) {
+							$classCode .= "function(ContainerInterface \$container) {\n                        ";
+							$classCode .= $code;
+							$classCode .= "\n                    },\n";
+						} else {
+							// If the code is an exception we put the error message instead of a callback in the closures array
+							$classCode .= var_export($code->getMessage(), true).",\n";
 						}
 					}
+					$classCode .= "                ],\n";
 				}
 				if (isset($instanceDesc['setterProperties'])) {
-					foreach ($instanceDesc['setterProperties'] as $key=>$param) {
-						if ($param['type'] == 'php') {
-							try {
-								CodeValidatorService::validateCode($param['value']);
-								$targetArray[$instanceName]['setterProperties'][$key] = $param['value'];
-							} catch (\PhpParser\Error $ex) {
-								error_log("Error in callback declared code for instance '$instanceName', setter '$key': ".$ex->getMessage());
-								$targetArray[$instanceName]['fieldProperties'][$key] = $ex;
-							}
+					$classCode .= "                'setterProperties' => [\n";
+					foreach ($instanceDesc['setterProperties'] as $key=>$code) {
+						$classCode .= "                    ".var_export($key, true)." => ";
+						if (!$code instanceof \PhpParser\Error) {
+							$classCode .= "function(ContainerInterface \$container) {\n                        ";
+							$classCode .= $code;
+							$classCode .= "\n                    },\n";
+						} else {
+							// If the code is an exception we put the error message instead of a callback in the closures array
+							$classCode .= var_export($code->getMessage(), true).",\n";
 						}
 					}
+					$classCode .= "                ],\n";
 				}
-				if (isset($instanceDesc['code']) && !isset($instanceDesc['error'])) {
-					$targetArray[$instanceName] = $instanceDesc['code'];
-				}
+				$classCode .= "            ],\n";
 			}
-			foreach ($targetArray as $instanceName=>$instanceDesc) {
-				// If the whole instance is a PHP declaration
-				if (is_string($instanceDesc)) {
-					fwrite($fp2, "			".var_export($instanceName, true)." => function(ContainerInterface \$container) {\n				");
-					fwrite($fp2, $instanceDesc);
-					fwrite($fp2, "\n			},\n");
-				} else {
-					// If properties are a PHP declaration
-					fwrite($fp2, "			".var_export($instanceName, true)." => [\n");
-					if (isset($instanceDesc['constructor'])) {
-						fwrite($fp2, "				'constructor' => [\n");
-						foreach ($instanceDesc['constructor'] as $key=>$code) {
-							fwrite($fp2, "					".var_export($key, true)." => ");
-							if (!$code instanceof \PhpParser\Error) {
-								fwrite($fp2, "function(ContainerInterface \$container) {\n						");
-								fwrite($fp2, $code);
-								fwrite($fp2, "\n					},\n");
-							} else {
-								// If the code is an exception we put the error message instead of a callback in the closures array
-								fwrite($fp2, var_export($code->getMessage(), true).",\n");
-							}
-						}
-						fwrite($fp2, "				],\n");
-					}
-					if (isset($instanceDesc['fieldProperties'])) {
-						fwrite($fp2, "				'fieldProperties' => [\n");
-						foreach ($instanceDesc['fieldProperties'] as $key=>$code) {
-							fwrite($fp2, "					".var_export($key, true)." => ");
-							if (!$code instanceof \PhpParser\Error) {
-								fwrite($fp2, "function(ContainerInterface \$container) {\n						");
-								fwrite($fp2, $code);
-								fwrite($fp2, "\n					},\n");
-							} else {
-								// If the code is an exception we put the error message instead of a callback in the closures array
-								fwrite($fp2, var_export($code->getMessage(), true).",\n");
-							}
-						}
-						fwrite($fp2, "				],\n");
-					}
-					if (isset($instanceDesc['setterProperties'])) {
-						fwrite($fp2, "				'setterProperties' => [\n");
-						foreach ($instanceDesc['setterProperties'] as $key=>$code) {
-							fwrite($fp2, "					".var_export($key, true)." => ");
-							if (!$code instanceof \PhpParser\Error) {
-								fwrite($fp2, "function(ContainerInterface \$container) {\n						");
-								fwrite($fp2, $code);
-								fwrite($fp2, "\n					},\n");
-							} else {
-								// If the code is an exception we put the error message instead of a callback in the closures array
-								fwrite($fp2, var_export($code->getMessage(), true).",\n");
-							}
-						}
-						fwrite($fp2, "				],\n");
-					}
-					fwrite($fp2, "			],\n");
-				}
-			}
-			
-			fwrite($fp2, "		];
-		}\n");
-			/***** closures end ******/
-			
-			
-			$getters = array();
-			foreach ($this->declaredInstances as $name=>$classDesc) {
-				if (!isset($classDesc['class'])) {
-					if (isset($classDesc['code'])) {
-						continue;
-					}
-					throw new MoufException("No class for instance '$name'");
-				}
-				if (isset($classDesc['anonymous']) && $classDesc['anonymous']) {
-					continue;
-				}
-				$className = $classDesc['class'];
-				$getter = self::generateGetterString($name);
-				if (isset($getters[strtolower($getter)])){
-					$i = 0;
-					while (isset($getters[strtolower($getter."_$i")])) {
-						$i++;
-					}
-					$getter = $getter."_$i";
-				}
-				$getters[strtolower($getter)] = true;
-				fwrite($fp2, "	/**\n");
-				fwrite($fp2, "	 * @return $className\n");
-				fwrite($fp2, "	 */\n");
-				fwrite($fp2, "	 public static function ".$getter."() {\n");
-				fwrite($fp2, "	 	return MoufManager::getMoufManager()->get(".var_export($name,true).");\n");
-				fwrite($fp2, "	 }\n\n");
-			}
-			fwrite($fp2, "}\n");
-				
-				
-			fclose($fp2);
 		}
 		
+		$classCode .= "		];
+	}\n";
+		/***** closures end ******/
+		
+		
+		$getters = array();
+		foreach ($this->declaredInstances as $name=>$classDesc) {
+			if (!isset($classDesc['class'])) {
+				if (isset($classDesc['code'])) {
+					continue;
+				}
+				throw new MoufException("No class for instance '$name'");
+			}
+			if (isset($classDesc['anonymous']) && $classDesc['anonymous']) {
+				continue;
+			}
+			$className = $classDesc['class'];
+			$getter = self::generateGetterString($name);
+			if (isset($getters[strtolower($getter)])){
+				$i = 0;
+				while (isset($getters[strtolower($getter."_$i")])) {
+					$i++;
+				}
+				$getter = $getter."_$i";
+			}
+			$getters[strtolower($getter)] = true;
+			$classCode .= "    /**\n";
+			$classCode .= "     * @return $className\n";
+			$classCode .= "     */\n";
+			$classCode .= "    public static function ".$getter."() {\n";
+			$classCode .= "        return \$this->get(".var_export($name,true).");\n";
+			$classCode .= "    }\n\n";
+		}
+		$classCode .= "}\n";
+			
+		$fs->dumpFile($classFile, $classCode);
 	}
 
 	/**
