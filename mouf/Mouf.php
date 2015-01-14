@@ -2,13 +2,16 @@
 /*
  * This file is part of the Mouf core package.
  *
- * (c) 2012 David Negrier <david@mouf-php.com>
+ * (c) 2012-2015 David Negrier <david@mouf-php.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
 use Mouf\MoufManager;
+
+define('ROOT_PATH', realpath(__DIR__."/..").DIRECTORY_SEPARATOR);
+
 
 // Let's add to the project's autoloader to the Mouf classes.
 // For Mouf classes to be detected before the projet's classes, projects classes must be autoloaded first.
@@ -55,7 +58,6 @@ MoufManager::switchToHidden();
 require_once 'MoufComponents.php';
 
 
-define('ROOT_PATH', realpath(__DIR__."/..").DIRECTORY_SEPARATOR);
 
 /*if (file_exists(__DIR__.'/../config.php')) {
 	require_once __DIR__.'/../config.php';

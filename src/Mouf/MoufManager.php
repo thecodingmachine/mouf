@@ -122,6 +122,7 @@ class MoufManager implements ContainerInterface {
 			/*if (file_exists(__DIR__."/../../../../../mouf/instances.php")) {
 				self::$defaultInstance->container->load(__DIR__."/../../../../../mouf/instances.php");
 			}*/
+			self::$defaultInstance->oldv20className = 'Mouf';
 
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
@@ -153,7 +154,8 @@ class MoufManager implements ContainerInterface {
 		/*if (file_exists(__DIR__."/../../mouf/instances.php")) {
 			self::$defaultInstance->container->load(__DIR__."/../../mouf/instances.php");
 		}*/
-
+		self::$defaultInstance->oldv20className = 'MoufAdmin';
+		
 		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
 		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 	}
@@ -161,6 +163,8 @@ class MoufManager implements ContainerInterface {
 	private $configFile;
 	private $className;
 	private $classFile;
+	
+	private $oldv20className;
 	
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
@@ -822,7 +826,7 @@ class MoufManager implements ContainerInterface {
  *
  * @deprecated
  */
-class Mouf {
+class '.$this->oldv20className.' {
 	public static function __callstatic($name, $arguments) {
 		if (substr($name, 0, 3) == "get") {
 			$moufManager = MoufManager::getMoufManager();
@@ -831,14 +835,23 @@ class Mouf {
 				$lowercaseInstanceName = strtolower(substr($uppercaseInstanceName, 0 , 1)).substr($uppercaseInstanceName, 1);
 				if ($moufManager->has($lowercaseInstanceName)) {
 					return $moufManager->get($lowercaseInstanceName);
-				} elseif ($moufManager->has($uppercaseInstanceName)) {
+				}
+				$lowercaseInstanceName = str_replace("_", ".", $lowercaseInstanceName);
+				if ($moufManager->has($lowercaseInstanceName)) {
+					return $moufManager->get($lowercaseInstanceName);
+				}
+				if ($moufManager->has($uppercaseInstanceName)) {
+					return $moufManager->get($uppercaseInstanceName);
+				}
+				$uppercaseInstanceName = str_replace("_", ".", $uppercaseInstanceName);
+				if ($moufManager->has($uppercaseInstanceName)) {
 					return $moufManager->get($uppercaseInstanceName);
 				}
 			}
 				
 		}
 
-		throw new Mouf\MoufException("Unknown method \'$name\' in Mouf class.");
+		throw new Mouf\MoufException("Unknown method \'$name\' in '.$this->oldv20className.' class.");
 	}
 }');
 		
