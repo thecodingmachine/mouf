@@ -15,6 +15,7 @@ use Mouf\Reflection\MoufReflectionClass;
 use Mouf\Reflection\MoufReflectionClassManager;
 use Mouf\Reflection\MoufXmlReflectionClassManager;
 use Interop\Container\ContainerInterface;
+use Mouf\Composer\ClassNameMapper;
 
 /**
  * The class managing object instanciation in the Mouf framework.
@@ -82,18 +83,42 @@ class MoufManager implements ContainerInterface {
 	/**
 	 * Instantiates the default instance of the MoufManager.
 	 * Does nothing if the default instance is already instanciated.
+	 * 
+	 * @param string $configFile
+	 * @param string $className
+	 * @param string $classFile Path to file containing the class, relative to ROOT_PATH.
+	 * @throws MoufException
 	 */
-	public static function initMoufManager() {
+	public static function initMoufManager($configFile = null, $className = null, $classFile = null) {
 		if (self::$defaultInstance == null) {
+			if ($configFile == null) {
+				// If we are here, we come from a Mouf 2.0 MoufComponents file.
+				// We need to migrate to a new class name and all!
+				
+				// First, we need find a valid class name for the container (one that is autoloadable).
+				$classNameMapper = ClassNameMapper::createFromComposerFile(__DIR__.'/../../../../../composer.json');
+				$possibleNamespaces = $classNameMapper->getManagedNamespaces();
+				if (count($possibleNamespaces) == 0) {
+					throw new MoufException("You are migrating from Mouf 2.0. Mouf needs to generate a new class that is 'autoloadable', but could not find a PSR-0 or PSR-4 directive in your composer.json file.");
+				}
+				$namespace = $possibleNamespaces[0];
+				$className = $namespace."Container";
+				
+				$possibleFileNames = $classNameMapper->getPossibleFileNames($className);
+				$classFile = $possibleFileNames[0];
+				
+				$configFile = "mouf/instances.php";
+			}
 			self::$defaultInstance = new MoufManager();
 			self::$defaultInstance->configManager = new MoufConfigManager("../../../../../config.php");
 			self::$defaultInstance->componentsFileName = "../../../../../mouf/MoufComponents.php";
 			self::$defaultInstance->adminUiFileName = "../../../../../mouf/MoufUI.php";
-			self::$defaultInstance->mainClassName = "Mouf";
 
-			self::$defaultInstance->containerConfigFile = __DIR__."/../../../../../mouf/instances.php";
-			self::$defaultInstance->containerStaticClassDir = "../../../../../src";
-			self::$defaultInstance->container = new MoufContainer(__DIR__."/../../../../../mouf/instances.php", "Mouf", new MoufReflectionClassManager(), null, __DIR__."/../../../../../src/Mouf.php");
+			self::$defaultInstance->configFile = $configFile;
+			self::$defaultInstance->className = $className;
+			self::$defaultInstance->classFile = $classFile;
+			
+			self::$defaultInstance->container = new MoufContainer(__DIR__."/../../../../../".$configFile, $className, new MoufReflectionClassManager(), null, __DIR__.'/../../../../../'.$classFile);
 			/*if (file_exists(__DIR__."/../../../../../mouf/instances.php")) {
 				self::$defaultInstance->container->load(__DIR__."/../../../../../mouf/instances.php");
 			}*/
@@ -118,12 +143,13 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
 		self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
-		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
+		
+		self::$defaultInstance->configFile = __DIR__."/../../mouf/instances.php";
+		self::$defaultInstance->className = "Mouf\\AdminContainer";
+		self::$defaultInstance->classFile = "src-dev/Mouf/AdminContainer.php";
 
-		self::$defaultInstance->containerConfigFile = __DIR__."/../../mouf/instances.php";
-		self::$defaultInstance->containerStaticClassDir = "../../src";
-		self::$defaultInstance->container = new MoufContainer(__DIR__."/../../mouf/instances.php", "Mouf\\AdminContainer", new MoufReflectionClassManager(), null, __DIR__."/../../src-dev/Mouf/AdminContainer.php");
+		self::$defaultInstance->container = new MoufContainer(self::$defaultInstance->configFile, self::$defaultInstance->className, new MoufReflectionClassManager(), null, __DIR__."/../../".self::$defaultInstance->classFile);
 		/*if (file_exists(__DIR__."/../../mouf/instances.php")) {
 			self::$defaultInstance->container->load(__DIR__."/../../mouf/instances.php");
 		}*/
@@ -131,6 +157,10 @@ class MoufManager implements ContainerInterface {
 		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
 		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 	}
+	
+	private $configFile;
+	private $className;
+	private $classFile;
 	
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
@@ -153,19 +183,6 @@ class MoufManager implements ContainerInterface {
 	 */
 	private $container;
 	
-	/**
-	 * The file name of the instances config file.
-	 * 
-	 * @var string
-	 */
-	private $containerConfigFile;
-	
-	/**
-	 * The file name of the instances config file.
-	 * 
-	 * @var string
-	 */
-	private $containerStaticClassDir;
 	
 	/**
 	 * The array of component instances managed by mouf.
@@ -260,20 +277,6 @@ class MoufManager implements ContainerInterface {
 	private $adminUiFileName;
 
 	/**
-	 * The name of the main class that will be generated (by default: Mouf)
-	 *
-	 * @var string
-	 */
-	private $mainClassName;
-	
-	/**
-	 * The instance of the main class
-	 *
-	 * @var string
-	 */
-	private $mainClass;
-
-	/**
 	 * Returns the config manager (the service in charge of writing the config.php file).
 	 *
 	 * @return MoufConfigManager
@@ -357,7 +360,11 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function addComponentInstances(array $definition) {
 		$this->container->addComponentInstances($definition);
-		$this->container->write();
+		
+		// If we are here, we are on a MoufComponent from Mouf 2.0.
+		// Let's rewrite the file!		
+		$this->rewriteMouf();
+		//$this->container->write();
 	}
 	
 
@@ -796,7 +803,9 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, " */\n");
 		fwrite($fp, "use Mouf\MoufManager;\n");
 		fwrite($fp, "use Interop\Container\ContainerInterface;\n");
-		fwrite($fp, "MoufManager::initMoufManager();\n");
+		
+		// TODO: idea: store this in a "di.php" file autogenerated from composer.json files on "composer update" (using an installer).
+		fwrite($fp, "MoufManager::initMoufManager(".var_export($this->configFile,true).", ".var_export($this->className,true).", ".var_export($this->classFile,true).");\n");
 		fwrite($fp, "\$moufManager = MoufManager::getMoufManager();\n");
 		fwrite($fp, "\n");
 		fwrite($fp, "\$moufManager->getConfigManager()->setConstantsDefinitionArray(".var_export($this->getConfigManager()->getConstantsDefinitionArray(), true).");\n");
@@ -807,6 +816,32 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "\n");
 
 		fwrite($fp, "unset(\$moufManager);\n");
+		
+		fwrite($fp, '/**
+ * Bridge class to enable compatibility with Mouf 2.0
+ *
+ * @deprecated
+ */
+class Mouf {
+	public static function __callstatic($name, $arguments) {
+		if (substr($name, 0, 3) == "get") {
+			$moufManager = MoufManager::getMoufManager();
+			$uppercaseInstanceName = substr($name, 3);
+			if ($uppercaseInstanceName) {
+				$lowercaseInstanceName = strtolower(substr($uppercaseInstanceName, 0 , 1)).substr($uppercaseInstanceName, 1);
+				if ($moufManager->has($lowercaseInstanceName)) {
+					return $moufManager->get($lowercaseInstanceName);
+				} elseif ($moufManager->has($uppercaseInstanceName)) {
+					return $moufManager->get($uppercaseInstanceName);
+				}
+			}
+				
+		}
+
+		throw new Mouf\MoufException("Unknown method \'$name\' in Mouf class.");
+	}
+}');
+		
 		fwrite($fp, "\n");
 
 		fclose($fp);
@@ -1094,17 +1129,6 @@ class MoufManager implements ContainerInterface {
 	public function getClassDescriptor($name) {
 		return $this->container->getReflectionClassManager()->getReflectionClass($name);
 	}
-	
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
-	// FIXME: MOVE THIS TO MoufContainer!!!!!
 	
 	/**
 	* Returns the list of public properties' names configured for this instance.

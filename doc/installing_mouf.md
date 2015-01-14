@@ -5,7 +5,7 @@ Installing Mouf
 
 Requirements:
 ---------------------
-To run Mouf 2, you will need PHP 5.4+ running on Apache.
+To run Mouf 2.1+, you will need PHP 5.4+ running on Apache.
 The **php_curl** and **php_openssl** extensions must be enabled, as well as the *mod_rewrite* for Apache.
 
 Your *memory_limit* settings in *php.ini* must be set at least to 256M.
@@ -14,7 +14,7 @@ Your *memory_limit* settings in *php.ini* must be set at least to 256M.
 a good idea to start with the highest possible PHP version.</div>
 
 Download Mouf 2:
---------------------------
+----------------
 
 Mouf comes as a composer package (the name of the package is mouf/mouf)
 
@@ -38,19 +38,29 @@ Mouf requires that file to be at this exact place.</div>
 ### Using Composer to download Mouf
 At this point, you should have a composer.phar file at the root of your project.
 In the same directory create a <code>composer.json</code> file:
-<pre>
+
+```
 {
+	"autoload" : {
+		"psr-4" : {
+			"MyNamespace\\" : "src/"
+		}
+	},
     "require": {
-        "mouf/mouf": "~2.0"
+        "mouf/mouf": "~2.1"
     },
     "minimum-stability": "dev" 
 }
-</pre>
+```
 
-and finally, from the command line, at the root of your project, run:
-<pre>
+<div class="alert alert-info"><strong>Heads up!</strong> Please edit the <code>MyNamespace</code> part and put 
+a namespace you will be using for your application.</div> 
+
+Finally, from the command line, at the root of your project, run:
+
+```
 php composer.phar install
-</pre>
+```
 
 For Windows users, make sure your "php.exe" file is part of [your PATH environment variable](http://www.php.net/manual/en/faq.installation.php#faq.installation.addtopath).
 

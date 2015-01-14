@@ -104,6 +104,9 @@
 							"url" : "doc/troubleshooting_install.md"
 						}
 					]
+				}, {
+					"title" : "Migrating from Mouf 2.0",
+					"url" : "doc/migrating.md"
 				}
 			]
 		}

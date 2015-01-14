@@ -493,15 +493,13 @@ class MoufContainer implements ContainerInterface {
 		}
 	}
 
-	private function getClosures() {
-		if ($this->mainClass === null){
-			$this->mainClass = new $this->mainClassName();
-		}
-		if ($this->closures === null){
-			$this->closures = $this->mainClass->getClosures();
-		}
-	
-		return $this->closures;
+	/**
+	 * Returns the list of all closures associated to instances.
+	 * 
+	 * @return array<string, Closure>
+	 */
+	protected function _getClosures() {
+		return [];
 	}
 	
 	/**
@@ -519,7 +517,7 @@ class MoufContainer implements ContainerInterface {
 				if (isset($instanceDefinition['error'])) {
 					throw new MoufException("The code defining instance '$instanceName' is invalid: ".$instanceDefinition['error']);
 				}
-				$closures = $this->getClosures();
+				$closures = $this->_getClosures();
 				$closure = $closures[$instanceName];
 				$instance = $closure($this->delegateLookupContainer);
 				$this->objectInstances[$instanceName] = $instance;
@@ -552,7 +550,7 @@ class MoufContainer implements ContainerInterface {
 									$constructorParameters[] = constant($value);
 									break;
 								case "php":
-									$closures = $this->getClosures();
+									$closures = $this->_getClosures();
 									$closure = $closures[$instanceName]['constructor'][$key];
 									if ($closure instanceof \Closure) {
 										$constructorParameters[] = $closure($this->delegateLookupContainer);
@@ -608,7 +606,7 @@ class MoufContainer implements ContainerInterface {
 							$object->$key = constant($valueDef["value"]);
 							break;
 						case "php":
-							$closures = $this->getClosures();
+							$closures = $this->_getClosures();
 							$closure = $closures[$instanceName]['fieldProperties'][$key];
 							if ($closure instanceof \Closure) {
 								$closure = $closure->bindTo($object);
@@ -640,7 +638,7 @@ class MoufContainer implements ContainerInterface {
 							$object->$key(constant($valueDef["value"]));
 							break;
 						case "php":
-							$closures = $this->getClosures();
+							$closures = $this->_getClosures();
 							$closure = $closures[$instanceName]['setterProperties'][$key];
 							if ($closure instanceof \Closure) {
 								$closure = $closure->bindTo($object);
@@ -1323,7 +1321,7 @@ class $shortClassName extends MoufContainer {
 ";
 		// Now, let's export the closures!
 		/***** closures Start ******/
-		$classCode .= "    public function getClosures() {
+		$classCode .= "    protected function _getClosures() {
 		return [\n";
 		
 		$targetArray = [];
