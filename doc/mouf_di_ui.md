@@ -173,21 +173,21 @@ Using the instances
 
 We have now successfully created our instances, but we don't know yet how to use them.
 
-When you configure your instances, Mouf creates a `Mouf` class. This class contains functions
-that will allow you to access your instances, through **static getters**. We have 2 instances: `hero`
-and `enemy`. We can access those through the `Mouf::getHero()` and `Mouf::getEnemy()` method.
-
-Before calling the `Mouf` class, you have to be sure that Mouf DI component is initialized. This
-is simply done by including the `mouf/Mouf.php` file.
+The easiest way to do this (not necessarilly the cleanest one) it to use the `Mouf\RootContainer` class. 
+This class contains functions that will allow you to access your instances, through a **static getter**.
+We have 2 instances: `hero` and `enemy`. We can access those through the 
+`RootContainer::get('hero')` and `RootContainer::get('enemy')` method.
 
 So to have a fight between our characters, we would simply write:
 
 **fight.php**
 ```php
-require 'mouf/Mouf.php';
+use Mouf\RootContainer;
 
-$hero = Mouf::getHero();
-$enemy = Mouf::getEnemy();
+require 'vendor/autoload.php';
+
+$hero = RootContainer::get('hero');
+$enemy = RootContainer::get('enemy');
 
 $hero->attack($enemy);
 // Will print "I'm dead!"
@@ -198,25 +198,27 @@ Container-interop compatibility
 Mouf is [fully compatible with the **container-interop** project](http://github.com/container-interop/container-interop).
 Actually, Mouf is one of the project that started **container-interop**.
 
-You can access the instance by its name, using the `MoufManager` class. For instance:
+The `RootContainer` is only a facade for a composite container containing all containers that could be found in the
+application (including Mouf's container).
+You can access the container instance, using the `MoufManager` class. For instance:
 
 ```php
 require_once 'mouf/Mouf.php';
 
 // The $moufManager object represents the DI container
-$moufManager = MoufManager::getMoufManager();
+$moufContainer = MoufManager::getMoufManager()->getContainer();
 
-if ($moufManager->has('hero')) {
-	$hero = $moufManager->get('hero');
+if ($moufContainer->has('hero')) {
+	$hero = $moufContainer->get('hero');
 }
 
 ```
 
-Using the *Mouf* class and the *MoufManager* class
---------------------------------------------------
+Using the *RootContainer* class and the *MoufManager* class
+-----------------------------------------------------------
 
 <div class="alert alert-info"><strong>Warning!</strong> It is usually not considered a good
-practice to access your instances using the <code>Mouf</code> class or the
+practice to access your instances using the <code>RootContainer</code> class or the
 <code>MoufManager</code> class. Indeed, if you do so, you are using the dependency
 injection container as a <strong>service locator</strong>. The service locator pattern
 is usually considered harmful, because your code depends on the service locator.
@@ -224,7 +226,7 @@ Instead, you should rely on an <a href="http://mouf-php.com/packages/mouf/mvc.sp
 This way, you get a controller with all instances directly injected.</div>
 
 As a rule of thumb, if your code is using a nice MVC framework (like Splash) and
-if your code is calling the `Mouf` class or the `MoufManager` class, you are probably doing
+if your code is calling the `RootContainer` class or the `MoufManager` class, you are probably doing
 something wrong and you might want to reconsider what you are doing.
 
 If you want to read more about why the service locator pattern is an anti-pattern,
@@ -236,7 +238,7 @@ Where are the instances stored?
 
 So far, we used Mouf as a black box. But there is no magic, Mouf has to store the 
 instances we defined somewhere! Actually, all instances are stored in the
-**mouf/MoufComponents.php** file.
+**mouf/instances.php** file.
 
 Usually, you will never have a look at that file. It is quite long and you never edit
 it manually, instead you use Mouf UI.
@@ -249,11 +251,11 @@ Instances are all stored in one big array. Each key is an instance name and
 the value is a descriptor of the instance. It is usually not that difficult
 to resolve conflicts, since the array is self-descriptive.
 
-Here is the portion of the **MoufComponents.php** file relative to the `hero` instance
+Here is the portion of the **instances.php** file relative to the `hero` instance
 we just created:
 
 ```php
-$moufManager->addComponentInstances(array (
+return array (
   ...
   'hero' => 
   array (
@@ -294,6 +296,22 @@ $moufManager->addComponentInstances(array (
   ...
 ));
 ```
+
+Backward compatibility
+----------------------
+
+Before Mouf 2.1, the `RootContainer` class did not exist. Instead, there was a `Mouf` class that could be used
+through the code. If you need this class for backward compatibility reasons, you can still get it by requiring
+the `mouf/Mouf.php` file into your code:
+
+```php
+require_once 'mouf/Mouf.php';
+
+$hero = Mouf::getHero();
+```
+
+Please avoid using the `Mouf` class as it has been deprecated and will be removed in future releases.
+
 
 Going further
 -------------
