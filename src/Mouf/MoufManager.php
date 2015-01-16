@@ -108,6 +108,10 @@ class MoufManager implements ContainerInterface {
 				$classFile = $possibleFileNames[0];
 				
 				$configFile = "mouf/instances.php";
+				
+				// We also need to modify the composer.json file to make it load the new container in RootContainer:
+				self::migrateComposerJson($className);
+				self::migrateMoufPhpFile();			
 			}
 			self::$defaultInstance = new MoufManager();
 			self::$defaultInstance->configManager = new MoufConfigManager("../../../../../config.php");
@@ -158,6 +162,76 @@ class MoufManager implements ContainerInterface {
 		
 		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
 		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
+	}
+	
+	/**
+	 * Adds the containerinterop autoloading capability to composer.json.
+	 * 
+	 * @param string $className
+	 */
+	private static function migrateComposerJson($className) {
+		$composer = json_decode(file_get_contents(__DIR__.'/../../../../../composer.json'), true);
+		
+		// Let's set the factory
+		$factoryCode = "function(\$c) { return new $className(\$c); }";
+		
+		$done = false;
+		if (isset($composer['extra']['container-interop']['container-factory'])) {
+			$factories = &$composer['extra']['container-interop']['container-factory'];
+			
+			if (is_array($factories)) {
+				foreach ($factories as &$factory) {
+					if (is_array($factory)) {
+						if ($factory['name'] == 'default') {
+							$factory['factory'] = $factoryCode;
+							$done = true;
+						}
+					}
+				}
+			}
+		} 
+		if (!$done) {
+			$composer['extra']['container-interop']['container-factory'][] = [
+					"name" => "default",
+					"description" => "Default Mouf container",
+					"factory" => $factoryCode
+			];
+		}
+		
+		// Let's autoload config.php
+		$done = false;
+		if (isset($composer['autoload']['files'])) {
+			if ($composer['autoload']['files']) {
+				foreach ($composer['autoload']['files'] as $file) {
+					if ($file == "config.php") {
+						$done = true;
+					}
+				}
+			}
+		}
+		if (!$done) {
+			$composer['autoload']['files'][] = "config.php";
+		}
+
+		$ret = file_put_contents(__DIR__.'/../../../../../composer.json', json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+		if ($ret == false) {
+			throw new MoufException("Failed to rewrite composer.json.");
+		}
+	}
+	
+	private static function migrateMoufPhpFile() {
+		$moufStr = "<?php
+define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
+//require_once __DIR__.'/../config.php';
+define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
+		
+require_once __DIR__.'/../vendor/autoload.php';
+		
+require_once 'MoufComponents.php';
+?>";
+		
+		file_put_contents(__DIR__."/../../../../../mouf/Mouf.php", $moufStr);
+		chmod(__DIR__."/../../../../../mouf/Mouf.php", 0664);
 	}
 	
 	private $configFile;

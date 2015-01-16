@@ -37,7 +37,7 @@ if (!file_exists("../../../../mouf/no_commit")) {
 if (!file_exists("../../../../mouf/Mouf.php")) {
 	$moufStr = "<?php
 define('ROOT_PATH', realpath(__DIR__.'/..').DIRECTORY_SEPARATOR);
-require_once __DIR__.'/../config.php';
+//require_once __DIR__.'/../config.php';
 define('MOUF_URL', ROOT_URL.'vendor/mouf/mouf/');
 			
 require_once __DIR__.'/../vendor/autoload.php';
