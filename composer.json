@@ -30,6 +30,9 @@
 		"container-interop/container-interop" : "~1.0",
 		"symfony/filesystem" : ">=2.3, <4.0"
 	},
+	"conflict" : {
+		"mouf/database.tdbm" : "<3.3"  
+	},
 	"autoload" : {
 		"psr-0" : {
 			"Mouf" : "src/"
