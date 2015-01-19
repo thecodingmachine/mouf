@@ -1,28 +1,33 @@
 Managing instances programmatically
 ===================================
 
-As an application developer, you will use the Mouf user interface to edit instances in your application.
+As an application developer, you will use the Mouf **user interface** to edit instances in your application.
 However, as a package developer, you will need to edit/create instances programmatically.
 For instance, you may want to provide an install process that creates instances
 (or a user interface in Mouf that creates/modifies instances...).
 
-For this you will need to access the `MoufManager`. `MoufManager` is the class used to add/edit instances of your application.
+For this you will need to access the `MoufContainer`. `MoufContainer` is the class used to add/edit instances of your application.
 
-Getting a *MoufManager* instance
---------------------------------
+<div class="alert alert-info">Note: <code>MoufContainer</code> is compatible with <a href="https://github.com/container-interop/container-interop/">ContainerInterop</a>,
+the DIC compatibility standard. In particular, it implements the <a href="https://github.com/container-interop/container-interop/blob/master/src/Interop/Container/ContainerInterface.php">ContainerInterface</a> 
+and the <a href="https://github.com/container-interop/container-interop/blob/master/docs/Delegate-lookup.md">delegate lookup feature</a>.</div>
 
-The first thing you want to do is to get an instance of `MoufManager`.
+Getting a *MoufContainer* instance
+----------------------------------
+###Getting the default container of your Mouf application
+
+The first thing you want to do is to get an instance of `MoufContainer`.
 
 If you are in the context of your application, use:
 
 ```php
-$moufManager = MoufManager::getMoufManager();
+$moufContainer = MoufManager::getMoufManager()->getContainer();
 ```
 
 If you are in the context of Mouf (if you are developing a controller that extends the Mouf interface), use:
 
 ```php
-$moufManager = MoufManager::getHiddenMoufManager();
+$moufContainer = MoufManager::getHiddenMoufManager()->getContainer();
 ```
 
 <div class="alert alert-info">Your PHP code can run in 2 different contexts: your application's context or Mouf's context.
@@ -30,8 +35,45 @@ In your application's context, your application's autoloader is used, and all yo
 accessible. In Mouf's context, Mouf autoloader is used. This means Mouf classes and dependencies are available.</div>
 
 Mouf is developed using Mouf (yes, this is recursive). If you use the 
-<code>MoufManager::getMoufManager()</code> method inside the Mouf context, you will get the instances used
+<code>MoufManager::getMoufManager()->getContainer()</code> method inside the Mouf context, you will get the instances used
 by Mouf, not your instances.
+
+###Creating a new container
+
+Sometimes, you don't want to access the default container that comes with your Mouf application. Instead, you might
+want create a new container.
+
+A valid MoufContainer comes in 2 parts:
+
+- a configuration file (that contains the list of instances) This file is usually called `instances.php`
+- a class that extends `Mouf\MoufContainer`
+
+To build the container, you use:
+
+```php
+use Mouf\MoufContainer;
+
+// createContainer takes 3 arguments:
+// - the path to the configuration file
+// - the name of the class to be generated
+// - (optional): the path to the class
+$container = MoufContainer::createContainer('path/to/instances.php', 'MyProject\\Container', 'src/MyProject/Container/php');
+
+// A call to "write" will generate both files.
+$container->write();
+```
+
+Once the container has been generated, you can get an instance of the container by simply calling:
+
+```
+$container = new MyProject\Container();
+```
+
+You can optionally pass a <a href="https://github.com/container-interop/container-interop/blob/master/docs/Delegate-lookup.md">delegate lookup container</a> as an argument to the container:
+
+```
+$container = new MyProject\Container($rootContainer);
+```
 
 Creating a new instance
 -----------------------
@@ -40,20 +82,20 @@ In order to create a new instance, use the `createInstance` method:
 
 ```php
 // Creates an anonymous instance for class MyNamespace\MyClass
-$instanceDescriptor = $moufManager->createInstance("MyNamespace\\MyClass");
+$instanceDescriptor = $moufContainer->createInstance("MyNamespace\\MyClass");
 
 // Let's give the instance a name:
 $instanceDescriptor->setName('myInstance');
 
 // Finally, save the instance:
-$moufManager->rewriteMouf();
+$moufContainer->write();
 ```
 
 As you noticed, the `createInstance` method returns an "instance descriptor". This is an object that
 describes the instance.
 
 Each time you modify an instance or create a new instance, changes will only be saved once you call
-the `$moufManager->rewriteMouf()` method.	
+the `$moufContainer->write()` method.	
 
 Getting an instance descriptor from the *MoufManager*
 -----------------------------------------------------
@@ -61,7 +103,7 @@ Getting an instance descriptor from the *MoufManager*
 Use the `getInstanceDescriptor()` method to retrieve an instance descriptor.
 
 ```php
-$instanceDescriptor = $moufManager->getInstanceDescriptor('myInstance');
+$instanceDescriptor = $moufContainer->getInstanceDescriptor('myInstance');
 ```
 
 Setting a property in an instance
@@ -87,7 +129,7 @@ If you want to inject another instance, pass an instance descriptor to the `setV
 For instance:
 
 ```php
-$anotherInstanceDescriptor = $moufManager->getInstanceDescriptor('anotherInstance');
+$anotherInstanceDescriptor = $moufContainer->getInstanceDescriptor('anotherInstance');
 
 $instanceDescriptor->getConstructorArgumentProperty('parameterName')->setValue(anotherInstanceDescriptor);
 ```
@@ -120,7 +162,7 @@ You can also declare an instance completely from PHP code.
 
 ```php
 // Creates an anonymous instance by PHP code
-$instanceDescriptor = $moufManager->createInstanceByCode();
+$instanceDescriptor = $moufContainer->createInstanceByCode();
 
 // Let's give the instance a name:
 $instanceDescriptor->setName('myInstance');
@@ -129,7 +171,7 @@ $instanceDescriptor->setName('myInstance');
 $instanceDescriptor->setCode('return MyObject::getInstance();');
 
 // Finally, save the instance:
-$moufManager->rewriteMouf();
+$moufContainer->write();
 ```
 
 Utility functions
@@ -143,7 +185,7 @@ There is an utility function that help you do this:
 ```php
 use Mouf\Actions\InstallUtils;
 
-$instanceDescriptor = InstallUtils::getOrCreateInstance($instanceName, $className, $moufManager);
+$instanceDescriptor = InstallUtils::getOrCreateInstance($instanceName, $className, $moufContainer);
 ```
 
 Exporting instances
