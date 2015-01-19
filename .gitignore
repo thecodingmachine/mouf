@@ -5,3 +5,5 @@ config.php
 moufRunningActions.php
 .composer
 tests/GeneratedClasses/*
+mouf/no_commit/*
+!mouf/no_commit/placeholder
