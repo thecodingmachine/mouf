@@ -1,5 +1,6 @@
 *~
 vendor/*
+vendor-harmony/*
 .*~
 config.php
 moufRunningActions.php
@@ -7,3 +8,4 @@ moufRunningActions.php
 tests/GeneratedClasses/*
 mouf/no_commit/*
 !mouf/no_commit/placeholder
+

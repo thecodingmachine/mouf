@@ -197,6 +197,40 @@ return array (
       'fallback' => 'fileCacheService',
     ),
   ),
+		'console' =>
+		array (
+				'class' => 'Mouf\\Commands\\ConsoleApplication',
+				'external' => false,
+				'weak' => false,
+				'setterBinds' =>
+				array (
+						'setCommands' =>
+						array (
+								0 => 'composerInstallCommand',
+								1 => 'composerUpdateCommand',
+								2 => 'composerDumpAutoloadCommand',
+						),
+				),
+		),
+		'composerInstallCommand' =>
+		array (
+				'class' => 'Dflydev\\EmbeddedComposer\\Console\\Command\\InstallCommand',
+				'external' => false,
+				'weak' => false,
+		),
+		'composerUpdateCommand' =>
+		array (
+				'class' => 'Dflydev\\EmbeddedComposer\\Console\\Command\\UpdateCommand',
+				'external' => false,
+				'weak' => false,
+		),
+		'composerDumpAutoloadCommand' =>
+		array (
+				'class' => 'Dflydev\\EmbeddedComposer\\Console\\Command\\DumpAutoloadCommand',
+				'external' => false,
+				'weak' => false,
+		),
+		
   'block.content' => 
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
