@@ -1,6 +1,9 @@
 Extending Mouf's user interface
 ===============================
 
+Mouf has a great user interface, but what makes it really powerful is that it can be extended and
+modified by any package (and even by the root application). 
+
 In your package, you can write custom controllers and views in order to add your own user interface.
 
 There are plenty of hook points that let you:
@@ -11,8 +14,52 @@ There are plenty of hook points that let you:
 
 Let's focus on the most common use case: adding a controller.
 
-User interface types
---------------------
+Understanding Mouf structure
+----------------------------
+
+Mouf is a twin-head beast. On one side, there is the application the user is developping. On the other side (in the `vendor/mouf/mouf` folder), there is Mouf's web-based IDE. So basically, **there are 2 applications in one**. Each application has its **own set of dependencies and autoloader**.
+
+Like with any Composer application, dependencies of the application are stored in the `vendor` folder. The dependencies of Mouf are stored in the `vendor/mouf/mouf/vendor` folder.
+
+... and in case you are wondering, Mouf is developed using Mouf (yes, it is recursive!)
+
+When you write an extension for the Mouf user interface, you want to add classes / controllers / views / dependencies
+to the Mouf application, not your application.
+
+To do this, starting with Mouf 2.1, any package (including the root package) can have **2 composer files**:
+
+
+- the regular `composer.json` file contains the settings of the main application
+- an additional `composer-harmony.json` file contains the settings of the Mouf web-based IDE
+
+Controllers, classes, views, dependencies dedicated to Mouf web-based IDE must go in the `composer-harmony.json` file.
+
+<div class="alert alert-info">Mouf's own packages are stored in the <code>/vendor/mouf/mouf/vendor</code> directory.
+The dependencies added by packages using <code>composer-harmony.json</code> will be stored in the <code>/vendor/mouf/mouf/vendor-harmony</code> directory.</div>
+
+More about Mouf web-based UI
+----------------------------
+
+Mouf IDE uses a number of packages:
+
+- Splash for the MVC part
+- A Bootstrap based template
+- ...
+
+Therefore, when extending Mouf, you will have to [write Splash controllers](http://mouf-php.com/packages/mouf/mvc.splash/index.md).
+Finally, you will have to declare the controller instance manually, but we will see this in the next chapter. Before reading through this document, please be sure you understand [the way Splash works](http://mouf-php.com/packages/mouf/mvc.splash/index.md)!
+
+<div class="alert alert-info">
+This means that your project and Mouf can use a different version of Splash for instance.<br/><br/>
+Mouf has its own container, with its own <code>mouf/instances.php</code> file (see the "vendor/mouf/mouf/mouf/instances.php" file).
+This file contains all the instances used by Mouf.
+Your package <b>cannot</b> modify this file.<br/><br/>
+However, at runtime, you can add your own instances in the Mouf's container, or register an additional container
+that will be used by Mouf.</div>
+
+
+*Global* vs *instance related* pages
+------------------------------------
 
 When you extend the user interface, the first question you must ask is: 
 *"Is my user interface dependent on a particular instance or not?"*.
@@ -20,31 +67,12 @@ Most of the time, it is, but it might not always be true.
 
 For instance:
 
-Let's suppose you are developing a cache system, like the one in package [utils.cache.CacheInterface](http://mouf-php.com/packages/mouf/utils.cache.cache-interface/README.md).
+Let's suppose you are developing a cache system, like the one in package [utils.cache.cache-interface](http://mouf-php.com/packages/mouf/utils.cache.cache-interface/README.md).
 You will certainly end-up with instances representing different cache services. You might want to offer a special user interface for the user to purge the cache.
 If your user interface is purging all caches at once, it is a **global** user interface.
 On the other end, if you must first choose what instance you are working on before purging the cache, 
 you are working on a **instance related** user interface.
 
-Understanding Mouf structure
-----------------------------
-
-Mouf is developed using Mouf (yes, it is recursive!)
-Actually, Mouf uses a number of packages:
-
-- Splash for the MVC part
-- A Bootstrap based template
-- ...
-
-Therefore, to interact with the user, we will be [writing a Splash controller](http://mouf-php.com/packages/mouf/mvc.splash/index.md).
-Finally, you will have to declare the controller instance manually, but we will see this in the next chapter. Before reading through this document, please be sure you understand [the way Splash works](http://mouf-php.com/packages/mouf/mvc.splash/index.md)!
-
-<div class="alert alert-info">Mouf's own packages are stored in the <code>/vendor/mouf/mouf/vendor</code> directory.
-This means that your project and Mouf can use a different version of Splash for instance.<br/><br/>
-Mouf has its own container, with its own <code>MoufComponents.php</code> file (see the "vendor/mouf/mouf/mouf/MoufComponents.php" file).
-This file contains all the instances used by Mouf.
-Your package <b>cannot</b> modify this file.<br/><br/>
-However, at runtime, you can add your own instances in the Mouf's container.</div>
 
 Using Mouf internal API
 -----------------------
@@ -52,8 +80,25 @@ Using Mouf internal API
 If you want to extend the administration interface, it is almost sure you will want to create or modify 
 instances programmatically. You can learn how to do this in the ["Managing instances programmatically" section](managing_instances_programmatically.md).
 
-Registering an 'admin' file
----------------------------
+Registering classes
+-------------------
+
+The first step will be to write a `composer-harmony.json` file to register your controller.
+
+**composer-harmony.json**
+```json
+{
+	TODO
+}
+```
+
+
+
+Registering an 'admin' file (deprecated)
+----------------------------------------
+
+<div class="alert"><b>Important:</b> Starting with Mouf 2.1, 'admin' files are deprecated. Register
+additional containers instead.</div>
 
 In order to register your own instances at runtime, your package can declare an "admin" file.
 An "admin" file is a file that is executed each time a request if performed in the Mouf user interface.
