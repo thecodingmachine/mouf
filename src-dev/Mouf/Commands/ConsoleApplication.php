@@ -34,7 +34,7 @@ class ConsoleApplication extends Application implements
 		// Check where autoload would be
 		
 		if (!$classLoader = @include __DIR__.'/../../../vendor/autoload.php') {
-			throw new MoufException('You must set up the project dependencies. Did you skip plugins when installing Mouf vie Composer?');
+			throw new MoufException('You must set up the project dependencies. Did you skip plugins when installing Mouf via Composer?');
 		}
 		
 		$embeddedComposerBuilder = new EmbeddedComposerBuilder(
