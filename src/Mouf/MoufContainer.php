@@ -1457,7 +1457,7 @@ class $shortClassName extends MoufContainer {
 				continue;
 			}
 			
-			
+			// TODO: we can optimize this by storing in an array the result of a class name.
 			$reflectionClass = new \ReflectionClass($className);
 			if ($isInterface) {
 				if ($reflectionClass->implementsInterface($instanceType)) {

@@ -73,13 +73,6 @@ If your user interface is purging all caches at once, it is a **global** user in
 On the other end, if you must first choose what instance you are working on before purging the cache, 
 you are working on a **instance related** user interface.
 
-
-Using Mouf internal API
------------------------
-
-If you want to extend the administration interface, it is almost sure you will want to create or modify 
-instances programmatically. You can learn how to do this in the ["Managing instances programmatically" section](managing_instances_programmatically.md).
-
 Registering classes
 -------------------
 
@@ -91,6 +84,22 @@ The first step will be to write a `composer-harmony.json` file to register your 
 	TODO
 }
 ```
+
+
+TODO Structure:
+
+1- Register classes / dependencies
+2- Create a controller (explain that we can also register other routers (stack-php) => link to how)
+3- Create an instance (container-interop)
+
+
+
+Using Mouf internal API
+-----------------------
+
+If you want to extend the administration interface, it is almost sure you will want to create or modify 
+instances programmatically. You can learn how to do this in the ["Managing instances programmatically" section](managing_instances_programmatically.md).
+
 
 
 

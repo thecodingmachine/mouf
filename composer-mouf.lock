@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ee7b6fb5aad48c5341f663193e5e9b8a",
+    "hash": "6986f10c081197e1b8f1e94354e20461",
     "packages": [
         {
             "name": "acclimate/container",
@@ -397,12 +397,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/container-installer.git",
-                "reference": "ede09a68898bc28ab4864f5b13bd51c0ad1ba8dd"
+                "reference": "570111d94550b1e8eaa178ddf56c4ea94022fa05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/container-installer/zipball/ede09a68898bc28ab4864f5b13bd51c0ad1ba8dd",
-                "reference": "ede09a68898bc28ab4864f5b13bd51c0ad1ba8dd",
+                "url": "https://api.github.com/repos/thecodingmachine/container-installer/zipball/570111d94550b1e8eaa178ddf56c4ea94022fa05",
+                "reference": "570111d94550b1e8eaa178ddf56c4ea94022fa05",
                 "shasum": ""
             },
             "require": {
@@ -430,7 +430,7 @@
                 "di",
                 "installer"
             ],
-            "time": "2015-01-19 17:06:40"
+            "time": "2015-01-21 18:03:28"
         },
         {
             "name": "mouf/famfamfam",
@@ -1496,31 +1496,32 @@
         },
         {
             "name": "mouf/mouf-installer",
-            "version": "v2.0.0",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-installer.git",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198"
+                "reference": "70df22c17ed859ff96f2781af70c58186c9237e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/75cd4295a831b32aabea0b2bb6f4925da6b6e198",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/70df22c17ed859ff96f2781af70c58186c9237e6",
+                "reference": "70df22c17ed859ff96f2781af70c58186c9237e6",
                 "shasum": ""
             },
             "require": {
+                "composer-plugin-api": "1.0.0",
                 "php": ">=5.3.0"
             },
-            "type": "composer-installer",
+            "conflict": {
+                "mouf/mouf": "<2.1"
+            },
+            "type": "composer-plugin",
             "extra": {
-                "class": [
-                    "Mouf\\Installer\\MoufLibraryInstaller",
-                    "Mouf\\Installer\\MoufFrameworkInstaller"
-                ]
+                "class": "Mouf\\Installer\\MoufPlugin"
             },
             "autoload": {
-                "psr-0": {
-                    "Mouf\\Installer": "src/"
+                "psr-4": {
+                    "Mouf\\Installer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1540,7 +1541,7 @@
                 "install",
                 "mouf"
             ],
-            "time": "2014-06-03 20:47:09"
+            "time": "2015-01-21 18:02:07"
         },
         {
             "name": "mouf/mouf-validators-interface",
