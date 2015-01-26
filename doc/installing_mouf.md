@@ -93,7 +93,7 @@ the name of the Apache user.
 The easiest and more portable way of sharing your rights with the Apache user is to be part of the same
 Unix group.
 
-To do this, you can run:
+To do this, you can run (on Ubuntu/Debian flavored Linux):
 
 ```
 sudo adduser `whoami` www-data

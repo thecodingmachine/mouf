@@ -40,7 +40,6 @@ use Composer\Installer;
  * A service to access composer functions.
  * 
  * @author David Négrier
- * @Component
  */
 class ComposerService {
 	
@@ -207,7 +206,12 @@ class ComposerService {
 		return $loader;
 	}
 	
-	protected function getComposer() {
+	/**
+	 * Exposes the Composer object
+	 * 
+	 * @return Composer 
+	 */
+	public function getComposer() {
 		if (null === $this->composer) {
 			
 			$this->configureEnv();
@@ -280,7 +284,7 @@ class ComposerService {
 		} else {
 			chdir(__DIR__."/../../../../../..");
 		}
-		
+		//TODO: this call is strange because it will return the same isntance as above.
 		$composer = $this->getComposer();
 				
 		$localRepos = new CompositeRepository(array($composer->getRepositoryManager()->getLocalRepository()));

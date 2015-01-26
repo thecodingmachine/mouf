@@ -481,7 +481,10 @@ MoufDefaultRenderer = (function () {
 			return false;
 		} else if (fieldsRenderer[subtype]) {
 			return false;
-		} else {
+        }
+        else if (subtype.getType() == 'array') {
+            return false;
+        }else {
 			return true;
 		}
 	}

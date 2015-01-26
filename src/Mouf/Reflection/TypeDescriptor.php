@@ -70,17 +70,27 @@ class TypeDescriptor {
 	public function isArray() {
 		return $this->subType !== null;
 	}
-	
-	/**
-	 * Parses the tokens (passed in reference!) and returns a TypeDescriptor for the parsed tokens.
-	 * 
-	 * 
-	 * @param array $tokens
-	 * @return TypeDescriptor
-	 */
+
+    /**
+     * Parses the tokens (passed in reference!) and returns a TypeDescriptor for the parsed tokens.
+     *
+     *
+     * @param array $tokens
+     * @throws MoufTypeParserException
+     * @return TypeDescriptor
+     */
 	public static function parseTokens(&$tokens) {
-		$typeArray = array_shift($tokens);
-		if ($typeArray['token'] != 'T_TYPE') {
+        do {
+		    $typeArray = array_shift($tokens);
+            if ($typeArray['token'] == "T_WHITESPACE"){
+                continue;
+            }
+            else {
+                break;
+            }
+        }while(true);
+
+        if ($typeArray['token'] != 'T_TYPE') {
 			throw new MoufTypeParserException("Invalid type! Expecting a type name. Got '".$typeArray['match']."'");
 		}
 		
@@ -104,6 +114,7 @@ class TypeDescriptor {
 					$type->subType = $subType;
 					break;
 				case 'T_END_ARRAY';
+                    array_unshift($tokens, $nextToken);
 					break;
 				case 'T_START_ARRAY';
 					$tok1 = self::getNthTokenWithoutWhitespace($tokens, 1);
@@ -126,6 +137,17 @@ class TypeDescriptor {
 						
 					}
 					$type->subType = TypeDescriptor::parseTokens($tokens);
+
+                    while ($tokens[0]['token'] == 'T_WHITESPACE') {
+                        array_shift($tokens);
+                    }
+
+                    if ($tokens[0]['token'] != 'T_END_ARRAY'){
+                        throw new MoufTypeParserException("Invalid type! Expecting >. Got '".$tokens[0]['match']."'");
+                    }
+
+                    array_shift($tokens);
+
 					break;
 				case 'T_OR':
 					break;
