@@ -30,7 +30,8 @@
     	"mouf/security.userservice-splash": "~4.0",
 		"symfony/filesystem" : ">=2.3, <4.0",
 		"mouf/root-container" : "~1.0",
-		"dflydev/embedded-composer-console": "~1.0"
+		"dflydev/embedded-composer-console": "~1.0",
+		"mouf/html.renderer" : "~1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

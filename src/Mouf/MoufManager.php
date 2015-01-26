@@ -143,7 +143,9 @@ class MoufManager implements ContainerInterface {
 	 */
 	public static function switchToHidden() {
 		self::$hiddenInstance = self::$defaultInstance;
-		self::$hiddenInstance->container->setReflectionClassManager(new MoufXmlReflectionClassManager());
+		if (self::$hiddenInstance) {
+			self::$hiddenInstance->container->setReflectionClassManager(new MoufXmlReflectionClassManager());
+		}
 		self::$defaultInstance = new MoufManager();
 		self::$defaultInstance->configManager = new MoufConfigManager("../../config.php");
 		self::$defaultInstance->componentsFileName = "../../mouf/MoufComponents.php";
