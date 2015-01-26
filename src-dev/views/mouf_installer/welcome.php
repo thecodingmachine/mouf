@@ -39,13 +39,13 @@ Unix group.</p>
 
 			<p>To do this, on <strong>Debian/Ubuntu</strong> based distributions, you can run:</p>
 
-<pre><code>sudo adduser `whoami` <?php echo $processUserName; ?><br/>
-sudo adduser <?php echo $processUserName; ?> `whoami` <br/>
+<pre><code>sudo adduser `whoami` <?php echo $processUserName; ?> 
+sudo adduser <?php echo $processUserName; ?> `whoami` 
 sudo chmod g+w <?php echo realpath(MOUF_DIR."/../../..") ?> -R</code></pre>
 
 			<p>On other distributions (<strong>Redhat/CentOS ...</strong>), run:</p>
 			
-<pre><code>sudo useradd -G `whoami` <?php echo $processUserName; ?>
+<pre><code>sudo useradd -G `whoami` <?php echo $processUserName; ?> 
 sudo useradd -G <?php echo $processUserName; ?> `whoami`
 sudo chmod g+w <?php echo realpath(MOUF_DIR."/../../..") ?> -R</code></pre>
 			
