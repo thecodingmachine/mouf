@@ -10,3 +10,4 @@ mouf/no_commit/*
 !mouf/no_commit/placeholder
 composer-harmony-dependencies.json
 composer-harmony-dependencies.lock
+containers.php
