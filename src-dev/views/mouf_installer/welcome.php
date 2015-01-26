@@ -58,7 +58,7 @@ Then it will give write access to the group.</p>
 		
 			<p>You can try these commands:</p>
 			<pre><code><?php if(!is_writable(MOUF_DIR."/../../..")) {?>
-sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../..") ?><br/>
+sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR."/../../..") ?> 
 <?php }
 			if(!is_writable(MOUF_DIR)) {?>
 sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DIR)."<br/>";
