@@ -65,19 +65,16 @@ $componentsList = array();
 echo "FDSFZEREZ_STARTUP\n";
 if (is_array($classMap)) {
 	foreach ($classMap as $className => $fileName) {
-		//if (!isset($forbiddenClasses[$className])) {
-			echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
-			echo $className."\n";
-			//$refClass = new MoufReflectionClass($className);
-			$refClass = new \ReflectionClass($className);
-			
-			// Let's also serialize to check all the parameters, fields, etc...
-			// Note: disabled for optimization purposes
-			//$refClass->toJson();
-			
-			// If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
-			echo "DSQRZREZRZER__AFTERINCLUDE\n";
-		//}
+        echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
+        echo $className."\n";
+
+        if (!class_exists($className)) {
+            echo "Error. Could not load class '".$className."' from file '".$fileName."'. This is probably an autoloader issue.
+                      Please check that your class respects PSR-0 or PSR-4 naming standards";
+        }
+
+        // If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
+        echo "DSQRZREZRZER__AFTERINCLUDE\n";
 	}
 }
 
