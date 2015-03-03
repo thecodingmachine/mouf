@@ -123,7 +123,7 @@ class MoufUtils {
 	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
 	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
 	 * ]
-	 * 
+	 * @deprecated Use ClassNameMapper instead
 	 * @return array<int, array<string, string>>
 	 */
 	public static function getAutoloadNamespaces() {
@@ -151,7 +151,7 @@ class MoufUtils {
 	 * 	{"namespace"=> "Mouf", "directory"=>"src/"},
 	 * 	{"namespace"=> "Mouf", "directory"=>"src2/"}
 	 * ]
-	 * 
+	 * @deprecated Use ClassNameMapper instead
 	 * @return array<int, array<string, string>>
 	 */
 	public static function getAutoloadNamespaces2() {
