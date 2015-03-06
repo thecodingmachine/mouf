@@ -50,6 +50,12 @@ require_once 'utils/check_rights.php';
 $composerService = new ComposerService($selfEdit);
 $classMap = $composerService->getClassMap();
 
+$file = $line = null;
+$sent = headers_sent($file, $line);
+if ($sent){
+    throw new \Mouf\MoufException("Error while calling get_class_map : output started at $file on line $line");
+}
+
 $encode = "php";
 if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]="json") {
 	$encode = "json";
