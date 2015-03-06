@@ -1393,7 +1393,6 @@ class ".$this->mainClassName." {
 		fwrite($fp, "}\n");
 
 
-		fwrite($fp, "?>\n");
 		fclose($fp);
 		
 		// Note: rewriting MoufUI here is useless, since it is only modified on update or install of packages.
