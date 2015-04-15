@@ -3,6 +3,7 @@ namespace Mouf\Composer;
 
 use Composer\EventDispatcher\EventDispatcher;
 
+use Composer\IO\BufferIO;
 use Mouf\Installer\MoufUIFileWritter;
 
 use Mouf\Installer\PackagesOrderer;
@@ -219,7 +220,7 @@ class ComposerService {
 			if ($this->outputBufferedJs) {
 				$this->io = new MoufJsComposerIO();
 			} else {
-				$this->io = new MoufErrorLogComposerIO();
+				$this->io = new BufferIO();
 			}
 			$this->composer = Factory::create($this->io);
 		}
