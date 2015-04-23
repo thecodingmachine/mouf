@@ -15,6 +15,11 @@ happens when accessing Mouf on your localhost.</div>
 <h2>Possible causes:</h2>
 
 <ul>
+<li><strong>Port forwarding issues:</strong> If there is a port forwarding performed on the HTTP port, access to Mouf will fail.
+	This is often the case <strong>if you are using Docker</strong>. In this case, you can use the
+	<strong><a href="<?php echo MOUF_URL ?>configureLocalUrl/"><i>Project &gt; Configure local URL</i> screen</a></strong>
+	to point the server to the URL where is can access Mouf.
+</li>
 <li><strong>Load balancer issues:</strong> You are accessing Mouf on serveral remote hosts behind a load balancer. <strong>Using Mouf behind a load balancer is not supported.</strong></li>
 <li><strong>DNS issues:</strong> There is a DNS problem and the server does not know its domain name. This can happen if you tweaked your <code>/etc/hosts</code> files
 or if you have special DNS settings. Here is a test you can do to check this:
@@ -37,4 +42,5 @@ standard Mouf authentication process), access to Mouf will fail. Here is a list 
 		opening you environment in <i>public</i> mode will solve the problem.</li>
 	</ul>
 </li>
+
 </ul>

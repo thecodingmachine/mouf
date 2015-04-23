@@ -10,6 +10,7 @@
 namespace Mouf\Reflection;
 
 use Exception;
+use Mouf\MoufException;
 
 /**
  * Class specialized in forwarding a reflexion request to another script that will perform it.
@@ -302,7 +303,7 @@ class MoufReflectionProxy {
 		session_start();
 	
 		if( curl_error($ch) ) {
-			throw new \Exception("An error occured: ".curl_error($ch));
+			throw new MoufException("An error occurred: ".curl_error($ch));
 		}
 		curl_close( $ch );
 	
@@ -347,7 +348,11 @@ class MoufReflectionProxy {
 		return $response;
 	}
 	
-	public static function getLocalUrlToProject(){
+	public static function getLocalUrlToProject() {
+		/*if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt')) {
+			return trim(file_get_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt'), " \n\r");
+		}*/
+
 		// Let's try to detect the HTTPS protocol.
 		// It can be tricky because $_SERVER['HTTPS'] is not always set.
 		// (see: http://stackoverflow.com/questions/452375/detecting-https-requests-in-php )
@@ -358,6 +363,10 @@ class MoufReflectionProxy {
 			$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].MOUF_URL;
 		}
 		return $url;
+	}
+
+	public static function setLocalUrlToProject($localUrl) {
+		file_put_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt', $localUrl);
 	}
 }
 ?>

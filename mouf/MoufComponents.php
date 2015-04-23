@@ -2835,6 +2835,18 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+
+  'configureLocalUrl' =>
+  array (
+      'class' => 'Mouf\\Controllers\\MoufConfigureLocalUrlController',
+      'external' => false,
+      'fieldBinds' =>
+          array (
+              'template' => 'moufTemplate',
+              'contentBlock' => 'block.content',
+              'validatorService' => 'validatorService',
+          ),
+  ),
   'validate' => 
   array (
     'class' => 'Mouf\\Controllers\\MoufValidatorController',
