@@ -29,4 +29,21 @@ then you need to provide this URL to Mouf.</p>
 
 <h2>Configure local URL</h2>
 
-<?php echo plainstring_to_htmlprotected($this->localUrl); ?>
+
+<form action="setLocalUrl" method="post" class="form-horizontal">
+	<input type="hidden" name="selfedit" id="selfedit" value="<?php echo $this->selfedit; ?>" />
+
+	<div class="control-group">
+		<label class="control-label">Local URL to Mouf:</label>
+		<div class="controls">
+			<input name="localUrl" type="text" class="input-xxlarge" value="<?php echo plainstring_to_htmlprotected($this->localUrl); ?>" placeholder="Local URL to Mouf" />
+			<span class="help-block">Set to empty to auto-detect.</span>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</form>

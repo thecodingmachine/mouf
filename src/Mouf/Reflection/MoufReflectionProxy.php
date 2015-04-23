@@ -349,9 +349,9 @@ class MoufReflectionProxy {
 	}
 	
 	public static function getLocalUrlToProject() {
-		/*if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt')) {
+		if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt')) {
 			return trim(file_get_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt'), " \n\r");
-		}*/
+		}
 
 		// Let's try to detect the HTTPS protocol.
 		// It can be tricky because $_SERVER['HTTPS'] is not always set.
@@ -366,7 +366,11 @@ class MoufReflectionProxy {
 	}
 
 	public static function setLocalUrlToProject($localUrl) {
-		file_put_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt', $localUrl);
+		if (empty($localUrl)) {
+			unlink(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt');
+		} else {
+			file_put_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt', $localUrl);
+		}
 	}
 }
 ?>

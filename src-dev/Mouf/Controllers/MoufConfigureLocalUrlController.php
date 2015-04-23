@@ -40,6 +40,7 @@ class MoufConfigureLocalUrlController extends Controller {
 
 	protected $status;
 	protected $localUrl;
+	protected $selfedit;
 
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
@@ -48,7 +49,7 @@ class MoufConfigureLocalUrlController extends Controller {
 	 * @Logged
 	 */
 	public function index($selfedit = "false") {
-
+		$this->selfedit = $selfedit;
 		$this->status = true;
 
 		try {
@@ -62,5 +63,14 @@ class MoufConfigureLocalUrlController extends Controller {
 		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/configureLocalUrl.php", $this);
 		$this->template->toHtml();
 	}
+
+	/**
+	 * @Action
+	 * @Logged
+	 */
+	public function setLocalUrl($localUrl, $selfedit = "false") {
+		$this->selfedit = $selfedit;
+		MoufReflectionProxy::setLocalUrlToProject($localUrl);
+		$this->index($selfedit);
+	}
 }
-?>
