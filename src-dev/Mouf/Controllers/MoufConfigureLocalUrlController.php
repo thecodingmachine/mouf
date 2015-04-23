@@ -16,20 +16,9 @@ use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Reflection\MoufReflectionProxy;
 
 /**
- * The controller that will call all validators on Mouf.
- *
- * @Component
+ * The controller that will enable you to set up the local URL (if needed)
  */
-class MoufValidatorController extends Controller {
-	
-	/**
-	 * The validation service.
-	 * 
-	 * @Property
-	 * @Compulsory
-	 * @var MoufValidatorService
-	 */
-	public $validatorService;
+class MoufConfigureLocalUrlController extends Controller {
 	
 	/**
 	 * The template used by the main page for mouf.
@@ -48,30 +37,40 @@ class MoufValidatorController extends Controller {
 	 * @var HtmlBlock
 	 */
 	public $contentBlock;
-	
+
+	protected $status;
+	protected $localUrl;
+	protected $selfedit;
+
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
 	 *
 	 * @Action
 	 * @Logged
 	 */
-	public function defaultAction($selfedit = "false") {
-		// Before running the other validation steps, we should make sure we can successfully cURL
-		// into the server, from the server.
+	public function index($selfedit = "false") {
+		$this->selfedit = $selfedit;
+		$this->status = true;
+
 		try {
-			if (!MoufReflectionProxy::checkConnection()) {
-				$this->contentBlock->addFile(ROOT_PATH."src-dev/views/connection-problem.php", $this);
-				$this->template->toHtml();
-				return;
-			}
+			$this->status = MoufReflectionProxy::checkConnection();
 		} catch (MoufException $e) {
-			$this->contentBlock->addFile(ROOT_PATH."src-dev/views/connection-problem.php", $this);
-			$this->template->toHtml();
-			return;
+			$this->status = false;
 		}
 
-		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/validate.php", $this);
+		$this->localUrl = MoufReflectionProxy::getLocalUrlToProject();
+
+		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/configureLocalUrl.php", $this);
 		$this->template->toHtml();
 	}
+
+	/**
+	 * @Action
+	 * @Logged
+	 */
+	public function setLocalUrl($localUrl, $selfedit = "false") {
+		$this->selfedit = $selfedit;
+		MoufReflectionProxy::setLocalUrlToProject($localUrl);
+		$this->index($selfedit);
+	}
 }
-?>
