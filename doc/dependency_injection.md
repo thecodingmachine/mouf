@@ -156,7 +156,7 @@ class Mailer {
 	private $logger;
 	
 	/**
-	 * @var Logger $logger
+	 * @param Logger $logger
 	 */
 	public function __construct(Logger $logger) {
 		$this->logger = $logger;
