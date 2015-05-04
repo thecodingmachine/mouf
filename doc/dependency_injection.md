@@ -152,15 +152,21 @@ In this second try, we will move the dependency out of the classes.
 **Mailer.php**
 ```php
 class Mailer {
+	/** @var Logger */
 	private $logger;
 	
 	/**
-	 * @var $logger Logger
+	 * @param Logger $logger
 	 */
-	public function __construct($logger) {
+	public function __construct(Logger $logger) {
 		$this->logger = $logger;
 	}
 	
+	/**
+	 * @param string $to
+	 * @param string $title
+	 * @param string $text
+	 */
 	public function sendMail($to, $title, $text) {
 		// Do stuff to send the mail
 		// Once sent, let's log it.
