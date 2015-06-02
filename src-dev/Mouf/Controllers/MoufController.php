@@ -512,7 +512,7 @@ class MoufController extends Controller implements MoufSearchable {
      * @param string $returnurl
      * @throws \Mouf\MoufException
      */
-    public function deleteAllInstances($selfedit = "false", $instancesNames = array(), $returnurl = null) {
+    public function deleteInstances($selfedit = "false", $instancesNames = array(), $returnurl = null) {
         $this->selfedit = $selfedit;
 
         if ($selfedit == "true") {

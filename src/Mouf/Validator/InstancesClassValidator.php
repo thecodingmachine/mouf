@@ -44,14 +44,14 @@ class InstancesClassValidator implements MoufStaticValidatorInterface {
         if ($errors) {
             $msg = "";
             if(!empty($instancesToDelete)) {
-                $deleteAllAction = MOUF_URL."mouf/deleteAllInstances";
+                $deleteAllAction = MOUF_URL."mouf/deleteInstances";
                 $msg .= '<form action="'.$deleteAllAction.'" method="POST">';
                 $msg .= '<input type="hidden" name="selfedit" value="'.$instanceName.'" />';
                 $msg .= '<input type="hidden" name="returnurl" value="'.MOUF_URL."validate/?selfedit=".$selfedit.'" />';
                 foreach($instancesToDelete as $instanceName) {
                     $msg .= '<input type="hidden" name="instancesNames[]" value="'.$instanceName.'" />';
                 }
-                $msg .= 'Want to delete all instances in a row ? Click <button type="submit" class="btn btn-danger">here</button> !<br />';
+                $msg .= 'Click <button type="submit" class="btn btn-danger">here</button> to delete all instances !<br />';
                 $msg .= '</form>';
             }
             $msg .= "The following instances are erroneous:<br/><ul>";
