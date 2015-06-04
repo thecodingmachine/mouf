@@ -369,7 +369,10 @@ class MoufReflectionProxy {
 		if (empty($localUrl)) {
 			unlink(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt');
 		} else {
-			file_put_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt', $localUrl);
+			$return = file_put_contents(__DIR__.'/../../../../../../mouf/no_commit/local_url.txt', $localUrl);
+            if ($return === false) {
+                throw new MoufException('Unable to write file "mouf/no_commit/local_url.txt". Please check file permissions.');
+            }
 		}
 	}
 }
