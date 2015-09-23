@@ -2121,4 +2121,45 @@ class ".$this->mainClassName." {
 		return $this;
 	}
 	
+	/**
+	 * Check if there is no loop in constructor arguments
+	 * @throws MoufException
+	 */
+	public function checkConstructorLoop() {
+	    foreach ($this->declaredInstances as $instanceName => $descriptor) {
+	        $this->walkConstructorLoop($instanceName, []);
+	    }
+	}
+	
+	/**
+	 * This take a instance name and the path to access.
+	 * It throw an exception if a loop was detected
+	 * 
+	 * @param string $instanceName
+	 * @param array $path
+	 * @throws MoufException
+	 */
+	private function walkConstructorLoop($instanceName, array $path) {
+	    if(isset($path[$instanceName])) {
+	        $instances = array_keys($path);
+	        $instances = array_slice($instances, array_search($instanceName, $instances));
+	        throw new MoufException('A loop was detected on constructor arguments '.implode(' -> ', $instances).' -> '.$instanceName);
+	    }
+	    $path[$instanceName] = true;
+	    $descriptor = $this->declaredInstances[$instanceName];
+	    if(isset($descriptor['constructor'])) {
+    	    foreach ($descriptor['constructor'] as $constructorArg) {
+    	        if($constructorArg['parametertype'] == 'object') {
+    	            if(is_array($constructorArg['value'])) {
+    	                foreach ($constructorArg['value'] as $subInstanceName) {
+    	                    $this->walkConstructorLoop($subInstanceName, $path);
+    	                }
+    	            }
+    	            else {
+    	                $this->walkConstructorLoop($constructorArg['value'], $path);
+    	            }
+    	        }
+    	    }
+	    }
+	}
 }
