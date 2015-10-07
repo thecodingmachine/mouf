@@ -176,9 +176,9 @@ class ComposerService {
 		}
 	}*/
 	
-	
+
 	private static $loader;
-	
+
 	/**
 	 * Register the autoloader for composer.
 	 */
@@ -187,26 +187,31 @@ class ComposerService {
 		if (null !== static::$loader) {
 			return static::$loader;
 		}
-		
+
 		static::$loader = $loader = new \Composer\Autoload\ClassLoader();
 		$vendorDir = dirname(__DIR__);
 		$baseDir = dirname($vendorDir);
-	
+
 		$map = require 'phar://'.__DIR__.'/../../../composer.phar/vendor/composer/autoload_namespaces.php';
 		foreach ($map as $namespace => $path) {
-			$loader->add($namespace, $path);
+			$loader->set($namespace, $path);
 		}
-	
+
+		$map = require 'phar://'.__DIR__.'/../../../composer.phar/vendor/composer/autoload_psr4.php';
+		foreach ($map as $namespace => $path) {
+			$loader->setPsr4($namespace, $path);
+		}
+
 		$classMap = require 'phar://'.__DIR__.'/../../../composer.phar/vendor/composer/autoload_classmap.php';
 		if ($classMap) {
 			$loader->addClassMap($classMap);
 		}
-	
+
 		$loader->register();
-	
+
 		return $loader;
 	}
-	
+
 	/**
 	 * Exposes the Composer object
 	 * 
@@ -240,7 +245,12 @@ class ComposerService {
 		
 		$composerHome = getenv('COMPOSER_HOME');
 		if (!$composerHome) {
-			\putenv('COMPOSER_HOME='.ROOT_PATH.".composer");
+			$composerTmpDir = sys_get_temp_dir().'/.mouf_composer/';
+			if (function_exists('posix_getpwuid')) {
+				$processUser = posix_getpwuid(posix_geteuid());
+				$composerTmpDir .= $processUser['name'].'/';
+			}
+			\putenv('COMPOSER_HOME='.$composerTmpDir);
 		}
 		
 	}
