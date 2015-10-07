@@ -5,7 +5,7 @@
 <?php
 define('MOUF_DIR', dirname(__FILE__)."/../../..");
 
-if (!is_writable(MOUF_DIR) || !is_writable(MOUF_DIR."/../../..") || (file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf"))) {
+if (!is_writable(MOUF_DIR."/../../..") || (file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf"))) {
 ?>
 
 		<div class="alert">Web directory must be writable for the Apache user</div>
@@ -14,9 +14,6 @@ if (!is_writable(MOUF_DIR) || !is_writable(MOUF_DIR."/../../..") || (file_exists
 		<ul>
 			<?php if(!is_writable(MOUF_DIR."/../../..")) {?>
 				<li><?php echo realpath(MOUF_DIR."/../../..") ?></li>
-			<?php }
-			if(!is_writable(MOUF_DIR)) {?>
-				<li><?php echo realpath(MOUF_DIR) ?></li>
 			<?php }
 			if(file_exists(MOUF_DIR."/../../../mouf") && !is_writable(MOUF_DIR."/../../../mouf")) {?>
 				<li><?php echo realpath(MOUF_DIR."/../../../mouf") ?></li>
