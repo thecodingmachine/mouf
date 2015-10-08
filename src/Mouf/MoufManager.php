@@ -2152,11 +2152,15 @@ class ".$this->mainClassName." {
     	        if($constructorArg['parametertype'] == 'object') {
     	            if(is_array($constructorArg['value'])) {
     	                foreach ($constructorArg['value'] as $subInstanceName) {
-    	                    $this->walkConstructorLoop($subInstanceName, $path);
+    	                    if($subInstanceName !== null) {
+    	                        $this->walkConstructorLoop($subInstanceName, $path);
+    	                    }
     	                }
     	            }
     	            else {
-    	                $this->walkConstructorLoop($constructorArg['value'], $path);
+    	            	if($constructorArg['value'] !== null) {
+    	                    $this->walkConstructorLoop($constructorArg['value'], $path);
+    	            	}
     	            }
     	        }
     	    }
