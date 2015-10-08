@@ -897,6 +897,10 @@ MoufDefaultRenderer = (function () {
 		var first = true;
 		var types = moufTypes.getTypes();
 		_.each(types, function(type) {
+			// Do not display null type
+			if(type == 'null') {
+				return;
+			}
 			var selected = false;
 			if (type == currentType) {
 				selected = true;
