@@ -61,6 +61,12 @@ try {
 	exit;
 }
 
+// If the code sample contains __DIR__, we want it to be located in mouf/ directory, not vendor/mouf/mouf/src/direct
+// directory. Hence, we change __DIR__ with the path we want.
+// FIXME: this will break if __DIR__ is in a string.
+
+$fullCode = str_replace('__DIR__', var_export(dirname(dirname(dirname(dirname(dirname(__DIR__))))).'/mouf', true), $fullCode);
+
 class CodeTester {
 	public function getClosure() {
 		global $fullCode;
