@@ -227,7 +227,7 @@ class ComposerService {
 			} else {
 				$this->io = new BufferIO();
 			}
-			$this->composer = Factory::create($this->io);
+			$this->composer = Factory::create($this->io, null, true);
 		}
 		return $this->composer;
 	}
