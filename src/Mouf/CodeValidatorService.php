@@ -10,6 +10,7 @@
 namespace Mouf;
 
 use PhpParser\Error;
+use PhpParser\ParserFactory;
 
 // Fix autoloading that is broken for some reason...
 if (!class_exists("\\PhpParser\\Parser")) {
@@ -31,7 +32,7 @@ class CodeValidatorService {
 	public static function validateCode($codeString) {
 		$code = "<?php \$a = function(ContainerInterface \$container) { ".$codeString."\n}\n?>";
 	
-		$parser = new \PhpParser\Parser(new \PhpParser\Lexer());
+		$parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
 	
 		$stmts = $parser->parse($code);
 
