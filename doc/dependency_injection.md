@@ -66,7 +66,7 @@ suddenly become likely candidates.
 - You have an object representing a form or a form element? Put it in Mouf!
 - ...
 
-You get the idea. Put as many objects as possible in Mouf's container. Mouf takes spaguetti code away
+You get the idea. Put as many objects as possible in Mouf's container. Mouf takes spaghetti code away
 so you can focus on the real interesting part of your project.
 
 <div class="alert alert-info"><strong>Mouf</strong> is a unique <em>dependency injection
