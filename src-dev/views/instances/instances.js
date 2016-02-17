@@ -1236,6 +1236,11 @@ MoufInstanceProperty.prototype.reorderArrayElement = function(i, j) {
 		return;
 	}
 
+	// If an element is removed, the function is called with j == -1
+	if (j == -1) {
+		return;
+	}
+
 	if (!this.type.isArray()) {
 		var moufProperty = this.getMoufProperty();
 		throw "Error, the '" + moufProperty.getName()
