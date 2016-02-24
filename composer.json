@@ -27,7 +27,8 @@
 		"mouf/mouf-installer" : "~2.0",
 		"mouf/mouf-validators-interface" : "~2.0",
 		"container-interop/container-interop" : "~1.0",
-		"mouf/classname-mapper": "~1.0"
+		"mouf/classname-mapper": "~1.0",
+		"thecodingmachine/yaco": "~1.0@dev"
 	},
 	"autoload" : {
 		"psr-0" : {

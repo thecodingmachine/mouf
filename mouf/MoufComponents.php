@@ -1833,7 +1833,7 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'fieldProperties' => 
     array (
-      'Mouf\\Html\\HtmlElement\\HtmlString' => 
+      'htmlString' =>
       array (
         'value' => '<h1>Login</h1>
 <p>Welcome to Mouf. Please login to access the administration interface of your web application.</p>
