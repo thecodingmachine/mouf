@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3268e5f6147d56aa74b38dcb5547a086",
-    "content-hash": "8add59f4939d8505150ecacfeeaa4b6e",
+    "hash": "f4a3cadbc739c60f7947844676fa19c9",
+    "content-hash": "eeb7e55eaf75507388a989cd8590b838",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -33,6 +33,92 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "filp/whoops",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "a327942c50cbd62b25c6fbe08f173031ce25fbff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/a327942c50cbd62b25c6fbe08f173031ce25fbff",
+                "reference": "a327942c50cbd62b25c6fbe08f173031ce25fbff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "suggest": {
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
+                "whoops/soap": "Formats errors as SOAP responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Whoops\\": "src/Whoops/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://github.com/filp/whoops",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "whoops",
+                "zf2"
+            ],
+            "time": "2016-01-06 17:51:21"
+        },
+        {
+            "name": "franzl/whoops-middleware",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/franzliedke/whoops-middleware.git",
+                "reference": "4e9673c092f24ed812bc1c78066b72658b4d358a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/franzliedke/whoops-middleware/zipball/4e9673c092f24ed812bc1c78066b72658b4d358a",
+                "reference": "4e9673c092f24ed812bc1c78066b72658b4d358a",
+                "shasum": ""
+            },
+            "require": {
+                "filp/whoops": "^1.1 || ^2.0",
+                "zendframework/zend-diactoros": "^1.1@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Franzl\\Middleware\\Whoops\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2016-02-26 02:57:51"
         },
         {
             "name": "michelf/php-markdown",
@@ -1183,6 +1269,150 @@
             "time": "2014-06-03 20:45:03"
         },
         {
+            "name": "mouf/mouf",
+            "version": "v2.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/mouf.git",
+                "reference": "a37b6649de73fd389374197f9fd61112fef03ac7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf/zipball/a37b6649de73fd389374197f9fd61112fef03ac7",
+                "reference": "a37b6649de73fd389374197f9fd61112fef03ac7",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "~1.0",
+                "mouf/classname-mapper": "~1.0",
+                "mouf/mouf-installer": "~2.0",
+                "mouf/mouf-validators-interface": "~2.0",
+                "php": ">=5.3.9"
+            },
+            "type": "mouf-framework",
+            "extra": {
+                "mouf": {
+                    "doc": [
+                        {
+                            "title": "Installing Mouf",
+                            "url": "doc/installing_mouf.md"
+                        },
+                        {
+                            "title": "Getting started with dependency injection",
+                            "url": "doc/dependency_injection.md",
+                            "children": [
+                                {
+                                    "title": "Using Mouf UI to define instances",
+                                    "url": "doc/mouf_di_ui.md"
+                                },
+                                {
+                                    "title": "Injection techniques",
+                                    "url": "doc/injection_techniques.md"
+                                },
+                                {
+                                    "title": "Supported types",
+                                    "url": "doc/supported_types.md"
+                                },
+                                {
+                                    "title": "Injection via PHP code",
+                                    "url": "doc/declare_instance_via_php_code.md"
+                                },
+                                {
+                                    "title": "Special annotations",
+                                    "url": "doc/mouf_annotations.md"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Configuration management",
+                            "url": "doc/configuration_management.md"
+                        },
+                        {
+                            "title": "Creating a Mouf2 package",
+                            "url": "doc/create_mouf_package.md",
+                            "children": [
+                                {
+                                    "title": "Writing a validator",
+                                    "url": "doc/writing_mouf_validator.md",
+                                    "children": [
+                                        {
+                                            "title": "Legacy validators",
+                                            "url": "doc/mouf_legacy_validators.md"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Writing an install process",
+                                    "url": "doc/install_process.md"
+                                },
+                                {
+                                    "title": "Writing packages documentation",
+                                    "url": "doc/writing_packages_documentation.md"
+                                },
+                                {
+                                    "title": "Extending Mouf user interface",
+                                    "url": "doc/extending_mouf_ui.md"
+                                },
+                                {
+                                    "title": "Managing instances programmatically",
+                                    "url": "doc/managing_instances_programmatically.md"
+                                },
+                                {
+                                    "title": "Utility functions",
+                                    "url": "doc/utility_functions.md"
+                                },
+                                {
+                                    "title": "Integrating your package with full-text search",
+                                    "url": "doc/full_text_search.md"
+                                },
+                                {
+                                    "title": "Weak instances",
+                                    "url": "doc/weak_instances.md"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Troubleshooting",
+                            "url": "doc/troubleshooting.md",
+                            "children": [
+                                {
+                                    "title": "Troubleshooting installation",
+                                    "url": "doc/troubleshooting_install.md"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mouf": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "The Mouf PHP framework: an open-source PHP framework providing an easy way to download, install, use and reuse components, with a graphical user interface.",
+            "homepage": "http://mouf-php.com",
+            "keywords": [
+                "dependency injection",
+                "di",
+                "framework",
+                "inversion of control",
+                "ioc",
+                "mouf"
+            ],
+            "time": "2016-02-17 14:07:42"
+        },
+        {
             "name": "mouf/mouf-installer",
             "version": "v2.0.0",
             "source": {
@@ -1274,31 +1504,35 @@
         },
         {
             "name": "mouf/mvc.splash",
-            "version": "v4.3.1",
+            "version": "7.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a"
+                "reference": "dbdc2ddfb8acbc74cea812d4a55efb906884e150"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/fd988413802baef0c0e4a0c2c1809d59deec280a",
-                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/dbdc2ddfb8acbc74cea812d4a55efb906884e150",
+                "reference": "dbdc2ddfb8acbc74cea812d4a55efb906884e150",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.template.bootstrap": ">=2.1, <4.0",
+                "franzl/whoops-middleware": "~0.3",
+                "mouf/html.template.bootstrap": ">=2.1, <5.0",
+                "mouf/mouf": ">=2.0.2, <3.0",
                 "mouf/mouf-validators-interface": "~2.0",
-                "mouf/mvc.splash-common": "4.3.*",
+                "mouf/mvc.splash-common": "~7.0",
                 "mouf/utils.cache.apc-cache": "~2.1",
                 "mouf/utils.cache.file-cache": "~2.1",
                 "mouf/utils.cache.no-cache": "2.0.*",
+                "mouf/utils.constants.debug": "~1.0",
                 "mouf/utils.constants.secret": "~1.0",
+                "mouf/utils.value.common-value": "~1.0",
                 "php": ">=5.3.0",
                 "psr/log": "~1.0"
             },
             "provide": {
-                "mouf/mvc.splash-implementation": "4.3.*"
+                "mouf/mvc.splash-implementation": "7.0.*"
             },
             "type": "mouf-library",
             "extra": {
@@ -1308,13 +1542,13 @@
                             "scope": "global",
                             "description": "Create RootController and root view.",
                             "type": "url",
-                            "url": "splashinstall/"
+                            "url": "splash7install/"
                         },
                         {
                             "scope": "global",
                             "description": "Write .htaccess file.",
                             "type": "url",
-                            "url": "splashinstall/writeHtAccess"
+                            "url": "splash7install/writeHtAccess"
                         }
                     ],
                     "logo": "logo.png",
@@ -1340,8 +1574,12 @@
                             "url": "doc/filters.md"
                         },
                         {
-                            "title": "Settings and error handling",
-                            "url": "doc/settings_and_error_handling.md"
+                            "title": "Advanced: configuring routing",
+                            "url": "doc/url_routing.md"
+                        },
+                        {
+                            "title": "Migrating from Splash 4",
+                            "url": "doc/migrating.md"
                         }
                     ],
                     "require-admin": [
@@ -1377,41 +1615,40 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2014-08-28 14:14:15"
+            "time": "2016-02-26 14:58:50"
         },
         {
             "name": "mouf/mvc.splash-common",
-            "version": "v4.3.1",
+            "version": "7.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "f78dba2e8940bd9d6d0f936bd22ec7befafb7fa2"
+                "reference": "303dc01b6e6809d602e09138432d1915a26b3e97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/f78dba2e8940bd9d6d0f936bd22ec7befafb7fa2",
-                "reference": "f78dba2e8940bd9d6d0f936bd22ec7befafb7fa2",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/303dc01b6e6809d602e09138432d1915a26b3e97",
+                "reference": "303dc01b6e6809d602e09138432d1915a26b3e97",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.htmlelement": "2.*",
                 "mouf/html.renderer.twig-extensions": "~1.0",
-                "mouf/mvc.splash-implementation": "~4.3",
+                "mouf/mouf": ">=2.0.2, <3.0",
+                "mouf/mvc.splash-implementation": "~7.0",
                 "mouf/utils.action.common-action": "~1.0",
+                "mouf/utils.cache.apc-cache": "~2.1",
+                "mouf/utils.cache.cache-interface": "~2.0",
+                "mouf/utils.cache.file-cache": "~2.1",
+                "mouf/utils.common.conditioninterface": "~2.0",
                 "mouf/utils.common.url-interface": "~1.0",
-                "mouf/utils.common.validators": "3.*",
-                "mouf/utils.i18n.fine": "3.*",
-                "php": ">=5.3.0"
+                "php": ">=5.3.0",
+                "zendframework/zend-diactoros": "~1.0",
+                "zendframework/zend-stratigility": "~1.0"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "file": "src/splashCommonInstall.php",
-                            "type": "file"
-                        }
-                    ],
                     "require-admin": [
                         "src/SplashCommonAdmin.php"
                     ]
@@ -1443,7 +1680,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2014-08-22 14:52:37"
+            "time": "2016-02-26 17:51:15"
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -1813,19 +2050,20 @@
         },
         {
             "name": "mouf/utils.cache.cache-interface",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.cache-interface.git",
-                "reference": "85ed0a965fd18d89c509cfbacb68a240844afc0a"
+                "reference": "109685126f5759a6376e113c4bf13fd625091243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/85ed0a965fd18d89c509cfbacb68a240844afc0a",
-                "reference": "85ed0a965fd18d89c509cfbacb68a240844afc0a",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/109685126f5759a6376e113c4bf13fd625091243",
+                "reference": "109685126f5759a6376e113c4bf13fd625091243",
                 "shasum": ""
             },
             "require": {
+                "mouf/utils.composite-exception": "~1.0",
                 "php": ">=5.3.0"
             },
             "type": "mouf-library",
@@ -1860,7 +2098,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2013-10-29 18:21:59"
+            "time": "2015-09-08 16:07:35"
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -2155,57 +2393,35 @@
             "time": "2013-10-29 18:21:59"
         },
         {
-            "name": "mouf/utils.common.validators",
-            "version": "v3.1.0",
+            "name": "mouf/utils.composite-exception",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.common.validators.git",
-                "reference": "2c2e5ded2c3c5b2185838994ea99681a51952f42"
+                "url": "https://github.com/thecodingmachine/utils.composite-exception.git",
+                "reference": "f887828a2730e9591e73b0d533c0b4f3b5c5872c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.validators/zipball/2c2e5ded2c3c5b2185838994ea99681a51952f42",
-                "reference": "2c2e5ded2c3c5b2185838994ea99681a51952f42",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.composite-exception/zipball/f887828a2730e9591e73b0d533c0b4f3b5c5872c",
+                "reference": "f887828a2730e9591e73b0d533c0b4f3b5c5872c",
                 "shasum": ""
             },
-            "require": {
-                "mouf/utils.i18n.fine": ">=3.0-dev,<4.0",
-                "php": ">=5.3.0"
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "dev-master"
             },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "src/validatorsInstall.php"
-                        }
-                    ]
-                }
-            },
+            "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Common\\Validators\\": "src/"
+                "psr-4": {
+                    "Mouf\\Utils\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains typical validators to be used in your application. A validator is a class that decides whether a string is valid or not. For instance, you could use an EmailValidator to validate that a string is a mail, etc...",
-            "homepage": "https://github.com/thecodingmachine/utils.common.validators",
-            "keywords": [
-                "utils",
-                "validators"
-            ],
-            "time": "2014-06-04 16:32:03"
+            "description": "This project contains a simple PHP exception that can aggregate multiple exceptions in one.",
+            "time": "2015-09-18 15:40:51"
         },
         {
             "name": "mouf/utils.constants.debug",
@@ -2626,6 +2842,57 @@
             "time": "2015-08-10 14:03:37"
         },
         {
+            "name": "mouf/utils.value.common-value",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/mouf-utils.value.common-value.git",
+                "reference": "c989693980176722ead0134791fdf28e9f8ff0be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-utils.value.common-value/zipball/c989693980176722ead0134791fdf28e9f8ff0be",
+                "reference": "c989693980176722ead0134791fdf28e9f8ff0be",
+                "shasum": ""
+            },
+            "require": {
+                "mouf/utils.common.conditioninterface": "~2.0",
+                "mouf/utils.value.value-interface": "~1.0",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "mouf": {
+                    "logo": "logo.png"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mouf\\Utils\\Action": "src/",
+                    "Mouf\\Utils\\Common": "src/",
+                    "Mouf\\Utils\\Value": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package contains common classes that implement the ValueInterface interface (from the mouf/utils.value.value-interface package).",
+            "homepage": "https://mouf-php.com/mouf/utils.value.common-value",
+            "keywords": [
+                "mouf",
+                "valueinterface"
+            ],
+            "time": "2016-02-26 13:50:11"
+        },
+        {
             "name": "mouf/utils.value.value-interface",
             "version": "v1.0.0",
             "source": {
@@ -2725,6 +2992,55 @@
             "time": "2015-12-04 15:28:43"
         },
         {
+            "name": "psr/http-message",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2015-05-04 20:22:00"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -2822,6 +3138,152 @@
                 "templating"
             ],
             "time": "2016-01-25 21:22:18"
+        },
+        {
+            "name": "zendframework/zend-diactoros",
+            "version": "1.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-diactoros.git",
+                "reference": "4d54fde709664562eb63356f0250d527824d05de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/4d54fde709664562eb63356f0250d527824d05de",
+                "reference": "4d54fde709664562eb63356f0250d527824d05de",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "~1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6",
+                "squizlabs/php_codesniffer": "^2.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev",
+                    "dev-develop": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Diactoros\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "PSR HTTP Message implementations",
+            "homepage": "https://github.com/zendframework/zend-diactoros",
+            "keywords": [
+                "http",
+                "psr",
+                "psr-7"
+            ],
+            "time": "2016-01-04 21:37:32"
+        },
+        {
+            "name": "zendframework/zend-escaper",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-escaper.git",
+                "reference": "a4b227d8a477f4e7e9073f8e0a7ae7dbd3104a73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/a4b227d8a477f4e7e9073f8e0a7ae7dbd3104a73",
+                "reference": "a4b227d8a477f4e7e9073f8e0a7ae7dbd3104a73",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev",
+                    "dev-develop": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Escaper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-escaper",
+            "keywords": [
+                "escaper",
+                "zf2"
+            ],
+            "time": "2015-06-03 14:05:37"
+        },
+        {
+            "name": "zendframework/zend-stratigility",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-stratigility.git",
+                "reference": "8c01ddf62131f67c51f51dad7fa433374aa68a27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-stratigility/zipball/8c01ddf62131f67c51f51dad7fa433374aa68a27",
+                "reference": "8c01ddf62131f67c51f51dad7fa433374aa68a27",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.8",
+                "psr/http-message": "~1.0.0",
+                "zendframework/zend-escaper": "~2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.7",
+                "squizlabs/php_codesniffer": "^2.3.1",
+                "zendframework/zend-diactoros": "~1.0"
+            },
+            "suggest": {
+                "psr/http-message-implementation": "Please install a psr/http-message-implementation to consume Stratigility; e.g., zendframework/zend-diactoros"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev",
+                    "dev-develop": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Stratigility\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Middleware for PHP",
+            "homepage": "https://github.com/zendframework/zend-stratigility",
+            "keywords": [
+                "http",
+                "middleware",
+                "psr-7"
+            ],
+            "time": "2015-10-09 20:16:34"
         }
     ],
     "packages-dev": [
@@ -3238,7 +3700,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
