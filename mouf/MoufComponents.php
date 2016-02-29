@@ -1833,7 +1833,7 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'fieldProperties' => 
     array (
-      'Mouf\\Html\\HtmlElement\\HtmlString' => 
+      'htmlString' =>
       array (
         'value' => '<h1>Login</h1>
 <p>Welcome to Mouf. Please login to access the administration interface of your web application.</p>
@@ -3237,6 +3237,426 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
+    'splashMiddleware' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\SplashMiddleware',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' =>
+                                array (
+                                    0 => '__anonymous__b67b_1753892387',
+                                    1 => '__anonymous__b67b_59788333',
+                                    2 => '__anonymous__b67b_632286537',
+                                    3 => '__anonymous__b67b_351917355',
+                                    4 => '__anonymous__b67b_282937984',
+                                ),
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+
+    '__anonymous__b67b_1344235188' =>
+        array (
+            'class' => 'Mouf\\Utils\\Common\\Condition\\ToCondition',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => '__anonymous__b67b_1934177810',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_1753892387' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\Router',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'phpVarsCheckRouter',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_1934177810' =>
+        array (
+            'class' => 'Mouf\\Utils\\Value\\Variable',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => true,
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_282937984' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\ErrorRouter',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'exceptionRouter',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_351917355' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\ErrorRouter',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'return $container->get(\'whoopsMiddleware\');',
+                            'parametertype' => 'primitive',
+                            'type' => 'php',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    1 =>
+                        array (
+                            'value' => NULL,
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    2 =>
+                        array (
+                            'value' => '__anonymous__b67b_1344235188',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_59788333' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\Router',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'splashDefaultRouter',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    '__anonymous__b67b_632286537' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\Router',
+            'external' => false,
+            'anonymous' => true,
+            'weak' => true,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'notFoundRouter',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    'exceptionRouter' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\ExceptionRouter',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'httpErrorsController',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    1 =>
+                        array (
+                            'value' => 'psr.errorLogLogger',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    'httpErrorsController' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Controllers\\HttpErrorsController',
+            'external' => false,
+            'weak' => false,
+            'fieldBinds' =>
+                array (
+                ),
+            'fieldProperties' =>
+                array (
+                ),
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'moufTemplate',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    1 =>
+                        array (
+                            'value' => 'block.content',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    2 =>
+                        array (
+                            'value' => true,
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    'notFoundRouter' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\NotFoundRouter',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'httpErrorsController',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+    'phpVarsCheckRouter' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\PhpVarsCheckRouter',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'psr.errorLogLogger',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+
+    'splashDefaultRouter' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Routers\\SplashDefaultRouter',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' =>
+                                array (
+                                    0 => 'moufExplorerUrlProvider',
+                                ),
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    1 =>
+                        array (
+                            'value' => 'splashCacheApc',
+                            'parametertype' => 'object',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    2 =>
+                        array (
+                            'value' => NULL,
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    3 =>
+                        array (
+                            'value' => 'weak',
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    4 =>
+                        array (
+                            'value' => true,
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+
+    'whoopsMiddleware' =>
+        array (
+            'class' => 'Franzl\\Middleware\\Whoops\\ErrorMiddleware',
+            'external' => false,
+            'weak' => false,
+        ),
+
+    'psr.errorLogLogger' =>
+        array (
+            'class' => 'Mouf\\Utils\\Log\\Psr\\ErrorLogLogger',
+            'external' => false,
+            'weak' => false,
+            'constructor' =>
+                array (
+                    0 =>
+                        array (
+                            'value' => 'warning',
+                            'parametertype' => 'primitive',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
+
+    'moufExplorerUrlProvider' =>
+        array (
+            'class' => 'Mouf\\Mvc\\Splash\\Services\\MoufExplorerUrlProvider',
+            'external' => false,
+            'weak' => false,
+        ),
+
+    'splashCacheApc' =>
+        array (
+            'class' => 'Mouf\\Utils\\Cache\\ApcCache',
+            'external' => false,
+            'weak' => false,
+            'fieldProperties' =>
+                array (
+                    'prefix' =>
+                        array (
+                            'value' => 'ROOT_PATH',
+                            'type' => 'config',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+            'fieldBinds' =>
+                array (
+                    'fallback' => 'splashCacheFile',
+                ),
+        ),
+    'splashCacheFile' =>
+        array (
+            'class' => 'Mouf\\Utils\\Cache\\FileCache',
+            'external' => false,
+            'weak' => false,
+            'fieldProperties' =>
+                array (
+                    'prefix' =>
+                        array (
+                            'value' => 'ROOT_PATH',
+                            'type' => 'config',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                    'cacheDirectory' =>
+                        array (
+                            'value' => 'splashCache/',
+                            'type' => 'string',
+                            'metadata' =>
+                                array (
+                                ),
+                        ),
+                ),
+        ),
 ));
 
 

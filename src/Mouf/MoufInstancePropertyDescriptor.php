@@ -200,7 +200,7 @@ class MoufInstancePropertyDescriptor {
 		
 	}
 	
-	private static function array_map_deep($array, $callback) {
+	public static function array_map_deep($array, $callback) {
 		$new = array();
 		if( is_array($array) ) foreach ($array as $key => $val) {
 			if (is_array($val)) {

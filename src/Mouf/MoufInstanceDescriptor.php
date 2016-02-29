@@ -42,14 +42,6 @@ class MoufInstanceDescriptor {
 	private $name;
 	
 	/**
-	 * A list of properties (not the list of all properties).
-	 * Used for caching.
-	 * 
-	 * @var MoufInstancePropertyDescriptor[]
-	 */
-	private $properties = array();
-	
-	/**
 	 * A list of public properties (not sure to be complete)
 	 * Used for caching.
 	 * 

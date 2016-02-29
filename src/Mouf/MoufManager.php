@@ -7,12 +7,21 @@
 * For the full copyright and license information, please view the LICENSE.txt
 * file that was distributed with this source code.
 */
+declare(strict_types=1);
+
 namespace Mouf;
 
 use Mouf\Composer\ComposerService;
+use Mouf\Picotainer\Picotainer;
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Reflection\MoufReflectionClass;
 use Interop\Container\ContainerInterface;
+use TheCodingMachine\Yaco\Compiler;
+use TheCodingMachine\Yaco\Definition\ConstParameterDefinition;
+use TheCodingMachine\Yaco\Definition\ObjectDefinition;
+use TheCodingMachine\Yaco\Definition\ParameterDefinition;
+use Mouf\Yaco\PhpCodeDefinition;
+use TheCodingMachine\Yaco\Definition\Reference;
 
 /**
  * The class managing object instanciation in the Mouf framework.
@@ -91,8 +100,9 @@ class MoufManager implements ContainerInterface {
 			self::$defaultInstance->mainClassName = "Mouf";
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
-			// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
-			self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
+
+			self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedContainer";
+			self::$defaultInstance->compiledContainerFile = '../../../../../mouf/no_commit/GeneratedContainer.php';
 		}
 	}
 
@@ -111,8 +121,10 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
-		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
-		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
+
+
+		self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedAdminContainer";
+		self::$defaultInstance->compiledContainerFile = '../../mouf/no_commit/GeneratedAdminContainer.php';
 	}
 	
 	/**
@@ -236,6 +248,27 @@ class MoufManager implements ContainerInterface {
 	private $mainClass;
 
 	/**
+	 * The fully qualified class name to the compiled class.
+	 *
+	 * @var string
+	 */
+	private $compiledContainerName;
+
+	/**
+	 * The path to the compiled container file
+	 *
+	 * @var string
+	 */
+	private $compiledContainerFile;
+
+	/**
+	 * The instance of the container compiled with Yaco.
+	 *
+	 * @var Picotainer
+	 */
+	private $container;
+
+	/**
 	 * Returns the config manager (the service in charge of writing the config.php file).
 	 *
 	 * @return MoufConfigManager
@@ -245,16 +278,43 @@ class MoufManager implements ContainerInterface {
 	}
 
 	/**
+	 * Returns the container
+	 *
+	 * @return Picotainer
+	 */
+	private function getContainer() {
+		if ($this->container === null) {
+			// Does the container file exists?
+			// If yes, is it newer than MoufComponents?
+			$compiledContainerFile = __DIR__.'/'.$this->compiledContainerFile;
+			$componentsFile = __DIR__.'/'.$this->componentsFileName;
+
+			$containerFileExists = file_exists($compiledContainerFile);
+
+			if (($containerFileExists && filemtime($compiledContainerFile) <= filemtime($componentsFile)) || !$containerFileExists) {
+				$this->defaultCompile();
+			}
+
+			require_once $compiledContainerFile;
+			$containerName = $this->compiledContainerName;
+			$this->container = new $containerName($this->delegateLookupContainer);
+		}
+		return $this->container;
+	}
+
+	/**
 	 * Returns the instance of the specified object.
 	 *
 	 * @param string $instanceName
 	 * @return object
 	 */
 	public function get($instanceName) {
-		if (!isset($this->objectInstances[$instanceName]) || $this->objectInstances[$instanceName] == null) {
+		/*if (!isset($this->objectInstances[$instanceName]) || $this->objectInstances[$instanceName] == null) {
 			$this->instantiateComponent($instanceName);
 		}
-		return $this->objectInstances[$instanceName];
+		return $this->objectInstances[$instanceName];*/
+		$container = $this->getContainer();
+		return $container->get($instanceName);
 	}
 
 	/**
@@ -285,7 +345,8 @@ class MoufManager implements ContainerInterface {
 	 * @return bool
 	 */
 	public function has($instanceName) {
-		return $this->instanceExists($instanceName);
+		$container = $this->getContainer();
+		return $container->has($instanceName);
 	}
 
 	/**
@@ -1400,6 +1461,8 @@ class ".$this->mainClassName." {
 		$composerService = new ComposerService($selfEdit);
 		$composerService->rewriteMoufUi();
 
+		// Let's compile the container!
+		$this->defaultCompile();
 	}
 
 	/**
@@ -2166,4 +2229,185 @@ class ".$this->mainClassName." {
     	    }
 	    }
 	}
+
+	private function defaultCompile() {
+		$this->compile($this->compiledContainerName, __DIR__.'/'.$this->compiledContainerFile);
+	}
+
+	private function compile(string $className, string $pathToFile)
+	{
+		$compiler = new Compiler();
+		foreach ($this->declaredInstances as $instanceName => $descriptor) {
+			if ($this->isInstanceAnonymous($instanceName)) {
+				continue;
+			}
+			$definition = $this->toDefinition($instanceName);
+			$compiler->addDumpableDefinition($definition);
+		}
+		if (!file_exists(dirname($pathToFile))) {
+			mkdir(dirname($pathToFile), 0775, true);
+			chmod(dirname($pathToFile), 0775);
+		}
+		file_put_contents($pathToFile, $compiler->compile($className));
+		chmod($pathToFile, 0664);
+	}
+
+	/**
+	 * Returns a reference (if we are dealing with a non anonymous instance) or a definition (in the case of anonymous instances)
+	 * @param $instanceName
+	 */
+	private function toDefinitionOrReference($instanceName) {
+		if ($this->isInstanceAnonymous($instanceName)) {
+			return $this->toDefinition($instanceName);
+		} else {
+			return new Reference($instanceName);
+		}
+	}
+
+	private function toDefinition($instanceName)
+	{
+		if (!isset($this->declaredInstances[$instanceName])) {
+			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' is not defined.", 1, $instanceName);
+		}
+		try {
+			$instanceDefinition = $this->declaredInstances[$instanceName];
+
+			if (isset($instanceDefinition['code'])) {
+				if (isset($instanceDefinition['error'])) {
+					throw new MoufException("The code defining instance '$instanceName' is invalid: ".$instanceDefinition['error']);
+				}
+				return new PhpCodeDefinition($instanceName, $instanceDefinition['code']);
+			}
+
+			$className = $instanceDefinition["class"];
+
+			if ($this->isInstanceAnonymous($instanceName)) {
+				$definition = new ObjectDefinition(null, $className);
+			} else {
+				$definition = new ObjectDefinition($instanceName, $className);
+			}
+
+			if (isset($instanceDefinition['constructor'])) {
+				$constructorParametersArray = $instanceDefinition['constructor'];
+
+				foreach ($constructorParametersArray as $key=>$constructorParameterDefinition) {
+					$value = $constructorParameterDefinition["value"];
+					switch ($constructorParameterDefinition['parametertype']) {
+						case 'primitive':
+							switch ($constructorParameterDefinition["type"]) {
+								case 'string':
+									$definition->addConstructorArgument(new ParameterDefinition(null, $value));
+									break;
+								case 'config':
+									$definition->addConstructorArgument(new ConstParameterDefinition(null, $value));
+									break;
+								case 'php':
+									$definition->addConstructorArgument(new PhpCodeDefinition(null, $value));
+									break;
+								default:
+									throw new MoufException("Invalid type '".$constructorParameterDefinition['type']."' for object instance '$instanceName'.");
+							}
+							break;
+						case 'object':
+							if (is_array($value)) {
+								$tmpArray = array();
+								foreach ($value as $keyInstanceName=>$valueInstanceName) {
+									if ($valueInstanceName !== null) {
+										$tmpArray[$keyInstanceName] = $this->toDefinitionOrReference($valueInstanceName);
+									} else {
+										$tmpArray[$keyInstanceName] = new ParameterDefinition(null, null);
+									}
+								}
+								$definition->addConstructorArgument($tmpArray);
+							} else {
+								if ($value !== null) {
+									$definition->addConstructorArgument($this->toDefinitionOrReference($value));
+								} else {
+									$definition->addConstructorArgument(new ParameterDefinition(null, null));
+								}
+							}
+							break;
+						default:
+							throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
+					}
+				}
+			}
+
+			if (isset($instanceDefinition["fieldProperties"])) {
+				foreach ($instanceDefinition["fieldProperties"] as $key=>$valueDef) {
+					switch ($valueDef["type"]) {
+						case "string":
+							$definition->setProperty($key, $valueDef["value"]);
+							break;
+						case "config":
+							$definition->setProperty($key, new ConstParameterDefinition(null, $valueDef["value"]));
+							break;
+						case "php":
+							$definition->setProperty($key, new PhpCodeDefinition(null, $valueDef["value"]));
+							break;
+						default:
+							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+					}
+				}
+			}
+
+			if (isset($instanceDefinition["setterProperties"])) {
+				foreach ($instanceDefinition["setterProperties"] as $key=>$valueDef) {
+					switch ($valueDef["type"]) {
+						case "string":
+							$definition->addMethodCall($key, [ $valueDef["value"] ]);
+							break;
+						case "config":
+							$definition->addMethodCall($key, [ ConstParameterDefinition(null, $valueDef["value"]) ]);
+							break;
+						case "php":
+							$definition->addMethodCall($key, [ PhpCodeDefinition(null, $valueDef["value"]) ]);
+							break;
+						default:
+							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+					}
+				}
+			}
+
+			if (isset($instanceDefinition["fieldBinds"])) {
+				foreach ($instanceDefinition["fieldBinds"] as $key=>$value) {
+					if (is_array($value)) {
+						$tmpArray = array();
+						foreach ($value as $keyInstanceName=>$valueInstanceName) {
+							if ($valueInstanceName !== null) {
+								$tmpArray[$keyInstanceName] = $this->toDefinitionOrReference($valueInstanceName);
+							} else {
+								$tmpArray[$keyInstanceName] = null;
+							}
+						}
+						$definition->setProperty($key, $tmpArray);
+					} else {
+						$definition->setProperty($key, $this->toDefinitionOrReference($value));
+					}
+				}
+			}
+
+			if (isset($instanceDefinition["setterBinds"])) {
+				foreach ($instanceDefinition["setterBinds"] as $key=>$value) {
+					if (is_array($value)) {
+						$tmpArray = array();
+						foreach ($value as $keyInstanceName=>$valueInstanceName) {
+							if ($valueInstanceName !== null) {
+								$tmpArray[$keyInstanceName] = $this->toDefinitionOrReference($valueInstanceName);
+							} else {
+								$tmpArray[$keyInstanceName] = null;
+							}
+						}
+						$definition->addMethodCall($key, [ $tmpArray ]);
+					} else {
+						$definition->addMethodCall($key, [ $this->toDefinitionOrReference($value) ]);
+					}
+				}
+			}
+		} catch (MoufInstanceNotFoundException $e) {
+			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' could not be created because it depends on an object in error (".$e->getMissingInstanceName().")", 2, $instanceName, $e);
+		}
+		return $definition;
+	}
+
 }

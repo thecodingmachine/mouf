@@ -4,3 +4,5 @@ vendor/*
 config.php
 moufRunningActions.php
 .composer
+!mouf/no_commit/.gitkeep
+mouf/no_commit/
