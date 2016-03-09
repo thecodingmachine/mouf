@@ -24,11 +24,12 @@
 	],
 	"require" : {
 		"php" : ">=5.3.9",
-		"mouf/mouf-installer" : "~2.0",
+		"mouf/mouf-installer" : "~2.1.0@dev",
 		"mouf/mouf-validators-interface" : "~2.0",
 		"container-interop/container-interop" : "~1.0",
 		"mouf/classname-mapper": "~1.0",
-		"thecodingmachine/yaco": "~1.0@dev"
+		"thecodingmachine/yaco-service-provider": "~1.0@dev",
+		"puli/composer-plugin": "^1.0-beta9@dev"
 	},
 	"autoload" : {
 		"psr-0" : {

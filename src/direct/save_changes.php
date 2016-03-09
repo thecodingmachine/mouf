@@ -38,14 +38,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 
-if (get_magic_quotes_gpc()==1)
-{
-	// FIXME: add suppport for arrays (see "get")
-	$changesList = $_REQUEST["changesList"];
-	//$changesList = stripslashes($_REQUEST["changesList"]);
-} else {
-	$changesList = $_REQUEST["changesList"];
-}
+$changesList = $_REQUEST["changesList"];
 
 $moufManager = MoufManager::getMoufManager();
 
@@ -208,37 +201,6 @@ $moufManager->rewriteMouf();
 
 $response = array();
 $response["status"] = "ok";
-/*$instanceList = $moufManager->findInstances($className);
-
-$response = array();
-$instancesArray = array();
-$instanceArray = array();
-
-foreach ($instanceList as $instanceName) {
-	$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
-	$response["instances"][$instanceDescriptor->getName()] = $instanceDescriptor->toJson();
-}
-
-// Now, let's get the full list of absolutely all classes implementing "class".
-$classList = Moufspector::getComponentsList($className);
-$classArray = array();
-$childClassArray = array();
-
-foreach ($classList as $childClassName) {
-	$childClassArray[] = $childClassName;
-	$classDescriptor = new MoufReflectionClass($childClassName);
-	
-	do {
-		$classArray[$classDescriptor->getName()] = $classDescriptor->toJson();
-		$classDescriptor = $classDescriptor->getParentClass();
-	} while ($classDescriptor != null && !isset($classArray[$classDescriptor->getName()]));
-}
-
-// List of all classes that might be relevant
-$response["classes"] = $classArray;
-// List of all classes that are a subclass of the main class / interface
-$response["childrenClasses"] = $childClassArray;
-*/
 
 $encode = "php";
 if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]=="json") {
@@ -253,5 +215,3 @@ if ($encode == "php") {
 } else {
 	echo "invalid encode parameter";
 }
-
-?>

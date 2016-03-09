@@ -16,12 +16,14 @@ use Mouf\Picotainer\Picotainer;
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Reflection\MoufReflectionClass;
 use Interop\Container\ContainerInterface;
+use Puli\Discovery\Api\Discovery;
 use TheCodingMachine\Yaco\Compiler;
 use TheCodingMachine\Yaco\Definition\ConstParameterDefinition;
 use TheCodingMachine\Yaco\Definition\ObjectDefinition;
 use TheCodingMachine\Yaco\Definition\ParameterDefinition;
 use Mouf\Yaco\PhpCodeDefinition;
 use TheCodingMachine\Yaco\Definition\Reference;
+use TheCodingMachine\Yaco\ServiceProvider\ServiceProviderLoader;
 
 /**
  * The class managing object instanciation in the Mouf framework.
@@ -103,6 +105,8 @@ class MoufManager implements ContainerInterface {
 
 			self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedContainer";
 			self::$defaultInstance->compiledContainerFile = '../../../../../mouf/no_commit/GeneratedContainer.php';
+			self::$defaultInstance->cachedModificationTimeFile = '../../../../../mouf/no_commit/modificationTimes.php';
+			self::$defaultInstance->puliFactoryClassName = "Puli\\GeneratedPuliFactory";
 		}
 	}
 
@@ -125,6 +129,8 @@ class MoufManager implements ContainerInterface {
 
 		self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedAdminContainer";
 		self::$defaultInstance->compiledContainerFile = '../../mouf/no_commit/GeneratedAdminContainer.php';
+		self::$defaultInstance->cachedModificationTimeFile = '../../mouf/no_commit/modificationTimes.php';
+		self::$defaultInstance->puliFactoryClassName = "Puli\\GeneratedMoufPuliFactory";
 	}
 	
 	/**
@@ -262,6 +268,20 @@ class MoufManager implements ContainerInterface {
 	private $compiledContainerFile;
 
 	/**
+	 * The path to the file containing timestamp of lost modification time
+	 *
+	 * @var string
+	 */
+	private $cachedModificationTimeFile;
+
+	/**
+	 * The class name of the Puli factory
+	 *
+	 * @var string
+	 */
+	private $puliFactoryClassName;
+
+	/**
 	 * The instance of the container compiled with Yaco.
 	 *
 	 * @var Picotainer
@@ -284,6 +304,8 @@ class MoufManager implements ContainerInterface {
 	 */
 	private function getContainer() {
 		if ($this->container === null) {
+			$compiledContainerFile = __DIR__.'/'.$this->compiledContainerFile;
+			/*
 			// Does the container file exists?
 			// If yes, is it newer than MoufComponents?
 			$compiledContainerFile = __DIR__.'/'.$this->compiledContainerFile;
@@ -293,6 +315,9 @@ class MoufManager implements ContainerInterface {
 
 			if (($containerFileExists && filemtime($compiledContainerFile) <= filemtime($componentsFile)) || !$containerFileExists) {
 				$this->defaultCompile();
+			}*/
+			if (!$this->checkContainerUpToDate()) {
+				$this->defaultCompile();
 			}
 
 			require_once $compiledContainerFile;
@@ -300,6 +325,52 @@ class MoufManager implements ContainerInterface {
 			$this->container = new $containerName($this->delegateLookupContainer);
 		}
 		return $this->container;
+	}
+
+	/**
+	 * Checks whether the container is up to date or not.
+	 * Returns false if the container needs updating, i.e. if one of the service providers or the MoufComponents file
+	 * has been modified lately.
+	 *
+	 * @return bool
+	 */
+	private function checkContainerUpToDate() : bool
+	{
+		$cachedModificationTimeFile = __DIR__.'/'.$this->cachedModificationTimeFile;
+		$componentsFile = __DIR__.'/'.$this->componentsFileName;
+
+		if (!file_exists($cachedModificationTimeFile)) {
+			return false;
+		}
+
+		$cachedModifications = require $cachedModificationTimeFile;
+
+		if ($cachedModifications['moufComponents'] !== filemtime($componentsFile)) {
+			return false;
+		}
+		foreach ($cachedModifications['serviceProviders'] as $serviceProviderFile => $serviceProviderModificationTime) {
+			if ($serviceProviderModificationTime !== filemtime($serviceProviderFile)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private function writeContainerCachedModification()
+	{
+		$componentsFile = __DIR__.'/'.$this->componentsFileName;
+		$cachedModificationTimeFile = __DIR__.'/'.$this->cachedModificationTimeFile;
+
+		$cachedModifications = ['moufComponents' => filemtime($componentsFile),
+		'serviceProviders' => []];
+
+		foreach ($this->discoverServiceProviderBindings() as $serviceProvider) {
+			$reflectionClass = new \ReflectionClass($serviceProvider);
+			$cachedModifications['serviceProviders'][$reflectionClass->getFileName()] = filemtime($reflectionClass->getFileName());
+		}
+
+		$code = "<?php\nreturn ".var_export($cachedModifications, true).";\n";
+		file_put_contents($cachedModificationTimeFile, $code);
 	}
 
 	/**
@@ -351,7 +422,7 @@ class MoufManager implements ContainerInterface {
 
 	/**
 	 * Returns the list of all instances of objects in Mouf.
-	 * Objects are not instanciated. Instead, a list containing the name of the instance in the key
+	 * Objects are not instantiated. Instead, a list containing the name of the instance in the key
 	 * and the name of the class in the value is returned.
 	 *
 	 * @return array<string, string>
@@ -402,7 +473,7 @@ class MoufManager implements ContainerInterface {
 			}
 		}
 		
-		if (strpos($className, '\\' === 0)) {
+		if (strpos($className, '\\') === 0) {
 			$className = substr($className, 1);
 		}
 		
@@ -2232,11 +2303,48 @@ class ".$this->mainClassName." {
 
 	private function defaultCompile() {
 		$this->compile($this->compiledContainerName, __DIR__.'/'.$this->compiledContainerFile);
+		$this->writeContainerCachedModification();
+	}
+
+
+	private $puliDiscovery;
+
+	/**
+	 * Creates a Puli discovery and returns it.
+	 *
+	 * TODO: improve this to be sure that the Puli discovery and puli factory is available in the container at runtime.
+	 *
+	 * @return Discovery
+	 */
+	private function getPuliDiscovery() : Discovery
+	{
+		if ($this->puliDiscovery === null) {
+			$factoryClass = $this->puliFactoryClassName;
+			$factory = new $factoryClass();
+			$this->puliDiscovery = $factory->createDiscovery($factory->createRepository());
+		}
+		return $this->puliDiscovery;
+	}
+
+	public function discoverServiceProviderBindings() : array {
+		$bindings = $this->getPuliDiscovery()->findBindings('container-interop/service-provider');
+		$serviceProviders = [];
+
+		foreach ($bindings as $binding) {
+			if ($binding instanceof ClassBinding) {
+				$serviceProviders[] = $binding->getClassName();
+			}
+		}
+		return $serviceProviders;
 	}
 
 	private function compile(string $className, string $pathToFile)
 	{
 		$compiler = new Compiler();
+
+		$serviceProviderLoader = new ServiceProviderLoader($compiler);
+		$serviceProviderLoader->discoverAndLoad($this->getPuliDiscovery());
+
 		foreach ($this->declaredInstances as $instanceName => $descriptor) {
 			if ($this->isInstanceAnonymous($instanceName)) {
 				continue;
@@ -2256,7 +2364,7 @@ class ".$this->mainClassName." {
 	 * Returns a reference (if we are dealing with a non anonymous instance) or a definition (in the case of anonymous instances)
 	 * @param $instanceName
 	 */
-	private function toDefinitionOrReference($instanceName) {
+	private function toDefinitionOrReference(string $instanceName) {
 		if ($this->isInstanceAnonymous($instanceName)) {
 			return $this->toDefinition($instanceName);
 		} else {
