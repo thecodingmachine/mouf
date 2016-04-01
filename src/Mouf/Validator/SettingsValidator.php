@@ -47,11 +47,6 @@ class SettingsValidator implements MoufStaticValidatorInterface {
 			if($op_validate_timestamp == 0) {
 				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not revalidate files automatically. If it is a development environment, please edit your php.ini file and change the value of <strong>opcache.validate_timestamps</strong> to 1.");
 			}
-			
-			$op_freq = ini_get('opcache.revalidate_freq');
-			if ($op_freq != 0) {
-				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not revalidate files on each call. If it is a development environment, please edit your php.ini file and change the value of <strong>opcache.revalidate_freq</strong> to 0.");
-			}
 						
 			if (ini_get('opcache.save_comments') == 0) {
 				return new MoufValidatorResult(MoufValidatorResult::ERROR, "Your opcache settings do not store comments therefore annotations. Please edit your php.ini file and change the value of <strong>opcache.save_comments</strong> to 1.");

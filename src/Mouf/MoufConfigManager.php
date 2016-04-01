@@ -133,6 +133,9 @@ class MoufConfigManager {
 		}
 		
 		fclose($fp);
+		if (function_exists("opcache_invalidate")) {
+			opcache_invalidate($filePath);
+		}
 	}
 	
 	/**
