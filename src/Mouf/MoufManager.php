@@ -1394,7 +1394,10 @@ class ".$this->mainClassName." {
 
 
 		fclose($fp);
-		
+		if (function_exists("opcache_invalidate")) {
+			opcache_invalidate(dirname(__FILE__)."/".$this->componentsFileName);
+		}
+
 		// Note: rewriting MoufUI here is useless, since it is only modified on update or install of packages.
 		$selfEdit = ($this->scope == MoufManager::SCOPE_ADMIN);
 		$composerService = new ComposerService($selfEdit);
