@@ -132,7 +132,7 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->cachedModificationTimeFile = '../../mouf/no_commit/modificationTimes.php';
 		self::$defaultInstance->puliFactoryClassName = "Puli\\GeneratedMoufPuliFactory";
 	}
-	
+
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
 	 * 

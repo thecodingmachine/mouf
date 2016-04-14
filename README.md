@@ -1,7 +1,6 @@
 Mouf 2: Dependency injection... on steroids
 ===========================================
-[![Latest Unstable Version](https://poser.pugx.org/mouf/mouf/v/unstable.png)](https://packagist.org/packages/mouf/mouf) [![Total Downloads](https://poser.pugx.org/mouf/mouf/downloads.png)](https://packagist.org/packages/mouf/mouf) [![License](https://poser.pugx.org/mouf/mouf/license.png)](https://packagist.org/packages/mouf/mouf)
-
+[![Latest Unstable Version](https://poser.pugx.org/mouf/mouf/v/unstable.png)](https://packagist.org/packages/mouf/mouf) [![Total Downloads](https://poser.pugx.org/mouf/mouf/downloads.png)](https://packagist.org/packages/mouf/mouf) [![License](https://poser.pugx.org/mouf/mouf/license.png)](https://packagist.org/packages/mouf/mouf) [![Build Status](https://travis-ci.org/thecodingmachine/mouf.svg?branch=2.1)](https://travis-ci.org/thecodingmachine/mouf)
 What is Mouf?
 -------------
 
