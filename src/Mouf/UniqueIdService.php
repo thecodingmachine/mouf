@@ -19,17 +19,17 @@ class UniqueIdService {
 		$id = $moufCache->get('computerUniqueId');
 		
 		if (!$id) {
-			// Let's get the Mac adress from this computer
-			ob_start();
-			system('ifconfig'); //Execute external program to display output
-			$output=ob_get_clean();
-			
-			if (!$output) {
+			// Let's get the Mac address from this computer
+			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 				ob_start();
 				system('ipconfig /all'); //Execute external program to display output
 				$output=ob_get_clean();
+			} else {
+				ob_start();
+				system('ifconfig'); //Execute external program to display output
+				$output=ob_get_clean();
 			}
-			
+
 			preg_match('/..:..:..:..:..:../', $output, $matches);
 			if (isset($matches[0])) {
 				$macAddress = $matches[0];
@@ -39,7 +39,7 @@ class UniqueIdService {
 					
 			$branch = exec('git rev-parse --abbrev-ref HEAD');
 			
-			$totalString = $macAddress.ROOT_PATH.$branch;
+			$totalString = $macAddress.__DIR__.$branch;
 			$md5 = md5($totalString);
 			
 			// Only keep the first 4 characters to keep the ID short.

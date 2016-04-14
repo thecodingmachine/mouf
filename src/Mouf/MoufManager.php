@@ -91,8 +91,7 @@ class MoufManager implements ContainerInterface {
 			self::$defaultInstance->mainClassName = "Mouf";
 			// FIXME: not appscope for sure
 			self::$defaultInstance->scope = MoufManager::SCOPE_APP;
-			// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
-			self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
+
 		}
 	}
 
@@ -111,10 +110,13 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->adminUiFileName = "../../mouf/MoufUI.php";
 		self::$defaultInstance->mainClassName = "MoufAdmin";
 		self::$defaultInstance->scope = MoufManager::SCOPE_ADMIN;
-		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
-		self::$defaultInstance->delegateLookupContainer = self::$defaultInstance;
 	}
-	
+
+	public function __construct() {
+		// Unless the setDelegateLookupContainer is set, we lookup dependencies inside our own container.
+		$this->delegateLookupContainer = $this;
+	}
+
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
 	 * 
