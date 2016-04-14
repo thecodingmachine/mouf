@@ -144,17 +144,6 @@ class MoufPropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals("\\Mouf\\TestClasses\\TestClass2", $type->getType(), "Testing \$constructorParamC property");
 		$this->assertEquals(null, $subtype, "Testing \$constructorParamC property subtype");
 		$this->assertEquals(null, $keytype, "Testing \$constructorParamC property keytype");
-		
-		
-		
+					
 	}
-	
-	static function main() {
-		$suite = new \PHPUnit_Framework_TestSuite( __CLASS__);
-		\PHPUnit_TextUI_TestRunner::run( $suite);
-	}
-}
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-	MoufPropertyDescriptorTest::main();
 }
