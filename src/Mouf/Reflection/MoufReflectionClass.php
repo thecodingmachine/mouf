@@ -732,7 +732,9 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	    					if ($type == T_STRING) {
 	    						$as = $t[1];
 	    					} 
-	    				}
+	    				} elseif ($type === T_AS) {
+							break;
+						}
 	    			}
 	    				
 	    			if (empty($path)) {
@@ -741,9 +743,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	    				continue;
 	    			}
 	    				
-    				$nextToken = $tokens[$i+1];
+    				$nextToken = $tokens[$i];
     				if ($nextToken[0] === T_AS) {
-    					$as = $tokens[$i+2][1];
+						$i += 2;
+    					$as = $tokens[$i][1];
     				}
     				$path = ltrim($path, '\\');
 	    				
