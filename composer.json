@@ -29,7 +29,8 @@
 		"container-interop/container-interop" : "~1.0",
 		"mouf/classname-mapper": "~1.0",
 		"thecodingmachine/yaco-service-provider": "~1.0@dev",
-		"puli/composer-plugin": "^1.0-beta9@dev"
+		"puli/composer-plugin": "^1.0-beta9@dev",
+		"puli/cli": "^1.0-beta9@dev"
 	},
 	"autoload" : {
 		"psr-0" : {
