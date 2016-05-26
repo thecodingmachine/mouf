@@ -21,9 +21,13 @@ ini_set('display_errors', 1);
 // Add E_ERROR to error reporting it it is not already set
 error_reporting(E_ERROR | error_reporting());
 
+
+// Force loading autoload from mouf's version of PhpParser
+require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
+
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+        
 	require_once '../../../../../mouf/Mouf.php';
 	$selfEdit = false;
 } else {
