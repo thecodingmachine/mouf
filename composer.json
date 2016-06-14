@@ -108,7 +108,12 @@
 						}
 					]
 				}
-			]
+			],
+			"section": {
+				"name": "Dependency injection",
+				"description": "The core of the Mouf framework: the dependency injection module",
+				"weight": 0
+			}
 		}
 	}
 }
