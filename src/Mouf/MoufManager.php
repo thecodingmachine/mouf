@@ -1586,7 +1586,7 @@ class ".$this->mainClassName." {
 	 * @return string The name of the instance.
 	 */
 	public function findInstanceName($instance) {
-		return array_search($instance, $this->objectInstances);
+		return array_search($instance, $this->objectInstances, true);
 	}
 
 	/**
