@@ -668,11 +668,11 @@ class MoufManager implements ContainerInterface {
 								$closure = $closure->bindTo($object);
 								$object->$key = $closure($this->delegateLookupContainer);
 							} else {
-								throw new MoufException("Parse error in the callback of '$instanceName' property '$key': ".$closure);
+								throw new MoufContainerException("Parse error in the callback of '$instanceName' property '$key': ".$closure);
 							}
 							break;
 						default:
-							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+							throw new MoufContainerException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
 					}
 				}
 			}
@@ -699,12 +699,12 @@ class MoufManager implements ContainerInterface {
 							if ($closure instanceof \Closure) {
 								$closure = $closure->bindTo($object);
 							} else {
-								throw new MoufException("Parse error in the callback of '$instanceName' setter '$key': ".$closure);
+								throw new MoufContainerException("Parse error in the callback of '$instanceName' setter '$key': ".$closure);
 							}
 							$object->$key($closure($this->delegateLookupContainer));
 							break;
 						default:
-							throw new MoufException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
+							throw new MoufContainerException("Invalid type '".$valueDef["type"]."' for object instance '$instanceName'.");
 					}
 				}
 			}
@@ -745,7 +745,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		} catch (MoufInstanceNotFoundException $e) {
-			throw new MoufInstanceNotFoundException("The object instance '".$instanceName."' could not be created because it depends on an object in error (".$e->getMissingInstanceName().")", 2, $instanceName, $e);
+			throw new MissingDependencyException("The object instance '".$instanceName."' could not be created because it depends on an object in error (".$e->getMissingInstanceName().")", 2, $instanceName, $e);
 		}
 		return $object;
 	}
@@ -761,7 +761,7 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function setParameter($instanceName, $paramName, $paramValue, $type = "string", array $metadata = array()) {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
-			throw new MoufException("Invalid type. Must be one of: string|config|request|session. Value passed: '".$type."'");
+			throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session. Value passed: '".$type."'");
 		}
 		
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["value"] = $paramValue;
@@ -780,7 +780,7 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function setParameterViaSetter($instanceName, $setterName, $paramValue, $type = "string", array $metadata = array()) {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
-			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
+			throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session");
 		}
 
 		$this->declaredInstances[$instanceName]["setterProperties"][$setterName]["value"] = $paramValue;
@@ -800,7 +800,7 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
-			throw new MoufException("Invalid type. Must be one of: string|config|request|session");
+			throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session");
 		}
 
 		$this->declaredInstances[$instanceName]['constructor'][$index]["value"] = $paramValue;
@@ -1200,7 +1200,7 @@ class MoufManager implements ContainerInterface {
 		if ((file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(__FILE__)."/".$this->componentsFileName)) || (!file_exists(dirname(__FILE__)."/".$this->componentsFileName) && !is_writable(dirname(dirname(__FILE__)."/".$this->componentsFileName)))) {
 			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->componentsFileName));
 			$filename = basename(dirname(__FILE__)."/".$this->componentsFileName);
-			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
+			throw new MoufContainerException("Error, unable to write file ".$dirname."/".$filename);
 		}
 
 		// Let's start by garbage collecting weak instances.
@@ -1370,7 +1370,7 @@ class ".$this->mainClassName." {
 				if (isset($classDesc['code'])) {
 					continue;
 				}
-				throw new MoufException("No class for instance '$name'");
+				throw new MoufContainerException("No class for instance '$name'");
 			}
 			if (isset($classDesc['anonymous']) && $classDesc['anonymous']) {
 				continue;
@@ -1598,17 +1598,17 @@ class ".$this->mainClassName." {
 	 */
 	public function duplicateInstance($srcInstanceName, $destInstanceName = null) {
 		if (!isset($this->declaredInstances[$srcInstanceName])) {
-			throw new MoufException("Error while duplicating instance: unable to find source instance ".$srcInstanceName);
+			throw new MoufContainerException("Error while duplicating instance: unable to find source instance ".$srcInstanceName);
 		}
 		if ($destInstanceName == null) {
 			if (!$this->isInstanceAnonymous($srcInstanceName)) {
-				throw new MoufException("Error while duplicating instance: you need to give a destination name.");
+				throw new MoufContainerException("Error while duplicating instance: you need to give a destination name.");
 			}
 			$destInstanceName = $this->getFreeAnonymousName();
 		}
 		
 		if (isset($this->declaredInstances[$destInstanceName])) {
-			throw new MoufException("Error while duplicating instance: the dest instance already exists: ".$destInstanceName);
+			throw new MoufContainerException("Error while duplicating instance: the dest instance already exists: ".$destInstanceName);
 		}
 		$this->declaredInstances[$destInstanceName] = $this->declaredInstances[$srcInstanceName];
 		
@@ -1939,7 +1939,7 @@ class ".$this->mainClassName." {
 			$this->instanceDescriptors[$name] = new MoufInstanceDescriptor($this, $name);
 			return $this->instanceDescriptors[$name];
 		} else {
-			throw new MoufException("Instance '".$name."' does not exist.");
+			throw new MoufContainerException("Instance '".$name."' does not exist.");
 		}
 	}
 
@@ -2052,10 +2052,10 @@ class ".$this->mainClassName." {
 	 */
 	public function setCode($instanceName, $code) {
 		if (!isset($this->declaredInstances[$instanceName])) {
-			throw new MoufException("Instance '$instanceName' does not exist.");
+			throw new MoufContainerException("Instance '$instanceName' does not exist.");
 		}
 		if (!isset($this->declaredInstances[$instanceName]["code"])) {
-			throw new MoufException("Instance '$instanceName' has not been created using `createInstanceByCode`. It cannot have a PHP code attached to it.");
+			throw new MoufContainerException("Instance '$instanceName' has not been created using `createInstanceByCode`. It cannot have a PHP code attached to it.");
 		}
 		$this->declaredInstances[$instanceName]["code"] = $code;
 		$this->findInstanceByCallbackType($instanceName);
@@ -2128,7 +2128,7 @@ class ".$this->mainClassName." {
 	
 	/**
 	 * Check if there is no loop in constructor arguments
-	 * @throws MoufException
+	 * @throws MoufContainerException
 	 */
 	public function checkConstructorLoop() {
 	    foreach ($this->declaredInstances as $instanceName => $descriptor) {
@@ -2142,13 +2142,13 @@ class ".$this->mainClassName." {
 	 * 
 	 * @param string $instanceName
 	 * @param array $path
-	 * @throws MoufException
+	 * @throws MoufContainerException
 	 */
 	private function walkConstructorLoop($instanceName, array $path) {
 	    if(isset($path[$instanceName])) {
 	        $instances = array_keys($path);
 	        $instances = array_slice($instances, array_search($instanceName, $instances));
-	        throw new MoufException('A loop was detected on constructor arguments '.implode(' -> ', $instances).' -> '.$instanceName);
+	        throw new MoufContainerException('A loop was detected on constructor arguments '.implode(' -> ', $instances).' -> '.$instanceName);
 	    }
 	    $path[$instanceName] = true;
 	    $descriptor = $this->declaredInstances[$instanceName];

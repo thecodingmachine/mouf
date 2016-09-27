@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 namespace Mouf;
-use Interop\Container\Exception\NotFoundException;
+use Interop\Container\Exception\ContainerException;
 
 /**
- * MoufInstanceNotFoundException are thrown by the Mouf framework when the user
- * request an instance that is not defined.
+ * MissingDependencyException are thrown by the Mouf framework when the user
+ * request an instance that has a dependency on an instance that does not exist.
  *
  */
-class MoufInstanceNotFoundException extends MoufException implements NotFoundException {
+class MissingDependencyException extends MoufException implements ContainerException {
 
 	/**
 	 * The name of the instance that was not found.
@@ -38,4 +38,3 @@ class MoufInstanceNotFoundException extends MoufException implements NotFoundExc
 		return $this->instanceName;
 	}
 }
-?>
