@@ -131,6 +131,13 @@ class ComposerService {
 					);
 					foreach (ClassMapGenerator::createMap($dir, $whitelist) as $class => $path) {
 						if ('' === $namespace || 0 === strpos($class, $namespace)) {
+
+							if (strrpos($class, '\\') == strlen($class)-1) {
+								// For some reason, Composer can rarely put namespaces instead of classes here.
+								// Let's ignore that.
+								continue;
+							}
+
 							if (!isset($classMap[$class])) {
 								//$path = $this->getPathCode($filesystem, $basePath, $vendorPath, $path);
 								//$classMap[$class] = $path.",\n";
@@ -157,7 +164,7 @@ class ComposerService {
 		
 		// FIXME: $autoloads['files'] seems ignored
 		
-		//var_dump($classMap);
+		//var_export($classMap);
 		$this->classMap = $classMap;
 		return $classMap;
 		
