@@ -63,12 +63,16 @@ spl_autoload_register(function($name) {
 $classList = array();
 
 foreach ($classNameList as $className) {
-    $classDescriptor = $moufManager->getClassDescriptor($className);
-    if ($classDescriptor->isInstantiable()) {
-        while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()])) {
-            $classList[$classDescriptor->getName()] = $classDescriptor->toJson($exportMode);
-            $classDescriptor = $classDescriptor->getParentClass();
+    try {
+        $classDescriptor = $moufManager->getClassDescriptor($className);
+        if ($classDescriptor->isInstantiable()) {
+            while ($classDescriptor != null && !isset($classList[$classDescriptor->getName()])) {
+                $classList[$classDescriptor->getName()] = $classDescriptor->toJson($exportMode);
+                $classDescriptor = $classDescriptor->getParentClass();
+            }
         }
+    } catch(ClassNotFoundException $e) {
+        error_log($e->getMessage());
     }
 }
 
