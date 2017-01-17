@@ -1223,6 +1223,10 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "\$moufManager->setAllVariables(".var_export($this->variables, true).");\n");
 		fwrite($fp, "\n");
 
+		// Sort all instances by key. This way, new instances are not added at the end of the array,
+		// and this reduces the number of conflicts when working in team with a version control system.
+		ksort($this->declaredInstances);
+
 		// Declare all components in one instruction
 		$internalDeclaredInstances = array();
 		foreach ($this->declaredInstances as $name=>$declaredInstance) {
@@ -1230,10 +1234,6 @@ class MoufManager implements ContainerInterface {
 				$internalDeclaredInstances[$name] = $declaredInstance;
 			}
 		}
-
-		// Sort all instances by key. This way, new instances are not added at the end of the array,
-		// and this reduces the number of conflicts when working in team with a version control system.
-		ksort($internalDeclaredInstances);
 
 		fwrite($fp, "\$moufManager->addComponentInstances(".var_export($internalDeclaredInstances, true).");\n");
 		fwrite($fp, "\n");
