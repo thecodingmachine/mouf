@@ -67,7 +67,7 @@ class ClassMapGenerator
         $map = array();
 
         foreach ($path as $file) {
-            $filePath = $file->getRealPath();
+            $filePath = $file->getPath().DIRECTORY_SEPARATOR.$file->getFilename();
 
             if (!in_array(pathinfo($filePath, PATHINFO_EXTENSION), array('php', 'inc'))) {
                 continue;
