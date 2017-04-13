@@ -154,7 +154,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     function getClassName() {
     	preg_match('/\[\s\<\w+?>\s([\w\\\\]+)/s', $this->__toString(), $matches);
     	$class = isset($matches[1]) ? $matches[1] : null;
-        if(in_array($class, [ 'array', 'callback', 'callable', 'int', 'integer', 'string', 'float', 'bool', 'boolean' ])) {
+        if(in_array($class, [ 'array', 'string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed', 'number', 'null', 'callable', 'callback' ])) {
             return null;
         }
         return $class;
