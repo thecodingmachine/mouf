@@ -1243,18 +1243,18 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, "unset(\$moufManager);\n");
 		fwrite($fp, "\n");
 
-		fwrite($fp, "/**
- * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.
- * This object can be used to get the objects manage by MOUF.
- *
- */
-class ".$this->mainClassName." {
-	");
+		fwrite($fp, "/**\n");
+		fwrite($fp, " * This is the base class of the Manage Object User Friendly or Modular object user framework (MOUF) framework.\n");
+		fwrite($fp, " * This object can be used to get the objects manage by MOUF.\n");
+		fwrite($fp, " *\n");
+		fwrite($fp, " */\n");
+		fwrite($fp, "class $this->mainClassName {\n");
+		fwrite($fp, "	");
 		
 		// Now, let's export the closures!
 		/***** closures Start ******/
-		fwrite($fp, "public function getClosures() {
-		return [\n");
+		fwrite($fp, "public function getClosures() {\n");
+		fwrite($fp, "		return [\n");
 		
 		$targetArray = [];
 		foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
@@ -1359,8 +1359,8 @@ class ".$this->mainClassName." {
 			}
 		}
 		
-		fwrite($fp, "		];
-	}\n");
+		fwrite($fp, "		];\n");
+		fwrite($fp, "	}\n");
 		/***** closures end ******/
 		
 		
