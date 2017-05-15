@@ -1957,6 +1957,21 @@ class MoufManager implements ContainerInterface {
 		$this->setInstanceAnonymousness($name, true);
 		return $this->getInstanceDescriptor($name);
 	}
+
+    /**
+     * Alters the class of instance $instanceName.
+     * Useful for migration purposes.
+     *
+     * @param string $instanceName
+     * @param string $className
+     * @throws MoufInstanceNotFoundException
+     */
+	public function alterClass($instanceName, $className) {
+        if (!isset($this->declaredInstances[$instanceName])) {
+            throw new MoufInstanceNotFoundException("Unable to find instance '".$instanceName."'.");
+        }
+        $this->declaredInstances[$instanceName]["class"] = $className;
+    }
 	
 	/**
 	 * A list of descriptors.
