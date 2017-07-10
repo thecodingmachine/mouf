@@ -12,11 +12,11 @@ namespace Mouf;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 
-// Fix autoloading that is broken for some reason...
-if (!class_exists("\\PhpParser\\Parser")) {
+// Fix autoloading that is broken in Composer plugins
+if (!class_exists("\\PhpParser\\ParserFactory")) {
 	require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
 }
-
+ 
 /**
  * This class is used to validate the PHP code that will be used as a callback
  * in the container. 

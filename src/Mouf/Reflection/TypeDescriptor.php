@@ -233,7 +233,7 @@ class TypeDescriptor {
 	 */
 	public function isPrimitiveType() {
 		$lowerVarType = strtolower($this->type);
-		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed', 'number', 'null'));
+		return in_array($lowerVarType, array('string', 'char', 'bool', 'boolean', 'int', 'integer', 'double', 'float', 'real', 'mixed', 'number', 'null', 'callable', 'callback'));
 	}
 	
 	/**

@@ -59,6 +59,7 @@ class SettingsValidator implements MoufStaticValidatorInterface {
 	private static function return_bytes($val) {
    	 $val = trim($val);
    	 $last = strtolower($val[strlen($val)-1]);
+	 $val = (int) $val;
     	switch($last) {
        	 	// Le modifieur 'G' est disponible depuis PHP 5.1.0
         	case 'g':

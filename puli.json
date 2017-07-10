@@ -14,6 +14,10 @@
         }
     },
     "packages": {
+        "composer/ca-bundle": {
+            "install-path": "vendor/composer/ca-bundle",
+            "installer": "composer"
+        },
         "container-interop/container-interop": {
             "install-path": "vendor/container-interop/container-interop",
             "installer": "composer"
@@ -29,6 +33,10 @@
         },
         "franzl/whoops-middleware": {
             "install-path": "vendor/franzl/whoops-middleware",
+            "installer": "composer"
+        },
+        "http-interop/http-middleware": {
+            "install-path": "vendor/http-interop/http-middleware",
             "installer": "composer"
         },
         "justinrainbow/json-schema": {
@@ -260,8 +268,18 @@
             "install-path": "vendor/paragonie/random_compat",
             "installer": "composer"
         },
+        "phpdocumentor/reflection-common": {
+            "install-path": "vendor/phpdocumentor/reflection-common",
+            "installer": "composer",
+            "env": "dev"
+        },
         "phpdocumentor/reflection-docblock": {
             "install-path": "vendor/phpdocumentor/reflection-docblock",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phpdocumentor/type-resolver": {
+            "install-path": "vendor/phpdocumentor/type-resolver",
             "installer": "composer",
             "env": "dev"
         },
@@ -304,6 +322,10 @@
             "install-path": "vendor/phpunit/phpunit-mock-objects",
             "installer": "composer",
             "env": "dev"
+        },
+        "psr/container": {
+            "install-path": "vendor/psr/container",
+            "installer": "composer"
         },
         "psr/http-message": {
             "install-path": "vendor/psr/http-message",
@@ -397,6 +419,10 @@
         },
         "symfony/console": {
             "install-path": "vendor/symfony/console",
+            "installer": "composer"
+        },
+        "symfony/debug": {
+            "install-path": "vendor/symfony/debug",
             "installer": "composer"
         },
         "symfony/event-dispatcher": {

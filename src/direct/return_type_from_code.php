@@ -21,7 +21,10 @@ error_reporting(E_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	//define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+
+        // Force loading autoload from mouf's version of PhpParser
+        require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
+        
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;

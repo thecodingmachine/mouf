@@ -127,7 +127,9 @@ class ClassMapGenerator
             
             // Let's ignore any warning because we are cutting in the middle of a PHP file and we might cut in a 
             // comment.
-            $tokens = @token_get_all($contents);
+            $currentErrorReporting = error_reporting(E_ALL & ~E_COMPILE_WARNING);
+            $tokens = token_get_all($contents);
+            error_reporting($currentErrorReporting);
         } catch (\Exception $e) {
             throw new \RuntimeException('Could not scan for classes inside '.$path.": \n".$e->getMessage(), 0, $e);
         }
