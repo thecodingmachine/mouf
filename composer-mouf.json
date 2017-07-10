@@ -1,4 +1,6 @@
 {
+    "name": "mouf/mouf",
+    "version": "2.1",
     "require": {
         "mouf/mouf-installer": "~2.0",
     	"mouf/mouf-validators-interface": "~2.0",

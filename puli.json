@@ -1,5 +1,6 @@
 {
     "version": "1.0",
+    "name": "mouf/mouf",
     "config": {
         "bootstrap-file": "vendor/autoload.php",
         "factory": {
@@ -129,10 +130,6 @@
         },
         "mouf/javascript.underscore": {
             "install-path": "vendor/mouf/javascript.underscore",
-            "installer": "composer"
-        },
-        "mouf/mouf": {
-            "install-path": "vendor/mouf/mouf",
             "installer": "composer"
         },
         "mouf/mouf-installer": {
