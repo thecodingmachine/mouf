@@ -25,12 +25,13 @@
 	"require" : {
 		"php" : ">=5.3.9",
 		"mouf/mouf-installer" : "~2.1.0@dev",
-		"mouf/mouf-validators-interface" : "~2.0",
-		"container-interop/container-interop" : "~1.0",
-		"mouf/classname-mapper": "~1.0",
-		"thecodingmachine/yaco-service-provider": "~1.0@dev",
+		"mouf/mouf-validators-interface" : "^2.0",
+		"container-interop/container-interop" : "^1.0",
+		"mouf/classname-mapper": "^1.0",
+		"thecodingmachine/yaco": "^1.1",
 		"puli/composer-plugin": "^1.0-beta9@dev",
-		"puli/cli": "^1.0-beta9@dev"
+		"puli/cli": "^1.0-beta9@dev",
+		"thecodingmachine/discovery": "^1.0"
 	},
 	"autoload" : {
 		"psr-0" : {
