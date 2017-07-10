@@ -2,7 +2,7 @@
 /*
  * This file is part of the Mouf core package.
 *
-* (c) 2012 David Negrier <david@mouf-php.com>
+* (c) 2012-2017 David Negrier <david@mouf-php.com>
 *
 * For the full copyright and license information, please view the LICENSE.txt
 * file that was distributed with this source code.
@@ -11,19 +11,19 @@ declare(strict_types=1);
 
 namespace Mouf;
 
+use Interop\Container\ServiceProvider;
 use Mouf\Composer\ComposerService;
 use Mouf\Picotainer\Picotainer;
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Reflection\MoufReflectionClass;
 use Interop\Container\ContainerInterface;
-use Puli\Discovery\Api\Discovery;
+use TheCodingMachine\ServiceProvider\Registry;
 use TheCodingMachine\Yaco\Compiler;
 use TheCodingMachine\Yaco\Definition\ConstParameterDefinition;
 use TheCodingMachine\Yaco\Definition\ObjectDefinition;
 use TheCodingMachine\Yaco\Definition\ParameterDefinition;
 use Mouf\Yaco\PhpCodeDefinition;
 use TheCodingMachine\Yaco\Definition\Reference;
-use TheCodingMachine\Yaco\ServiceProvider\ServiceProviderLoader;
 
 /**
  * The class managing object instanciation in the Mouf framework.
@@ -106,7 +106,6 @@ class MoufManager implements ContainerInterface {
 			self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedContainer";
 			self::$defaultInstance->compiledContainerFile = '../../../../../mouf/no_commit/GeneratedContainer.php';
 			self::$defaultInstance->cachedModificationTimeFile = '../../../../../mouf/no_commit/modificationTimes.php';
-			self::$defaultInstance->puliFactoryClassName = "Puli\\GeneratedPuliFactory";
 		}
 	}
 
@@ -130,7 +129,6 @@ class MoufManager implements ContainerInterface {
 		self::$defaultInstance->compiledContainerName = "Mouf\\GeneratedAdminContainer";
 		self::$defaultInstance->compiledContainerFile = '../../mouf/no_commit/GeneratedAdminContainer.php';
 		self::$defaultInstance->cachedModificationTimeFile = '../../mouf/no_commit/modificationTimes.php';
-		self::$defaultInstance->puliFactoryClassName = "Puli\\GeneratedMoufPuliFactory";
 	}
 
 	/**
@@ -275,13 +273,6 @@ class MoufManager implements ContainerInterface {
 	private $cachedModificationTimeFile;
 
 	/**
-	 * The class name of the Puli factory
-	 *
-	 * @var string
-	 */
-	private $puliFactoryClassName;
-
-	/**
 	 * The instance of the container compiled with Yaco.
 	 *
 	 * @var Picotainer
@@ -364,7 +355,7 @@ class MoufManager implements ContainerInterface {
 		$cachedModifications = ['moufComponents' => filemtime($componentsFile),
 		'serviceProviders' => []];
 
-		foreach ($this->discoverServiceProviderBindings() as $serviceProvider) {
+		foreach (\TheCodingMachine\Discovery\Discovery::getInstance()->get(ServiceProvider::class) as $serviceProvider) {
 			$reflectionClass = new \ReflectionClass($serviceProvider);
 			$cachedModifications['serviceProviders'][$reflectionClass->getFileName()] = filemtime($reflectionClass->getFileName());
 		}
@@ -2324,44 +2315,11 @@ class MoufManager implements ContainerInterface {
 		$this->writeContainerCachedModification();
 	}
 
-
-	private $puliDiscovery;
-
-	/**
-	 * Creates a Puli discovery and returns it.
-	 *
-	 * TODO: improve this to be sure that the Puli discovery and puli factory is available in the container at runtime.
-	 *
-	 * @return Discovery
-	 */
-	private function getPuliDiscovery() : Discovery
-	{
-		if ($this->puliDiscovery === null) {
-			$factoryClass = $this->puliFactoryClassName;
-			$factory = new $factoryClass();
-			$this->puliDiscovery = $factory->createDiscovery($factory->createRepository());
-		}
-		return $this->puliDiscovery;
-	}
-
-	public function discoverServiceProviderBindings() : array {
-		$bindings = $this->getPuliDiscovery()->findBindings('container-interop/service-provider');
-		$serviceProviders = [];
-
-		foreach ($bindings as $binding) {
-			if ($binding instanceof ClassBinding) {
-				$serviceProviders[] = $binding->getClassName();
-			}
-		}
-		return $serviceProviders;
-	}
-
 	private function compile(string $className, string $pathToFile)
 	{
-		$compiler = new Compiler();
+	    $registry = new Registry([], \TheCodingMachine\Discovery\Discovery::getInstance());
 
-		$serviceProviderLoader = new ServiceProviderLoader($compiler);
-		$serviceProviderLoader->discoverAndLoad($this->getPuliDiscovery());
+		$compiler = new Compiler($registry);
 
 		foreach ($this->declaredInstances as $instanceName => $descriptor) {
 			if ($this->isInstanceAnonymous($instanceName)) {
