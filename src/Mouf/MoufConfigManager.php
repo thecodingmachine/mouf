@@ -27,7 +27,7 @@ class MoufConfigManager {
 	/**
 	 * The array containing the configuration constants in the form:
 	 * 
-	 * $constantsDef["variableName"] = array("defaultValue"=>"", "type"=>"string|int|float|bool", "comment"=>"some comment");
+	 * $constantsDef["variableName"] = array("defaultValue"=>"", "type"=>"string|int|float|bool", "comment"=>"some comment", "fetchFromEnv"=>true|false);
 	 *
 	 * @var array
 	 */
@@ -83,12 +83,12 @@ class MoufConfigManager {
 	 * @param unknown_type $constants
 	 */
 	public function setDefinedConstants($constants) {
-		$filePath = dirname(__FILE__)."/".$this->configFileName;
+		$filePath = __DIR__."/".$this->configFileName;
 		$dirPath = dirname($filePath);
 		
 		if ((!is_writable($dirPath) && !file_exists($filePath)) || (file_exists($filePath) && !is_writable($filePath))) {
-			$dirname = realpath(dirname(dirname(__FILE__)."/".$this->configFileName));
-			$filename = basename(dirname(__FILE__)."/".$this->configFileName);
+			$dirname = realpath(dirname(__DIR__."/".$this->configFileName));
+			$filename = basename(__DIR__."/".$this->configFileName);
 			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
 		}
 		
@@ -124,10 +124,16 @@ class MoufConfigManager {
 						$commentStr .= " */\n";
 						fwrite($fp, $commentStr);
 					}
-					fwrite($fp, "define('".addslashes($key)."', ".var_export($value, true).");\n");
+                    $fetchFromEnv = isset($def['fetchFromEnv']) && $def['fetchFromEnv'];
 				} else {
-					fwrite($fp, "define('".addslashes($key)."', ".var_export($this->constants[$key], true).");\n");
+				    $value = $this->constants[$key];
+                    $fetchFromEnv = false;
 				}
+				if ($fetchFromEnv) {
+                    fwrite($fp, "define(".var_export($key, true).", getenv(".var_export($key, true).") !== false?getenv(".var_export($key, true)."):".var_export($value, true).");\n");
+                } else {
+                    fwrite($fp, "define(".var_export($key, true).", ".var_export($value, true).");\n");
+                }
 			}
 		
 		}
@@ -147,12 +153,12 @@ class MoufConfigManager {
 	 * @param string $defaultValue
 	 * @param string $comment
 	 */
-	public function registerConstant($name, $type, $defaultValue, $comment) {
+	public function registerConstant($name, $type, $defaultValue, $comment, $fetchFromEnv = true) {
 		if ($type != "string" && $type != "int" && $type != "float" && $type != "bool") {
 			throw new MoufException("Invalid type for constant. Must be one of: string|int|float|bool. Value passed: '".$type."'");
 		}
 		
-		$this->constantsDef[$name] = array("defaultValue"=>$defaultValue, "type"=>$type, "comment"=>$comment);
+		$this->constantsDef[$name] = array("defaultValue"=>$defaultValue, "type"=>$type, "comment"=>$comment, "fetchFromEnv"=>$fetchFromEnv);
 	}
 	
 	/**
@@ -170,7 +176,7 @@ class MoufConfigManager {
 	 * It merges the constants definitions defined in MoufComponents and the constants defined in config.php.
 	 *
 	 * The returned values are in this format:
-	 * $array["constantName"] = array("defaultValue"=>"", "type"=>"string|int|float|bool", "comment"=>"some comment", "value"=>"", "defined"=>true|false, "missinginconfigphp"=>true|notdefined);
+	 * $array["constantName"] = array("defaultValue"=>"", "type"=>"string|int|float|bool", "comment"=>"some comment", "value"=>"", "defined"=>true|false, "missinginconfigphp"=>true|notdefined, , "fetchFromEnv"=>true|false);
 	 * 
 	 * return array
 	 */
@@ -228,4 +234,3 @@ class MoufConfigManager {
 		$this->constantsDef = $constantsDef;
 	}
 }
-?>

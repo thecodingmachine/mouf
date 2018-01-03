@@ -55,6 +55,12 @@ if (!empty($this->constantsList)) {
 			} else {
 				echo "<em>Default value: '".plainstring_to_htmlprotected($def['defaultValue'])."'.</em>";
 			}
+			echo '<br/>Fetch from environment variables (in priority): ';
+			if (isset($def['fetchFromEnv']) && $def['fetchFromEnv']) {
+                echo '<span class="label label-success">Yes</span>';
+            } else {
+			    echo '<span class="label label-important">No</span>';
+            }
 		}
 		echo '</span>';
 		echo '</div>';

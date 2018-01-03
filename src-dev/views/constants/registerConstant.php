@@ -91,6 +91,14 @@ if ($this->type == "bool") {
 </div>
 </div>
 
+<div class="control-group">
+    <label class="control-label">Fetch from environment variable:</label>
+    <div class="controls">
+        <input type="checkbox" name="fetchFromEnv" value="true" <?php echo $this->fetchFromEnv?"checked='checked'":""; ?> />
+        <span class="help-block">Environment variables are used in priority over the stored configuration. Configuration is used as a fallback if environement variable is not set.</span>
+    </div>
+</div>
+
 <?php // Type ?>
 
 <div class="control-group">
