@@ -195,7 +195,7 @@ class ConfigController extends Controller {
  	 * @param string $type
  	 * @param string $selfedit
 	 */
-	public function registerConstant($name, $comment, $type, $defaultvalue = "", $value = "", $selfedit = "false") {
+	public function registerConstant($name, $comment, $type, $defaultvalue = "", $value = "", $selfedit = "false", $fetchFromEnv = "false") {
 		$this->selfedit = $selfedit;
 		
 		if ($selfedit == "true") {
@@ -224,7 +224,7 @@ class ConfigController extends Controller {
 			}
 		}
 		
-		$this->configManager->registerConstant($name, $type, $defaultvalue, $comment);
+		$this->configManager->registerConstant($name, $type, $defaultvalue, $comment, $fetchFromEnv === 'true');
 		$this->moufManager->rewriteMouf();
 		
 		// Now, let's write the constant for our environment:
