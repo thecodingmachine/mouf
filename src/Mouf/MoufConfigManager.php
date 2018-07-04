@@ -130,7 +130,15 @@ class MoufConfigManager {
                     $fetchFromEnv = false;
 				}
 				if ($fetchFromEnv) {
-                    fwrite($fp, "define(".var_export($key, true).", getenv(".var_export($key, true).") !== false?getenv(".var_export($key, true)."):".var_export($value, true).");\n");
+				    $fetchCode = "getenv(".var_export($key, true).")";
+				    if ($def['type'] === 'int') {
+                        $fetchCode = '(int) '.$fetchCode;
+                    } elseif ($def['type'] === 'float') {
+                        $fetchCode = '(float) '.$fetchCode;
+                    } elseif ($def['type'] === 'bool') {
+                        $fetchCode = 'filter_var('.$fetchCode.', FILTER_VALIDATE_BOOLEAN)';
+                    }
+                    fwrite($fp, "define(".var_export($key, true).", getenv(".var_export($key, true).") !== false?$fetchCode:".var_export($value, true).");\n");
                 } else {
                     fwrite($fp, "define(".var_export($key, true).", ".var_export($value, true).");\n");
                 }
