@@ -15,6 +15,17 @@
  * (because it could be a request from Mouf itself via Curl, and therefore not logged).
  */
 
+$moufUI = getenv('MOUF_UI');
+if ($moufUI !== false) {
+    $moufUI = (bool) $moufUI;
+    if (!$moufUI) {
+        header('HTTP/1.1 403 Forbidden');
+        echo 'Error! Access to Mouf UI is forbidden on this environment (env variable MOUF_UI is set to 0)';
+        exit;
+    }
+}
+unset($moufUI);
+
 // TODO: remove this condition when everything is migrated to the new cookie propagation method.
 if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'] /*|| $_SERVER['REMOTE_ADDR'] == '::1'*/) {
 	return;

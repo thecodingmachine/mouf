@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 // Let's load the Mouf file, and the MoufAdmin file.
 // The MoufAdmin will replace the Mouf configuration file.
 if (file_exists(dirname(__FILE__).'/../MoufComponents.php')) {
