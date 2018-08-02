@@ -46,9 +46,10 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
+$mode = $_REQUEST["mode"];
 
 $composerService = new ComposerService($selfEdit);
-$classMap = $composerService->getClassMap();
+$classMap = $composerService->getClassMap($mode);
 
 $file = $line = null;
 $sent = headers_sent($file, $line);

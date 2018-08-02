@@ -55,8 +55,8 @@ class ComposerService {
 	protected $io;
 	
 	protected $selfEdit;
-	
-	protected $classMap;
+
+	protected $classMap = array();
 	
 	protected $outputBufferedJs;
 	
@@ -69,12 +69,17 @@ class ComposerService {
 	/**
 	 * Returns the classmap array.
 	 * This map associates the name of the classes and the PHP file they are declared in.
-	 * 
-	 * @return array<string, string>
+	 *
+     * @param string $mode Mode can be "NO_FILTER", "ROOT_PACKAGE" or "VENDOR"
+     * @return array<string, string>
 	 */
-	public function getClassMap() {
-		if ($this->classMap !== null) {
-			return $this->classMap;
+	public function getClassMap($mode = 'NO_FILTER') {
+		if (isset($this->classMap[$mode])) {
+			return $this->classMap[$mode];
+		}
+
+		if (!in_array($mode, array('NO_FILTER', 'ROOT_PACKAGE', 'VENDOR'), true)) {
+			throw new \Exception('Unexpected mode passed to getClassMap');
 		}
 
 		$composer = $this->getComposer();
@@ -90,14 +95,9 @@ class ComposerService {
 		
 		$packageMap = $autoloadGenerator->buildPackageMap($installationManager, $package, $localRepos->getPackages());
 
-
 		//var_dump($packageMap);
 		$autoloads = $autoloadGenerator->parseAutoloads($packageMap, $package);
-		
-		
 
-		
-		
 		$targetDir = "composer";
 		
 		$filesystem = new Filesystem();
@@ -120,7 +120,16 @@ class ComposerService {
 		foreach (array('psr-0', 'psr-4') as $psrType) {
 			foreach ($autoloads[$psrType] as $namespace => $paths) {
 				foreach ($paths as $dir) {
-					$dir = $filesystem->normalizePath($filesystem->isAbsolutePath($dir) ? $dir : $basePath.'/'.$dir);
+					$isAbsolute = $filesystem->isAbsolutePath($dir);
+					// vendor packages are absolute while local packages are not!
+                    if ($mode === 'ROOT_PACKAGE' && $isAbsolute) {
+						continue;
+					}
+                    if ($mode === 'VENDOR' && !$isAbsolute) {
+						continue;
+					}
+
+                    $dir = $filesystem->normalizePath($isAbsolute ? $dir : $basePath.'/'.$dir);
 					if (!is_dir($dir)) {
 						continue;
 					}
@@ -154,7 +163,15 @@ class ComposerService {
 			
 		$autoloads['classmap'] = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($autoloads['classmap']));
 		foreach ($autoloads['classmap'] as $dir) {
-			$dir = $filesystem->normalizePath($filesystem->isAbsolutePath($dir) ? $dir : $basePath.'/'.$dir);
+            $isAbsolute = $filesystem->isAbsolutePath($dir);
+            // vendor packages are absolute while local packages are not!
+            if ($mode === 'ROOT_PACKAGE' && $isAbsolute) {
+                continue;
+            }
+            if ($mode === 'VENDOR' && !$isAbsolute) {
+                continue;
+            }
+			$dir = $filesystem->normalizePath($isAbsolute ? $dir : $basePath.'/'.$dir);
 			foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
 // 				$path = '/'.$filesystem->findShortestPath(getcwd(), $path, true);
 				//$classMap[$class] = '$baseDir . '.var_export($path, true).",\n";
@@ -165,12 +182,12 @@ class ComposerService {
 		// FIXME: $autoloads['files'] seems ignored
 		
 		//var_export($classMap);
-		$this->classMap = $classMap;
+		$this->classMap[$mode] = $classMap;
 		return $classMap;
 		
 		
 	}
-	
+
 	/**
 	 * Forces autoloading all classes for current context.
 	 */
