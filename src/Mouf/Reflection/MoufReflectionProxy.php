@@ -189,15 +189,17 @@ class MoufReflectionProxy {
 		return $obj;*/
 		return $response;
 	}
-	
-	/**
-	 * Analyzes the include files.
-	 *
-	 * @param bool $selfEdit
-	 * @throws Exception
-	 */
-	public static function getClassMap($selfEdit) {
-		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_class_map.php?selfedit=".(($selfEdit)?"true":"false");
+
+    /**
+     * Analyzes the include files.
+     *
+     * @param string $mode Mode can be "NO_FILTER", "ROOT_PACKAGE" or "VENDOR"
+     * @param bool $selfEdit
+     * @return mixed
+     * @throws Exception
+     */
+	public static function getClassMap($mode, $selfEdit) {
+		$url = MoufReflectionProxy::getLocalUrlToProject()."src/direct/get_class_map.php?mode=$mode&selfedit=".(($selfEdit)?"true":"false");
 	
 		$response = self::performRequest($url);
 		

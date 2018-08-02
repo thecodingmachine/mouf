@@ -114,7 +114,11 @@ class ComposerInstaller {
 
 		@chmod($this->globalInstallFile, 0664);
 		@chmod($this->localInstallFile, 0664);
-	}
+        if (function_exists("opcache_invalidate")) {
+            opcache_invalidate($this->globalInstallFile);
+            opcache_invalidate($this->localInstallFile);
+        }
+    }
 	
 	/**
 	 * Ensures that file $fileName is writtable.

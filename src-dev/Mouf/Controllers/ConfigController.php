@@ -122,7 +122,8 @@ class ConfigController extends Controller {
 	protected $value;
 	protected $type;
 	protected $comment;
-	
+    protected $fetchFromEnv;
+
 	/**
 	 * Displays the screen to register a constant definition.
 	 *
@@ -131,7 +132,7 @@ class ConfigController extends Controller {
 	 * @param string $name
 	 * @param string $selfedit
 	 */
-	public function register($name = null, $defaultvalue = null, $value = null, $type = null, $comment = null, $selfedit = "false") {
+	public function register($name = null, $defaultvalue = null, $value = null, $type = null, $comment = null, $fetchFromEnv = null, $selfedit = "false") {
 		$this->selfedit = $selfedit;
 		
 		if ($selfedit == "true") {
@@ -147,6 +148,7 @@ class ConfigController extends Controller {
 		$this->value = $value;
 		$this->type = $type;
 		$this->comment = $comment;
+        $this->fetchFromEnv = $fetchFromEnv;
 		
 		if ($name != null) {
 			$def = $this->configManager->getConstantDefinition($name);
@@ -160,6 +162,9 @@ class ConfigController extends Controller {
 				if ($this->type == null) {
 					$this->type = $def['type'];
 				}
+                if ($this->fetchFromEnv === null && isset($def['fetchFromEnv'])) {
+                    $this->fetchFromEnv = $def['fetchFromEnv'];
+                }
 			}
 			if ($this->value == null) {
 				$constants = $this->configManager->getDefinedConstants();
@@ -167,8 +172,10 @@ class ConfigController extends Controller {
 					$this->value = $constants[$name];
 				}
 			}
-		}
-		
+		} else {
+            $this->fetchFromEnv = true;
+        }
+
 		// TODO: manage type!
 		//$this->type = $comment;
 		
@@ -188,7 +195,7 @@ class ConfigController extends Controller {
  	 * @param string $type
  	 * @param string $selfedit
 	 */
-	public function registerConstant($name, $comment, $type, $defaultvalue = "", $value = "", $selfedit = "false") {
+	public function registerConstant($name, $comment, $type, $defaultvalue = "", $value = "", $selfedit = "false", $fetchFromEnv = "false") {
 		$this->selfedit = $selfedit;
 		
 		if ($selfedit == "true") {
@@ -199,8 +206,8 @@ class ConfigController extends Controller {
 		$this->configManager = $this->moufManager->getConfigManager();
 		
 		if ($type == "int") {
-			$value = (int) $value;
-			$defaultvalue = (int) $defaultvalue;
+		    $value = $value !== '' ? (int) $value : '';
+			$defaultvalue = $defaultvalue !== '' ? (int) $defaultvalue : '';
 		} else if ($type == "float") {
 			$value = (float) $value;
 			$defaultvalue = (float) $defaultvalue;
@@ -217,7 +224,7 @@ class ConfigController extends Controller {
 			}
 		}
 		
-		$this->configManager->registerConstant($name, $type, $defaultvalue, $comment);
+		$this->configManager->registerConstant($name, $type, $defaultvalue, $comment, $fetchFromEnv === 'true');
 		$this->moufManager->rewriteMouf();
 		
 		// Now, let's write the constant for our environment:
