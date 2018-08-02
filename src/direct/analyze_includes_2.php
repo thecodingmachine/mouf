@@ -21,6 +21,7 @@ while (ob_get_level() != 0) {
 }
 
 ini_set('display_errors', 1);
+
 // Add E_ERROR to error reporting if it is not already set
 error_reporting(E_ERROR | error_reporting());
 
@@ -62,16 +63,21 @@ $classMap = $composerService->getClassMap();
 
 $componentsList = array();
 */
+
+$logErrors = ini_get('log_errors');
+
 echo "FDSFZEREZ_STARTUP\n";
 if (is_array($classMap)) {
 	foreach ($classMap as $className => $fileName) {
         echo "X4EVDX4SEVX5_BEFOREINCLUDE\n";
         echo $className."\n";
 
+        ini_set('log_errors', 0);
         if (!class_exists($className)) {
             echo "Error. Could not load class '".$className."' from file '".$fileName."'. This is probably an autoloader issue.
                       Please check that your class respects PSR-0 or PSR-4 naming standards";
         }
+        ini_set('log_errors', $logErrors);
 
         // If we manage to get here, there has been no error loading $className. Youhou, let's output an encoded "OK"
         echo "DSQRZREZRZER__AFTERINCLUDE\n";
