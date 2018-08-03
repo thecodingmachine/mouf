@@ -207,6 +207,9 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     			// In some cases, the call to getDefaultValue can log NOTICES
     			// in particular if an undefined constant is used as default value.
     			ob_start();
+    			if ($this->isDefaultValueConstant() && !defined($this->getDefaultValueConstantName())) {
+    			    throw new \Exception('Constant "'.$this->getDefaultValueConstantName().'" does not exist.');
+                }
     			$result['default'] = $this->getDefaultValue();
     			$possibleError = ob_get_clean();
     			if ($possibleError) {
