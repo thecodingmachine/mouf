@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Mouf;
 
-use Interop\Container\ServiceProvider;
+use Interop\Container\ServiceProviderInterface;
 use Mouf\Composer\ComposerService;
 use Mouf\Picotainer\Picotainer;
 use Mouf\Reflection\MoufReflectionProxy;
@@ -313,7 +313,7 @@ class MoufManager implements ContainerInterface {
 
 			require_once $compiledContainerFile;
 			$containerName = $this->compiledContainerName;
-			$this->container = new $containerName($this->delegateLookupContainer);
+			$this->container = new $containerName(new Registry([], \TheCodingMachine\Discovery\Discovery::getInstance()), $this->delegateLookupContainer);
 		}
 		return $this->container;
 	}
@@ -355,13 +355,14 @@ class MoufManager implements ContainerInterface {
 		$cachedModifications = ['moufComponents' => filemtime($componentsFile),
 		'serviceProviders' => []];
 
-		foreach (\TheCodingMachine\Discovery\Discovery::getInstance()->get(ServiceProvider::class) as $serviceProvider) {
+		foreach (\TheCodingMachine\Discovery\Discovery::getInstance()->get(ServiceProviderInterface::class) as $serviceProvider) {
 			$reflectionClass = new \ReflectionClass($serviceProvider);
 			$cachedModifications['serviceProviders'][$reflectionClass->getFileName()] = filemtime($reflectionClass->getFileName());
 		}
 
 		$code = "<?php\nreturn ".var_export($cachedModifications, true).";\n";
 		file_put_contents($cachedModificationTimeFile, $code);
+		chmod($cachedModificationTimeFile, 0664);
 	}
 
 	/**

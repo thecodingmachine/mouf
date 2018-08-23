@@ -9,6 +9,7 @@
  */
 namespace Mouf\Controllers;
 
+use Mouf\Mvc\Splash\Annotations\Action;
 use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Security\Controllers\SimpleLoginController;
 
@@ -17,7 +18,6 @@ use Mouf\Security\Controllers\SimpleLoginController;
  * It is actually getting its behaviour from the SimpleLoginController with one simple addition:
  * if the MoufUsers.php file does not exist, it will guide the user towards a solution to be able to get logged.
  *
- * @Component
  */
 class MoufLoginController extends SimpleLoginController {
 	
@@ -26,7 +26,7 @@ class MoufLoginController extends SimpleLoginController {
 	 * The index page will display the login form (from SimpleLoginController) or an explanation on how to setup users
 	 * if users are not set up yet.
 	 * 
-	 * @Action
+	 * @Action()
 	 * @param string $login The login to fill by default.
 	 * @param string $redirecturl The URL to redirect to when login is done. If not specified, the default login URL defined in the controller will be used instead.
 	 */
