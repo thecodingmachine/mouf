@@ -28,7 +28,7 @@
 		"mouf/mouf-validators-interface" : "^2.0",
 		"container-interop/container-interop" : "^1.0",
 		"mouf/classname-mapper": "^1.0",
-		"thecodingmachine/yaco": "^1.1",
+		"thecodingmachine/yaco": "^1.2",
 		"puli/composer-plugin": "^1.0-beta9@dev",
 		"puli/cli": "^1.0-beta9@dev",
 		"thecodingmachine/discovery": "^1.0"
