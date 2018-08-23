@@ -107,3 +107,11 @@ Mouf UI is designed to be used on a development environment, not on a production
 If you are running a production server (if you are not on a development environment), it is more secure
 to prevent Apache from writing to the application directories (or to open those rights on a very
 restrictive basis). In this scenario, you don't need to share write rights with Apache. 
+
+Also, you might want to completely prevent users from accessing the UI. You can disable Mouf UI
+by setting the `MOUF_UI` environment variable to 0.
+
+```
+# Disable Mouf UI via environment variable:
+MOUF_UI=0
+```

@@ -49,6 +49,17 @@ class MoufInstallController extends Controller {
 	 */
 	public function index() {
 
+        $moufUI = getenv('MOUF_UI');
+        if ($moufUI !== false) {
+            $moufUI = (bool) $moufUI;
+            if (!$moufUI) {
+                header('HTTP/1.1 403 Forbidden');
+                echo 'Error! Access to Mouf UI is forbidden on this environment (env variable MOUF_UI is set to 0)';
+                exit;
+            }
+        }
+        unset($moufUI);
+
 		if (!extension_loaded("curl")) {
 			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/mouf_installer/missing_curl.php", $this);
 		} else {
