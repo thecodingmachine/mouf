@@ -4,44 +4,36 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a3619dd2ae6dffc2bad76b2f47674c6",
+    "content-hash": "3c8ac157a52bdf6b35199d571a5e7064",
     "packages": [
         {
-            "name": "composer/ca-bundle",
-            "version": "1.0.7",
+            "name": "cache/adapter-common",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12"
+                "url": "https://github.com/php-cache/adapter-common.git",
+                "reference": "874256105aefaa52b60599ab02858a4575e61095"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
-                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "url": "https://api.github.com/repos/php-cache/adapter-common/zipball/874256105aefaa52b60599ab02858a4575e61095",
+                "reference": "874256105aefaa52b60599ab02858a4575e61095",
                 "shasum": ""
             },
             "require": {
-                "ext-openssl": "*",
-                "ext-pcre": "*",
-                "php": "^5.3.2 || ^7.0"
+                "cache/taggable-cache": "^0.4",
+                "php": "^5.5 || ^7.0",
+                "psr/cache": "^1.0",
+                "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5",
-                "psr/log": "^1.0",
-                "symfony/process": "^2.5 || ^3.0"
-            },
-            "suggest": {
-                "symfony/process": "This is necessary to reliably check whether openssl_x509_parse is vulnerable on older php versions, but can be ignored on PHP 5.5.6+"
+                "cache/integration-tests": "^0.10",
+                "phpunit/phpunit": "^4.0 || ^5.1"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Composer\\CaBundle\\": "src"
+                    "Cache\\Adapter\\Common\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -50,20 +42,255 @@
             ],
             "authors": [
                 {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
                 }
             ],
-            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+            "description": "Common classes for PSR-6 adapters",
+            "homepage": "http://www.php-cache.com/en/latest/",
             "keywords": [
-                "cabundle",
-                "cacert",
-                "certificate",
-                "ssl",
-                "tls"
+                "cache",
+                "psr-6",
+                "tag"
             ],
-            "time": "2017-03-06T11:59:08+00:00"
+            "time": "2016-07-31T18:10:41+00:00"
+        },
+        {
+            "name": "cache/hierarchical-cache",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/hierarchical-cache.git",
+                "reference": "783e179acc3c9d47c469513a2380219022bfa0bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/hierarchical-cache/zipball/783e179acc3c9d47c469513a2380219022bfa0bc",
+                "reference": "783e179acc3c9d47c469513a2380219022bfa0bc",
+                "shasum": ""
+            },
+            "require": {
+                "cache/taggable-cache": "^0.4",
+                "php": "^5.5 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Hierarchy\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "A helper trait and interface to your PSR-6 cache to support hierarchical keys.",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "hierarchical",
+                "psr-6",
+                "tag"
+            ],
+            "time": "2016-08-07T14:49:33+00:00"
+        },
+        {
+            "name": "cache/psr-6-doctrine-bridge",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/doctrine-bridge.git",
+                "reference": "dcdb269a72e8d7c451f749b617c748ead42b78f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/doctrine-bridge/zipball/dcdb269a72e8d7c451f749b617c748ead42b78f8",
+                "reference": "dcdb269a72e8d7c451f749b617c748ead42b78f8",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/cache": "^1.3",
+                "php": "^5.5 || ^7.0",
+                "psr/cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/doctrine-adapter": "^0.5",
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^4.0 || ^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Bridge\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                }
+            ],
+            "description": "PSR-6 Doctrine bridge",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "doctrine",
+                "psr-6"
+            ],
+            "time": "2016-08-07T14:49:33+00:00"
+        },
+        {
+            "name": "cache/taggable-cache",
+            "version": "0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/taggable-cache.git",
+                "reference": "8ae3042edd1ac9546c9eae1020dc2b438ef10742"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/taggable-cache/zipball/8ae3042edd1ac9546c9eae1020dc2b438ef10742",
+                "reference": "8ae3042edd1ac9546c9eae1020dc2b438ef10742",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.11",
+                "phpunit/phpunit": "^4.0 || ^5.1",
+                "symfony/cache": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Taggable\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "Add tag support to your PSR-6 cache implementation",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "Taggable",
+                "cache",
+                "psr6",
+                "tag"
+            ],
+            "time": "2016-08-08T17:20:09+00:00"
+        },
+        {
+            "name": "cache/void-adapter",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/void-adapter.git",
+                "reference": "a946b2e83e6cf8996f01a05811c76869cf11c009"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/void-adapter/zipball/a946b2e83e6cf8996f01a05811c76869cf11c009",
+                "reference": "a946b2e83e6cf8996f01a05811c76869cf11c009",
+                "shasum": ""
+            },
+            "require": {
+                "cache/adapter-common": "^0.3",
+                "cache/hierarchical-cache": "^0.3",
+                "cache/taggable-cache": "^0.4",
+                "php": "^5.5 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "provide": {
+                "psr/cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.11",
+                "phpunit/phpunit": "^4.0 || ^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Adapter\\Void\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "A PSR-6 cache implementation using Void. This implementation supports tags",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "psr-6",
+                "tag",
+                "void"
+            ],
+            "time": "2016-08-07T15:04:55+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -97,41 +324,67 @@
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
-            "name": "filp/whoops",
-            "version": "2.1.9",
+            "name": "container-interop/service-provider",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/filp/whoops.git",
-                "reference": "b238974e1c7cc1859b0c16ddc1c02ecb70ecc07f"
+                "url": "https://github.com/container-interop/service-provider.git",
+                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/b238974e1c7cc1859b0c16ddc1c02ecb70ecc07f",
-                "reference": "b238974e1c7cc1859b0c16ddc1c02ecb70ecc07f",
+                "url": "https://api.github.com/repos/container-interop/service-provider/zipball/4969b9e49460690b7430b3f1a87cab07be61418a",
+                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9 || ^7.0",
-                "psr/log": "^1.0.1"
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting container interoperability through standard service providers",
+            "homepage": "https://github.com/container-interop/service-provider",
+            "time": "2017-09-20T14:13:36+00:00"
+        },
+        {
+            "name": "doctrine/annotations",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/annotations.git",
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/lexer": "1.*",
+                "php": "^7.1"
             },
             "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "^4.8 || ^5.0",
-                "symfony/var-dumper": "^2.6 || ^3.0"
-            },
-            "suggest": {
-                "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
-                "whoops/soap": "Formats errors as SOAP responses"
+                "doctrine/cache": "1.*",
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Whoops\\": "src/Whoops/"
+                    "Doctrine\\Common\\Annotations\\": "lib/Doctrine/Common/Annotations"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -140,72 +393,226 @@
             ],
             "authors": [
                 {
-                    "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "php error handling for cool kids",
-            "homepage": "https://filp.github.io/whoops/",
+            "description": "Docblock Annotations Parser",
+            "homepage": "http://www.doctrine-project.org",
             "keywords": [
-                "error",
-                "exception",
-                "handling",
-                "library",
-                "whoops",
-                "zf2"
+                "annotations",
+                "docblock",
+                "parser"
             ],
-            "time": "2017-06-03T18:33:07+00:00"
+            "time": "2017-12-06T07:11:42+00:00"
         },
         {
-            "name": "franzl/whoops-middleware",
-            "version": "0.5.0",
+            "name": "doctrine/cache",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/franzliedke/whoops-middleware.git",
-                "reference": "b33d0adac275ce3f6a8834a9ffa7b4ff165ba126"
+                "url": "https://github.com/doctrine/cache.git",
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/franzliedke/whoops-middleware/zipball/b33d0adac275ce3f6a8834a9ffa7b4ff165ba126",
-                "reference": "b33d0adac275ce3f6a8834a9ffa7b4ff165ba126",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
                 "shasum": ""
             },
             "require": {
-                "filp/whoops": "^1.1 || ^2.0",
-                "zendframework/zend-diactoros": "^1.1.0"
+                "php": "~7.1"
+            },
+            "conflict": {
+                "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
-                "http-interop/http-middleware": "^0.4.1",
-                "phpunit/phpunit": "5.0.*"
+                "alcaeus/mongo-php-adapter": "^1.1",
+                "doctrine/coding-standard": "^4.0",
+                "mongodb/mongodb": "^1.1",
+                "phpunit/phpunit": "^7.0",
+                "predis/predis": "~1.0"
             },
             "suggest": {
-                "http-interop/http-middleware": "In case you want to use PSR 15 middleware"
+                "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Franzl\\Middleware\\Whoops\\": "src/"
+                    "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "time": "2017-02-01T11:49:46+00:00"
+            "authors": [
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "Caching library offering an object-oriented API for many cache backends",
+            "homepage": "https://www.doctrine-project.org",
+            "keywords": [
+                "cache",
+                "caching"
+            ],
+            "time": "2018-08-21T18:01:43+00:00"
         },
         {
-            "name": "http-interop/http-middleware",
-            "version": "0.2.0",
+            "name": "doctrine/lexer",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/http-interop/http-middleware.git",
-                "reference": "ff545c87e97bf4d88f0cb7eb3e89f99aaa53d7a9"
+                "url": "https://github.com/doctrine/lexer.git",
+                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/http-interop/http-middleware/zipball/ff545c87e97bf4d88f0cb7eb3e89f99aaa53d7a9",
-                "reference": "ff545c87e97bf4d88f0cb7eb3e89f99aaa53d7a9",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
+                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Common\\Lexer\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "lexer",
+                "parser"
+            ],
+            "time": "2014-09-09T13:34:57+00:00"
+        },
+        {
+            "name": "fig/http-message-util",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message-util.git",
+                "reference": "20b2c280cb6914b7b83089720df44e490f4b42f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message-util/zipball/20b2c280cb6914b7b83089720df44e490f4b42f0",
+                "reference": "20b2c280cb6914b7b83089720df44e490f4b42f0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 || ^7.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fig\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Utility classes and constants for use with PSR-7 (psr/http-message)",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2017-02-09T16:10:21+00:00"
+        },
+        {
+            "name": "http-interop/http-middleware",
+            "version": "0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/http-interop/http-middleware.git",
+                "reference": "9a801fe60e70d5d608b61d56b2dcde29516c81b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/http-interop/http-middleware/zipball/9a801fe60e70d5d608b61d56b2dcde29516c81b9",
+                "reference": "9a801fe60e70d5d608b61d56b2dcde29516c81b9",
                 "shasum": ""
             },
             "require": {
@@ -220,7 +627,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Interop\\Http\\Middleware\\": "src/"
+                    "Interop\\Http\\ServerMiddleware\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -233,7 +640,7 @@
                     "homepage": "http://www.php-fig.org/"
                 }
             ],
-            "description": "Common interface for HTTP middleware",
+            "description": "Common interface for HTTP server-side middleware",
             "keywords": [
                 "factory",
                 "http",
@@ -244,100 +651,30 @@
                 "request",
                 "response"
             ],
-            "time": "2016-09-25T13:30:27+00:00"
-        },
-        {
-            "name": "justinrainbow/json-schema",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/cc84765fb7317f6b07bd8ac78364747f95b86341",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.29"
-            },
-            "require-dev": {
-                "json-schema/json-schema-test-suite": "1.1.0",
-                "phpdocumentor/phpdocumentor": "~2",
-                "phpunit/phpunit": "~3.7"
-            },
-            "bin": [
-                "bin/validate-json"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JsonSchema\\": "src/JsonSchema/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Bruno Prieto Reis",
-                    "email": "bruno.p.reis@gmail.com"
-                },
-                {
-                    "name": "Justin Rainbow",
-                    "email": "justin.rainbow@gmail.com"
-                },
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                },
-                {
-                    "name": "Robert Schönthal",
-                    "email": "seroscho@googlemail.com"
-                }
-            ],
-            "description": "A library to validate a json schema.",
-            "homepage": "https://github.com/justinrainbow/json-schema",
-            "keywords": [
-                "json",
-                "schema"
-            ],
-            "time": "2016-01-25T15:43:01+00:00"
+            "abandoned": "http-interop/http-server-middleware",
+            "time": "2017-01-14T15:23:42+00:00"
         },
         {
             "name": "michelf/php-markdown",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "1f51cc520948f66cd2af8cbc45a5ee175e774220"
+                "reference": "01ab082b355bf188d907b9929cd99b2923053495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/1f51cc520948f66cd2af8cbc45a5ee175e774220",
-                "reference": "1f51cc520948f66cd2af8cbc45a5ee175e774220",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/01ab082b355bf188d907b9929cd99b2923053495",
+                "reference": "01ab082b355bf188d907b9929cd99b2923053495",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-lib": "1.4.x-dev"
-                }
-            },
             "autoload": {
-                "psr-0": {
-                    "Michelf": ""
+                "psr-4": {
+                    "Michelf\\": "Michelf/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -361,7 +698,57 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2016-10-29T18:58:20+00:00"
+            "time": "2018-01-15T00:49:33+00:00"
+        },
+        {
+            "name": "mnapoli/simplex",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mnapoli/simplex.git",
+                "reference": "cdc81c738262739f4f35e911f6888da9ee59016b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mnapoli/simplex/zipball/cdc81c738262739f4f35e911f6888da9ee59016b",
+                "reference": "cdc81c738262739f4f35e911f6888da9ee59016b",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/service-provider": "~0.4.0",
+                "php": ">=5.3.0",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Simplex\\": "src/Simplex"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Matthieu Napoli",
+                    "email": "matthieu@mnapoli.fr"
+                }
+            ],
+            "description": "Pimple fork with full container-interop support",
+            "homepage": "https://github.com/mnapoli/simplex",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "time": "2018-02-13T08:14:36+00:00"
         },
         {
             "name": "mouf/classname-mapper",
@@ -453,16 +840,16 @@
         },
         {
             "name": "mouf/html.htmlelement",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.html_element.git",
-                "reference": "c8272bf308894c0843e7eeaae30746f3f05464f9"
+                "reference": "86b7b3f9fc9d9a823a708e3190e5aa9b3ce95a56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/c8272bf308894c0843e7eeaae30746f3f05464f9",
-                "reference": "c8272bf308894c0843e7eeaae30746f3f05464f9",
+                "url": "https://api.github.com/repos/thecodingmachine/html.html_element/zipball/86b7b3f9fc9d9a823a708e3190e5aa9b3ce95a56",
+                "reference": "86b7b3f9fc9d9a823a708e3190e5aa9b3ce95a56",
                 "shasum": ""
             },
             "require": {
@@ -500,20 +887,20 @@
                 "interface",
                 "tohtml"
             ],
-            "time": "2014-06-03T20:28:43+00:00"
+            "time": "2018-08-22T21:07:53+00:00"
         },
         {
             "name": "mouf/html.renderer",
-            "version": "v1.1.4",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.git",
-                "reference": "2370d4464f0de0d4c91d67c5d09f779b344d7fd0"
+                "reference": "1bba9f6307285eb48cf91f8fdc51bde77729c8ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/2370d4464f0de0d4c91d67c5d09f779b344d7fd0",
-                "reference": "2370d4464f0de0d4c91d67c5d09f779b344d7fd0",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/1bba9f6307285eb48cf91f8fdc51bde77729c8ad",
+                "reference": "1bba9f6307285eb48cf91f8fdc51bde77729c8ad",
                 "shasum": ""
             },
             "require": {
@@ -522,7 +909,7 @@
                 "mouf/utils.cache.apc-cache": "~2.0",
                 "mouf/utils.cache.in-memory-cache": "~1.0",
                 "php": ">=5.4.4",
-                "twig/twig": "1.*@stable"
+                "twig/twig": "^1 || ^2"
             },
             "type": "mouf-library",
             "extra": {
@@ -578,29 +965,29 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2015-10-14T08:39:26+00:00"
+            "time": "2018-08-07T09:26:08+00:00"
         },
         {
             "name": "mouf/html.renderer.twig-extensions",
-            "version": "v1.0.11",
+            "version": "1.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.twig-extensions.git",
-                "reference": "c0acae7e464adeeeefc80133a86959d6d784c67f"
+                "reference": "330369b64f5449fcc6e09658aa4022dee4c18899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/c0acae7e464adeeeefc80133a86959d6d784c67f",
-                "reference": "c0acae7e464adeeeefc80133a86959d6d784c67f",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/330369b64f5449fcc6e09658aa4022dee4c18899",
+                "reference": "330369b64f5449fcc6e09658aa4022dee4c18899",
                 "shasum": ""
             },
             "require": {
                 "container-interop/container-interop": "~1.0",
                 "mouf/html.htmlelement": "~2.0",
-                "mouf/utils.cache.cache-interface": "~2.0",
+                "mouf/utils.cache.purge-ui": "^1",
                 "mouf/utils.constants.debug": "~1.0",
                 "php": ">=5.4.0",
-                "twig/twig": "~1.19"
+                "twig/twig": "~1.19 | ^2"
             },
             "type": "mouf-library",
             "extra": {
@@ -644,7 +1031,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2016-04-04T16:24:06+00:00"
+            "time": "2018-08-16T21:23:09+00:00"
         },
         {
             "name": "mouf/html.template.bootstrap",
@@ -1462,26 +1849,26 @@
         },
         {
             "name": "mouf/mouf-installer",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-installer.git",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198"
+                "reference": "cb8268c2fe56c68cdb16c6d90211afa5eec3d82f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/75cd4295a831b32aabea0b2bb6f4925da6b6e198",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/cb8268c2fe56c68cdb16c6d90211afa5eec3d82f",
+                "reference": "cb8268c2fe56c68cdb16c6d90211afa5eec3d82f",
                 "shasum": ""
             },
             "require": {
+                "composer-plugin-api": "^1",
                 "php": ">=5.3.0"
             },
-            "type": "composer-installer",
+            "type": "composer-plugin",
             "extra": {
                 "class": [
-                    "Mouf\\Installer\\MoufLibraryInstaller",
-                    "Mouf\\Installer\\MoufFrameworkInstaller"
+                    "Mouf\\Installer\\MoufPlugin"
                 ]
             },
             "autoload": {
@@ -1506,7 +1893,7 @@
                 "install",
                 "mouf"
             ],
-            "time": "2014-06-03T20:47:09+00:00"
+            "time": "2018-08-02T10:21:08+00:00"
         },
         {
             "name": "mouf/mouf-validators-interface",
@@ -1551,67 +1938,91 @@
             "time": "2013-10-29T18:21:58+00:00"
         },
         {
-            "name": "mouf/mvc.splash",
-            "version": "v7.0.3",
+            "name": "mouf/mvc.splash-common",
+            "version": "v8.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "af1702295d2cae3a52f39652463b725258b6f0bd"
+                "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
+                "reference": "cf7e63501faecca66eedaa127f2c38fad006adf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/af1702295d2cae3a52f39652463b725258b6f0bd",
-                "reference": "af1702295d2cae3a52f39652463b725258b6f0bd",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/cf7e63501faecca66eedaa127f2c38fad006adf5",
+                "reference": "cf7e63501faecca66eedaa127f2c38fad006adf5",
                 "shasum": ""
             },
             "require": {
-                "franzl/whoops-middleware": "~0.3",
-                "mouf/html.template.bootstrap": ">=2.1, <5.0",
-                "mouf/mouf": ">=2.0.2, <3.0",
-                "mouf/mouf-validators-interface": "~2.0",
-                "mouf/mvc.splash-common": "~7.0",
-                "mouf/utils.cache.apc-cache": "~2.1",
-                "mouf/utils.cache.file-cache": "~2.1",
-                "mouf/utils.cache.no-cache": "2.0.*",
-                "mouf/utils.constants.debug": "~1.0",
-                "mouf/utils.constants.secret": "~1.0",
-                "mouf/utils.value.common-value": "~1.0",
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
+                "cache/void-adapter": "^0.3.0",
+                "container-interop/service-provider": "^0.4",
+                "doctrine/annotations": "^1.2",
+                "http-interop/http-middleware": "^0.4",
+                "mouf/html.htmlelement": "^2.0",
+                "mouf/html.renderer.twig-extensions": "~1.0",
+                "mouf/html.template.templateinterface": "^2.1",
+                "mouf/utils.action.common-action": "~1.0",
+                "mouf/utils.cache.cache-interface": "~2.0",
+                "mouf/utils.common.conditioninterface": "~2.0",
+                "mouf/utils.common.url-interface": "~1.0",
+                "php": ">=7.0",
+                "psr/cache": "^1.0",
+                "thecodingmachine/common-factories": "^0.4",
+                "thecodingmachine/middleware-list-universal-module": "~1.0",
+                "zendframework/zend-diactoros": "~1.0"
             },
-            "provide": {
-                "mouf/mvc.splash-implementation": "7.0.*"
+            "conflict": {
+                "zendframework/zend-stratigility": "<2.0"
+            },
+            "require-dev": {
+                "cache/array-adapter": "^0.4.0",
+                "mnapoli/simplex": "^0.3",
+                "mouf/picotainer": "~1.0",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "scope": "global",
-                            "description": "Create RootController and root view.",
-                            "type": "url",
-                            "url": "splash7install/"
-                        },
-                        {
-                            "scope": "global",
-                            "description": "Write .htaccess file.",
-                            "type": "url",
-                            "url": "splash7install/writeHtAccess"
-                        }
-                    ],
-                    "logo": "logo.png",
+                    "logo": "doc/images/logo.png",
                     "doc": [
                         {
                             "title": "Installing Splash",
-                            "url": "doc/install.md"
+                            "url": "doc/install/index.md",
+                            "children": [
+                                {
+                                    "title": "Standalone mode",
+                                    "url": "doc/install/standalone.md"
+                                },
+                                {
+                                    "title": "Mouf integration",
+                                    "url": "doc/install/mouf.md"
+                                },
+                                {
+                                    "title": "Service provider",
+                                    "url": "doc/service-provider.md"
+                                }
+                            ]
                         },
                         {
                             "title": "Writing controllers",
-                            "url": "doc/writing_controllers.md"
+                            "url": "doc/writing_controllers_manually.md"
                         },
                         {
-                            "title": "Writing controllers, manually",
-                            "url": "doc/writing_controllers_manually.md"
+                            "title": "Integrations",
+                            "children": [
+                                {
+                                    "title": "Mouf",
+                                    "children": [
+                                        {
+                                            "title": "Controller creation wizard",
+                                            "url": "doc/mouf/writing_controllers.md"
+                                        },
+                                        {
+                                            "title": "Advanced: configuring routing",
+                                            "url": "doc/url_routing.md"
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "title": "Managing URL parameters",
@@ -1622,26 +2033,21 @@
                             "url": "doc/filters.md"
                         },
                         {
-                            "title": "Advanced: configuring routing",
-                            "url": "doc/url_routing.md"
-                        },
-                        {
-                            "title": "Migrating from Splash 4",
+                            "title": "Migrating from older version",
                             "url": "doc/migrating.md"
                         }
                     ],
-                    "require-admin": [
-                        "src/SplashAdmin.php",
-                        "src/Mouf/Mvc/Splash/SplashGenerateService.php",
-                        "src/Mouf/Mvc/Splash/Controllers/Admin/SplashPurgeCacheController.php",
-                        "src/Mouf/Mvc/Splash/Controllers/Admin/SplashAdminApacheConfigureController.php",
-                        "src/Mouf/Mvc/Splash/Controllers/Admin/SplashInstallController.php"
-                    ]
+                    "section": {
+                        "name": "MVC",
+                        "description": "All the tools you need to route requests and display pages",
+                        "weight": 10
+                    }
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Mouf\\Mvc\\Splash": "src/"
+                "psr-4": {
+                    "Mouf\\Annotations\\": "src/Mouf/Annotations",
+                    "Mouf\\Mvc\\Splash\\": "src/Mouf/Mvc/Splash"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1655,72 +2061,8 @@
                     "homepage": "http://mouf-php.com"
                 }
             ],
-            "description": "An MVC framework deeply integrated with Mouf.",
-            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash/",
-            "keywords": [
-                "framework",
-                "mouf",
-                "mvc",
-                "splash"
-            ],
-            "time": "2017-03-02T11:29:21+00:00"
-        },
-        {
-            "name": "mouf/mvc.splash-common",
-            "version": "v7.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "3c4359eeda2e5d5576a348c9647d9e5733152f54"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/3c4359eeda2e5d5576a348c9647d9e5733152f54",
-                "reference": "3c4359eeda2e5d5576a348c9647d9e5733152f54",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/html.htmlelement": "2.*",
-                "mouf/html.renderer.twig-extensions": "~1.0",
-                "mouf/mouf": ">=2.0.2, <3.0",
-                "mouf/mvc.splash-implementation": "~7.0",
-                "mouf/utils.action.common-action": "~1.0",
-                "mouf/utils.cache.apc-cache": "~2.1",
-                "mouf/utils.cache.cache-interface": "~2.0",
-                "mouf/utils.cache.file-cache": "~2.1",
-                "mouf/utils.common.conditioninterface": "~2.0",
-                "mouf/utils.common.url-interface": "~1.0",
-                "php": ">=5.3.0",
-                "zendframework/zend-diactoros": "~1.0",
-                "zendframework/zend-stratigility": "~1.0"
-            },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "require-admin": [
-                        "src/SplashCommonAdmin.php"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Annotations": "src/",
-                    "Mouf\\Mvc\\Splash": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "The Core part of Splash (an MVC framework). It is used by Splash itself, but also by Drusplash (the Splash wrapper for Drupal)",
-            "homepage": "https://github.com/thecodingmachine/mvc.splash-common",
+            "description": "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
+            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash-common",
             "keywords": [
                 "framework",
                 "mouf",
@@ -1728,31 +2070,49 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2017-03-02T11:30:49+00:00"
+            "time": "2018-03-01T14:22:20+00:00"
         },
         {
             "name": "mouf/security.simplelogincontroller",
-            "version": "v2.0.0",
+            "version": "5.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.simplelogincontroller.git",
-                "reference": "3a1c779aa5d492bcec0d33a05609d58f0af30b92"
+                "reference": "c4d0600bef6089add7bf1c2223b3a7cc547fb657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/3a1c779aa5d492bcec0d33a05609d58f0af30b92",
-                "reference": "3a1c779aa5d492bcec0d33a05609d58f0af30b92",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/c4d0600bef6089add7bf1c2223b3a7cc547fb657",
+                "reference": "c4d0600bef6089add7bf1c2223b3a7cc547fb657",
                 "shasum": ""
             },
             "require": {
-                "mouf/security.userservice": "2.*",
-                "mouf/utils.common.getvars": "2.*",
-                "php": ">=5.3.0"
+                "mouf/mvc.splash-common": "^8.0.0",
+                "mouf/security.userservice": "^2.1.0",
+                "mouf/security.userservice-splash": "^8.0.0",
+                "mouf/utils.action.action-interface": "~1.0",
+                "php": "^7.0.0"
             },
             "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "class",
+                            "class": "Mouf\\Security\\SimpleLoginInstaller"
+                        }
+                    ],
+                    "doc": [
+                        {
+                            "title": "Intergrate the UserService.RememberMe feature",
+                            "url": "doc/integrate_remember_me.md"
+                        }
+                    ]
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+                "psr-4": {
+                    "Mouf\\Security\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1773,7 +2133,7 @@
                 "mouf",
                 "security"
             ],
-            "time": "2014-06-03T20:30:24+00:00"
+            "time": "2016-09-13T10:04:51+00:00"
         },
         {
             "name": "mouf/security.userfiledao",
@@ -1822,16 +2182,16 @@
         },
         {
             "name": "mouf/security.userservice",
-            "version": "v2.0.0",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice.git",
-                "reference": "ac2739f414689349ea008f9c173723bb832c8861"
+                "reference": "8915c4703296cf09943f63805d4c1d494872e6de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/ac2739f414689349ea008f9c173723bb832c8861",
-                "reference": "ac2739f414689349ea008f9c173723bb832c8861",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/8915c4703296cf09943f63805d4c1d494872e6de",
+                "reference": "8915c4703296cf09943f63805d4c1d494872e6de",
                 "shasum": ""
             },
             "require": {
@@ -1868,6 +2228,10 @@
                         {
                             "title": "UserService - Quick Example",
                             "url": "doc/userservicesample.md"
+                        },
+                        {
+                            "title": "UserService - 'Remember Me' feature",
+                            "url": "doc/remember_me.md"
                         }
                     ],
                     "logo": "logo.png"
@@ -1896,31 +2260,41 @@
                 "security",
                 "user"
             ],
-            "time": "2014-06-04T16:08:19+00:00"
+            "time": "2016-07-06T09:32:57+00:00"
         },
         {
             "name": "mouf/security.userservice-splash",
-            "version": "v4.0.1",
+            "version": "v8.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice-splash.git",
-                "reference": "a38b77cb4b0aed8697d0945c683486aedb373bb3"
+                "reference": "4dacf48fcba71958e7cea1a06b2d958962ae26e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/a38b77cb4b0aed8697d0945c683486aedb373bb3",
-                "reference": "a38b77cb4b0aed8697d0945c683486aedb373bb3",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/4dacf48fcba71958e7cea1a06b2d958962ae26e9",
+                "reference": "4dacf48fcba71958e7cea1a06b2d958962ae26e9",
                 "shasum": ""
             },
             "require": {
-                "mouf/mvc.splash-common": ">=4.0,< 6.0 | 7.*",
-                "mouf/security.userservice": "2.*",
-                "php": ">=5.3.0"
+                "mouf/mvc.splash-common": "^8.0.0",
+                "mouf/security.userservice": "^2.1.0",
+                "php": ">=7.0.0"
             },
             "type": "library",
+            "extra": {
+                "mouf": {
+                    "install": [
+                        {
+                            "type": "class",
+                            "class": "Mouf\\Security\\UnauthorizedMiddlewareInstaller"
+                        }
+                    ]
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+                "psr-4": {
+                    "Mouf\\Security\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1942,7 +2316,7 @@
                 "splash",
                 "user"
             ],
-            "time": "2015-07-26T07:45:28+00:00"
+            "time": "2018-07-25T12:49:49+00:00"
         },
         {
             "name": "mouf/utils.action.action-interface",
@@ -2098,28 +2472,26 @@
         },
         {
             "name": "mouf/utils.cache.cache-interface",
-            "version": "v2.0.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.cache.cache-interface.git",
-                "reference": "109685126f5759a6376e113c4bf13fd625091243"
+                "reference": "20de258be5200eeae96696c09ab1a510dda1d104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/109685126f5759a6376e113c4bf13fd625091243",
-                "reference": "109685126f5759a6376e113c4bf13fd625091243",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.cache-interface/zipball/20de258be5200eeae96696c09ab1a510dda1d104",
+                "reference": "20de258be5200eeae96696c09ab1a510dda1d104",
                 "shasum": ""
             },
             "require": {
-                "mouf/utils.composite-exception": "~1.0",
+                "mouf/utils.cache.purge-ui": "^1",
+                "mouf/utils.composite-exception": "^1",
                 "php": ">=5.3.0"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "require-admin": [
-                        "CacheAdmin.php"
-                    ],
                     "logo": "logo.png"
                 }
             },
@@ -2146,7 +2518,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2015-09-08T16:07:35+00:00"
+            "time": "2018-06-20T09:45:40+00:00"
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -2250,39 +2622,41 @@
             "time": "2015-07-10T13:31:07+00:00"
         },
         {
-            "name": "mouf/utils.cache.no-cache",
-            "version": "v2.0.0",
+            "name": "mouf/utils.cache.purge-ui",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.cache.no-cache.git",
-                "reference": "bf1758eaea3289b9c3070009ed04dc10b7c129ab"
+                "url": "https://github.com/thecodingmachine/utils.cache.purge-ui.git",
+                "reference": "7ea15f6bebbbe7b5f7bc91999d3cbf413e7d1887"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.no-cache/zipball/bf1758eaea3289b9c3070009ed04dc10b7c129ab",
-                "reference": "bf1758eaea3289b9c3070009ed04dc10b7c129ab",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.purge-ui/zipball/7ea15f6bebbbe7b5f7bc91999d3cbf413e7d1887",
+                "reference": "7ea15f6bebbbe7b5f7bc91999d3cbf413e7d1887",
                 "shasum": ""
             },
             "require": {
-                "mouf/utils.cache.cache-interface": "2.*",
-                "mouf/utils.log.log_interface": "2.*",
-                "php": ">=5.3.0"
+                "mouf/utils.composite-exception": "~1.0",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.4",
+                "mouf/utils.cache.cache-interface": "^2",
+                "psr/cache": "^1.0",
+                "psr/simple-cache": "^1.0"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "src/install.php"
-                        }
+                    "require-admin": [
+                        "CacheAdmin.php"
                     ],
                     "logo": "logo.png"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
+                "psr-4": {
+                    "Mouf\\Utils\\Cache\\Purge\\": "src/Mouf/Utils/Cache/Purge"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2296,14 +2670,16 @@
                     "homepage": "http://mouf-php.com"
                 }
             ],
-            "description": "This package contains a cache mechanism that... does not cache anything. This is useful if another component requires a cache mechanism and if you don't want to provide any (for development purpose...).",
-            "homepage": "https://github.com/thecodingmachine/utils.cache.no-cache",
+            "description": "This package contains a user interface that will add a 'Purge cache' button to Mouf, allowing you to purge any PSR-6, PSR-16, Doctrine and Mouf cache easily.",
+            "homepage": "https://github.com/thecodingmachine/utils.cache.purge-ui",
             "keywords": [
                 "cache",
+                "doctrine",
                 "mouf",
-                "nocache"
+                "psr-16",
+                "psr-6"
             ],
-            "time": "2013-03-19T22:09:31+00:00"
+            "time": "2018-06-20T09:38:21+00:00"
         },
         {
             "name": "mouf/utils.common.conditioninterface",
@@ -2442,7 +2818,7 @@
         },
         {
             "name": "mouf/utils.composite-exception",
-            "version": "1.0.x-dev",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.composite-exception.git",
@@ -2583,16 +2959,16 @@
         },
         {
             "name": "mouf/utils.i18n.fine",
-            "version": "v3.0.2",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.i18n.fine.git",
-                "reference": "43a9661ceb0fb128eb03d2d23ca9dca7e7ce5129"
+                "reference": "69c165497bc5c202892fdc8022591eddbb8e0e3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/43a9661ceb0fb128eb03d2d23ca9dca7e7ce5129",
-                "reference": "43a9661ceb0fb128eb03d2d23ca9dca7e7ce5129",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.i18n.fine/zipball/69c165497bc5c202892fdc8022591eddbb8e0e3b",
+                "reference": "69c165497bc5c202892fdc8022591eddbb8e0e3b",
                 "shasum": ""
             },
             "require": {
@@ -2654,7 +3030,7 @@
                     "homepage": "http://mouf-php.com"
                 },
                 {
-                    "name": "Marc TEYSSIER",
+                    "name": "Marc Teyssier",
                     "email": "m.teyssier@thecodingmachine.com",
                     "homepage": "http://mouf-php.com"
                 }
@@ -2667,7 +3043,7 @@
                 "internationalisation",
                 "mouf"
             ],
-            "time": "2015-04-15T07:21:29+00:00"
+            "time": "2017-08-04T10:52:04+00:00"
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
@@ -2890,57 +3266,6 @@
             "time": "2015-08-10T14:03:37+00:00"
         },
         {
-            "name": "mouf/utils.value.common-value",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/mouf-utils.value.common-value.git",
-                "reference": "c989693980176722ead0134791fdf28e9f8ff0be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-utils.value.common-value/zipball/c989693980176722ead0134791fdf28e9f8ff0be",
-                "reference": "c989693980176722ead0134791fdf28e9f8ff0be",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/utils.common.conditioninterface": "~2.0",
-                "mouf/utils.value.value-interface": "~1.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "mouf": {
-                    "logo": "logo.png"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Action": "src/",
-                    "Mouf\\Utils\\Common": "src/",
-                    "Mouf\\Utils\\Value": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains common classes that implement the ValueInterface interface (from the mouf/utils.value.value-interface package).",
-            "homepage": "https://mouf-php.com/mouf/utils.value.common-value",
-            "keywords": [
-                "mouf",
-                "valueinterface"
-            ],
-            "time": "2016-02-26T13:50:11+00:00"
-        },
-        {
             "name": "mouf/utils.value.value-interface",
             "version": "v1.0.0",
             "source": {
@@ -3040,153 +3365,32 @@
             "time": "2016-09-16T12:04:44+00:00"
         },
         {
-            "name": "padraic/humbug_get_contents",
-            "version": "1.1.1",
+            "name": "psr/cache",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/humbug/file_get_contents.git",
-                "reference": "6e6c47af83cb98c610f4ba7d06ee809ad59ede1b"
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/humbug/file_get_contents/zipball/6e6c47af83cb98c610f4ba7d06ee809ad59ede1b",
-                "reference": "6e6c47af83cb98c610f4ba7d06ee809ad59ede1b",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
                 "shasum": ""
             },
             "require": {
-                "composer/ca-bundle": "^1.0",
-                "ext-openssl": "*",
-                "php": "^5.3 || ^7.0"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.1",
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": false
-                },
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Humbug\\": "src/"
-                },
-                "files": [
-                    "src/function.php",
-                    "src/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Pádraic Brady",
-                    "email": "padraic.brady@gmail.com",
-                    "homepage": "http://blog.astrumfutura.com"
-                },
-                {
-                    "name": "Théo Fidry",
-                    "email": "theo.fidry@gmail.com"
-                }
-            ],
-            "description": "Secure wrapper for accessing HTTPS resources with file_get_contents for PHP 5.3+",
-            "homepage": "https://github.com/padraic/file_get_contents",
-            "keywords": [
-                "download",
-                "file_get_contents",
-                "http",
-                "https",
-                "ssl",
-                "tls"
-            ],
-            "time": "2017-07-10T10:32:34+00:00"
-        },
-        {
-            "name": "padraic/phar-updater",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/humbug/phar-updater.git",
-                "reference": "c17eeb3887dc4269d1b4837dc875d39e9f8149a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/humbug/phar-updater/zipball/c17eeb3887dc4269d1b4837dc875d39e9f8149a8",
-                "reference": "c17eeb3887dc4269d1b4837dc875d39e9f8149a8",
-                "shasum": ""
-            },
-            "require": {
-                "padraic/humbug_get_contents": "^1.0",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Humbug\\SelfUpdate\\": "src/"
+                    "Psr\\Cache\\": "src/"
                 }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Padraic Brady",
-                    "email": "padraic.brady@gmail.com",
-                    "homepage": "http://blog.astrumfutura.com"
-                }
-            ],
-            "description": "A thing to make PHAR self-updating easy and secure.",
-            "keywords": [
-                "humbug",
-                "phar",
-                "self-update",
-                "update"
-            ],
-            "time": "2016-01-05T23:08:01+00:00"
-        },
-        {
-            "name": "paragonie/random_compat",
-            "version": "v2.0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
-            },
-            "suggest": {
-                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/random.php"
-                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3194,18 +3398,17 @@
             ],
             "authors": [
                 {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com",
-                    "homepage": "https://paragonie.com"
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
                 }
             ],
-            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "description": "Common interface for caching libraries",
             "keywords": [
-                "csprng",
-                "pseudorandom",
-                "random"
+                "cache",
+                "psr",
+                "psr-6"
             ],
-            "time": "2017-03-13T16:27:32+00:00"
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/container",
@@ -3307,6 +3510,112 @@
             "time": "2016-08-06T14:39:51+00:00"
         },
         {
+            "name": "psr/http-server-handler",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-handler.git",
+                "reference": "439d92054dc06097f2406ec074a2627839955a02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-handler/zipball/439d92054dc06097f2406ec074a2627839955a02",
+                "reference": "439d92054dc06097f2406ec074a2627839955a02",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side request handler",
+            "keywords": [
+                "handler",
+                "http",
+                "http-interop",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response",
+                "server"
+            ],
+            "time": "2018-01-22T17:04:15+00:00"
+        },
+        {
+            "name": "psr/http-server-middleware",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-middleware.git",
+                "reference": "ea17eb1fb2c8df6db919cc578451a8013c6a0ae5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-middleware/zipball/ea17eb1fb2c8df6db919cc578451a8013c6a0ae5",
+                "reference": "ea17eb1fb2c8df6db919cc578451a8013c6a0ae5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0",
+                "psr/http-server-handler": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side middleware",
+            "keywords": [
+                "http",
+                "http-interop",
+                "middleware",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2018-01-22T17:08:31+00:00"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.2",
             "source": {
@@ -3354,164 +3663,31 @@
             "time": "2016-10-10T12:19:37+00:00"
         },
         {
-            "name": "puli/cli",
-            "version": "1.0.0-beta10",
+            "name": "psr/simple-cache",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/puli/cli.git",
-                "reference": "14368a347a6c8bc045cd94e331fc23560b867003"
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/puli/cli/zipball/14368a347a6c8bc045cd94e331fc23560b867003",
-                "reference": "14368a347a6c8bc045cd94e331fc23560b867003",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
                 "shasum": ""
             },
             "require": {
-                "padraic/phar-updater": "^1.0.1",
-                "php": "^5.3.9|^7.0",
-                "puli/discovery": "^1.0-beta9",
-                "puli/manager": "^1.0-beta10",
-                "puli/repository": "^1.0-beta9",
-                "puli/url-generator": "^1.0-beta4",
-                "webmozart/console": "^1.0-beta4",
-                "webmozart/expression": "^1.0",
-                "webmozart/glob": "^4.0",
-                "webmozart/json": "^1.2.2",
-                "webmozart/path-util": "^2.2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.3|^3.0"
-            },
-            "bin": [
-                "bin/puli"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Puli\\Cli\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A Command Line Interface (CLI) for managing Puli projects.",
-            "homepage": "http://puli.io",
-            "time": "2016-01-14T12:24:35+00:00"
-        },
-        {
-            "name": "puli/composer-plugin",
-            "version": "1.0.0-beta10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/puli/composer-plugin.git",
-                "reference": "89f1d4df4cc24dc8025e3afb98b5fab0bd2df831"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/puli/composer-plugin/zipball/89f1d4df4cc24dc8025e3afb98b5fab0bd2df831",
-                "reference": "89f1d4df4cc24dc8025e3afb98b5fab0bd2df831",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0",
-                "php": "^5.3.9|^7.0",
-                "puli/discovery": "^1.0-beta9",
-                "puli/repository": "^1.0-beta9",
-                "puli/url-generator": "^1.0-beta4",
-                "symfony/filesystem": "^2.3|^3.0",
-                "symfony/process": "^2.3|^3.0",
-                "webmozart/assert": "^1.0",
-                "webmozart/json": "^1.2.2",
-                "webmozart/path-util": "^2.2"
-            },
-            "require-dev": {
-                "composer/composer": "^1.0-alpha10",
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "webmozart/glob": "^4.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
-                "class": "Puli\\ComposerPlugin\\PuliPlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Puli\\ComposerPlugin\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Integrates Composer into the Puli package manager.",
-            "homepage": "http://puli.io",
-            "time": "2016-03-31T12:15:22+00:00"
-        },
-        {
-            "name": "puli/discovery",
-            "version": "1.0.0-beta9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/puli/discovery.git",
-                "reference": "3fcb42bbbf27e7baa6d978c93be966ee4c2f6085"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/puli/discovery/zipball/3fcb42bbbf27e7baa6d978c93be966ee4c2f6085",
-                "reference": "3fcb42bbbf27e7baa6d978c93be966ee4c2f6085",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.9|^7.0",
-                "ramsey/uuid": "^2.8",
-                "webmozart/assert": "^1.0",
-                "webmozart/expression": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "puli/repository": "^1.0-beta9",
-                "sebastian/version": "^1.0.1",
-                "webmozart/json": "^1.2",
-                "webmozart/key-value-store": "^1.0-beta7"
-            },
-            "suggest": {
-                "puli/repository": "to bind and discover Puli resources",
-                "webmozart/json": "to use the JSON discovery",
-                "webmozart/key-value-store": "to use the key-value store discovery"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Puli\\Discovery\\": "src/"
+                    "Psr\\SimpleCache\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3520,239 +3696,122 @@
             ],
             "authors": [
                 {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
                 }
             ],
-            "description": "Publishes and discovers artifacts across Puli packages.",
-            "homepage": "http://puli.io",
-            "time": "2016-01-14T10:18:41+00:00"
-        },
-        {
-            "name": "puli/manager",
-            "version": "1.0.0-beta10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/puli/manager.git",
-                "reference": "07e03dc2cb10069ec51cd33e31f9404602f4d976"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/puli/manager/zipball/07e03dc2cb10069ec51cd33e31f9404602f4d976",
-                "reference": "07e03dc2cb10069ec51cd33e31f9404602f4d976",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.9|^7.0",
-                "psr/log": "^1.0",
-                "puli/discovery": "^1.0-beta9",
-                "puli/repository": "^1.0-beta9",
-                "puli/url-generator": "^1.0-beta4",
-                "ramsey/uuid": "^2.8",
-                "symfony/event-dispatcher": "^2.3|^3.0",
-                "symfony/filesystem": "^2.3|^3.0",
-                "webmozart/assert": "^1.0",
-                "webmozart/expression": "^1.0",
-                "webmozart/glob": "^4.0",
-                "webmozart/json": "^1.2.1",
-                "webmozart/path-util": "^2.2.3"
-            },
-            "require-dev": {
-                "basho/riak": "^1.4",
-                "phpunit/phpunit": "^4.6",
-                "predis/predis": "^1.0",
-                "sebastian/comparator": "^1.2",
-                "sebastian/version": "^1.0.1",
-                "webmozart/key-value-store": "^1.0-beta7"
-            },
-            "suggest": {
-                "basho/riak": "to use Riak based key-value stores",
-                "predis/predis": "to use Predis based key-value stores",
-                "webmozart/key-value-store": "to use key-value store change streams/discoveries"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Puli\\Manager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Generates Puli repositories from configured packages.",
-            "homepage": "http://puli.io",
-            "time": "2016-01-14T10:59:29+00:00"
-        },
-        {
-            "name": "puli/repository",
-            "version": "1.0.0-beta10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/puli/repository.git",
-                "reference": "2b3136f62c81bf1d6f0fbdbda62c199524eab65d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/puli/repository/zipball/2b3136f62c81bf1d6f0fbdbda62c199524eab65d",
-                "reference": "2b3136f62c81bf1d6f0fbdbda62c199524eab65d",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.9|^7.0",
-                "psr/log": "^1.0",
-                "webmozart/assert": "^1.0",
-                "webmozart/glob": "^4.1",
-                "webmozart/path-util": "^2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.0|^3.0",
-                "webmozart/json": "^1.2.1",
-                "webmozart/key-value-store": "^1.0-beta7"
-            },
-            "suggest": {
-                "symfony/filesystem": "to use the filesystem repository",
-                "webmozart/json": "to use the JSON repositories",
-                "webmozart/key-value-store": "to use the key-value store change stream"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Puli\\Repository\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A filesystem-like repository for storing arbitrary resources.",
-            "homepage": "http://puli.io",
-            "time": "2016-02-05T10:12:35+00:00"
-        },
-        {
-            "name": "puli/url-generator",
-            "version": "1.0.0-beta4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/puli/url-generator.git",
-                "reference": "b6c0bfb678dde9a2f8ece661f894c9f39e62dcc2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/puli/url-generator/zipball/b6c0bfb678dde9a2f8ece661f894c9f39e62dcc2",
-                "reference": "b6c0bfb678dde9a2f8ece661f894c9f39e62dcc2",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.9|^7.0",
-                "puli/discovery": "^1.0-beta9",
-                "puli/repository": "^1.0-beta9",
-                "webmozart/glob": "^4.0",
-                "webmozart/path-util": "^2.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Puli\\UrlGenerator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Generates URLs for public Puli resources.",
-            "homepage": "http://puli.io",
+            "description": "Common interfaces for simple caching",
             "keywords": [
-                "asset",
-                "public",
-                "puli",
-                "resource",
-                "url"
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
             ],
-            "time": "2016-01-14T10:30:17+00:00"
+            "time": "2017-10-23T01:57:42+00:00"
         },
         {
-            "name": "ramsey/uuid",
-            "version": "2.9.0",
+            "name": "symfony/cache",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ramsey/uuid.git",
-                "reference": "b2ef4dd9584268d73f92f752a62bc24cd534dc9a"
+                "url": "https://github.com/symfony/cache.git",
+                "reference": "c666a5bbfeb1fe05c7b91d46810f405c8bea14cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/b2ef4dd9584268d73f92f752a62bc24cd534dc9a",
-                "reference": "b2ef4dd9584268d73f92f752a62bc24cd534dc9a",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/c666a5bbfeb1fe05c7b91d46810f405c8bea14cf",
+                "reference": "c666a5bbfeb1fe05c7b91d46810f405c8bea14cf",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "^1.0|^2.0",
+                "php": "^7.1.3",
+                "psr/cache": "~1.0",
+                "psr/log": "~1.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "conflict": {
+                "symfony/var-dumper": "<3.4"
+            },
+            "provide": {
+                "psr/cache-implementation": "1.0",
+                "psr/simple-cache-implementation": "1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "dev-master",
+                "doctrine/cache": "~1.6",
+                "doctrine/dbal": "~2.4",
+                "predis/predis": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Cache\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Cache component with PSR-6, PSR-16, and tags",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "caching",
+                "psr6"
+            ],
+            "time": "2018-07-26T11:24:31+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "shasum": ""
+            },
+            "require": {
                 "php": ">=5.3.3"
             },
-            "replace": {
-                "rhumsaa/uuid": "self.version"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.3",
-                "jakub-onderka/php-parallel-lint": "^0.9.0",
-                "moontoast/math": "~1.1",
-                "phpunit/phpunit": "~4.1|~5.0",
-                "satooshi/php-coveralls": "~0.6",
-                "squizlabs/php_codesniffer": "^2.3",
-                "symfony/console": "~2.3|~3.0"
-            },
             "suggest": {
-                "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
-                "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
-                "symfony/console": "Support for use of the bin/uuid command line tool."
+                "ext-ctype": "For best performance"
             },
-            "bin": [
-                "bin/uuid"
-            ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Rhumsaa\\Uuid\\": "src/"
-                }
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3760,321 +3819,36 @@
             ],
             "authors": [
                 {
-                    "name": "Marijn Huizendveld",
-                    "email": "marijn.huizendveld@gmail.com"
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 },
                 {
-                    "name": "Ben Ramsey",
-                    "homepage": "http://benramsey.com"
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
-            "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
-            "homepage": "https://github.com/ramsey/uuid",
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
             "keywords": [
-                "guid",
-                "identifier",
-                "uuid"
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
             ],
-            "time": "2016-03-22T18:20:19+00:00"
-        },
-        {
-            "name": "seld/jsonlint",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
-                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.5"
-            },
-            "bin": [
-                "bin/jsonlint"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Seld\\JsonLint\\": "src/Seld/JsonLint/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "JSON Linter",
-            "keywords": [
-                "json",
-                "linter",
-                "parser",
-                "validator"
-            ],
-            "time": "2017-06-18T15:11:04+00:00"
-        },
-        {
-            "name": "symfony/console",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/console.git",
-                "reference": "a97e45d98c59510f085fa05225a1acb74dfe0546"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/a97e45d98c59510f085fa05225a1acb74dfe0546",
-                "reference": "a97e45d98c59510f085fa05225a1acb74dfe0546",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9",
-                "symfony/debug": "~2.8|~3.0",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "conflict": {
-                "symfony/dependency-injection": "<3.3"
-            },
-            "require-dev": {
-                "psr/log": "~1.0",
-                "symfony/config": "~3.3",
-                "symfony/dependency-injection": "~3.3",
-                "symfony/event-dispatcher": "~2.8|~3.0",
-                "symfony/filesystem": "~2.8|~3.0",
-                "symfony/http-kernel": "~2.8|~3.0",
-                "symfony/process": "~2.8|~3.0"
-            },
-            "suggest": {
-                "psr/log": "For using the console logger",
-                "symfony/event-dispatcher": "",
-                "symfony/filesystem": "",
-                "symfony/process": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Console\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Console Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-07-03T13:19:36+00:00"
-        },
-        {
-            "name": "symfony/debug",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/debug.git",
-                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/63b85a968486d95ff9542228dc2e4247f16f9743",
-                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9",
-                "psr/log": "~1.0"
-            },
-            "conflict": {
-                "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
-            },
-            "require-dev": {
-                "symfony/http-kernel": "~2.8|~3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Debug\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Debug Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-07-05T13:02:37+00:00"
-        },
-        {
-            "name": "symfony/event-dispatcher",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "67535f1e3fd662bdc68d7ba317c93eecd973617e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/67535f1e3fd662bdc68d7ba317c93eecd973617e",
-                "reference": "67535f1e3fd662bdc68d7ba317c93eecd973617e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "conflict": {
-                "symfony/dependency-injection": "<3.3"
-            },
-            "require-dev": {
-                "psr/log": "~1.0",
-                "symfony/config": "~2.8|~3.0",
-                "symfony/dependency-injection": "~3.3",
-                "symfony/expression-language": "~2.8|~3.0",
-                "symfony/stopwatch": "~2.8|~3.0"
-            },
-            "suggest": {
-                "symfony/dependency-injection": "",
-                "symfony/http-kernel": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\EventDispatcher\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony EventDispatcher Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-06-09T14:53:08+00:00"
-        },
-        {
-            "name": "symfony/filesystem",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/filesystem.git",
-                "reference": "311fa718389efbd8b627c272b9324a62437018cc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/311fa718389efbd8b627c272b9324a62437018cc",
-                "reference": "311fa718389efbd8b627c272b9324a62437018cc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Filesystem\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Filesystem Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-06-24T09:29:48+00:00"
+            "time": "2018-08-06T14:22:27+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
                 "shasum": ""
             },
             "require": {
@@ -4086,7 +3860,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -4120,38 +3894,82 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T14:24:12+00:00"
+            "time": "2018-08-06T14:22:27+00:00"
         },
         {
-            "name": "symfony/process",
-            "version": "v3.3.4",
+            "name": "thecodingmachine/common-factories",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "5ab8949b682b1bf9d4511a228b5e045c96758c30"
+                "url": "https://github.com/thecodingmachine/common-factories.git",
+                "reference": "dffa5eabdc3758e0cf369deedb509ff461991f11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/5ab8949b682b1bf9d4511a228b5e045c96758c30",
-                "reference": "5ab8949b682b1bf9d4511a228b5e045c96758c30",
+                "url": "https://api.github.com/repos/thecodingmachine/common-factories/zipball/dffa5eabdc3758e0cf369deedb509ff461991f11",
+                "reference": "dffa5eabdc3758e0cf369deedb509ff461991f11",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "container-interop/service-provider": "^0.4",
+                "php": ">=5.4",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "mouf/picotainer": "^1.0",
+                "phpunit/phpunit": "^4.5",
+                "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\Factories\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This project provides utility factories that can be used directly in service providers complying with the container-interop/service-provider standard.",
+            "time": "2018-08-17T21:27:12+00:00"
+        },
+        {
+            "name": "thecodingmachine/discovery",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/discovery.git",
+                "reference": "8bad73dad00afc1aa7bebefd0675c5e2f3b1094a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/discovery/zipball/8bad73dad00afc1aa7bebefd0675c5e2f3b1094a",
+                "reference": "8bad73dad00afc1aa7bebefd0675c5e2f3b1094a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0",
+                "couscous/couscous": "^1.6",
+                "humbug/humbug": "~1.0",
+                "phpunit/phpunit": "~5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "squizlabs/php_codesniffer": "^2.7.0"
+            },
+            "type": "composer-plugin",
             "extra": {
+                "class": "TheCodingMachine\\Discovery\\DiscoveryPlugin",
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
+                    "TheCodingMachine\\Discovery\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4159,44 +3977,460 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
                 }
             ],
-            "description": "Symfony Process Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-07-03T08:12:02+00:00"
+            "description": "Publish and discover assets in your PHP projects.",
+            "homepage": "https://github.com/thecodingmachine/discovery",
+            "keywords": [
+                "assets",
+                "discovery"
+            ],
+            "time": "2018-01-05T09:48:36+00:00"
         },
         {
-            "name": "twig/twig",
-            "version": "v1.34.4",
+            "name": "thecodingmachine/doctrine-annotations-universal-module",
+            "version": "1.1.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twigphp/Twig.git",
-                "reference": "f878bab48edb66ad9c6ed626bf817f60c6c096ee"
+                "url": "https://github.com/thecodingmachine/doctrine-annotations-universal-module.git",
+                "reference": "4e665abc8b288cbd28e74581b2801e18f7c2e141"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f878bab48edb66ad9c6ed626bf817f60c6c096ee",
-                "reference": "f878bab48edb66ad9c6ed626bf817f60c6c096ee",
+                "url": "https://api.github.com/repos/thecodingmachine/doctrine-annotations-universal-module/zipball/4e665abc8b288cbd28e74581b2801e18f7c2e141",
+                "reference": "4e665abc8b288cbd28e74581b2801e18f7c2e141",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "container-interop/service-provider": "^0.4",
+                "doctrine/annotations": "^1.2",
+                "php": ">=7.0"
             },
             "require-dev": {
-                "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "doctrine/cache": "^1.0",
+                "mnapoli/simplex": "~0.3.0",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "suggest": {
+                "thecodingmachine/psr-6-doctrine-bridge-universal-module": "A service provider providing a bridge between PSR-6 cache pool and Doctrine cache",
+                "thecodingmachine/stash-universal-module": "A service provider providing a PSR-6 cache pool through the Stash library"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for doctrine/annotations",
+            "time": "2017-09-25T12:11:53+00:00"
+        },
+        {
+            "name": "thecodingmachine/funky",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/funky.git",
+                "reference": "a973ba2a22d1a192078f123697bfd85104b595bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/funky/zipball/a973ba2a22d1a192078f123697bfd85104b595bc",
+                "reference": "a973ba2a22d1a192078f123697bfd85104b595bc",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/service-provider": "^0.4",
+                "doctrine/annotations": "^1.5.0",
+                "php": ">=7.1",
+                "thecodingmachine/common-factories": "^0.4"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.1",
+                "mnapoli/simplex": "^0.4.1",
+                "phpstan/phpstan": "^0.9",
+                "phpunit/phpunit": "^6.4.3",
+                "satooshi/php-coveralls": "^1.0.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.34-dev"
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Funky\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com"
+                }
+            ],
+            "description": "Write service providers easily using annotations",
+            "time": "2017-11-29T16:51:34+00:00"
+        },
+        {
+            "name": "thecodingmachine/middleware-list-universal-module",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/middleware-list-universal-module.git",
+                "reference": "ff79cae7e517734e95ff0fe4879132891cb53e5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/middleware-list-universal-module/zipball/ff79cae7e517734e95ff0fe4879132891cb53e5d",
+                "reference": "ff79cae7e517734e95ff0fe4879132891cb53e5d",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/service-provider": "~0.4.0",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module providing a service containing a list of middlewares",
+            "time": "2018-06-05T13:27:42+00:00"
+        },
+        {
+            "name": "thecodingmachine/psr-6-doctrine-bridge-universal-module",
+            "version": "1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/psr-6-doctrine-bridge-universal-module.git",
+                "reference": "e7506b18a2725b4a0f561ae427a3b68b30b976d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/psr-6-doctrine-bridge-universal-module/zipball/e7506b18a2725b4a0f561ae427a3b68b30b976d9",
+                "reference": "e7506b18a2725b4a0f561ae427a3b68b30b976d9",
+                "shasum": ""
+            },
+            "require": {
+                "cache/psr-6-doctrine-bridge": "^2.1",
+                "container-interop/service-provider": "^0.4",
+                "php": ">=7.0",
+                "thecodingmachine/common-factories": "^0.4"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "~0.3.0",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "thecodingmachine/stash-universal-module": "^1.0"
+            },
+            "suggest": {
+                "thecodingmachine/stash-universal-module": "A service provider providing a PSR-6 cache pool through the Stash library"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for cache/psr-6-doctrine-bridge",
+            "time": "2017-09-25T12:06:41+00:00"
+        },
+        {
+            "name": "thecodingmachine/splash-router",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/splash-router.git",
+                "reference": "5d610394f26f70438bd457db685022c84e0366ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/splash-router/zipball/5d610394f26f70438bd457db685022c84e0366ea",
+                "reference": "5d610394f26f70438bd457db685022c84e0366ea",
+                "shasum": ""
+            },
+            "require": {
+                "cache/void-adapter": "^0.3.1",
+                "doctrine/annotations": "^1.2",
+                "mouf/utils.common.url-interface": "^1",
+                "php": ">=7.1",
+                "psr/cache": "^1.0",
+                "psr/container": "^1",
+                "psr/http-message": "^1",
+                "psr/http-server-handler": "^1",
+                "psr/http-server-middleware": "^1",
+                "psr/log": "^1",
+                "zendframework/zend-diactoros": "^1.3.9"
+            },
+            "conflict": {
+                "zendframework/zend-stratigility": "<2.0"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.2",
+                "cache/array-adapter": "^0.4.2",
+                "maglnet/composer-require-checker": "^1.0",
+                "mnapoli/simplex": "^0.3",
+                "mouf/picotainer": "~1.1",
+                "phpstan/phpstan": "^0.10.1",
+                "phpunit/phpunit": "^7.2.7",
+                "satooshi/php-coveralls": "^1.1.0",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "mouf-library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "10.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Splash\\": "src/TheCodingMachine/Splash"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
+            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash-common",
+            "keywords": [
+                "framework",
+                "mouf",
+                "mvc",
+                "splash",
+                "splash-common"
+            ],
+            "time": "2018-07-19T13:55:17+00:00"
+        },
+        {
+            "name": "thecodingmachine/splash-service-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/splash-service-provider.git",
+                "reference": "9161769442af339e48447254495e07be3d1b76d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/splash-service-provider/zipball/9161769442af339e48447254495e07be3d1b76d3",
+                "reference": "9161769442af339e48447254495e07be3d1b76d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/middleware-list-universal-module": "^1",
+                "thecodingmachine/splash-router": "^10"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "^0.4.1",
+                "phpstan/phpstan": "^0.10.1",
+                "phpunit/phpunit": "^6.4.3",
+                "satooshi/php-coveralls": "^1.0.1",
+                "squizlabs/php_codesniffer": "^3.2",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "10.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Splash\\DI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for splash",
+            "time": "2018-07-18T20:23:20+00:00"
+        },
+        {
+            "name": "thecodingmachine/stratigility-harmony",
+            "version": "3.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/stratigility-harmony.git",
+                "reference": "d8ba391549f8932680e8fca8c4c3a4482f799a2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/stratigility-harmony/zipball/d8ba391549f8932680e8fca8c4c3a4482f799a2c",
+                "reference": "d8ba391549f8932680e8fca8c4c3a4482f799a2c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/middleware-list-universal-module": "^1.1",
+                "zendframework/zend-diactoros": "^1.3",
+                "zendframework/zend-httphandlerrunner": "^1.0.1",
+                "zendframework/zend-stratigility": "^3.0"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "^0.5.0",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7.3.1",
+                "satooshi/php-coveralls": "^1.0.1",
+                "squizlabs/php_codesniffer": "^3.2",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for Stratigility",
+            "time": "2018-08-23T13:11:13+00:00"
+        },
+        {
+            "name": "thecodingmachine/symfony-cache-universal-module",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/symfony-cache-universal-module.git",
+                "reference": "a1dfe42b05e00259f71ab471ac3e65ceec29cf76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/symfony-cache-universal-module/zipball/a1dfe42b05e00259f71ab471ac3e65ceec29cf76",
+                "reference": "a1dfe42b05e00259f71ab471ac3e65ceec29cf76",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "symfony/cache": "^4.1",
+                "thecodingmachine/funky": "^1"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "^0.5.0",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7.3.1",
+                "satooshi/php-coveralls": "^1.0.1",
+                "squizlabs/php_codesniffer": "^3.2",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for Symfony cache",
+            "time": "2018-08-19T13:31:43+00:00"
+        },
+        {
+            "name": "thecodingmachine/twig-universal-module",
+            "version": "1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/twig-universal-module.git",
+                "reference": "2b761f6058f39785132465e18c2eacf7ea691a5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/twig-universal-module/zipball/2b761f6058f39785132465e18c2eacf7ea691a5b",
+                "reference": "2b761f6058f39785132465e18c2eacf7ea691a5b",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/service-provider": "^0.4",
+                "php": ">=7.0",
+                "thecodingmachine/common-factories": "^0.4.1",
+                "twig/twig": "^1.35.4 | ^2.5.0"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "~0.5.0",
+                "phpunit/phpunit": "^5.7.9",
+                "satooshi/php-coveralls": "^1.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for Twig",
+            "time": "2018-08-19T19:50:02+00:00"
+        },
+        {
+            "name": "twig/twig",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6a5f676b77a90823c2d4eaf76137b771adf31323",
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "symfony/polyfill-ctype": "^1.8",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "psr/container": "^1.0",
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -4225,327 +4459,34 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "homepage": "https://twig.symfony.com/contributors",
                     "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
-            "homepage": "http://twig.sensiolabs.org",
+            "homepage": "https://twig.symfony.com",
             "keywords": [
                 "templating"
             ],
-            "time": "2017-07-04T13:19:31+00:00"
-        },
-        {
-            "name": "webmozart/assert",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
-                "reference": "2db61e59ff05fe5126d152bd0655c9ea113e550f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/2db61e59ff05fe5126d152bd0655c9ea113e550f",
-                "reference": "2db61e59ff05fe5126d152bd0655c9ea113e550f",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.3 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Assert\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Assertions to validate method input/output with nice error messages.",
-            "keywords": [
-                "assert",
-                "check",
-                "validate"
-            ],
-            "time": "2016-11-23T20:04:58+00:00"
-        },
-        {
-            "name": "webmozart/console",
-            "version": "1.0.0-beta5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/console.git",
-                "reference": "be58c622090e61a2a7c3ad77baae776b46e7f305"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/console/zipball/be58c622090e61a2a7c3ad77baae776b46e7f305",
-                "reference": "be58c622090e61a2a7c3ad77baae776b46e7f305",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9",
-                "symfony/console": "^2.7|^3.0",
-                "symfony/event-dispatcher": "^2.5|^3.0",
-                "symfony/process": "^2.5|^3.0",
-                "webmozart/assert": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.3|^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Console\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A usable, beautiful and easily testable console toolkit written in PHP.",
-            "time": "2016-02-05T10:03:13+00:00"
-        },
-        {
-            "name": "webmozart/expression",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/expression.git",
-                "reference": "35c222fc49533894228e1240cc844ae91d6a9ef2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/expression/zipball/35c222fc49533894228e1240cc844ae91d6a9ef2",
-                "reference": "35c222fc49533894228e1240cc844ae91d6a9ef2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Expression\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Formulate expressions and search criteria using PHP objects.",
-            "keywords": [
-                "criteria",
-                "expression",
-                "filter",
-                "formula"
-            ],
-            "time": "2015-12-17T10:43:13+00:00"
-        },
-        {
-            "name": "webmozart/glob",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/glob.git",
-                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/glob/zipball/3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
-                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.3|^7.0",
-                "webmozart/path-util": "^2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Glob\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A PHP implementation of Ant's glob.",
-            "time": "2015-12-29T11:14:33+00:00"
-        },
-        {
-            "name": "webmozart/json",
-            "version": "1.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/json.git",
-                "reference": "a1fb3da904b8364e3db47eed68f76bfb6cd0031a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/json/zipball/a1fb3da904b8364e3db47eed68f76bfb6cd0031a",
-                "reference": "a1fb3da904b8364e3db47eed68f76bfb6cd0031a",
-                "shasum": ""
-            },
-            "require": {
-                "justinrainbow/json-schema": "^1.6",
-                "php": "^5.3.3|^7.0",
-                "seld/jsonlint": "^1.0",
-                "webmozart/path-util": "^2.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Json\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A robust JSON decoder/encoder with support for schema validation.",
-            "time": "2016-01-14T12:11:46+00:00"
-        },
-        {
-            "name": "webmozart/path-util",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/path-util.git",
-                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/path-util/zipball/d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
-                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "webmozart/assert": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\PathUtil\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
-            "time": "2015-12-17T08:42:14+00:00"
+            "time": "2018-07-13T07:18:09+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.4.0",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436"
+                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b03f285a333f51e58c95cce54109a4a9ed691436",
-                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/3e4edb822c942f37ade0d09579cfbab11e2fee87",
+                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
-                "psr/http-message": "~1.0"
+                "php": "^5.6 || ^7.0",
+                "psr/http-message": "^1.0"
             },
             "provide": {
                 "psr/http-message-implementation": "1.0"
@@ -4553,17 +4494,28 @@
             "require-dev": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "phpunit/phpunit": "^4.6 || ^5.5",
-                "zendframework/zend-coding-standard": "~1.0.0"
+                "phpunit/phpunit": "^5.7.16 || ^6.0.8 || ^7.2.7",
+                "zendframework/zend-coding-standard": "~1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev",
-                    "dev-develop": "1.5-dev"
+                    "dev-master": "1.8.x-dev",
+                    "dev-develop": "1.9.x-dev",
+                    "dev-release-2.0": "2.0.x-dev"
                 }
             },
             "autoload": {
+                "files": [
+                    "src/functions/create_uploaded_file.php",
+                    "src/functions/marshal_headers_from_sapi.php",
+                    "src/functions/marshal_method_from_sapi.php",
+                    "src/functions/marshal_protocol_version_from_sapi.php",
+                    "src/functions/marshal_uri_from_sapi.php",
+                    "src/functions/normalize_server.php",
+                    "src/functions/normalize_uploaded_files.php",
+                    "src/functions/parse_cookie_header.php"
+                ],
                 "psr-4": {
                     "Zend\\Diactoros\\": "src/"
                 }
@@ -4579,34 +4531,34 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-04-06T16:18:34+00:00"
+            "time": "2018-08-10T14:16:32+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
-            "version": "2.5.2",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-escaper.git",
-                "reference": "2dcd14b61a72d8b8e27d579c6344e12c26141d4e"
+                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/2dcd14b61a72d8b8e27d579c6344e12c26141d4e",
-                "reference": "2dcd14b61a72d8b8e27d579c6344e12c26141d4e",
+                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/31d8aafae982f9568287cb4dce987e6aff8fd074",
+                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
+                "zendframework/zend-coding-standard": "~1.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev",
-                    "dev-develop": "2.6-dev"
+                    "dev-master": "2.6.x-dev",
+                    "dev-develop": "2.7.x-dev"
                 }
             },
             "autoload": {
@@ -4618,37 +4570,97 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "homepage": "https://github.com/zendframework/zend-escaper",
+            "description": "Securely and safely escape HTML, HTML attributes, JavaScript, CSS, and URLs",
             "keywords": [
+                "ZendFramework",
                 "escaper",
-                "zf2"
+                "zf"
             ],
-            "time": "2016-06-30T19:48:38+00:00"
+            "time": "2018-04-25T15:48:53+00:00"
         },
         {
-            "name": "zendframework/zend-stratigility",
-            "version": "1.3.3",
+            "name": "zendframework/zend-httphandlerrunner",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/zend-stratigility.git",
-                "reference": "2c4120d2af215c8261a36e0bc3aa8e179e05e148"
+                "url": "https://github.com/zendframework/zend-httphandlerrunner.git",
+                "reference": "5e4c1e82a8bb1585020eafd32c49ece5a6ee98df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stratigility/zipball/2c4120d2af215c8261a36e0bc3aa8e179e05e148",
-                "reference": "2c4120d2af215c8261a36e0bc3aa8e179e05e148",
+                "url": "https://api.github.com/repos/zendframework/zend-httphandlerrunner/zipball/5e4c1e82a8bb1585020eafd32c49ece5a6ee98df",
+                "reference": "5e4c1e82a8bb1585020eafd32c49ece5a6ee98df",
                 "shasum": ""
             },
             "require": {
-                "http-interop/http-middleware": "^0.2.0",
-                "php": "^5.6 || ^7.0",
+                "php": "^7.1",
                 "psr/http-message": "^1.0",
-                "zendframework/zend-escaper": "^2.3"
+                "psr/http-message-implementation": "^1.0",
+                "psr/http-server-handler": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.6",
+                "phpunit/phpunit": "^6.3",
                 "zendframework/zend-coding-standard": "~1.0.0",
-                "zendframework/zend-diactoros": "^1.0"
+                "zendframework/zend-diactoros": "^1.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "zf": {
+                    "config-provider": "Zend\\HttpHandlerRunner\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\HttpHandlerRunner\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Execute PSR-15 RequestHandlerInterface instances and emit responses they generate.",
+            "keywords": [
+                "ZendFramework",
+                "components",
+                "expressive",
+                "psr-15",
+                "psr-7",
+                "zf"
+            ],
+            "time": "2018-02-21T20:33:02+00:00"
+        },
+        {
+            "name": "zendframework/zend-stratigility",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-stratigility.git",
+                "reference": "75b64558201807514734a9f46386816f2900d7f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-stratigility/zipball/75b64558201807514734a9f46386816f2900d7f7",
+                "reference": "75b64558201807514734a9f46386816f2900d7f7",
+                "shasum": ""
+            },
+            "require": {
+                "fig/http-message-util": "^1.1",
+                "php": "^7.1",
+                "psr/http-message": "^1.0",
+                "psr/http-server-middleware": "^1.0",
+                "zendframework/zend-escaper": "^2.3"
+            },
+            "conflict": {
+                "zendframework/zend-diactoros": "<1.7.1"
+            },
+            "require-dev": {
+                "malukenho/docheader": "^0.1.6",
+                "phpunit/phpunit": "^7.0.1",
+                "zendframework/zend-coding-standard": "~1.0.0",
+                "zendframework/zend-diactoros": "^1.7.1"
             },
             "suggest": {
                 "psr/http-message-implementation": "Please install a psr/http-message-implementation to consume Stratigility; e.g., zendframework/zend-diactoros"
@@ -4656,11 +4668,17 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.0-dev",
-                    "dev-develop": "2.0.0-dev"
+                    "dev-master": "3.0.x-dev",
+                    "dev-develop": "3.1.x-dev"
                 }
             },
             "autoload": {
+                "files": [
+                    "src/functions/double-pass-middleware.php",
+                    "src/functions/host.php",
+                    "src/functions/middleware.php",
+                    "src/functions/path.php"
+                ],
                 "psr-4": {
                     "Zend\\Stratigility\\": "src/"
                 }
@@ -4669,45 +4687,47 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Middleware for PHP",
-            "homepage": "https://github.com/zendframework/zend-stratigility",
+            "description": "PSR-7 middleware foundation for building and dispatching middleware pipelines",
             "keywords": [
+                "ZendFramework",
                 "http",
                 "middleware",
-                "psr-7"
+                "psr-15",
+                "psr-7",
+                "zf"
             ],
-            "time": "2017-01-23T22:59:03+00:00"
+            "time": "2018-07-24T20:39:18+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3,<8.0-DEV"
+                "php": "^7.1"
             },
             "require-dev": {
                 "athletic/athletic": "~0.1.8",
                 "ext-pdo": "*",
                 "ext-phar": "*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0"
+                "phpunit/phpunit": "^6.2.3",
+                "squizlabs/php_codesniffer": "^3.0.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -4732,41 +4752,47 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2017-07-22T11:58:36+00:00"
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.1",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
-                "doctrine/collections": "1.*",
-                "phpunit/phpunit": "~4.1"
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "DeepCopy\\": "src/DeepCopy/"
-                }
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Create deep copies (clones) of your objects",
-            "homepage": "https://github.com/myclabs/DeepCopy",
             "keywords": [
                 "clone",
                 "copy",
@@ -4774,20 +4800,20 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12T18:52:22+00:00"
+            "time": "2018-06-11T23:09:50+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c"
+                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
-                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
+                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
                 "shasum": ""
             },
             "require": {
@@ -4828,33 +4854,39 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27T11:43:31+00:00"
+            "time": "2017-09-11T18:02:19+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "3.1.1",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "8331b5efe816ae05461b7ca1e721c01b46bafb3e"
+                "reference": "94fd0001232e47129dd3504189fa1c7225010d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/8331b5efe816ae05461b7ca1e721c01b46bafb3e",
-                "reference": "8331b5efe816ae05461b7ca1e721c01b46bafb3e",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/94fd0001232e47129dd3504189fa1c7225010d08",
+                "reference": "94fd0001232e47129dd3504189fa1c7225010d08",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
-                "phpdocumentor/reflection-common": "^1.0@dev",
-                "phpdocumentor/type-resolver": "^0.2.0",
+                "php": "^7.0",
+                "phpdocumentor/reflection-common": "^1.0.0",
+                "phpdocumentor/type-resolver": "^0.4.0",
                 "webmozart/assert": "^1.0"
             },
             "require-dev": {
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^4.4"
+                "doctrine/instantiator": "~1.0.5",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\Reflection\\": [
@@ -4873,24 +4905,24 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30T07:12:33+00:00"
+            "time": "2017-11-30T07:14:17+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.2.1",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e224fb2ea2fba6d3ad6fdaef91cd09a172155ccb"
+                "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e224fb2ea2fba6d3ad6fdaef91cd09a172155ccb",
-                "reference": "e224fb2ea2fba6d3ad6fdaef91cd09a172155ccb",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9c977708995954784726e25d0cd1dddf4e65b0f7",
+                "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
+                "php": "^5.5 || ^7.0",
                 "phpdocumentor/reflection-common": "^1.0"
             },
             "require-dev": {
@@ -4920,37 +4952,37 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-11-25T06:54:22+00:00"
+            "time": "2017-07-14T14:27:02+00:00"
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073"
+                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/93d39f1f7f9326d746203c7c056f300f7f126073",
-                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
-                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2",
-                "sebastian/comparator": "^1.1|^2.0",
+                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
+                "sebastian/comparator": "^1.1|^2.0|^3.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^2.5|^3.2",
-                "phpunit/phpunit": "^4.8 || ^5.6.5"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5 || ^7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -4983,7 +5015,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02T20:05:34+00:00"
+            "time": "2018-08-05T17:53:17+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5050,16 +5082,16 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "1.4.2",
+            "version": "1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5"
+                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
-                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/730b01bc3e867237eaac355e06a36b85dd93a8b4",
+                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4",
                 "shasum": ""
             },
             "require": {
@@ -5093,7 +5125,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03T07:40:28+00:00"
+            "time": "2017-11-27T13:52:08+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -5187,29 +5219,29 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.11",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7"
+                "reference": "791198a2c6254db10131eecfe8c06670700904db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/e03f8f67534427a787e21a385a67ec3ca6978ea7",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/791198a2c6254db10131eecfe8c06670700904db",
+                "reference": "791198a2c6254db10131eecfe8c06670700904db",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.3.3"
+                "php": "^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.2"
+                "phpunit/phpunit": "^6.2.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -5232,20 +5264,20 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+00:00"
+            "time": "2017-11-27T05:48:46+00:00"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.21",
+            "version": "5.7.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db"
+                "reference": "b7803aeca3ccb99ad0a506fa80b64cd6a56bbc0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b91adfb64264ddec5a2dee9851f354aa66327db",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b7803aeca3ccb99ad0a506fa80b64cd6a56bbc0c",
+                "reference": "b7803aeca3ccb99ad0a506fa80b64cd6a56bbc0c",
                 "shasum": ""
             },
             "require": {
@@ -5269,8 +5301,8 @@
                 "sebastian/global-state": "^1.1",
                 "sebastian/object-enumerator": "~2.0",
                 "sebastian/resource-operations": "~1.0",
-                "sebastian/version": "~1.0.3|~2.0",
-                "symfony/yaml": "~2.1|~3.0"
+                "sebastian/version": "^1.0.6|^2.0.1",
+                "symfony/yaml": "~2.1|~3.0|~4.0"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "3.0.2"
@@ -5314,7 +5346,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-21T08:11:54+00:00"
+            "time": "2018-02-01T05:50:59+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -5890,23 +5922,27 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.4",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "1f93a8d19b8241617f5074a123e282575b821df8"
+                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/1f93a8d19b8241617f5074a123e282575b821df8",
-                "reference": "1f93a8d19b8241617f5074a123e282575b821df8",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
+                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": "^7.1.3",
+                "symfony/polyfill-ctype": "~1.8"
+            },
+            "conflict": {
+                "symfony/console": "<3.4"
             },
             "require-dev": {
-                "symfony/console": "~2.8|~3.0"
+                "symfony/console": "~3.4|~4.0"
             },
             "suggest": {
                 "symfony/console": "For validating YAML files using the lint command"
@@ -5914,7 +5950,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5941,15 +5977,62 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-15T12:58:50+00:00"
+            "time": "2018-07-26T11:24:31+00:00"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozart/assert.git",
+                "reference": "0df1908962e7a3071564e857d86874dad1ef204a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/0df1908962e7a3071564e857d86874dad1ef204a",
+                "reference": "0df1908962e7a3071564e857d86874dad1ef204a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Assert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Assertions to validate method input/output with nice error messages.",
+            "keywords": [
+                "assert",
+                "check",
+                "validate"
+            ],
+            "time": "2018-01-29T19:49:41+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "puli/composer-plugin": 20,
-        "puli/cli": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
