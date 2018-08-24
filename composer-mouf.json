@@ -13,7 +13,7 @@
         "mouf/javascript.jquery.jquery-filetree" : "~1.01.0",
         "mouf/javascript.syntaxhighlighter" : "~3.0.83",
         "mouf/html.widgets.menu" : "~2.0",
-        "mouf/security.simplelogincontroller" : "~5.0",
+        "mouf/security.simplelogincontroller" : "~6.0",
         "mouf/security.userfiledao" : "~2.0",
         "mouf/utils.cache.file-cache" : "~2.0",
         "mouf/utils.common.getvars" : "~2.0",
@@ -27,7 +27,7 @@
     	"thecodingmachine/funky": "^1.0",
     	"mouf/javascript.ace": "1.1.3",
     	"nikic/php-parser": "~2.0",
-    	"mouf/security.userservice-splash": "~8.0",
+    	"mouf/security.userservice-splash": "^10",
         "mouf/classname-mapper": "~1.0",
 
         "thecodingmachine/splash-router": "^10",

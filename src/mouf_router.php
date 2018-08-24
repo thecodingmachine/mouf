@@ -35,5 +35,5 @@ require_once __DIR__.'/../mouf/Mouf.php';
 
 
 $container = \Mouf\MoufManager::getMoufManager();
-$container->get(RequestHandlerRunner::class);
+$runner = $container->get(RequestHandlerRunner::class);
 $runner->run();

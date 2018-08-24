@@ -5,50 +5,48 @@ namespace Mouf\ServiceProviders;
 
 
 use Interop\Container\Factories\Alias;
-use Interop\Container\ServiceProvider;
+use Interop\Container\ServiceProviderInterface;
+use Mouf\Html\Template\TemplateInterface;
 use Mouf\Security\Controllers\SimpleLoginController;
 use Mouf\Security\UserService\UserServiceInterface;
 use Psr\Container\ContainerInterface;
+use TheCodingMachine\Funky\Annotations\Extension;
+use TheCodingMachine\Funky\Annotations\Factory;
+use TheCodingMachine\Funky\ServiceProvider;
 
-class ControllersServiceProvider implements ServiceProvider
+class ControllersServiceProvider extends ServiceProvider
 {
-
     /**
-     * Returns a list of all container entries registered by this service provider.
-     *
-     * - the key is the entry name
-     * - the value is a callable that will return the entry, aka the **factory**
-     *
-     * Factories have the following signature:
-     *        function(ContainerInterface $container, callable $getPrevious = null)
-     *
-     * About factories parameters:
-     *
-     * - the container (instance of `Interop\Container\ContainerInterface`)
-     * - a callable that returns the previous entry if overriding a previous entry, or `null` if not
-     *
-     * @return callable[]
+     * TODO: UserServiceInterface::class should be created by the user service package.
+     * @Factory()
      */
-    public function getServices()
+    public static function createUserService(ContainerInterface $container): UserServiceInterface
     {
-        return [
-            'thecodingmachine.splash.controllers' => [self::class, 'declareControllers'],
-            'simpleLoginControllerTemplate' => new Alias('moufLoginTemplate'),
-            'root_url' => function() { return ROOT_URL; },
-            UserServiceInterface::class => new Alias('userService'),
-        ];
+        return $container->get('userService');
     }
 
-    public static function declareControllers(ContainerInterface $container, callable $previous = null)
+    /**
+     * @Factory(name="ROOT_URL")
+     */
+    public static function getRootUrl(): string
     {
-        if ($previous !== null) {
-            $controllers = $previous();
-        } else {
-            $controllers = [];
-        }
+        return \ROOT_URL;
+    }
 
+    /**
+     * @Factory(name="simpleLoginControllerTemplate")
+     */
+    public static function aliasSimpleLoginControllerTemplate(ContainerInterface $container): TemplateInterface
+    {
+        return $container->get('moufLoginTemplate');
+    }
+
+    /**
+     * @Extension(name="thecodingmachine.splash.controllers")
+     */
+    public static function declareControllers(array $controllers): array
+    {
         $controllers[] = SimpleLoginController::class;
-
         return $controllers;
     }
 }

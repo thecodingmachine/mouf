@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mouf\Yaco;
 use TheCodingMachine\Yaco\Definition\DumpableInterface;
 use TheCodingMachine\Yaco\Definition\InlineEntry;
+use TheCodingMachine\Yaco\Definition\InlineEntryInterface;
 
 /**
  * This class represents a parameter or instance declared via PHP code.
@@ -42,7 +43,7 @@ class PhpCodeDefinition implements DumpableInterface
      *
      * @return string
      */
-    public function getIdentifier()
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
@@ -50,9 +51,9 @@ class PhpCodeDefinition implements DumpableInterface
     /**
      * Returns the value of the parameter.
      *
-     * @return mixed
+     * @return string|null
      */
-    public function getPhpCode()
+    public function getPhpCode(): ?string
     {
         return $this->phpCode;
     }
@@ -66,7 +67,7 @@ class PhpCodeDefinition implements DumpableInterface
      *
      * @return InlineEntryInterface
      */
-    public function toPhpCode($containerVariable, array $usedVariables = array())
+    public function toPhpCode(string $containerVariable, array $usedVariables = array()): InlineEntryInterface
     {
         $code = sprintf('(function($container) { %s; })(%s)', $this->phpCode, $containerVariable);
         return new InlineEntry($code, null, $usedVariables, false);

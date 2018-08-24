@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c8ac157a52bdf6b35199d571a5e7064",
+    "content-hash": "41fc439e3cc2a2c8ed4e1b148ca7206c",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -115,59 +115,6 @@
                 "hierarchical",
                 "psr-6",
                 "tag"
-            ],
-            "time": "2016-08-07T14:49:33+00:00"
-        },
-        {
-            "name": "cache/psr-6-doctrine-bridge",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-cache/doctrine-bridge.git",
-                "reference": "dcdb269a72e8d7c451f749b617c748ead42b78f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-cache/doctrine-bridge/zipball/dcdb269a72e8d7c451f749b617c748ead42b78f8",
-                "reference": "dcdb269a72e8d7c451f749b617c748ead42b78f8",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/cache": "^1.3",
-                "php": "^5.5 || ^7.0",
-                "psr/cache-implementation": "^1.0"
-            },
-            "require-dev": {
-                "cache/doctrine-adapter": "^0.5",
-                "mockery/mockery": "^0.9",
-                "phpunit/phpunit": "^4.0 || ^5.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Cache\\Bridge\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Aaron Scherer",
-                    "email": "aequasi@gmail.com",
-                    "homepage": "https://github.com/aequasi"
-                }
-            ],
-            "description": "PSR-6 Doctrine bridge",
-            "homepage": "http://www.php-cache.com/en/latest/",
-            "keywords": [
-                "cache",
-                "doctrine",
-                "psr-6"
             ],
             "time": "2016-08-07T14:49:33+00:00"
         },
@@ -423,81 +370,6 @@
             "time": "2017-12-06T07:11:42+00:00"
         },
         {
-            "name": "doctrine/cache",
-            "version": "v1.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/cache.git",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~7.1"
-            },
-            "conflict": {
-                "doctrine/common": ">2.2,<2.4"
-            },
-            "require-dev": {
-                "alcaeus/mongo-php-adapter": "^1.1",
-                "doctrine/coding-standard": "^4.0",
-                "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^7.0",
-                "predis/predis": "~1.0"
-            },
-            "suggest": {
-                "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.8.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Caching library offering an object-oriented API for many cache backends",
-            "homepage": "https://www.doctrine-project.org",
-            "keywords": [
-                "cache",
-                "caching"
-            ],
-            "time": "2018-08-21T18:01:43+00:00"
-        },
-        {
             "name": "doctrine/lexer",
             "version": "v1.0.1",
             "source": {
@@ -602,59 +474,6 @@
             "time": "2017-02-09T16:10:21+00:00"
         },
         {
-            "name": "http-interop/http-middleware",
-            "version": "0.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/http-interop/http-middleware.git",
-                "reference": "9a801fe60e70d5d608b61d56b2dcde29516c81b9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/http-interop/http-middleware/zipball/9a801fe60e70d5d608b61d56b2dcde29516c81b9",
-                "reference": "9a801fe60e70d5d608b61d56b2dcde29516c81b9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/http-message": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Interop\\Http\\ServerMiddleware\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP server-side middleware",
-            "keywords": [
-                "factory",
-                "http",
-                "middleware",
-                "psr",
-                "psr-17",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "abandoned": "http-interop/http-server-middleware",
-            "time": "2017-01-14T15:23:42+00:00"
-        },
-        {
             "name": "michelf/php-markdown",
             "version": "1.8.0",
             "source": {
@@ -699,6 +518,47 @@
                 "markdown"
             ],
             "time": "2018-01-15T00:49:33+00:00"
+        },
+        {
+            "name": "mindplay/composer-locator",
+            "version": "2.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mindplay-dk/composer-locator.git",
+                "reference": "629988d5305cd8ef11adbd6bb485660219c599fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mindplay-dk/composer-locator/zipball/629988d5305cd8ef11adbd6bb485660219c599fc",
+                "reference": "629988d5305cd8ef11adbd6bb485660219c599fc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1",
+                "php": ">= 5.4"
+            },
+            "require-dev": {
+                "composer/composer": "^1",
+                "mindplay/testies": "^0.3.0",
+                "symfony/filesystem": "^2.7 || ^3.0",
+                "symfony/process": "^2.7 || ^3.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "mindplay\\composer_locator\\Plugin"
+            },
+            "autoload": {
+                "classmap": [
+                    "src/ComposerLocator.php",
+                    "src/Plugin.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Locates Composer package root folders by package name",
+            "time": "2017-05-08T12:12:31+00:00"
         },
         {
             "name": "mnapoli/simplex",
@@ -1938,160 +1798,26 @@
             "time": "2013-10-29T18:21:58+00:00"
         },
         {
-            "name": "mouf/mvc.splash-common",
-            "version": "v8.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
-                "reference": "cf7e63501faecca66eedaa127f2c38fad006adf5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/cf7e63501faecca66eedaa127f2c38fad006adf5",
-                "reference": "cf7e63501faecca66eedaa127f2c38fad006adf5",
-                "shasum": ""
-            },
-            "require": {
-                "cache/void-adapter": "^0.3.0",
-                "container-interop/service-provider": "^0.4",
-                "doctrine/annotations": "^1.2",
-                "http-interop/http-middleware": "^0.4",
-                "mouf/html.htmlelement": "^2.0",
-                "mouf/html.renderer.twig-extensions": "~1.0",
-                "mouf/html.template.templateinterface": "^2.1",
-                "mouf/utils.action.common-action": "~1.0",
-                "mouf/utils.cache.cache-interface": "~2.0",
-                "mouf/utils.common.conditioninterface": "~2.0",
-                "mouf/utils.common.url-interface": "~1.0",
-                "php": ">=7.0",
-                "psr/cache": "^1.0",
-                "thecodingmachine/common-factories": "^0.4",
-                "thecodingmachine/middleware-list-universal-module": "~1.0",
-                "zendframework/zend-diactoros": "~1.0"
-            },
-            "conflict": {
-                "zendframework/zend-stratigility": "<2.0"
-            },
-            "require-dev": {
-                "cache/array-adapter": "^0.4.0",
-                "mnapoli/simplex": "^0.3",
-                "mouf/picotainer": "~1.0",
-                "phpunit/phpunit": "^5.0",
-                "satooshi/php-coveralls": "^1.0"
-            },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "logo": "doc/images/logo.png",
-                    "doc": [
-                        {
-                            "title": "Installing Splash",
-                            "url": "doc/install/index.md",
-                            "children": [
-                                {
-                                    "title": "Standalone mode",
-                                    "url": "doc/install/standalone.md"
-                                },
-                                {
-                                    "title": "Mouf integration",
-                                    "url": "doc/install/mouf.md"
-                                },
-                                {
-                                    "title": "Service provider",
-                                    "url": "doc/service-provider.md"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Writing controllers",
-                            "url": "doc/writing_controllers_manually.md"
-                        },
-                        {
-                            "title": "Integrations",
-                            "children": [
-                                {
-                                    "title": "Mouf",
-                                    "children": [
-                                        {
-                                            "title": "Controller creation wizard",
-                                            "url": "doc/mouf/writing_controllers.md"
-                                        },
-                                        {
-                                            "title": "Advanced: configuring routing",
-                                            "url": "doc/url_routing.md"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Managing URL parameters",
-                            "url": "doc/url_parameters.md"
-                        },
-                        {
-                            "title": "Writing your own filters",
-                            "url": "doc/filters.md"
-                        },
-                        {
-                            "title": "Migrating from older version",
-                            "url": "doc/migrating.md"
-                        }
-                    ],
-                    "section": {
-                        "name": "MVC",
-                        "description": "All the tools you need to route requests and display pages",
-                        "weight": 10
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mouf\\Annotations\\": "src/Mouf/Annotations",
-                    "Mouf\\Mvc\\Splash\\": "src/Mouf/Mvc/Splash"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
-            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash-common",
-            "keywords": [
-                "framework",
-                "mouf",
-                "mvc",
-                "splash",
-                "splash-common"
-            ],
-            "time": "2018-03-01T14:22:20+00:00"
-        },
-        {
             "name": "mouf/security.simplelogincontroller",
-            "version": "5.0.x-dev",
+            "version": "6.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.simplelogincontroller.git",
-                "reference": "c4d0600bef6089add7bf1c2223b3a7cc547fb657"
+                "reference": "03e5071b46f9580581687abb1a8eadd88810ae06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/c4d0600bef6089add7bf1c2223b3a7cc547fb657",
-                "reference": "c4d0600bef6089add7bf1c2223b3a7cc547fb657",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/03e5071b46f9580581687abb1a8eadd88810ae06",
+                "reference": "03e5071b46f9580581687abb1a8eadd88810ae06",
                 "shasum": ""
             },
             "require": {
-                "mouf/mvc.splash-common": "^8.0.0",
                 "mouf/security.userservice": "^2.1.0",
-                "mouf/security.userservice-splash": "^8.0.0",
+                "mouf/security.userservice-splash": "^10",
                 "mouf/utils.action.action-interface": "~1.0",
-                "php": "^7.0.0"
+                "php": "^7.1",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/splash-router": "^10.0"
             },
             "type": "mouf-library",
             "extra": {
@@ -2133,7 +1859,7 @@
                 "mouf",
                 "security"
             ],
-            "time": "2016-09-13T10:04:51+00:00"
+            "time": "2018-08-23T21:41:31+00:00"
         },
         {
             "name": "mouf/security.userfiledao",
@@ -2264,22 +1990,23 @@
         },
         {
             "name": "mouf/security.userservice-splash",
-            "version": "v8.0.1",
+            "version": "10.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice-splash.git",
-                "reference": "4dacf48fcba71958e7cea1a06b2d958962ae26e9"
+                "reference": "d34eda222e4b4557542d145adacab18b6028f846"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/4dacf48fcba71958e7cea1a06b2d958962ae26e9",
-                "reference": "4dacf48fcba71958e7cea1a06b2d958962ae26e9",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/d34eda222e4b4557542d145adacab18b6028f846",
+                "reference": "d34eda222e4b4557542d145adacab18b6028f846",
                 "shasum": ""
             },
             "require": {
-                "mouf/mvc.splash-common": "^8.0.0",
                 "mouf/security.userservice": "^2.1.0",
-                "php": ">=7.0.0"
+                "php": ">=7.1",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/splash-router": "^10"
             },
             "type": "library",
             "extra": {
@@ -2316,7 +2043,7 @@
                 "splash",
                 "user"
             ],
-            "time": "2018-07-25T12:49:49+00:00"
+            "time": "2018-08-24T08:34:21+00:00"
         },
         {
             "name": "mouf/utils.action.action-interface",
@@ -2361,55 +2088,6 @@
                 "mouf"
             ],
             "time": "2013-10-29T18:21:59+00:00"
-        },
-        {
-            "name": "mouf/utils.action.common-action",
-            "version": "v1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.action.common-action.git",
-                "reference": "9498e24435b96812953cbca91fd20daecbfc549a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.action.common-action/zipball/9498e24435b96812953cbca91fd20daecbfc549a",
-                "reference": "9498e24435b96812953cbca91fd20daecbfc549a",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/utils.action.action-interface": "~1.0",
-                "mouf/utils.value.value-interface": "~1.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "mouf": {
-                    "logo": "logo.png"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Action": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains common classes that implement the ActionInterface interface (from the mouf/utils.action.action-interface package).",
-            "homepage": "https://mouf-php.com/mouf/utils.action.common-action",
-            "keywords": [
-                "actioninterface",
-                "mouf"
-            ],
-            "time": "2015-01-23T11:09:24+00:00"
         },
         {
             "name": "mouf/utils.cache.apc-cache",
@@ -4038,17 +3716,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/funky.git",
-                "reference": "a973ba2a22d1a192078f123697bfd85104b595bc"
+                "reference": "f3c05ece1f130b228554ffb6a0ff395e9da9d8ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/funky/zipball/a973ba2a22d1a192078f123697bfd85104b595bc",
-                "reference": "a973ba2a22d1a192078f123697bfd85104b595bc",
+                "url": "https://api.github.com/repos/thecodingmachine/funky/zipball/f3c05ece1f130b228554ffb6a0ff395e9da9d8ed",
+                "reference": "f3c05ece1f130b228554ffb6a0ff395e9da9d8ed",
                 "shasum": ""
             },
             "require": {
                 "container-interop/service-provider": "^0.4",
                 "doctrine/annotations": "^1.5.0",
+                "mindplay/composer-locator": "^2.1.3",
                 "php": ">=7.1",
                 "thecodingmachine/common-factories": "^0.4"
             },
@@ -4068,7 +3747,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "TheCodingMachine\\Funky\\": "src/"
+                    "TheCodingMachine\\Funky\\": "src/",
+                    "FunkyGenerated\\": "generated/FunkyGenerated/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4082,7 +3762,7 @@
                 }
             ],
             "description": "Write service providers easily using annotations",
-            "time": "2017-11-29T16:51:34+00:00"
+            "time": "2018-08-23T20:58:07+00:00"
         },
         {
             "name": "thecodingmachine/middleware-list-universal-module",
@@ -4114,48 +3794,6 @@
             ],
             "description": "Cross-framework module providing a service containing a list of middlewares",
             "time": "2018-06-05T13:27:42+00:00"
-        },
-        {
-            "name": "thecodingmachine/psr-6-doctrine-bridge-universal-module",
-            "version": "1.1.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/psr-6-doctrine-bridge-universal-module.git",
-                "reference": "e7506b18a2725b4a0f561ae427a3b68b30b976d9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/psr-6-doctrine-bridge-universal-module/zipball/e7506b18a2725b4a0f561ae427a3b68b30b976d9",
-                "reference": "e7506b18a2725b4a0f561ae427a3b68b30b976d9",
-                "shasum": ""
-            },
-            "require": {
-                "cache/psr-6-doctrine-bridge": "^2.1",
-                "container-interop/service-provider": "^0.4",
-                "php": ">=7.0",
-                "thecodingmachine/common-factories": "^0.4"
-            },
-            "require-dev": {
-                "mnapoli/simplex": "~0.3.0",
-                "phpunit/phpunit": "^5.0",
-                "satooshi/php-coveralls": "^1.0",
-                "thecodingmachine/stash-universal-module": "^1.0"
-            },
-            "suggest": {
-                "thecodingmachine/stash-universal-module": "A service provider providing a PSR-6 cache pool through the Stash library"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TheCodingMachine\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Cross-framework module for cache/psr-6-doctrine-bridge",
-            "time": "2017-09-25T12:06:41+00:00"
         },
         {
             "name": "thecodingmachine/splash-router",
@@ -4283,12 +3921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/stratigility-harmony.git",
-                "reference": "d8ba391549f8932680e8fca8c4c3a4482f799a2c"
+                "reference": "1fcea1cf58aaba5ea32867d1045b23faa86a7e80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/stratigility-harmony/zipball/d8ba391549f8932680e8fca8c4c3a4482f799a2c",
-                "reference": "d8ba391549f8932680e8fca8c4c3a4482f799a2c",
+                "url": "https://api.github.com/repos/thecodingmachine/stratigility-harmony/zipball/1fcea1cf58aaba5ea32867d1045b23faa86a7e80",
+                "reference": "1fcea1cf58aaba5ea32867d1045b23faa86a7e80",
                 "shasum": ""
             },
             "require": {
@@ -4318,7 +3956,7 @@
                 "MIT"
             ],
             "description": "Cross-framework module for Stratigility",
-            "time": "2018-08-23T13:11:13+00:00"
+            "time": "2018-08-23T13:21:35+00:00"
         },
         {
             "name": "thecodingmachine/symfony-cache-universal-module",
