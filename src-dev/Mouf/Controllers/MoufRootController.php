@@ -10,22 +10,30 @@
 namespace Mouf\Controllers;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Security\Logged;
+use TheCodingMachine\Splash\Annotations\URL;
+use Zend\Diactoros\Response\RedirectResponse;
 
 /**
  * The base controller for Mouf (when the "mouf/" url is typed).
  *
- * @Component
  */
-class MoufRootController extends Controller {
-	
+class MoufRootController {
+
+    private $rootUrl;
+
+    public function __construct(string $rootUrl)
+    {
+        $this->rootUrl = $rootUrl;
+    }
+
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
 	 *
-	 * @URL /
-	 * @Logged
+	 * @URL("/")
+	 * @Logged()
 	 */
 	public function defaultAction() {
-		header("Location: ".ROOT_URL."validate/");
+	    return new RedirectResponse($this->rootUrl.'validate');
 	}
 }
-?>

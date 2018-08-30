@@ -4,6 +4,7 @@
  */
 use Mouf\MoufManager;
 use Interop\Container\ContainerInterface;
+use Mouf\Html\Utils\WebLibraryManager;
 MoufManager::initMoufManager();
 $moufManager = MoufManager::getMoufManager();
 
@@ -285,7 +286,7 @@ $moufManager->addComponentInstances(array (
       'fallback' => 'fileCacheService',
     ),
   ),
-  'block.content' => 
+ /* 'block.content' =>
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
     'external' => false,
@@ -297,7 +298,7 @@ $moufManager->addComponentInstances(array (
         0 => 'messageWidget',
       ),
     ),
-  ),
+  ),*/
   'block.footer' => 
   array (
     'class' => 'Mouf\\Html\\HtmlElement\\HtmlBlock',
@@ -397,7 +398,7 @@ $moufManager->addComponentInstances(array (
     array (
       'template' => 'moufTemplate',
       'contentBlock' => 'block.content',
-      'validatorService' => 'validatorService',
+      'validatorService' => 'Mouf\\Validator\\MoufValidatorService',
     ),
   ),
   'createNewInstanceByPhpCodeMenuItem' => 
@@ -2101,7 +2102,29 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
     'external' => false,
-    'setterBinds' => 
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => WebLibraryManager::class,
+                      'parametertype' => 'object',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+              1 =>
+                  array (
+                      'value' => 'moufInstallTemplate',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
+      'setterBinds' =>
     array (
       'setFooter' => 'block.footer',
       'setRight' => 'block.right',
@@ -2128,48 +2151,7 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'moufInstallTemplate2' => 
-  array (
-    'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
-    'external' => false,
-    'fieldBinds' => 
-    array (
-      'head' => 
-      array (
-      ),
-    ),
-    'fieldProperties' => 
-    array (
-      'logoImg' => 
-      array (
-        'value' => 'src-dev/views/images/MoufLogo.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'title' => 
-      array (
-        'value' => 'Mouf - Build your website',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'css_files' => 
-      array (
-        'value' => 
-        array (
-          0 => 'src-dev/views/styles.css',
-        ),
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
-  ),
-  'moufLoginTemplate' => 
+  'moufLoginTemplate' =>
   array (
     'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
     'external' => false,
@@ -2995,10 +2977,10 @@ $moufManager->addComponentInstances(array (
     array (
       'template' => 'moufTemplate',
       'contentBlock' => 'block.content',
-      'validatorService' => 'validatorService',
+      'validatorService' => 'Mouf\\Validator\\MoufValidatorService',
     ),
   ),
-  'validatorService' => 
+  'Mouf\\Validator\\MoufValidatorService' =>
   array (
     'class' => 'Mouf\\Validator\\MoufValidatorService',
     'external' => false,
@@ -4341,7 +4323,7 @@ class MoufAdmin {
 	 * @return Mouf\Validator\MoufValidatorService
 	 */
 	 public static function getValidatorService() {
-	 	return MoufManager::getMoufManager()->get('validatorService');
+	 	return MoufManager::getMoufManager()->get('Mouf\\Validator\\MoufValidatorService');
 	 }
 
 	/**

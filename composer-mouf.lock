@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "41fc439e3cc2a2c8ed4e1b148ca7206c",
+    "content-hash": "8498725b1340bcf235d6ce9975656e9f",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -238,37 +238,6 @@
                 "void"
             ],
             "time": "2016-08-07T15:04:55+00:00"
-        },
-        {
-            "name": "container-interop/container-interop",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/container-interop/container-interop.git",
-                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-                "shasum": ""
-            },
-            "require": {
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Interop\\Container\\": "src/Interop/Container/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14T19:40:03+00:00"
         },
         {
             "name": "container-interop/service-provider",
@@ -611,6 +580,84 @@
             "time": "2018-02-13T08:14:36+00:00"
         },
         {
+            "name": "monolog/monolog",
+            "version": "1.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "php-amqplib/php-amqplib": "~2.4",
+                "php-console/php-console": "^3.1.3",
+                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit-mock-objects": "2.3.0",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "sentry/sentry": "^0.13",
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
+                "sentry/sentry": "Allow sending log messages to a Sentry server"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
             "name": "mouf/classname-mapper",
             "version": "v1.0.1",
             "source": {
@@ -751,35 +798,51 @@
         },
         {
             "name": "mouf/html.renderer",
-            "version": "v1.2.1",
+            "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.git",
-                "reference": "1bba9f6307285eb48cf91f8fdc51bde77729c8ad"
+                "reference": "f9ef351b93b81c7f78b6d1e86fb814c7798f7c00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/1bba9f6307285eb48cf91f8fdc51bde77729c8ad",
-                "reference": "1bba9f6307285eb48cf91f8fdc51bde77729c8ad",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer/zipball/f9ef351b93b81c7f78b6d1e86fb814c7798f7c00",
+                "reference": "f9ef351b93b81c7f78b6d1e86fb814c7798f7c00",
                 "shasum": ""
             },
             "require": {
+                "container-interop/service-provider": "^0.4",
+                "mindplay/composer-locator": "^2.1.3",
                 "mouf/html.htmlelement": "~2.0",
-                "mouf/html.renderer.twig-extensions": "~1.0",
+                "mouf/html.renderer.twig-extensions": "^3",
                 "mouf/utils.cache.apc-cache": "~2.0",
-                "mouf/utils.cache.in-memory-cache": "~1.0",
-                "php": ">=5.4.4",
+                "php": ">=7.1",
+                "psr/container": "^1",
+                "psr/http-message": "^1",
+                "psr/http-server-handler": "^1",
+                "psr/http-server-middleware": "^1",
+                "psr/simple-cache": "^1",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/middleware-list-universal-module": "^1.1.1",
                 "twig/twig": "^1 || ^2"
             },
-            "type": "mouf-library",
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^1.0",
+                "mnapoli/simplex": "^0.5",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7.3.1",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "symfony/cache": "^4.1.3",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3",
+                "thecodingmachine/symfony-cache-universal-module": "^1",
+                "thecodingmachine/twig-universal-module": "^1"
+            },
+            "type": "library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "file": "src/install.php",
-                            "type": "file"
-                        }
-                    ],
                     "logo": "logo.png",
                     "doc": [
                         {
@@ -802,8 +865,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Mouf\\Html\\Renderer": "src/"
+                "psr-4": {
+                    "Mouf\\Html\\Renderer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -825,39 +888,44 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2018-08-07T09:26:08+00:00"
+            "time": "2018-08-30T16:29:36+00:00"
         },
         {
             "name": "mouf/html.renderer.twig-extensions",
-            "version": "1.2.x-dev",
+            "version": "3.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.renderer.twig-extensions.git",
-                "reference": "330369b64f5449fcc6e09658aa4022dee4c18899"
+                "reference": "a7a541ff1c734ebfa3f38f1c6da9d3cbd4e3a9d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/330369b64f5449fcc6e09658aa4022dee4c18899",
-                "reference": "330369b64f5449fcc6e09658aa4022dee4c18899",
+                "url": "https://api.github.com/repos/thecodingmachine/html.renderer.twig-extensions/zipball/a7a541ff1c734ebfa3f38f1c6da9d3cbd4e3a9d0",
+                "reference": "a7a541ff1c734ebfa3f38f1c6da9d3cbd4e3a9d0",
                 "shasum": ""
             },
             "require": {
-                "container-interop/container-interop": "~1.0",
                 "mouf/html.htmlelement": "~2.0",
-                "mouf/utils.cache.purge-ui": "^1",
-                "mouf/utils.constants.debug": "~1.0",
-                "php": ">=5.4.0",
-                "twig/twig": "~1.19 | ^2"
+                "mouf/utils.value.value-interface": "^1",
+                "php": ">=7.1",
+                "psr/container": "^1",
+                "thecodingmachine/funky": "^1",
+                "twig/twig": "^2"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^1.0",
+                "mnapoli/simplex": "^0.5",
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3",
+                "thecodingmachine/twig-universal-module": "^1"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "type": "class",
-                            "class": "Mouf\\Html\\Renderer\\Twig\\MoufTwigEnvironmentInstaller2"
-                        }
-                    ],
                     "doc": [
                         {
                             "title": "Twig extensions",
@@ -891,42 +959,39 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2018-08-16T21:23:09+00:00"
+            "time": "2018-08-27T21:56:24+00:00"
         },
         {
             "name": "mouf/html.template.bootstrap",
-            "version": "v2.3.2.0",
+            "version": "2.3.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.bootstrap.git",
-                "reference": "74c9ebff540582b2af1deafcd918fa6b5bedbf1d"
+                "reference": "d1b9e4a00e129f61988d3fb29ed80b29c5ae8364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/74c9ebff540582b2af1deafcd918fa6b5bedbf1d",
-                "reference": "74c9ebff540582b2af1deafcd918fa6b5bedbf1d",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/d1b9e4a00e129f61988d3fb29ed80b29c5ae8364",
+                "reference": "d1b9e4a00e129f61988d3fb29ed80b29c5ae8364",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.template.templateinterface": "~2.0",
+                "mouf/html.template.templateinterface": "^3",
                 "mouf/html.utils.bootstrap": "2.3.*",
-                "mouf/html.utils.weblibrarymanager": "~2.0",
-                "mouf/html.widgets.menu": "2.*",
-                "mouf/html.widgets.messageservice": "~2.2",
-                "php": ">=5.3.0"
+                "mouf/html.utils.weblibrarymanager": "~4.0",
+                "mouf/html.widgets.menu": "^4",
+                "mouf/html.widgets.messageservice": "~4.0",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "src/install.php"
-                        }
-                    ],
-                    "logo": "icons/logo.png"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Mouf": "src/"
@@ -951,114 +1016,36 @@
                 "mouf",
                 "template"
             ],
-            "time": "2013-07-17T15:47:31+00:00"
-        },
-        {
-            "name": "mouf/html.template.menus.basicmenu",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/html.template.menus.basicmenu.git",
-                "reference": "29ee1265b57bef6148bbedc4facb2d142feee309"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.menus.basicmenu/zipball/29ee1265b57bef6148bbedc4facb2d142feee309",
-                "reference": "29ee1265b57bef6148bbedc4facb2d142feee309",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/html.widgets.menu": "2.*",
-                "php": ">=5.3.0"
-            },
-            "type": "mouf-library",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains a single class in charge of rendering a 'Menu' instance in HTML using the toHtml() method. The rendering is performed using &lt;ul&gt; and &lt;li&gt; tags.",
-            "homepage": "https://github.com/thecodingmachine/html.template.menus.basicmenu",
-            "keywords": [
-                "basicmenu",
-                "menu",
-                "mouf"
-            ],
-            "time": "2014-06-03T20:27:41+00:00"
-        },
-        {
-            "name": "mouf/html.template.mouftemplate",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/html.template.mouftemplate.git",
-                "reference": "2e47823a149fb6a4dfaa97ec945ae6816b23b756"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.mouftemplate/zipball/2e47823a149fb6a4dfaa97ec945ae6816b23b756",
-                "reference": "2e47823a149fb6a4dfaa97ec945ae6816b23b756",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/html.template.templateinterface": ">=2.0-dev,<3.0",
-                "php": ">=5.3.0"
-            },
-            "type": "mouf-library",
-            "autoload": {
-                "psr-0": {
-                    "Mouf": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains a template for the Mouf administration interface. The content is automatically adjusted to the website page to use all the width. Anyway, you can use this component as a model if you like.",
-            "homepage": "https://github.com/thecodingmachine/html.template.mouftemplate",
-            "keywords": [
-                "mouf",
-                "mouftemplate",
-                "template"
-            ],
-            "time": "2014-06-03T20:28:14+00:00"
+            "time": "2018-08-28T13:48:55+00:00"
         },
         {
             "name": "mouf/html.template.templateinterface",
-            "version": "v2.1.1",
+            "version": "3.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.templateinterface.git",
-                "reference": "92586fd0542117702054fa348a76ee7da57e48f3"
+                "reference": "268375e915eec948c84c03b7a5d85b984a8cfe74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.templateinterface/zipball/92586fd0542117702054fa348a76ee7da57e48f3",
-                "reference": "92586fd0542117702054fa348a76ee7da57e48f3",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.templateinterface/zipball/268375e915eec948c84c03b7a5d85b984a8cfe74",
+                "reference": "268375e915eec948c84c03b7a5d85b984a8cfe74",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.renderer": "~1.0",
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<4.0",
-                "php": ">=5.3.0"
+                "mouf/html.htmlelement": "^2",
+                "mouf/html.renderer": "^2",
+                "mouf/html.utils.weblibrarymanager": "^4",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^1.0",
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
             "autoload": {
@@ -1084,7 +1071,7 @@
                 "template",
                 "templateinterface"
             ],
-            "time": "2014-12-10T16:01:57+00:00"
+            "time": "2018-08-30T20:33:29+00:00"
         },
         {
             "name": "mouf/html.utils.bootstrap",
@@ -1139,41 +1126,54 @@
         },
         {
             "name": "mouf/html.utils.weblibrarymanager",
-            "version": "v2.2.0",
+            "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager.git",
-                "reference": "761ff34b105c2e3e321bad57f17d9c07ac917c25"
+                "reference": "e1e5e06d7221a4e77196798ca8bdc3908025eb51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/761ff34b105c2e3e321bad57f17d9c07ac917c25",
-                "reference": "761ff34b105c2e3e321bad57f17d9c07ac917c25",
+                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager/zipball/e1e5e06d7221a4e77196798ca8bdc3908025eb51",
+                "reference": "e1e5e06d7221a4e77196798ca8bdc3908025eb51",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.htmlelement": "~2.0",
-                "mouf/html.utils.weblibrarymanager.component-installer": "2.1.*",
-                "mouf/mouf-installer": "~2.0",
-                "php": ">=5.3.0"
+                "mindplay/composer-locator": "^2.1.3",
+                "mouf/html.htmlelement": "^2.0",
+                "mouf/html.renderer": "^2.0",
+                "php": ">=7.1",
+                "psr/container": "^1",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^1.0",
+                "mnapoli/simplex": "^0.5",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7.3.1",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/discovery": "^1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3",
+                "thecodingmachine/symfony-cache-universal-module": "^1",
+                "thecodingmachine/twig-universal-module": "^1"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
+                    "doc": [
                         {
-                            "type": "file",
-                            "file": "install.php"
+                            "title": "CHANGELOG",
+                            "url": "doc/CHANGELOG.md"
                         }
-                    ],
-                    "require-admin": [
-                        "src/WebLibraryAdmin.php"
                     ]
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Mouf\\Html\\Utils\\WebLibraryManager": "src/"
+                "psr-4": {
+                    "Mouf\\Html\\Utils\\WebLibraryManager\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1197,76 +1197,33 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2017-01-12T15:34:17+00:00"
-        },
-        {
-            "name": "mouf/html.utils.weblibrarymanager.component-installer",
-            "version": "v2.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/html.utils.weblibrarymanager.component-installer.git",
-                "reference": "e2ca65af881bde139a9d101d19808f9d6610fec3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.utils.weblibrarymanager.component-installer/zipball/e2ca65af881bde139a9d101d19808f9d6610fec3",
-                "reference": "e2ca65af881bde139a9d101d19808f9d6610fec3",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0",
-                "php": ">=5.3.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Mouf\\Html\\Utils\\WebLibraryManager\\ComponentInstaller\\ComponentInstallerPlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mouf\\Html\\Utils\\WebLibraryManager\\ComponentInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This Mouf package contains a Composer installer that will automatically create WebLibrary instances when a 'component' package is installed in Composer. It is designed to be used only with Mouf's WebLibraryManager.",
-            "homepage": "http://mouf-php/packages/mouf/html.utils.weblibrarymanager.component-installer",
-            "keywords": [
-                "css",
-                "dependencies",
-                "dependency",
-                "html",
-                "javascript",
-                "mouf"
-            ],
-            "time": "2016-05-12T11:27:15+00:00"
+            "time": "2018-08-28T07:54:49+00:00"
         },
         {
             "name": "mouf/html.widgets.menu",
-            "version": "v2.0.0",
+            "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.menu.git",
-                "reference": "fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e"
+                "reference": "4c2102de7475cf062feb976ca354fd263d3af043"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.menu/zipball/fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e",
-                "reference": "fdac5fc5c6c65ffb603a29cb95cb0fbee17b817e",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.menu/zipball/4c2102de7475cf062feb976ca354fd263d3af043",
+                "reference": "4c2102de7475cf062feb976ca354fd263d3af043",
                 "shasum": ""
             },
             "require": {
+                "mouf/html.renderer": "^2",
                 "mouf/utils.common.conditioninterface": "2.*",
-                "mouf/utils.i18n.fine": "3.*",
-                "php": ">=5.3.0"
+                "php": ">=7.1",
+                "thecodingmachine/funky": "^1"
+            },
+            "require-dev": {
+                "mouf/utils.i18n.fine.translation-interface": "^4",
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
             "autoload": {
@@ -1292,42 +1249,64 @@
                 "mouf",
                 "template"
             ],
-            "time": "2014-04-25T14:27:23+00:00"
+            "time": "2018-08-27T15:29:36+00:00"
         },
         {
             "name": "mouf/html.widgets.messageservice",
-            "version": "v2.2.0",
+            "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.widgets.messageservice.git",
-                "reference": "de6448dca47a2df85a982fd87d2afeaf756b89dd"
+                "reference": "eba0975b8c61809329e131288aadbb3288fefcd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/de6448dca47a2df85a982fd87d2afeaf756b89dd",
-                "reference": "de6448dca47a2df85a982fd87d2afeaf756b89dd",
+                "url": "https://api.github.com/repos/thecodingmachine/html.widgets.messageservice/zipball/eba0975b8c61809329e131288aadbb3288fefcd8",
+                "reference": "eba0975b8c61809329e131288aadbb3288fefcd8",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.htmlelement": "~2.0",
-                "mouf/html.utils.weblibrarymanager": "~2.0",
-                "mouf/utils.session.session-manager": "~2.0",
-                "php": ">=5.3.0"
+                "mouf/html.renderer": "^2",
+                "mouf/html.utils.weblibrarymanager": "^4",
+                "mouf/utils.action.action-interface": "~1.0",
+                "mouf/utils.session.session-manager": "^4",
+                "mouf/utils.value.value-interface": "~1.0",
+                "php": ">=7.1.0",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
                     "install": [
                         {
-                            "type": "file",
-                            "file": "src/install.php"
+                            "file": "src/install.php",
+                            "type": "file"
+                        }
+                    ],
+                    "doc": [
+                        {
+                            "title": "Using the message service",
+                            "url": "doc/index.md"
+                        },
+                        {
+                            "title": "Advanced usage",
+                            "url": "doc/advanced.md"
                         }
                     ]
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Html\\Widgets\\MessageService": "src/"
                 },
                 "files": [
                     "src/common_functions.php"
@@ -1353,24 +1332,23 @@
                 "widget",
                 "widgets"
             ],
-            "time": "2013-06-19T13:17:17+00:00"
+            "time": "2018-08-28T13:47:46+00:00"
         },
         {
             "name": "mouf/javascript.ace",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/javascript.ace.git",
-                "reference": "b76425308ba4e90a7ff5dd5ee1615271e87dae85"
+                "reference": "4b88b25988f2bd2152392802a997b6cf194677cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.ace/zipball/b76425308ba4e90a7ff5dd5ee1615271e87dae85",
-                "reference": "b76425308ba4e90a7ff5dd5ee1615271e87dae85",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.ace/zipball/4b88b25988f2bd2152392802a997b6cf194677cf",
+                "reference": "4b88b25988f2bd2152392802a997b6cf194677cf",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.utils.weblibrarymanager": "~2.0",
                 "php": ">=5.3.0"
             },
             "type": "mouf-library",
@@ -1400,36 +1378,37 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2014-04-08T09:56:23+00:00"
+            "time": "2018-08-27T16:54:04+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jq-bootstrap-validation",
-            "version": "v1.3.6.0",
+            "version": "1.3.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moufmouf/javascript.jquery.jqBootstrapValidation.git",
-                "reference": "f25987d36c052f2fd4719c8b949409fa934295ea"
+                "reference": "8996da4668cec9d390d171658b3ca5ab83cd6951"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/f25987d36c052f2fd4719c8b949409fa934295ea",
-                "reference": "f25987d36c052f2fd4719c8b949409fa934295ea",
+                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/8996da4668cec9d390d171658b3ca5ab83cd6951",
+                "reference": "8996da4668cec9d390d171658b3ca5ab83cd6951",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.utils.weblibrarymanager": "~2.0",
-                "php": ">=5.3.0"
+                "mouf/html.utils.weblibrarymanager": "^4.0",
+                "php": ">=5.3.0",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
             },
             "type": "mouf-library",
             "extra": {
-                "logo": "logo.png",
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "install.php"
-                        }
-                    ]
+                "logo": "logo.png"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mouf\\Javascript\\JqBootstrapValidation\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1450,35 +1429,33 @@
                 "jqBootstrapValidation",
                 "validator"
             ],
-            "time": "2013-06-17T14:11:31+00:00"
+            "time": "2018-08-28T13:42:32+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
-            "version": "v1.11.0.0",
+            "version": "1.11.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "7bae0fbeb391540906ec0ef5e40da6263e5133a3"
+                "reference": "435aad622cbab1bb6de26fcf35f74dd32d414d0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/7bae0fbeb391540906ec0ef5e40da6263e5133a3",
-                "reference": "7bae0fbeb391540906ec0ef5e40da6263e5133a3",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/435aad622cbab1bb6de26fcf35f74dd32d414d0f",
+                "reference": "435aad622cbab1bb6de26fcf35f74dd32d414d0f",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
-                "php": ">=5.3.0"
+                "mouf/html.utils.weblibrarymanager": "^4.0",
+                "php": ">=7.1"
             },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "install.php"
-                        }
-                    ]
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mouf\\Javascript\\JQuery\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1499,7 +1476,7 @@
                 "jquery",
                 "mouf"
             ],
-            "time": "2014-02-18T10:06:30+00:00"
+            "time": "2018-08-28T07:34:51+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -1659,31 +1636,29 @@
         },
         {
             "name": "mouf/javascript.underscore",
-            "version": "v1.3.3.0",
+            "version": "1.3.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/javascript.underscore.git",
-                "reference": "e1e1122c51c1b1ab8841c75ce4e7cabd857f558c"
+                "reference": "3d5d900e0bd429c1b406ade7ed9ac5dd19380748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/e1e1122c51c1b1ab8841c75ce4e7cabd857f558c",
-                "reference": "e1e1122c51c1b1ab8841c75ce4e7cabd857f558c",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.underscore/zipball/3d5d900e0bd429c1b406ade7ed9ac5dd19380748",
+                "reference": "3d5d900e0bd429c1b406ade7ed9ac5dd19380748",
                 "shasum": ""
             },
             "require": {
-                "mouf/html.utils.weblibrarymanager": ">=2.0-dev,<3.0",
+                "mouf/html.utils.weblibrarymanager": "^4.0",
                 "php": ">=5.3.0"
             },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
             "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "install.php"
-                        }
-                    ]
+            "autoload": {
+                "psr-4": {
+                    "Mouf\\Javascript\\Underscore\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1705,7 +1680,7 @@
                 "underscore",
                 "underscorejs"
             ],
-            "time": "2014-06-03T20:45:03+00:00"
+            "time": "2018-08-28T07:37:44+00:00"
         },
         {
             "name": "mouf/mouf-installer",
@@ -1798,21 +1773,91 @@
             "time": "2013-10-29T18:21:58+00:00"
         },
         {
+            "name": "mouf/mvc.splash-common",
+            "version": "10.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/mvc.splash-common.git",
+                "reference": "43c0fc33902623e568de837f54f63b37ac2b5197"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash-common/zipball/43c0fc33902623e568de837f54f63b37ac2b5197",
+                "reference": "43c0fc33902623e568de837f54f63b37ac2b5197",
+                "shasum": ""
+            },
+            "require": {
+                "mouf/html.htmlelement": "^2.0",
+                "mouf/html.renderer.twig-extensions": "^1 || ^3",
+                "mouf/html.template.templateinterface": "^2.1 || ^3",
+                "mouf/mouf": "^2.0",
+                "mouf/utils.action.common-action": "~1.0",
+                "mouf/utils.common.conditioninterface": "~2.0",
+                "php": ">=7.0",
+                "thecodingmachine/splash-router": "^10"
+            },
+            "require-dev": {
+                "cache/array-adapter": "^0.4.0",
+                "mnapoli/simplex": "^0.3",
+                "mouf/picotainer": "~1.0",
+                "phpstan/phpstan": "^0.10.1",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "mouf-library",
+            "extra": {
+                "mouf": {
+                    "logo": "doc/images/logo.png",
+                    "section": {
+                        "name": "MVC",
+                        "description": "All the tools you need to route requests and display pages",
+                        "weight": 10
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mouf\\Mvc\\Splash\\": "src/Mouf/Mvc/Splash"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
+            "homepage": "http://mouf-php.com/packages/mouf/mvc.splash-common",
+            "keywords": [
+                "framework",
+                "mouf",
+                "mvc",
+                "splash",
+                "splash-common"
+            ],
+            "time": "2018-08-30T20:30:03+00:00"
+        },
+        {
             "name": "mouf/security.simplelogincontroller",
             "version": "6.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.simplelogincontroller.git",
-                "reference": "03e5071b46f9580581687abb1a8eadd88810ae06"
+                "reference": "8518a218e10589cbd2e18a132ab229d11ab9e24e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/03e5071b46f9580581687abb1a8eadd88810ae06",
-                "reference": "03e5071b46f9580581687abb1a8eadd88810ae06",
+                "url": "https://api.github.com/repos/thecodingmachine/security.simplelogincontroller/zipball/8518a218e10589cbd2e18a132ab229d11ab9e24e",
+                "reference": "8518a218e10589cbd2e18a132ab229d11ab9e24e",
                 "shasum": ""
             },
             "require": {
-                "mouf/security.userservice": "^2.1.0",
+                "mouf/security.userservice": "^2.1.0 || ^3",
                 "mouf/security.userservice-splash": "^10",
                 "mouf/utils.action.action-interface": "~1.0",
                 "php": "^7.1",
@@ -1859,30 +1904,40 @@
                 "mouf",
                 "security"
             ],
-            "time": "2018-08-23T21:41:31+00:00"
+            "time": "2018-08-30T20:43:56+00:00"
         },
         {
             "name": "mouf/security.userfiledao",
-            "version": "v2.0.0",
+            "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userfiledao.git",
-                "reference": "7d998e2714e9127f6e722fc7fc672b3abdd090d2"
+                "reference": "dafb3c81d01656c9aefd1efcb107e0bd72b2196b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/7d998e2714e9127f6e722fc7fc672b3abdd090d2",
-                "reference": "7d998e2714e9127f6e722fc7fc672b3abdd090d2",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userfiledao/zipball/dafb3c81d01656c9aefd1efcb107e0bd72b2196b",
+                "reference": "dafb3c81d01656c9aefd1efcb107e0bd72b2196b",
                 "shasum": ""
             },
             "require": {
-                "mouf/security.userservice": "2.*",
-                "php": ">=5.3.0"
+                "mouf/security.userservice": "^3",
+                "php": ">=7.1",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/discovery": "^1.2.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
             "autoload": {
                 "psr-0": {
-                    "Mouf": "src/"
+                    "Mouf\\Security\\UserFileDao\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1904,40 +1959,49 @@
                 "security",
                 "userdao"
             ],
-            "time": "2014-06-03T20:31:23+00:00"
+            "time": "2018-08-28T09:43:10+00:00"
         },
         {
             "name": "mouf/security.userservice",
-            "version": "2.1.x-dev",
+            "version": "3.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice.git",
-                "reference": "8915c4703296cf09943f63805d4c1d494872e6de"
+                "reference": "a5fb27aeaf6fafaf74bb4694f27362e7db75493c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/8915c4703296cf09943f63805d4c1d494872e6de",
-                "reference": "8915c4703296cf09943f63805d4c1d494872e6de",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice/zipball/a5fb27aeaf6fafaf74bb4694f27362e7db75493c",
+                "reference": "a5fb27aeaf6fafaf74bb4694f27362e7db75493c",
                 "shasum": ""
             },
             "require": {
                 "mouf/mouf-validators-interface": "~2.0",
-                "mouf/utils.common.conditioninterface": "2.*",
+                "mouf/utils.common.conditioninterface": "^2",
                 "mouf/utils.constants.secret": "~1.0",
-                "mouf/utils.log.psr.errorlog_logger": "2.*",
-                "mouf/utils.session.session-manager": "~2.1",
+                "mouf/utils.session.session-manager": "^4",
                 "mouf/utils.value.value-interface": "~1.0",
-                "php": ">=5.3.0"
+                "php": ">=7.1",
+                "psr/container": "^1",
+                "psr/log": "^1",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^1.0",
+                "mnapoli/simplex": "^0.5",
+                "mouf/utils.log.psr.errorlog_logger": "^2",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7.3.1",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/discovery": "^1.2.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "type": "mouf-library",
             "extra": {
                 "mouf": {
-                    "install": [
-                        {
-                            "file": "src/install.php",
-                            "type": "file"
-                        }
-                    ],
                     "doc": [
                         {
                             "title": "Installation",
@@ -1986,7 +2050,7 @@
                 "security",
                 "user"
             ],
-            "time": "2016-07-06T09:32:57+00:00"
+            "time": "2018-08-30T17:57:56+00:00"
         },
         {
             "name": "mouf/security.userservice-splash",
@@ -1994,16 +2058,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/security.userservice-splash.git",
-                "reference": "d34eda222e4b4557542d145adacab18b6028f846"
+                "reference": "afc48655f39d4b64b0b2d72b7b30f8ef36e9083f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/d34eda222e4b4557542d145adacab18b6028f846",
-                "reference": "d34eda222e4b4557542d145adacab18b6028f846",
+                "url": "https://api.github.com/repos/thecodingmachine/security.userservice-splash/zipball/afc48655f39d4b64b0b2d72b7b30f8ef36e9083f",
+                "reference": "afc48655f39d4b64b0b2d72b7b30f8ef36e9083f",
                 "shasum": ""
             },
             "require": {
-                "mouf/security.userservice": "^2.1.0",
+                "mouf/security.userservice": "^2.1.0 || ^3",
                 "php": ">=7.1",
                 "thecodingmachine/funky": "^1",
                 "thecodingmachine/splash-router": "^10"
@@ -2043,7 +2107,7 @@
                 "splash",
                 "user"
             ],
-            "time": "2018-08-24T08:34:21+00:00"
+            "time": "2018-08-28T08:44:34+00:00"
         },
         {
             "name": "mouf/utils.action.action-interface",
@@ -2088,6 +2152,55 @@
                 "mouf"
             ],
             "time": "2013-10-29T18:21:59+00:00"
+        },
+        {
+            "name": "mouf/utils.action.common-action",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/utils.action.common-action.git",
+                "reference": "9498e24435b96812953cbca91fd20daecbfc549a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.action.common-action/zipball/9498e24435b96812953cbca91fd20daecbfc549a",
+                "reference": "9498e24435b96812953cbca91fd20daecbfc549a",
+                "shasum": ""
+            },
+            "require": {
+                "mouf/utils.action.action-interface": "~1.0",
+                "mouf/utils.value.value-interface": "~1.0",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "mouf": {
+                    "logo": "logo.png"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mouf\\Utils\\Action": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com",
+                    "homepage": "http://mouf-php.com"
+                }
+            ],
+            "description": "This package contains common classes that implement the ActionInterface interface (from the mouf/utils.action.action-interface package).",
+            "homepage": "https://mouf-php.com/mouf/utils.action.common-action",
+            "keywords": [
+                "actioninterface",
+                "mouf"
+            ],
+            "time": "2015-01-23T11:09:24+00:00"
         },
         {
             "name": "mouf/utils.cache.apc-cache",
@@ -2254,50 +2367,6 @@
                 "mouf"
             ],
             "time": "2016-09-22T08:32:19+00:00"
-        },
-        {
-            "name": "mouf/utils.cache.in-memory-cache",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.cache.in-memory-cache.git",
-                "reference": "1e02d9d83d6fa9f86eca0147c80a2659a56a03bd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.cache.in-memory-cache/zipball/1e02d9d83d6fa9f86eca0147c80a2659a56a03bd",
-                "reference": "1e02d9d83d6fa9f86eca0147c80a2659a56a03bd",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/utils.cache.cache-interface": "2.*",
-                "php": ">=5.3.0"
-            },
-            "type": "mouf-library",
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Cache": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains the most basic cache mechanism. It stores cache items in an array. It means the cache is flushed as soon as the script returns. It is very basic, but also very fast. You will usually use this mechanism with another one just behind.",
-            "homepage": "https://mouf-php/packages/mouf/utils.cache.local-cache",
-            "keywords": [
-                "cache",
-                "in-memory",
-                "mouf"
-            ],
-            "time": "2015-07-10T13:31:07+00:00"
         },
         {
             "name": "mouf/utils.cache.purge-ui",
@@ -2526,61 +2595,6 @@
             "time": "2015-09-18T15:40:51+00:00"
         },
         {
-            "name": "mouf/utils.constants.debug",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.constants.debug.git",
-                "reference": "df2122944c8e3aadb1c8221aea732b5de9ce74ca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.constants.debug/zipball/df2122944c8e3aadb1c8221aea732b5de9ce74ca",
-                "reference": "df2122944c8e3aadb1c8221aea732b5de9ce74ca",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/mouf-installer": "~2.0",
-                "php": ">=5.3.0"
-            },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "class",
-                            "class": "Mouf\\Utils\\Constants\\DebugInstaller"
-                        }
-                    ],
-                    "logo": "logo.png"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Constants\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains a simple installer for Mouf that will create a constant 'DEBUG' in your project and initialize it to true. Useful for packages supporting a 'debug' mode.",
-            "homepage": "http://mouf-php.com/packages/mouf/utils.constants.debug",
-            "keywords": [
-                "constant",
-                "debug",
-                "mouf"
-            ],
-            "time": "2014-06-16T09:18:43+00:00"
-        },
-        {
             "name": "mouf/utils.constants.secret",
             "version": "v1.0.0",
             "source": {
@@ -2724,114 +2738,6 @@
             "time": "2017-08-04T10:52:04+00:00"
         },
         {
-            "name": "mouf/utils.log.errorlog_logger",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.log.errorlog_logger.git",
-                "reference": "352ad3733757685961818c012187945a4c9d04df"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.log.errorlog_logger/zipball/352ad3733757685961818c012187945a4c9d04df",
-                "reference": "352ad3733757685961818c012187945a4c9d04df",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/mouf-installer": "~2.0",
-                "mouf/utils.log.log_interface": ">=2.0-dev,<3.0",
-                "php": ">=5.3.0"
-            },
-            "provide": {
-                "mouf/utils.log.logger": "1.0"
-            },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "src/install.php"
-                        }
-                    ],
-                    "logo": "logo.png"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Log\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains a logger that logs messages directly to the PHP error log (using the error_log PHP function)",
-            "homepage": "https://github.com/thecodingmachine/utils.log.errorlog_logger",
-            "keywords": [
-                "error_log",
-                "log",
-                "logger"
-            ],
-            "time": "2013-10-29T18:22:00+00:00"
-        },
-        {
-            "name": "mouf/utils.log.log_interface",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/utils.log.log_interface.git",
-                "reference": "9178f74f644e420a4b59f51e801c75415783ca34"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.log.log_interface/zipball/9178f74f644e420a4b59f51e801c75415783ca34",
-                "reference": "9178f74f644e420a4b59f51e801c75415783ca34",
-                "shasum": ""
-            },
-            "require": {
-                "mouf/utils.log.logger": "1.*",
-                "php": ">=5.3.0"
-            },
-            "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "logo": "logo.png"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mouf\\Utils\\Log\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "This package contains an interface used by many components to log messages. Please download a logger package that implements this interface (like the utils.log.errorlog_logger package)",
-            "homepage": "https://github.com/thecodingmachine/utils.log.log_interface",
-            "keywords": [
-                "interface",
-                "log",
-                "logger"
-            ],
-            "time": "2014-06-05T12:51:58+00:00"
-        },
-        {
             "name": "mouf/utils.log.psr.errorlog_logger",
             "version": "v2.0.1",
             "source": {
@@ -2889,35 +2795,36 @@
         },
         {
             "name": "mouf/utils.session.session-manager",
-            "version": "v2.1.1",
+            "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.session.session-manager.git",
-                "reference": "c9fb28c0726fb8867c9f45755617a4ff44ff8716"
+                "reference": "59477ff06ac52513f5416cc7b823485856345af7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/c9fb28c0726fb8867c9f45755617a4ff44ff8716",
-                "reference": "c9fb28c0726fb8867c9f45755617a4ff44ff8716",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.session.session-manager/zipball/59477ff06ac52513f5416cc7b823485856345af7",
+                "reference": "59477ff06ac52513f5416cc7b823485856345af7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "mouf/utils.action.action-interface": "^1",
+                "mouf/utils.value.value-interface": "^1",
+                "php": ">=5.3.0",
+                "thecodingmachine/funky": "^1"
+            },
+            "conflict": {
+                "mouf/mouf": "~2.0.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.10.3",
+                "squizlabs/php_codesniffer": "^3.3.1",
+                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
             },
             "suggest": {
-                "thecodingmachine/utils.session.optimistic-session-handler": "Handle session without locking session file during all the PHP script execution"
+                "mouf/utils.session.optimistic-session-handler": "Session handler that releases session lock quickly. Usefull for multiple ajax calls on the same page."
             },
             "type": "mouf-library",
-            "extra": {
-                "mouf": {
-                    "install": [
-                        {
-                            "type": "file",
-                            "file": "src/install.php"
-                        }
-                    ]
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Mouf\\Utils\\Action": "src/",
@@ -2941,7 +2848,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2015-08-10T14:03:37+00:00"
+            "time": "2018-08-26T19:04:36+00:00"
         },
         {
             "name": "mouf/utils.value.value-interface",
@@ -3390,16 +3297,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v4.1.3",
+            "version": "v4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "c666a5bbfeb1fe05c7b91d46810f405c8bea14cf"
+                "reference": "b8440ff4635c6631aca21a09ab72e0b7e3a6cb7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/c666a5bbfeb1fe05c7b91d46810f405c8bea14cf",
-                "reference": "c666a5bbfeb1fe05c7b91d46810f405c8bea14cf",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/b8440ff4635c6631aca21a09ab72e0b7e3a6cb7a",
+                "reference": "b8440ff4635c6631aca21a09ab72e0b7e3a6cb7a",
                 "shasum": ""
             },
             "require": {
@@ -3455,7 +3362,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2018-07-26T11:24:31+00:00"
+            "time": "2018-08-27T09:36:56+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3796,17 +3703,50 @@
             "time": "2018-06-05T13:27:42+00:00"
         },
         {
+            "name": "thecodingmachine/monolog-universal-service-provider",
+            "version": "1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/monolog-universal-service-provider.git",
+                "reference": "2c045a271da5621af1b1a5bf2570dab5aa032bcf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/monolog-universal-service-provider/zipball/2c045a271da5621af1b1a5bf2570dab5aa032bcf",
+                "reference": "2c045a271da5621af1b1a5bf2570dab5aa032bcf",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "^1.0",
+                "php": ">=7.1",
+                "psr/container": "^1",
+                "thecodingmachine/funky": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Monolog\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for monolog/monolog",
+            "time": "2018-08-30T20:07:49+00:00"
+        },
+        {
             "name": "thecodingmachine/splash-router",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/splash-router.git",
-                "reference": "5d610394f26f70438bd457db685022c84e0366ea"
+                "reference": "2b56ec3d9ffd74a196e44cd6ca0a996caa76d4c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/splash-router/zipball/5d610394f26f70438bd457db685022c84e0366ea",
-                "reference": "5d610394f26f70438bd457db685022c84e0366ea",
+                "url": "https://api.github.com/repos/thecodingmachine/splash-router/zipball/2b56ec3d9ffd74a196e44cd6ca0a996caa76d4c7",
+                "reference": "2b56ec3d9ffd74a196e44cd6ca0a996caa76d4c7",
                 "shasum": ""
             },
             "require": {
@@ -3867,7 +3807,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2018-07-19T13:55:17+00:00"
+            "time": "2018-08-23T21:53:05+00:00"
         },
         {
             "name": "thecodingmachine/splash-service-provider",
@@ -5560,16 +5500,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.1.3",
+            "version": "v4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c"
+                "reference": "b832cc289608b6d305f62149df91529a2ab3c314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
-                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/b832cc289608b6d305f62149df91529a2ab3c314",
+                "reference": "b832cc289608b6d305f62149df91529a2ab3c314",
                 "shasum": ""
             },
             "require": {
@@ -5615,7 +5555,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T11:24:31+00:00"
+            "time": "2018-08-18T16:52:46+00:00"
         },
         {
             "name": "webmozart/assert",
