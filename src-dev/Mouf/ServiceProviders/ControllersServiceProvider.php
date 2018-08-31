@@ -6,6 +6,7 @@ namespace Mouf\ServiceProviders;
 
 use Interop\Container\Factories\Alias;
 use Interop\Container\ServiceProviderInterface;
+use Mouf\Controllers\MoufInstallController;
 use Mouf\Controllers\MoufRootController;
 use Mouf\Controllers\MoufValidatorController;
 use Mouf\Html\HtmlElement\HtmlBlock;
@@ -37,6 +38,14 @@ class ControllersServiceProvider extends ServiceProvider
     }
 
     /**
+     * @Factory(name="moufInstallTemplate")
+     */
+    public static function aliasInstallTemplate(TemplateInterface $template): TemplateInterface
+    {
+        return $template;
+    }
+
+    /**
      * @Factory(name="simpleLoginControllerTemplate")
      */
     public static function aliasSimpleLoginControllerTemplate(ContainerInterface $container): TemplateInterface
@@ -62,12 +71,21 @@ class ControllersServiceProvider extends ServiceProvider
     }
 
     /**
+     * @Factory()
+     */
+    public static function createInstallController(TemplateInterface $template, ContainerInterface $container): MoufInstallController
+    {
+        return new MoufInstallController($template, $container->get('block.content'));
+    }
+
+    /**
      * @Extension(name="thecodingmachine.splash.controllers")
      */
     public static function declareControllers(array $controllers): array
     {
         $controllers[] = MoufRootController::class;
         $controllers[] = MoufValidatorController::class;
+        $controllers[] = MoufInstallController::class;
         return $controllers;
     }
 }

@@ -10,8 +10,10 @@
 
 //define('ROOT_URL', $_SERVER["REQUEST_URI"]);
 
+use Mouf\Controllers\MoufInstallController;
+use Mouf\MoufManager;
+
 require_once __DIR__.'/mouf/Mouf.php';
 
-MoufAdmin::getMoufInstallController()->index();
+MoufManager::getMoufManager()->get(MoufInstallController::class)->index();
 exit;
-?>

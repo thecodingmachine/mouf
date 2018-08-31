@@ -4,7 +4,7 @@
  */
 use Mouf\MoufManager;
 use Interop\Container\ContainerInterface;
-use Mouf\Html\Utils\WebLibraryManager;
+use Mouf\Html\Utils\WebLibraryManager\WebLibraryManager;
 MoufManager::initMoufManager();
 $moufManager = MoufManager::getMoufManager();
 
@@ -1206,7 +1206,7 @@ $moufManager->addComponentInstances(array (
       ),
     ),
   ),
-  'installTemplate' => 
+  /*'installTemplate' =>
   array (
     'class' => 'Mouf\\Html\\Template\\MoufTemplate\\MoufTemplate',
     'external' => false,
@@ -1238,7 +1238,7 @@ $moufManager->addComponentInstances(array (
         ),
       ),
     ),
-  ),
+  ),*/
   'installedPackagesController' => 
   array (
     'class' => 'Mouf\\Controllers\\Composer\\InstalledPackagesController',
@@ -2084,7 +2084,7 @@ $moufManager->addComponentInstances(array (
       'contentBlock' => 'block.content',
     ),
   ),
-  'moufInstallController' => 
+/*  'moufInstallController' =>
   array (
     'class' => 'Mouf\\Controllers\\MoufInstallController',
     'external' => false,
@@ -2097,7 +2097,7 @@ $moufManager->addComponentInstances(array (
       'template' => 'moufInstallTemplate',
       'contentBlock' => 'block.content',
     ),
-  ),
+  ),*/
   'moufInstallTemplate' => 
   array (
     'class' => 'Mouf\\Html\\Template\\BootstrapTemplate',
@@ -2915,7 +2915,7 @@ $moufManager->addComponentInstances(array (
     array (
       'userFile' => 
       array (
-        'value' => '../../../mouf/no_commit/MoufUsers.php',
+        'value' => '../../../mouf/no_commit/user.php',
         'type' => 'string',
         'metadata' => 
         array (

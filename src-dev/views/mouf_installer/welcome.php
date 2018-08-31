@@ -81,9 +81,9 @@ sudo chown <?php echo $processUserName.":".$processUserName." ".realpath(MOUF_DI
 <form action="<?php echo ROOT_URL; ?>install" method="post" class="form-horizontal">
 
 	<p>Apparently, this is the first time you are running Mouf. You will need to install it.</p>
-	<?php if (file_exists(MOUF_DIR."/../../../mouf/no_commit/MoufUsers.php")): ?>
-		<p>The <code>MoufUsers.php</code> file has been detected. Logins/passwords from this file will be used to access Mouf.
-		If you want to reset your login or password, delete the MoufUsers.php file and start again the installation procedure.</p>
+	<?php if (file_exists(MOUF_DIR."/../../../mouf/no_commit/user.php")): ?>
+		<p>The <code>user.php</code> file has been detected. Logins/passwords from this file will be used to access Mouf.
+		If you want to reset your login or password, delete the user.php file and start again the installation procedure.</p>
 	<?php else: ?>
 				<p>In order to connect to Mouf, you will need to create a login and a password.</p>
 

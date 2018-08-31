@@ -13,7 +13,7 @@ if ($moufUI !== false) {
 }
 unset($moufUI);
 
-if (!file_exists(__DIR__.'/../../../../mouf/no_commit/MoufUsers.php')) {
+if (!file_exists(__DIR__.'/../../../../mouf/no_commit/users.php')) {
 	
 	$rootUrl = $_SERVER['BASE']."/";
 	

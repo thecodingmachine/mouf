@@ -20,6 +20,7 @@ use Mouf\Installer\ComposerInstaller;
 use Mouf\Html\HtmlElement\HtmlBlock;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use TheCodingMachine\Splash\Annotations\URL;
 
 
 /**
@@ -33,16 +34,23 @@ class MoufInstallController extends Controller {
 	 *
 	 * @var TemplateInterface
 	 */
-	public $template;
+	private $template;
 	
 	/**
 	 * The content block the template will be writting into.
 	 *
 	 * @var HtmlBlock
 	 */
-	public $contentBlock;
-	
-	/**
+    private $contentBlock;
+
+    public function __construct(TemplateInterface $template, HtmlBlock $contentBlock)
+    {
+        $this->template = $template;
+        $this->contentBlock = $contentBlock;
+    }
+
+
+    /**
 	 * Displays the page to install Mouf.
 	 * Note: this is not a typical controller. This controller is called directly from index.php
 	 * 
@@ -82,10 +90,10 @@ class MoufInstallController extends Controller {
 	/**
 	 * Performs the installation by creating all required files.
 	 * 
-	 * @URL install
+	 * @URL("install")
 	 */
 	public function install() {
-		if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/MoufUsers.php')) {
+		if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/user.php')) {
 			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/mouf_installer/moufusers_exists.php", $this);
 			$this->template->toHtml();
 			return;
@@ -168,8 +176,8 @@ MoufManager::initMoufManager();
 			chmod(__DIR__."/../../../../../../config.php", 0664);
 		}
 		
-		// Finally 3 :), let's generate the MoufUsers.php file:
-		if (!file_exists(__DIR__."/../../../../../../mouf/no_commit/MoufUsers.php")) {
+		// Finally 3 :), let's generate the user.php file:
+		if (!file_exists(__DIR__."/../../../../../../mouf/no_commit/user.php")) {
 			$moufConfig = "<?php
 /**
  * This contains the users allowed to access the Mouf framework.
@@ -178,8 +186,8 @@ MoufManager::initMoufManager();
 		
 ?>";
 		
-			file_put_contents(__DIR__."/../../../../../../mouf/no_commit/MoufUsers.php", $moufConfig);
-			chmod(__DIR__."/../../../../../../mouf/no_commit/MoufUsers.php", 0664);
+			file_put_contents(__DIR__."/../../../../../../mouf/no_commit/user.php", $moufConfig);
+			chmod(__DIR__."/../../../../../../mouf/no_commit/user.php", 0664);
 		}
 		
 		umask($oldUmask);
@@ -189,4 +197,3 @@ MoufManager::initMoufManager();
 		
 	}
 }
-?>
