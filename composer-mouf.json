@@ -39,7 +39,8 @@
         "thecodingmachine/twig-universal-module": "^1.1",
         "thecodingmachine/monolog-universal-service-provider": "^1.1",
         "thecodingmachine/discovery": "^1.0",
-        "mouf/mvc.splash-common": "^10"
+        "mouf/mvc.splash-common": "^10",
+        "thecodingmachine/whoops-middleware-universal-module": "^1"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0"

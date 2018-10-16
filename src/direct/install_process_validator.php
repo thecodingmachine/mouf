@@ -32,7 +32,7 @@ require_once '../../mouf/Mouf.php';
 //require_once 'utils/check_rights.php';
 MoufUtils::checkRights();
 
-MoufAdmin::getSessionManager()->write_close();
+MoufAdmin::getSessionManager()->writeClose();
 
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {

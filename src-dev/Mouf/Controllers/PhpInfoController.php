@@ -10,22 +10,27 @@
 namespace Mouf\Controllers;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Security\Logged;
+use TheCodingMachine\Splash\Annotations\URL;
+use Zend\Diactoros\Response\HtmlResponse;
+
 
 /**
  * The controller displaying the PHP Info page.
  *
- * @Component
  */
-class PhpInfoController extends Controller {
+class PhpInfoController {
 	
 	/**
 	 * Displays the PHP info page.
 	 * 
-	 * @Action
-	 * @Logged
+	 * @URL("phpInfo/")
+	 * @Logged()
 	 */
 	public function defaultAction() {
-		echo phpinfo();
+	    \ob_start();
+        phpinfo();
+        $html = \ob_get_clean();
+		return new HtmlResponse($html);
 	}
 }
-?>

@@ -79,17 +79,19 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'weak' => true,
     'anonymous' => true,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'type' => 'string',
-        'value' => 'vendor/mouf/famfamfam/icons/drive_go.png',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'vendor/mouf/famfamfam/icons/drive_go.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   '__anonymous__90fe_197933_1429787454994' => 
   array (
@@ -97,17 +99,18 @@ $moufManager->addComponentInstances(array (
     'external' => false,
     'weak' => true,
     'anonymous' => true,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/world_link.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/world_link.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   '__anonymous__90fe_81215_1429787382846' => 
   array (
@@ -208,15 +211,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -447,15 +442,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -487,17 +474,19 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/page_white_php.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/page_white_php.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   'createNewInstanceMenuItem' => 
   array (
@@ -545,15 +534,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -585,17 +566,18 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/page_add.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/page_add.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   'css.moufCssStyles' => 
   array (
@@ -714,23 +696,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
+      'setActivateBasedOnUrl' =>
       array (
         'value' => false,
         'type' => 'string',
@@ -751,17 +717,18 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/table.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/table.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   'doc' => 
   array (
@@ -836,15 +803,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '999',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
+        'value' => 999.0,
         'type' => 'string',
         'metadata' => 
         array (
@@ -898,15 +857,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -938,17 +889,19 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/download.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/download.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   'editConfigurationMenuItem' => 
   array (
@@ -996,15 +949,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -1036,17 +981,19 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/note_edit.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/note_edit.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   'errorLogger' => 
   array (
@@ -1101,17 +1048,18 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/page_white_php.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/page_white_php.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   'includes' => 
   array (
@@ -1331,15 +1279,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '20',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
+        'value' => 20.0,
         'type' => 'string',
         'metadata' => 
         array (
@@ -1894,23 +1834,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
+      'setActivateBasedOnUrl' =>
       array (
         'value' => false,
         'type' => 'string',
@@ -1931,17 +1855,19 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/door_open.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/door_open.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   'mainMenu' => 
   array (
@@ -2058,15 +1984,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '100',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
+        'value' => 100.0,
         'type' => 'string',
         'metadata' => 
         array (
@@ -2281,15 +2199,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -2321,17 +2231,19 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/tick.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/tick.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
+
   ),
   'moufTemplate' => 
   array (
@@ -2533,6 +2445,15 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
+        1 =>
+            array (
+                'value' => 'root_url',
+                'parametertype' => 'object',
+                'type' => 'string',
+                'metadata' =>
+                    array (
+                    ),
+            ),
     ),
     'fieldProperties' => 
     array (
@@ -2623,15 +2544,7 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '20',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
+        'value' => 20.0,
         'type' => 'string',
         'metadata' => 
         array (
@@ -2699,21 +2612,13 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '0',
+        'value' => 0.0,
         'type' => 'string',
         'metadata' => 
         array (
         ),
       ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
+      'setActivateBasedOnUrl' =>
       array (
         'value' => false,
         'type' => 'string',
@@ -3039,15 +2944,7 @@ $moufManager->addComponentInstances(array (
         array (
         ),
       ),
-      'setPriority' => 
-      array (
-        'value' => '',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setPropagatedUrlParameters' => 
+      'setPropagatedUrlParameters' =>
       array (
         'value' => 
         array (
@@ -3079,17 +2976,18 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/page_white_stack.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/page_white_stack.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   'viewDocumentationMenuItem' => 
   array (
@@ -3139,21 +3037,13 @@ $moufManager->addComponentInstances(array (
       ),
       'setPriority' => 
       array (
-        'value' => '90',
+        'value' => 90.0,
         'type' => 'string',
         'metadata' => 
         array (
         ),
       ),
-      'setPropagatedUrlParameters' => 
-      array (
-        'value' => false,
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-      'setActivateBasedOnUrl' => 
+      'setActivateBasedOnUrl' =>
       array (
         'value' => false,
         'type' => 'string',
@@ -3174,17 +3064,18 @@ $moufManager->addComponentInstances(array (
   array (
     'class' => 'Mouf\\Html\\Widgets\\Menu\\MenuItemStyleIcon',
     'external' => false,
-    'setterProperties' => 
-    array (
-      'setUrl' => 
-      array (
-        'value' => 'src-dev/views/images/report.png',
-        'type' => 'string',
-        'metadata' => 
-        array (
-        ),
-      ),
-    ),
+      'constructor' =>
+          array (
+              0 =>
+                  array (
+                      'value' => 'src-dev/views/images/report.png',
+                      'parametertype' => 'primitive',
+                      'type' => 'string',
+                      'metadata' =>
+                          array (
+                          ),
+                  ),
+          ),
   ),
   'weblibrary.qtip2' => 
   array (

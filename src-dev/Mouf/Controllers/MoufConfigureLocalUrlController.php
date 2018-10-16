@@ -11,9 +11,13 @@ namespace Mouf\Controllers;
 
 use Mouf\Html\HtmlElement\HtmlBlock;
 
+use Mouf\Html\Template\TemplateInterface;
 use Mouf\MoufException;
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Mvc\Splash\HtmlResponse;
 use Mouf\Reflection\MoufReflectionProxy;
+use Mouf\Security\Logged;
+use TheCodingMachine\Splash\Annotations\URL;
 
 /**
  * The controller that will enable you to set up the local URL (if needed)
@@ -23,30 +27,32 @@ class MoufConfigureLocalUrlController extends Controller {
 	/**
 	 * The template used by the main page for mouf.
 	 *
-	 * @Property
-	 * @Compulsory
 	 * @var TemplateInterface
 	 */
-	public $template;
+	private $template;
 	
 	/**
 	 * The content block the template will be writting into.
 	 *
-	 * @Property
-	 * @Compulsory
 	 * @var HtmlBlock
 	 */
-	public $contentBlock;
+    private $contentBlock;
 
 	protected $status;
 	protected $localUrl;
 	protected $selfedit;
 
+    public function __construct(TemplateInterface $template, HtmlBlock $contentBlock)
+    {
+        $this->template = $template;
+        $this->contentBlock = $contentBlock;
+    }
+
 	/**
 	 * The default action will redirect to the MoufController defaultAction.
 	 *
-	 * @Action
-	 * @Logged
+	 * @URL("configureLocalUrl/")
+	 * @Logged()
 	 */
 	public function index($selfedit = "false") {
 		$this->selfedit = $selfedit;
@@ -61,16 +67,16 @@ class MoufConfigureLocalUrlController extends Controller {
 		$this->localUrl = MoufReflectionProxy::getLocalUrlToProject();
 
 		$this->contentBlock->addFile(ROOT_PATH."src-dev/views/configureLocalUrl.php", $this);
-		$this->template->toHtml();
+		return new HtmlResponse($this->template);
 	}
 
 	/**
-	 * @Action
-	 * @Logged
+	 * @URL("configureLocalUrl/setLocalUrl")
+	 * @Logged()
 	 */
-	public function setLocalUrl($localUrl, $selfedit = "false") {
+	public function setLocalUrl(string $localUrl, string $selfedit = "false") {
 		$this->selfedit = $selfedit;
 		MoufReflectionProxy::setLocalUrlToProject($localUrl);
-		$this->index($selfedit);
+		return $this->index($selfedit);
 	}
 }

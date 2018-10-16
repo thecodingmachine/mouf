@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8498725b1340bcf235d6ce9975656e9f",
+    "content-hash": "7ec495686713dbabf0dcf7263dc19c90",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -443,6 +443,67 @@
             "time": "2017-02-09T16:10:21+00:00"
         },
         {
+            "name": "filp/whoops",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "181c4502d8f34db7aed7bfe88d4f87875b8e947a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/181c4502d8f34db7aed7bfe88d4f87875b8e947a",
+                "reference": "181c4502d8f34db7aed7bfe88d4f87875b8e947a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5.9 || ^7.0",
+                "psr/log": "^1.0.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9 || ^1.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7",
+                "symfony/var-dumper": "^2.6 || ^3.0 || ^4.0"
+            },
+            "suggest": {
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
+                "whoops/soap": "Formats errors as SOAP responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Whoops\\": "src/Whoops/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://filp.github.io/whoops/",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "throwable",
+                "whoops"
+            ],
+            "time": "2018-03-03T17:56:25+00:00"
+        },
+        {
             "name": "michelf/php-markdown",
             "version": "1.8.0",
             "source": {
@@ -487,6 +548,108 @@
                 "markdown"
             ],
             "time": "2018-01-15T00:49:33+00:00"
+        },
+        {
+            "name": "middlewares/utils",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/middlewares/utils.git",
+                "reference": "8e3f2720fa462443e1566c9e3ab78169adcb0468"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/middlewares/utils/zipball/8e3f2720fa462443e1566c9e3ab78169adcb0468",
+                "reference": "8e3f2720fa462443e1566c9e3ab78169adcb0468",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "psr/container": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "guzzlehttp/psr7": "^1.3",
+                "phpunit/phpunit": "^6.0|^7.0",
+                "slim/slim": "^3.5",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Middlewares\\Utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Common utils to create PSR-15 middleware packages",
+            "homepage": "https://github.com/middlewares/utils",
+            "keywords": [
+                "PSR-11",
+                "http",
+                "middleware",
+                "psr-15",
+                "psr-17",
+                "psr-7"
+            ],
+            "time": "2018-08-11T07:23:25+00:00"
+        },
+        {
+            "name": "middlewares/whoops",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/middlewares/whoops.git",
+                "reference": "4bd8e6553edfc1eba757947c86bc358bd723b40e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/middlewares/whoops/zipball/4bd8e6553edfc1eba757947c86bc358bd723b40e",
+                "reference": "4bd8e6553edfc1eba757947c86bc358bd723b40e",
+                "shasum": ""
+            },
+            "require": {
+                "filp/whoops": "^2.1",
+                "middlewares/utils": "^2.1",
+                "php": "^7.0",
+                "psr/container": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "eloquent/phony-phpunit": "^3.0|^4.0",
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpunit/phpunit": "^6.0|^7.0",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Middlewares\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Middleware to use Whoops as error handler",
+            "homepage": "https://github.com/middlewares/whoops",
+            "keywords": [
+                "error",
+                "http",
+                "middleware",
+                "psr-15",
+                "psr-7",
+                "server",
+                "whoops"
+            ],
+            "time": "2018-08-04T10:41:55+00:00"
         },
         {
             "name": "mindplay/composer-locator",
@@ -967,12 +1130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/html.template.bootstrap.git",
-                "reference": "d1b9e4a00e129f61988d3fb29ed80b29c5ae8364"
+                "reference": "cb83ac96460bc072e563cdd78fe590fd94e9cc1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/d1b9e4a00e129f61988d3fb29ed80b29c5ae8364",
-                "reference": "d1b9e4a00e129f61988d3fb29ed80b29c5ae8364",
+                "url": "https://api.github.com/repos/thecodingmachine/html.template.bootstrap/zipball/cb83ac96460bc072e563cdd78fe590fd94e9cc1b",
+                "reference": "cb83ac96460bc072e563cdd78fe590fd94e9cc1b",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1179,7 @@
                 "mouf",
                 "template"
             ],
-            "time": "2018-08-28T13:48:55+00:00"
+            "time": "2018-08-31T09:03:28+00:00"
         },
         {
             "name": "mouf/html.template.templateinterface",
@@ -1386,12 +1549,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/moufmouf/javascript.jquery.jqBootstrapValidation.git",
-                "reference": "8996da4668cec9d390d171658b3ca5ab83cd6951"
+                "reference": "490de66b7136a7b6109f79864ddb8ff7e7a5c2fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/8996da4668cec9d390d171658b3ca5ab83cd6951",
-                "reference": "8996da4668cec9d390d171658b3ca5ab83cd6951",
+                "url": "https://api.github.com/repos/moufmouf/javascript.jquery.jqBootstrapValidation/zipball/490de66b7136a7b6109f79864ddb8ff7e7a5c2fa",
+                "reference": "490de66b7136a7b6109f79864ddb8ff7e7a5c2fa",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1592,7 @@
                 "jqBootstrapValidation",
                 "validator"
             ],
-            "time": "2018-08-28T13:42:32+00:00"
+            "time": "2018-08-31T09:05:57+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -1437,12 +1600,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/javascript.jquery.jquery.git",
-                "reference": "435aad622cbab1bb6de26fcf35f74dd32d414d0f"
+                "reference": "aa897e23843526baa1e766637049e3fcac7d877b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/435aad622cbab1bb6de26fcf35f74dd32d414d0f",
-                "reference": "435aad622cbab1bb6de26fcf35f74dd32d414d0f",
+                "url": "https://api.github.com/repos/thecodingmachine/javascript.jquery.jquery/zipball/aa897e23843526baa1e766637049e3fcac7d877b",
+                "reference": "aa897e23843526baa1e766637049e3fcac7d877b",
                 "shasum": ""
             },
             "require": {
@@ -1476,7 +1639,7 @@
                 "jquery",
                 "mouf"
             ],
-            "time": "2018-08-28T07:34:51+00:00"
+            "time": "2018-08-31T09:02:27+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -3045,6 +3208,58 @@
             "time": "2017-02-14T16:28:37+00:00"
         },
         {
+            "name": "psr/http-factory",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-factory.git",
+                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
+                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "keywords": [
+                "factory",
+                "http",
+                "message",
+                "psr",
+                "psr-17",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2018-07-30T21:54:04+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -3980,6 +4195,50 @@
             ],
             "description": "Cross-framework module for Twig",
             "time": "2018-08-19T19:50:02+00:00"
+        },
+        {
+            "name": "thecodingmachine/whoops-middleware-universal-module",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/whoops-middleware-universal-module.git",
+                "reference": "bfa71f70fd3664cff82a743afe8bf56afd43f119"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/whoops-middleware-universal-module/zipball/bfa71f70fd3664cff82a743afe8bf56afd43f119",
+                "reference": "bfa71f70fd3664cff82a743afe8bf56afd43f119",
+                "shasum": ""
+            },
+            "require": {
+                "middlewares/whoops": "^1.1",
+                "php": ">=7.0",
+                "thecodingmachine/funky": "^1",
+                "thecodingmachine/middleware-list-universal-module": "^1.0"
+            },
+            "require-dev": {
+                "mnapoli/simplex": "^0.5.0",
+                "phpunit/phpunit": "^7",
+                "satooshi/php-coveralls": "^2",
+                "zendframework/zend-diactoros": "^1.7.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cross-framework module for franzliedke/whoops-middleware",
+            "time": "2018-06-06T13:42:37+00:00"
         },
         {
             "name": "twig/twig",

@@ -10,6 +10,7 @@
 
 namespace Mouf\Controllers;
 
+use Mouf\Html\Template\TemplateInterface;
 use Mouf\MoufCache;
 
 use Mouf\MoufClassExplorer;
@@ -17,17 +18,20 @@ use Mouf\MoufClassExplorer;
 use Mouf\Composer\ComposerService;
 
 use Mouf\Html\HtmlElement\HtmlBlock;
+use Mouf\Mvc\Splash\HtmlResponse;
 use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\MoufManager;
 
 use Mouf\MoufSearchable;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Security\Logged;
+use TheCodingMachine\Splash\Annotations\URL;
+use Zend\Diactoros\Response\RedirectResponse;
 
 /**
  * The controller allowing access to the Mouf framework.
  *
- * @Component
  */
 class MoufController extends Controller implements MoufSearchable {
 
@@ -48,20 +52,16 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * The template used by the main page for mouf.
      *
-     * @Property
-     * @Compulsory
      * @var TemplateInterface
      */
-    public $template;
+    private $template;
 
     /**
      * The content block the template will be writting into.
      *
-     * @Property
-     * @Compulsory
      * @var HtmlBlock
      */
-    public $contentBlock;
+    private $contentBlock;
 
     /**
      * Array of all instances sorted by package and by class.
@@ -98,12 +98,18 @@ class MoufController extends Controller implements MoufSearchable {
      */
     protected $anonymousNames = array();
 
+    public function __construct(TemplateInterface $template, HtmlBlock $contentBlock)
+    {
+        $this->template = $template;
+        $this->contentBlock = $contentBlock;
+    }
+
     /**
      * Redirects the user to the right controller.
-     * This can be the detail controller, or any other controller, depending on the @ExtendedAction annotation.
+     * This can be the detail controller, or any other controller, depending on the #@ExtendedAction annotation.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/displayComponent")
+     * @Logged()
      * @param string $name the name of the component to display
      * @param string $selfedit If true, the name of the component must be a component from the Mouf framework itself (internal use only)
      */
@@ -133,8 +139,7 @@ class MoufController extends Controller implements MoufSearchable {
         }
 
         // Note: performing a redirect is not optimal as it requires a reload of the page!
-        header("Location: ".$destinationUrl."?name=".urlencode($name)."&selfedit=".urlencode($selfedit));
-        exit;
+        return new RedirectResponse($destinationUrl."?name=".urlencode($name)."&selfedit=".urlencode($selfedit));
     }
 
     /**
@@ -149,8 +154,8 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * Lists all the instances available, sorted by "package" (directory of the class).
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/")
+     * @Logged()
      */
     public function defaultAction($selfedit = "false", $query = null, $show_anonymous = "false") {
         //$test = new ComposerService();
@@ -357,7 +362,7 @@ class MoufController extends Controller implements MoufSearchable {
         } else {
             $this->contentBlock->addFile(dirname(__FILE__)."/../../views/listComponentsByDirectory.php", $this);
             //$this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponentsByDirectory.php", $this);
-            $this->template->toHtml();
+            return new HtmlResponse($this->template);
         }
     }
 
@@ -383,8 +388,8 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * Lists all the components available, ordered by creation date, in order to edit them.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/instancesByDate")
+     * @Logged()
      */
     public function instancesByDate($selfedit = "false") {
         $this->selfedit = $selfedit;
@@ -396,7 +401,7 @@ class MoufController extends Controller implements MoufSearchable {
         }
 
         $this->contentBlock->addFile(dirname(__FILE__)."/../views/listComponents.php", $this);
-        $this->template->toHtml();
+        return new HtmlResponse($this->template->toHtml());
     }
 
     /**
@@ -405,7 +410,7 @@ class MoufController extends Controller implements MoufSearchable {
      * @Action
      * @Logged
      */
-    public function newInstance($selfedit = "false", $instanceName=null, $instanceClass=null) {
+    /*public function newInstance($selfedit = "false", $instanceName=null, $instanceClass=null) {
         //$componentsList = Moufspector::getComponentsList();
         $this->selfedit = $selfedit;
         $componentsList = MoufReflectionProxy::getComponentsList($selfedit=="true");
@@ -415,13 +420,13 @@ class MoufController extends Controller implements MoufSearchable {
         $template->addContentFunction(array($this, "displayNewInstanceScreen"), $componentsList, $selfedit, $instanceName, $instanceClass);
         //$template->addContentFile(dirname(__FILE__)."/../views/displayNewInstance.php", $this);
         $template->toHtml();
-    }
+    }*/
 
     /**
      * Displays the screen allowing to create new instances.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/newInstance2")
+     * @Logged()
      */
     public function newInstance2($selfedit = "false", $instanceName=null, $instanceClass=null) {
         $this->instanceName = $instanceName;
@@ -429,20 +434,20 @@ class MoufController extends Controller implements MoufSearchable {
         $this->selfedit = $selfedit;
 
         $this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstance.php", $this);
-        $this->template->toHtml();
+        return new HtmlResponse($this->template);
     }
 
     /**
      * Purge the cache and redisplays the screen allowing to create new instances.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/refreshNewInstance")
+     * @Logged()
      */
     public function refreshNewInstance($selfedit = "false", $instanceName=null, $instanceClass=null) {
         $moufCache = new MoufCache();
         $moufCache->purgeAll();
 
-        header("Location: newInstance2?selfedit=".$selfedit."&instanceName=".urlencode($instanceName)."&instanceClass=".urlencode($instanceClass));
+        return new RedirectResponse("newInstance2?selfedit=".$selfedit."&instanceName=".urlencode($instanceName)."&instanceClass=".urlencode($instanceClass));
     }
 
     /**
@@ -456,8 +461,8 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * The action that creates a new component instance.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/createComponent")
+     * @Logged()
      * @param string $instanceName The name of the instance to create
      * @param string $instanceClass The class of the component to create
      */
@@ -481,8 +486,8 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * Removes the instance passed in parameter.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/deleteInstance")
+     * @Logged()
      */
     public function deleteInstance($selfedit = "false", $instanceName=null, $returnurl = null) {
         $this->selfedit = $selfedit;
@@ -497,16 +502,16 @@ class MoufController extends Controller implements MoufSearchable {
         $this->moufManager->rewriteMouf();
 
         if ($returnurl) {
-            header("Location:".$returnurl);
+            return new RedirectResponse($returnurl);
         } else {
-            header("Location: .?selfedit=".$selfedit);
+            return new RedirectResponse(".?selfedit=".$selfedit);
         }
     }
 
     /**
      * Removes all the instances passed in parameter
-     * @Action
-     * @Logged
+     * @URL("mouf/deleteInstances")
+     * @Logged()
      * @param string $selfedit
      * @param array $instancesNames
      * @param string $returnurl
@@ -529,9 +534,9 @@ class MoufController extends Controller implements MoufSearchable {
         }
 
         if ($returnurl) {
-            header("Location:".$returnurl);
+            return new RedirectResponse($returnurl);
         } else {
-            header("Location: .?selfedit=".$selfedit);
+            return new RedirectResponse(".?selfedit=".$selfedit);
         }
     }
 
@@ -539,13 +544,14 @@ class MoufController extends Controller implements MoufSearchable {
      * Outputs HTML that will be displayed in the search result screen.
      * If there are no results, this should not return anything.
      *
-     * @Action
+     * @URL("mouf/search")
+     * @Logged()
      * @param string $query The full-text search query performed.
      * @param string $selfedit Whether we are in self-edit mode or not.
      */
     public function search($query, $selfedit = "false") {
         $this->ajax = true;
-        $this->defaultAction($selfedit, $query);
+        return $this->defaultAction($selfedit, $query);
     }
 
     /**
@@ -561,22 +567,22 @@ class MoufController extends Controller implements MoufSearchable {
     /**
      * Displays the screen allowing to create a new instance by PHP code.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/newInstanceByCallback")
+     * @Logged()
      */
     public function newInstanceByCallback($selfedit = "false", $instanceName=null) {
         $this->instanceName = $instanceName;
         $this->selfedit = $selfedit;
 
         $this->contentBlock->addFile(dirname(__FILE__)."/../../views/instances/newInstanceByCallback.php", $this);
-        $this->template->toHtml();
+        return new HtmlResponse($this->template);
     }
 
     /**
      * Performs the action of creating a new instance.
      *
-     * @Action
-     * @Logged
+     * @URL("mouf/createInstanceByCode")
+     * @Logged()
      */
     public function createInstanceByCode($selfedit = "false", $instanceName=null) {
         if (!$instanceName) {
@@ -594,7 +600,6 @@ class MoufController extends Controller implements MoufSearchable {
 
         $this->moufManager->createInstanceByCode()->setName($instanceName);
         $this->moufManager->rewriteMouf();
-        header("Location: ".MOUF_URL."ajaxinstance/?name=".urlencode($instanceName)."&selfedit=".$selfedit);
+        return new RedirectResponse(MOUF_URL."ajaxinstance/?name=".urlencode($instanceName)."&selfedit=".$selfedit);
     }
 }
-?>

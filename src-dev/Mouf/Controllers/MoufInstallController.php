@@ -20,7 +20,13 @@ use Mouf\Installer\ComposerInstaller;
 use Mouf\Html\HtmlElement\HtmlBlock;
 
 use Mouf\Mvc\Splash\Controllers\Controller;
+use Mouf\Mvc\Splash\HtmlResponse;
+use Mouf\Security\UserFileDao\UserFileBean;
+use Mouf\Security\UserFileDao\UserFileDao;
+use Psr\Http\Message\ResponseInterface;
+use TheCodingMachine\Splash\Annotations\Post;
 use TheCodingMachine\Splash\Annotations\URL;
+use Zend\Diactoros\Response\RedirectResponse;
 
 
 /**
@@ -43,10 +49,16 @@ class MoufInstallController extends Controller {
 	 */
     private $contentBlock;
 
-    public function __construct(TemplateInterface $template, HtmlBlock $contentBlock)
+    /**
+     * @var UserFileDao
+     */
+    private $userFileDao;
+
+    public function __construct(TemplateInterface $template, HtmlBlock $contentBlock, UserFileDao $userFileDao)
     {
         $this->template = $template;
         $this->contentBlock = $contentBlock;
+        $this->userFileDao = $userFileDao;
     }
 
 
@@ -91,12 +103,12 @@ class MoufInstallController extends Controller {
 	 * Performs the installation by creating all required files.
 	 * 
 	 * @URL("install")
+     * @Post()
 	 */
-	public function install() {
+	public function install(string $login, string $password): ResponseInterface {
 		if (file_exists(__DIR__.'/../../../../../../mouf/no_commit/user.php')) {
 			$this->contentBlock->addFile(dirname(__FILE__)."/../../views/mouf_installer/moufusers_exists.php", $this);
-			$this->template->toHtml();
-			return;
+			return new HtmlResponse($this->template);
 		}
 		
 		$oldUmask = umask();
@@ -178,22 +190,14 @@ MoufManager::initMoufManager();
 		
 		// Finally 3 :), let's generate the user.php file:
 		if (!file_exists(__DIR__."/../../../../../../mouf/no_commit/user.php")) {
-			$moufConfig = "<?php
-/**
- * This contains the users allowed to access the Mouf framework.
- */
-\$users[".var_export(userinput_to_plainstring($_REQUEST['login']), true)."] = array('password'=>".var_export(sha1(userinput_to_plainstring($_REQUEST['password'])), true).", 'options'=>null);
-		
-?>";
-		
-			file_put_contents(__DIR__."/../../../../../../mouf/no_commit/user.php", $moufConfig);
-			chmod(__DIR__."/../../../../../../mouf/no_commit/user.php", 0664);
+		    $user = new UserFileBean($login);
+		    $user->setClearTextPassword($password);
+		    $this->userFileDao->registerUser($user);
+			$this->userFileDao->write();
 		}
 		
 		umask($oldUmask);
 		
-		header("Location: ".ROOT_URL);
-		
-		
+		return new RedirectResponse(ROOT_URL);
 	}
 }

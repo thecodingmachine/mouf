@@ -32,7 +32,7 @@ class MoufValidatorController extends Controller {
 	 * 
 	 * @var MoufValidatorService
 	 */
-	private $validatorService;
+	protected $validatorService;
 	
 	/**
 	 * The template used by the main page for mouf.

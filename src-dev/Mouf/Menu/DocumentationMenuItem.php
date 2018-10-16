@@ -40,7 +40,7 @@ class DocumentationMenuItem extends MenuItem {
 	 * (non-PHPdoc)
 	 * @see \Mouf\Html\Widgets\Menu\MenuItem::getChildren()
 	 */
-	public function getChildren() {
+	public function getChildren(): array {
 		return $this->getMenuTree();
 	}
 	
