@@ -16,7 +16,7 @@ while (ob_get_level() != 0) {
 
 ini_set('display_errors', 1);
 // Add E_ERROR to error reporting if it is not already set
-error_reporting(E_ERROR | error_reporting());
+error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | error_reporting());
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
