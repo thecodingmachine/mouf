@@ -23,7 +23,7 @@
 		}
 	],
 	"require" : {
-		"php" : ">=5.3.9",
+		"php" : ">=5.4.6",
 		"mouf/mouf-installer" : "~2.1.0@dev",
 		"mouf/mouf-validators-interface" : "^2.0",
 		"container-interop/container-interop" : "^1.0",

@@ -19,7 +19,7 @@ use Mouf\MoufManager;
 
 ini_set('display_errors', 1);
 // Add E_ERROR to error reporting it it is not already set
-error_reporting(E_ERROR | error_reporting());
+error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | error_reporting());
 
 
 // Force loading autoload from mouf's version of PhpParser
