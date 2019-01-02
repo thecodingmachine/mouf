@@ -641,7 +641,11 @@ class MoufManager implements ContainerInterface {
 							throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
 					}
 				}
-				$object = $classDescriptor->newInstanceArgs($constructorParameters);
+				if (!isset($this->objectInstances[$instanceName])) {
+						$object = $classDescriptor->newInstanceArgs($constructorParameters);
+				} else {
+						$object = $this->objectInstances[$instanceName];
+				}
 			} else {
 				$object = new $className();
 			}
