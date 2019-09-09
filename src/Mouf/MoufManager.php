@@ -792,38 +792,45 @@ class MoufManager implements ContainerInterface {
 		$this->declaredInstances[$instanceName]["setterProperties"][$setterName]["metadata"] = $metadata;
 	}
 
-	/**
-	 * Binds a parameter to the instance using a constructor parameter.
-	 *
-	 * @param string $instanceName
-	 * @param string $index
-	 * @param string $paramValue
-	 * @param string $parameterType Can be one of "primitive" or "object".
-	 * @param string $type Can be one of "string|config|request|session|php"
-	 * @param array $metadata An array containing metadata
-	 */
-	public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
-		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
-			throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session");
-		}
+    /**
+     * Binds a parameter to the instance using a constructor parameter.
+     *
+     * @param string $instanceName
+     * @param string $index
+     * @param string $paramValue
+     * @param string $parameterType Can be one of "primitive" or "object".
+     * @param string $type Can be one of "string|config|request|session|php"
+     * @param array $metadata An array containing metadata
+     * @throws MoufContainerException
+     */
+    public function setParameterViaConstructor($instanceName, $index, $paramValue, $parameterType, $type = "string", array $metadata = array()) {
+        if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
+            throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session");
+        }
 
-		$this->declaredInstances[$instanceName]['constructor'][$index]["value"] = $paramValue;
-		$this->declaredInstances[$instanceName]['constructor'][$index]["parametertype"] = $parameterType;
-		$this->declaredInstances[$instanceName]['constructor'][$index]["type"] = $type;
-		$this->declaredInstances[$instanceName]['constructor'][$index]["metadata"] = $metadata;
-		
-		// Now, let's make sure that all indexes BEFORE ours are set, and let's order everything by key.
-		for ($i=0; $i<$index; $i++) {
-			if (!isset($this->declaredInstances[$instanceName]['constructor'][$i])) {
-				// If the parameter before does not exist, let's set it to null.
-				$this->declaredInstances[$instanceName]['constructor'][$i]["value"] = null;
-				$this->declaredInstances[$instanceName]['constructor'][$i]["parametertype"] = "primitive";
-				$this->declaredInstances[$instanceName]['constructor'][$i]["type"] = "string";
-				$this->declaredInstances[$instanceName]['constructor'][$i]["metadata"] = array();
-			}
-		}
-		ksort($this->declaredInstances[$instanceName]['constructor']);
-	}
+        $this->declaredInstances[$instanceName]['constructor'][$index] =
+            array(
+                "value" => $paramValue,
+                "parametertype" => $parameterType,
+                "type" => $type,
+                "metadata" => $metadata
+            );
+
+        // Now, let's make sure that all indexes BEFORE ours are set, and let's order everything by key.
+        for ($i=0; $i<$index; $i++) {
+            if (!isset($this->declaredInstances[$instanceName]['constructor'][$i])) {
+                // If the parameter before does not exist, let's set it to null.
+                $this->declaredInstances[$instanceName]['constructor'][$i] =
+                    array(
+                        "value" => null,
+                        "parametertype" => "primitive",
+                        "type" => "string",
+                        "metadata" => array()
+                    );
+            }
+        }
+        ksort($this->declaredInstances[$instanceName]['constructor']);
+    }
 
 
 	/**
