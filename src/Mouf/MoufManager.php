@@ -343,7 +343,7 @@ class MoufManager implements ContainerInterface {
 			}
 		}
 		
-		if (strpos($className, '\\' === 0)) {
+		if (strpos($className, '\\') === 0) {
 			$className = substr($className, 1);
 		}
 		

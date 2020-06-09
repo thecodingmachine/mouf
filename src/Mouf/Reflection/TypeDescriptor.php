@@ -82,7 +82,7 @@ class TypeDescriptor {
 	public static function parseTokens(&$tokens) {
         do {
 		    $typeArray = array_shift($tokens);
-            if ($typeArray['token'] == "T_WHITESPACE"){
+            if ($typeArray['token'] === "T_WHITESPACE"){
                 continue;
             }
             else {
@@ -90,7 +90,7 @@ class TypeDescriptor {
             }
         }while(true);
 
-        if ($typeArray['token'] != 'T_TYPE') {
+        if ($typeArray['token'] !== 'T_TYPE') {
 			throw new MoufTypeParserException("Invalid type! Expecting a type name. Got '".$typeArray['match']."'");
 		}
 		
@@ -103,6 +103,9 @@ class TypeDescriptor {
 		
 		do {
 			$continue = false;
+			if (empty($tokens)) { // @TODO Unsure about this ... but $tokens might be empty and it breaks
+			    break;
+            }
 			$nextToken = array_shift($tokens);
 		
 			switch ($nextToken['token']) {
