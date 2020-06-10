@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "7d1a6412f0624d7061cc2da87758e217",
-    "content-hash": "e24775242298cf90a062f14269e1bcac",
+    "content-hash": "3e4e3c0bd23e09a4b743b84d3d4a7573",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -32,34 +31,33 @@
                 "MIT"
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "time": "2014-12-30 15:22:37"
+            "abandoned": "psr/container",
+            "time": "2014-12-30T15:22:37+00:00"
         },
         {
             "name": "michelf/php-markdown",
-            "version": "1.6.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "156e56ee036505ec637d761ee62dc425d807183c"
+                "reference": "c83178d49e372ca967d1a8c77ae4e051b3a3c75c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/156e56ee036505ec637d761ee62dc425d807183c",
-                "reference": "156e56ee036505ec637d761ee62dc425d807183c",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/c83178d49e372ca967d1a8c77ae4e051b3a3c75c",
+                "reference": "c83178d49e372ca967d1a8c77ae4e051b3a3c75c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-lib": "1.4.x-dev"
-                }
+            "require-dev": {
+                "phpunit/phpunit": ">=4.3 <5.8"
             },
+            "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Michelf": ""
+                "psr-4": {
+                    "Michelf\\": "Michelf/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -83,7 +81,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2015-12-24 01:37:31"
+            "time": "2019-12-02T02:32:27+00:00"
         },
         {
             "name": "mouf/classname-mapper",
@@ -129,7 +127,7 @@
                 "autoload",
                 "composer"
             ],
-            "time": "2016-02-01 09:23:40"
+            "time": "2016-02-01T09:23:40+00:00"
         },
         {
             "name": "mouf/famfamfam",
@@ -171,7 +169,7 @@
                 "icons",
                 "silk"
             ],
-            "time": "2014-06-03 20:29:43"
+            "time": "2014-06-03T20:29:43+00:00"
         },
         {
             "name": "mouf/html.htmlelement",
@@ -222,7 +220,7 @@
                 "interface",
                 "tohtml"
             ],
-            "time": "2014-06-03 20:28:43"
+            "time": "2014-06-03T20:28:43+00:00"
         },
         {
             "name": "mouf/html.renderer",
@@ -300,7 +298,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2015-10-14 08:39:26"
+            "time": "2015-10-14T08:39:26+00:00"
         },
         {
             "name": "mouf/html.renderer.twig-extensions",
@@ -366,7 +364,7 @@
                 "render",
                 "tohtml"
             ],
-            "time": "2016-04-04 16:24:06"
+            "time": "2016-04-04T16:24:06+00:00"
         },
         {
             "name": "mouf/html.template.bootstrap",
@@ -426,7 +424,7 @@
                 "mouf",
                 "template"
             ],
-            "time": "2013-07-17 15:47:31"
+            "time": "2013-07-17T15:47:31+00:00"
         },
         {
             "name": "mouf/html.template.menus.basicmenu",
@@ -470,7 +468,7 @@
                 "menu",
                 "mouf"
             ],
-            "time": "2014-06-03 20:27:41"
+            "time": "2014-06-03T20:27:41+00:00"
         },
         {
             "name": "mouf/html.template.mouftemplate",
@@ -514,7 +512,7 @@
                 "mouftemplate",
                 "template"
             ],
-            "time": "2014-06-03 20:28:14"
+            "time": "2014-06-03T20:28:14+00:00"
         },
         {
             "name": "mouf/html.template.templateinterface",
@@ -559,7 +557,7 @@
                 "template",
                 "templateinterface"
             ],
-            "time": "2014-12-10 16:01:57"
+            "time": "2014-12-10T16:01:57+00:00"
         },
         {
             "name": "mouf/html.utils.bootstrap",
@@ -610,7 +608,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2013-03-19 22:41:54"
+            "time": "2013-03-19T22:41:54+00:00"
         },
         {
             "name": "mouf/html.utils.weblibrarymanager",
@@ -672,7 +670,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2014-05-28 07:46:16"
+            "time": "2014-05-28T07:46:16+00:00"
         },
         {
             "name": "mouf/html.utils.weblibrarymanager.component-installer",
@@ -722,7 +720,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2016-05-12 11:27:15"
+            "time": "2016-05-12T11:27:15+00:00"
         },
         {
             "name": "mouf/html.widgets.menu",
@@ -767,7 +765,7 @@
                 "mouf",
                 "template"
             ],
-            "time": "2014-04-25 14:27:23"
+            "time": "2014-04-25T14:27:23+00:00"
         },
         {
             "name": "mouf/html.widgets.messageservice",
@@ -828,7 +826,7 @@
                 "widget",
                 "widgets"
             ],
-            "time": "2013-06-19 13:17:17"
+            "time": "2013-06-19T13:17:17+00:00"
         },
         {
             "name": "mouf/javascript.ace",
@@ -875,7 +873,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2014-04-08 09:56:23"
+            "time": "2014-04-08T09:56:23+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jq-bootstrap-validation",
@@ -925,7 +923,7 @@
                 "jqBootstrapValidation",
                 "validator"
             ],
-            "time": "2013-06-17 14:11:31"
+            "time": "2013-06-17T14:11:31+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery",
@@ -974,7 +972,7 @@
                 "jquery",
                 "mouf"
             ],
-            "time": "2014-02-18 10:06:30"
+            "time": "2014-02-18T10:06:30+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery-filetree",
@@ -1025,7 +1023,7 @@
                 "jquery filetree",
                 "mouf"
             ],
-            "time": "2014-06-03 20:44:49"
+            "time": "2014-06-03T20:44:49+00:00"
         },
         {
             "name": "mouf/javascript.jquery.jquery-ui",
@@ -1076,7 +1074,7 @@
                 "jquery-ui",
                 "mouf"
             ],
-            "time": "2013-04-11 12:11:39"
+            "time": "2013-04-11T12:11:39+00:00"
         },
         {
             "name": "mouf/javascript.syntaxhighlighter",
@@ -1130,7 +1128,7 @@
                 "javascript",
                 "mouf"
             ],
-            "time": "2014-06-03 20:45:27"
+            "time": "2014-06-03T20:45:27+00:00"
         },
         {
             "name": "mouf/javascript.underscore",
@@ -1180,7 +1178,7 @@
                 "underscore",
                 "underscorejs"
             ],
-            "time": "2014-06-03 20:45:03"
+            "time": "2014-06-03T20:45:03+00:00"
         },
         {
             "name": "mouf/mouf-installer",
@@ -1228,7 +1226,7 @@
                 "install",
                 "mouf"
             ],
-            "time": "2014-06-03 20:47:09"
+            "time": "2014-06-03T20:47:09+00:00"
         },
         {
             "name": "mouf/mouf-validators-interface",
@@ -1270,7 +1268,7 @@
                 "mouf",
                 "validators"
             ],
-            "time": "2013-10-29 18:21:58"
+            "time": "2013-10-29T18:21:58+00:00"
         },
         {
             "name": "mouf/mvc.splash",
@@ -1377,7 +1375,7 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2014-08-28 14:14:15"
+            "time": "2014-08-28T14:14:15+00:00"
         },
         {
             "name": "mouf/mvc.splash-common",
@@ -1443,7 +1441,7 @@
                 "splash",
                 "splash-common"
             ],
-            "time": "2014-08-22 14:52:37"
+            "time": "2014-08-22T14:52:37+00:00"
         },
         {
             "name": "mouf/security.simplelogincontroller",
@@ -1488,7 +1486,7 @@
                 "mouf",
                 "security"
             ],
-            "time": "2014-06-03 20:30:24"
+            "time": "2014-06-03T20:30:24+00:00"
         },
         {
             "name": "mouf/security.userfiledao",
@@ -1533,7 +1531,7 @@
                 "security",
                 "userdao"
             ],
-            "time": "2014-06-03 20:31:23"
+            "time": "2014-06-03T20:31:23+00:00"
         },
         {
             "name": "mouf/security.userservice",
@@ -1611,7 +1609,7 @@
                 "security",
                 "user"
             ],
-            "time": "2014-06-04 16:08:19"
+            "time": "2014-06-04T16:08:19+00:00"
         },
         {
             "name": "mouf/security.userservice-splash",
@@ -1657,7 +1655,7 @@
                 "splash",
                 "user"
             ],
-            "time": "2015-07-26 07:45:28"
+            "time": "2015-07-26T07:45:28+00:00"
         },
         {
             "name": "mouf/utils.action.action-interface",
@@ -1701,7 +1699,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2013-10-29 18:21:59"
+            "time": "2013-10-29T18:21:59+00:00"
         },
         {
             "name": "mouf/utils.action.common-action",
@@ -1750,7 +1748,7 @@
                 "actioninterface",
                 "mouf"
             ],
-            "time": "2015-01-23 11:09:24"
+            "time": "2015-01-23T11:09:24+00:00"
         },
         {
             "name": "mouf/utils.cache.apc-cache",
@@ -1809,7 +1807,7 @@
                 "cache",
                 "mouf"
             ],
-            "time": "2016-03-23 11:27:26"
+            "time": "2016-03-23T11:27:26+00:00"
         },
         {
             "name": "mouf/utils.cache.cache-interface",
@@ -1860,7 +1858,7 @@
                 "interface",
                 "mouf"
             ],
-            "time": "2013-10-29 18:21:59"
+            "time": "2013-10-29T18:21:59+00:00"
         },
         {
             "name": "mouf/utils.cache.file-cache",
@@ -1917,7 +1915,7 @@
                 "file",
                 "mouf"
             ],
-            "time": "2015-12-31 13:37:36"
+            "time": "2015-12-31T13:37:36+00:00"
         },
         {
             "name": "mouf/utils.cache.in-memory-cache",
@@ -1961,7 +1959,7 @@
                 "in-memory",
                 "mouf"
             ],
-            "time": "2015-07-10 13:31:07"
+            "time": "2015-07-10T13:31:07+00:00"
         },
         {
             "name": "mouf/utils.cache.no-cache",
@@ -2017,7 +2015,7 @@
                 "mouf",
                 "nocache"
             ],
-            "time": "2013-03-19 22:09:31"
+            "time": "2013-03-19T22:09:31+00:00"
         },
         {
             "name": "mouf/utils.common.conditioninterface",
@@ -2059,7 +2057,7 @@
                 "condition",
                 "interface"
             ],
-            "time": "2015-01-28 15:50:43"
+            "time": "2015-01-28T15:50:43+00:00"
         },
         {
             "name": "mouf/utils.common.getvars",
@@ -2103,7 +2101,7 @@
                 "protect",
                 "request"
             ],
-            "time": "2014-06-04 16:18:33"
+            "time": "2014-06-04T16:18:33+00:00"
         },
         {
             "name": "mouf/utils.common.url-interface",
@@ -2152,7 +2150,7 @@
                 "url",
                 "urlinterface"
             ],
-            "time": "2013-10-29 18:21:59"
+            "time": "2013-10-29T18:21:59+00:00"
         },
         {
             "name": "mouf/utils.common.validators",
@@ -2205,7 +2203,7 @@
                 "utils",
                 "validators"
             ],
-            "time": "2014-06-04 16:32:03"
+            "time": "2014-06-04T16:32:03+00:00"
         },
         {
             "name": "mouf/utils.constants.debug",
@@ -2260,7 +2258,7 @@
                 "debug",
                 "mouf"
             ],
-            "time": "2014-06-16 09:18:43"
+            "time": "2014-06-16T09:18:43+00:00"
         },
         {
             "name": "mouf/utils.constants.secret",
@@ -2315,7 +2313,7 @@
                 "random",
                 "secret"
             ],
-            "time": "2013-11-05 16:10:29"
+            "time": "2013-11-05T16:10:29+00:00"
         },
         {
             "name": "mouf/utils.i18n.fine",
@@ -2403,7 +2401,7 @@
                 "internationalisation",
                 "mouf"
             ],
-            "time": "2015-04-15 07:21:29"
+            "time": "2015-04-15T07:21:29+00:00"
         },
         {
             "name": "mouf/utils.log.errorlog_logger",
@@ -2462,7 +2460,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2013-10-29 18:22:00"
+            "time": "2013-10-29T18:22:00+00:00"
         },
         {
             "name": "mouf/utils.log.log_interface",
@@ -2511,7 +2509,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2014-06-05 12:51:58"
+            "time": "2014-06-05T12:51:58+00:00"
         },
         {
             "name": "mouf/utils.log.psr.errorlog_logger",
@@ -2567,7 +2565,7 @@
                 "log",
                 "logger"
             ],
-            "time": "2013-10-29 18:36:52"
+            "time": "2013-10-29T18:36:52+00:00"
         },
         {
             "name": "mouf/utils.session.session-manager",
@@ -2623,7 +2621,7 @@
                 "mouf",
                 "session"
             ],
-            "time": "2015-08-10 14:03:37"
+            "time": "2015-08-10T14:03:37+00:00"
         },
         {
             "name": "mouf/utils.value.value-interface",
@@ -2671,7 +2669,7 @@
                 "mouf",
                 "value"
             ],
-            "time": "2013-10-29 18:22:00"
+            "time": "2013-10-29T18:22:00+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -2722,7 +2720,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2016-04-19 13:41:41"
+            "time": "2016-04-19T13:41:41+00:00"
         },
         {
             "name": "psr/log",
@@ -2760,7 +2758,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2012-12-21T11:40:51+00:00"
         },
         {
             "name": "twig/twig",
@@ -2821,7 +2819,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-25 21:22:18"
+            "time": "2016-01-25T21:22:18+00:00"
         }
     ],
     "packages-dev": [
@@ -2877,7 +2875,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2926,7 +2924,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-03 12:10:50"
+            "time": "2015-02-03T12:10:50+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -2988,7 +2986,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2016-02-15 07:46:21"
+            "time": "2016-02-15T07:46:21+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3050,7 +3048,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06 15:47:00"
+            "time": "2015-10-06T15:47:00+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3097,7 +3095,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2015-06-21 13:08:43"
+            "time": "2015-06-21T13:08:43+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -3138,7 +3136,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21 13:50:34"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -3179,7 +3177,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2015-06-21 08:01:12"
+            "time": "2015-06-21T08:01:12+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -3228,7 +3226,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-09-15 10:49:45"
+            "time": "2015-09-15T10:49:45+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -3300,7 +3298,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-03-14 06:16:08"
+            "time": "2016-03-14T06:16:08+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3356,7 +3354,8 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02 06:51:40"
+            "abandoned": true,
+            "time": "2015-10-02T06:51:40+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -3420,7 +3419,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2015-07-26 15:48:44"
+            "time": "2015-07-26T15:48:44+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -3472,7 +3471,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08 07:14:41"
+            "time": "2015-12-08T07:14:41+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -3522,7 +3521,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-05-04 07:59:13"
+            "time": "2016-05-04T07:59:13+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -3588,7 +3587,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2015-06-21 07:55:53"
+            "time": "2015-06-21T07:55:53+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -3639,7 +3638,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12 03:26:01"
+            "time": "2015-10-12T03:26:01+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -3692,7 +3691,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-11-11 19:50:13"
+            "time": "2015-11-11T19:50:13+00:00"
         },
         {
             "name": "sebastian/version",
@@ -3727,7 +3726,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2015-06-21T13:59:46+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -3776,7 +3775,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-04 07:55:57"
+            "time": "2016-03-04T07:55:57+00:00"
         }
     ],
     "aliases": [],
@@ -3785,5 +3784,6 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
