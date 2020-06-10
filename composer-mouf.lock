@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e4e3c0bd23e09a4b743b84d3d4a7573",
+    "content-hash": "1f5eacc465c32d871a344336381447ec",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1272,22 +1272,22 @@
         },
         {
             "name": "mouf/mvc.splash",
-            "version": "v4.3.1",
+            "version": "v4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mvc.splash.git",
-                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a"
+                "reference": "8df74ec0aa84f21bef8c4e3d2ad88eb6fc2b469f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/fd988413802baef0c0e4a0c2c1809d59deec280a",
-                "reference": "fd988413802baef0c0e4a0c2c1809d59deec280a",
+                "url": "https://api.github.com/repos/thecodingmachine/mvc.splash/zipball/8df74ec0aa84f21bef8c4e3d2ad88eb6fc2b469f",
+                "reference": "8df74ec0aa84f21bef8c4e3d2ad88eb6fc2b469f",
                 "shasum": ""
             },
             "require": {
                 "mouf/html.template.bootstrap": ">=2.1, <4.0",
                 "mouf/mouf-validators-interface": "~2.0",
-                "mouf/mvc.splash-common": "4.3.*",
+                "mouf/mvc.splash-common": "~4.3",
                 "mouf/utils.cache.apc-cache": "~2.1",
                 "mouf/utils.cache.file-cache": "~2.1",
                 "mouf/utils.cache.no-cache": "2.0.*",
@@ -1375,7 +1375,7 @@
                 "mvc",
                 "splash"
             ],
-            "time": "2014-08-28T14:14:15+00:00"
+            "time": "2020-06-10T08:03:44+00:00"
         },
         {
             "name": "mouf/mvc.splash-common",
@@ -2061,16 +2061,16 @@
         },
         {
             "name": "mouf/utils.common.getvars",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/utils.common.getvars.git",
-                "reference": "b1e42d329fa0861c6f83df176f7aae904cd35740"
+                "reference": "83d1f501d44828ee481ee742fb166e1c0c00a1f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/b1e42d329fa0861c6f83df176f7aae904cd35740",
-                "reference": "b1e42d329fa0861c6f83df176f7aae904cd35740",
+                "url": "https://api.github.com/repos/thecodingmachine/utils.common.getvars/zipball/83d1f501d44828ee481ee742fb166e1c0c00a1f3",
+                "reference": "83d1f501d44828ee481ee742fb166e1c0c00a1f3",
                 "shasum": ""
             },
             "require": {
@@ -2101,7 +2101,7 @@
                 "protect",
                 "request"
             ],
-            "time": "2014-06-04T16:18:33+00:00"
+            "time": "2020-06-10T08:05:09+00:00"
         },
         {
             "name": "mouf/utils.common.url-interface",
