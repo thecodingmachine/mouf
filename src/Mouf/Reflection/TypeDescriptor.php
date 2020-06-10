@@ -100,12 +100,10 @@ class TypeDescriptor {
 		if (empty($typeArray)) {
 			return $type;
 		}
-		
-		do {
+
+		$continue = true;
+		while ($continue && !empty($tokens)) {
 			$continue = false;
-			if (empty($tokens)) { // @TODO Unsure about this ... but $tokens might be empty and it breaks
-			    break;
-            }
 			$nextToken = array_shift($tokens);
 		
 			switch ($nextToken['token']) {
@@ -155,7 +153,7 @@ class TypeDescriptor {
 				case 'T_OR':
 					break;
 			}
-		} while ($continue);
+		}
 		
 		return $type;
 	}
