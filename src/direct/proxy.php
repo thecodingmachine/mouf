@@ -49,7 +49,7 @@ if (isset($_REQUEST["class"])) {
 }
 $method = $_REQUEST["method"];
 $args = $_REQUEST["args"];
-if (get_magic_quotes_gpc()==1)
+if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 {
 	if (isset($_REQUEST["instance"])) {
 		$instance = stripslashes($instance);
