@@ -33,7 +33,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
-if (get_magic_quotes_gpc()==1)
+if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 {
 	$file = $_REQUEST["file"];
 } else {

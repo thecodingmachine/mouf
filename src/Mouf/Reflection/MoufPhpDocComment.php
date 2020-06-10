@@ -113,7 +113,7 @@ class MoufPhpDocComment {
 		foreach ($commentLines as $commentLine) {
 			$length = strlen($commentLine);
 			for ($i=0; $i<$length; $i++) {
-				if ($commentLine{$i} != ' ' && $commentLine{$i} != '*' && $commentLine{$i} != "\t") {
+				if ($commentLine[$i] != ' ' && $commentLine[$i] != '*' && $commentLine[$i] != "\t") {
 					break;
 				}
 			}

@@ -47,7 +47,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 if (isset($_REQUEST["class"])) {
-	if (get_magic_quotes_gpc()==1)
+	if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 	{
 		$className = stripslashes($_REQUEST["class"]);
 	} else {
@@ -56,7 +56,7 @@ if (isset($_REQUEST["class"])) {
 	
 	$result = $className::validateClass();
 } else {
-	if (get_magic_quotes_gpc()==1)
+	if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 	{
 		$instanceName = stripslashes($_REQUEST["instance"]);
 	} else {
