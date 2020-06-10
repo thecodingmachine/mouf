@@ -271,7 +271,7 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
    		$node->appendChild($no->createCDATASection($this->getDocComment())); 
     	
     	
-		$propertyNode->addAttribute("modifier", $this->isPrivate() ? 'private' : $this->isProtected() ? "protected" : "public");
+		$propertyNode->addAttribute("modifier", $this->isPrivate() ? 'private' : ($this->isProtected() ? "protected" : "public"));
 		$propertyNode->addAttribute("is_static", $this->isStatic() ? "true" : "false");
 		
     	
