@@ -42,7 +42,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 
-if (get_magic_quotes_gpc()==1)
+if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 {
 	// FIXME: add suppport for arrays (see "get")
 	$changesList = $_REQUEST["changesList"];

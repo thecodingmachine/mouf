@@ -109,7 +109,7 @@ if (!file_exists("../../../../mouf/no_commit/MoufUsers.php")) {
 }
 
 function install_userinput_to_plainstring($str) {
-	if (get_magic_quotes_gpc()==1)
+    if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 	{
 		$str = stripslashes($str);
 		// Rajouter les slashes soumis par l'utilisateur

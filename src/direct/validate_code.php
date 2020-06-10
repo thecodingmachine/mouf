@@ -45,7 +45,7 @@ if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]="json") {
 }
 
 $code = $_REQUEST["code"];
-if (get_magic_quotes_gpc()==1)
+if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 {
 	if (isset($_REQUEST["code"])) {
 		$code = stripslashes($code);

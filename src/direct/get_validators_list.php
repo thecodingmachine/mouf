@@ -43,14 +43,6 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
-
-/*if (get_magic_quotes_gpc()==1)
-{
-	$className = stripslashes($_REQUEST["class"]);
-} else {
-	$className = $_REQUEST["class"];
-}*/
-
 $moufManager = MoufManager::getMoufManager();
 
 $response = array("instances"=>array(), "classes"=>array());
