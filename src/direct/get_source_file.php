@@ -42,6 +42,7 @@ if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 
 if (strpos($file, "..") !== false) {
 	echo "Error, invalid file name";
+	die("Error, invalid file name");
 }
 
 readfile(ROOT_PATH.$file);
