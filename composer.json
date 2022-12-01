@@ -23,8 +23,8 @@
 		}
 	],
 	"require" : {
-		"php" : ">=5.4.6",
-		"mouf/mouf-installer" : "~2.0.1",
+		"php" : "^8.0",
+		"mouf/mouf-installer" : "^2.0",
 		"mouf/mouf-validators-interface" : "~2.0",
 		"container-interop/container-interop" : "~1.0",
 		"mouf/classname-mapper": "~1.0"
@@ -95,8 +95,8 @@
 							"title" : "Weak instances",
 							"url" : "doc/weak_instances.md"
 						}
-						
-						
+
+
 					]
 				},
 				{
@@ -114,6 +114,11 @@
 				"description": "The core of the Mouf framework: the dependency injection module",
 				"weight": 0
 			}
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"mouf/mouf-installer": true
 		}
 	}
 }
