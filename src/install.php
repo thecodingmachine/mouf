@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 /**
  * This file is used to install the Mouf framework by creating the .htaccess file.
  */
@@ -43,7 +43,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 require_once 'MoufComponents.php';
 ?>";
-	
+
 	file_put_contents("../../../../mouf/Mouf.php", $moufStr);
 	chmod("../../../../mouf/Mouf.php", 0664);
 }
@@ -62,7 +62,7 @@ MoufManager::initMoufManager();
 \$moufManager = MoufManager::getMoufManager();
 
 ?>";
-	
+
 	file_put_contents("../../../../mouf/MoufComponents.php", $moufComponentsStr);
 	chmod("../../../../mouf/MoufComponents.php", 0664);
 }
@@ -75,7 +75,7 @@ if (!file_exists("../../../../mouf/MoufUI.php")) {
  */
 	
 	?>";
-	
+
 	file_put_contents("../../../../mouf/MoufUI.php", $moufUIStr);
 	chmod("../../../../mouf/MoufUI.php", 0664);
 }
@@ -89,7 +89,7 @@ if (!file_exists("../../../../config.php")) {
  */
 
 ?>";
-	
+
 	file_put_contents("../../../../config.php", $moufConfig);
 	chmod("../../../../config.php", 0664);
 }
@@ -100,24 +100,12 @@ if (!file_exists("../../../../mouf/no_commit/MoufUsers.php")) {
 /**
  * This contains the users allowed to access the Mouf framework.
  */
-\$users[".var_export(install_userinput_to_plainstring($_REQUEST['login']), true)."] = array('password'=>".var_export(sha1(install_userinput_to_plainstring($_REQUEST['password'])), true).", 'options'=>null);
+\$users[".var_export($_REQUEST['login'], true)."] = array('password'=>".var_export(sha1(install_userinput_to_plainstring($_REQUEST['password'])), true).", 'options'=>null);
 	
 ?>";
-	
+
 	file_put_contents("../../../../mouf/no_commit/MoufUsers.php", $moufConfig);
 	chmod("../../../../mouf/no_commit/MoufUsers.php", 0664);
-}
-
-function install_userinput_to_plainstring($str) {
-    if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-	{
-		$str = stripslashes($str);
-		// Rajouter les slashes soumis par l'utilisateur
-		//$str = str_replace('\\', '\\\\', $str);
-		return $str;
-	}
-	else
-		return $str;
 }
 
 umask($oldUmask);
