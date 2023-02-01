@@ -14,7 +14,7 @@ namespace Mouf\Reflection;
  * It does not try to access the real class.
  * Therefore, you can use this class to perform reflection in a class that is not loaded, which can
  * be useful.
- *  
+ *
  */
 class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
 {
@@ -24,8 +24,8 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
 	 * @var SimpleXmlElement
 	 */
 	private $xmlElem;
-	
-	
+
+
 	/**
      * name of the reflected class
      *
@@ -44,14 +44,14 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
      * @var  string
      */
     protected $methodName;
-    
+
     /**
      * Modifier
      *
      * @var string
      */
     protected $modifier;
-    
+
     /**
 	 * The phpDocComment we will use to access annotations.
 	 *
@@ -73,26 +73,26 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
         } else {
             $this->className  = $class;
         }
-        
+
         $this->xmlElem = $xmlElem;
         $this->methodName = (string)$xmlElem['name'];
         $this->modifier = (string)$xmlElem['modifier'];
         //$this->methodName = $methodName;
         //parent::__construct($this->className, $methodName);
     }
-    
+
     public function getName() {
     	return $this->methodName;
     }
-    
+
     public function isPublic() {
     	return $this->modifier == "public";
     }
-    
+
     public function isPrivate() {
     	return $this->modifier == "private";
     }
-    
+
     public function isProtected() {
     	return $this->modifier == "protected";
     }
@@ -100,20 +100,20 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
     public function isStatic() {
     	return ((string)$this->xmlElem['static']) == "true";
     }
-    
+
     public function isFinal() {
     	return ((string)$this->xmlElem['final']) == "true";
     }
-    
+
     public function isConstructor() {
     	return ((string)$this->xmlElem['constructor']) == "true";
     }
-    
+
     public function isAbstract() {
     	return ((string)$this->xmlElem['abstract']) == "true";
     }
-    
-    
+
+
     /**
 	 * Analyzes and parses the comment (if it was not previously done).
 	 *
@@ -132,7 +132,7 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
 	public function getDocComment() {
 		return (string)($this->xmlElem->comment);
 	}
-	
+
 	/**
 	 * Returns the comment text, without the annotations.
 	 *
@@ -140,10 +140,10 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
 	 */
 	public function getDocCommentWithoutAnnotations() {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getComment();
 	}
-	
+
 	/**
 	 * Returns the number of declared annotations of type $annotationName in the class comment.
 	 *
@@ -152,33 +152,33 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
 	 */
 	public function hasAnnotation($annotationName) {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAnnotationsCount($annotationName);
 	}
-	
+
 	/**
 	 * Returns the annotation objects associated to $annotationName in an array.
 	 * For instance, if there is one annotation "@Filter toto", there will be an array of one element.
 	 * The element will contain an object of type FilterAnnotation. If the class FilterAnnotation is not defined,
-	 * a string is returned instead of an object.  
+	 * a string is returned instead of an object.
 	 *
 	 * @param string $annotationName
 	 * @return array<$objects>
 	 */
 	public function getAnnotations($annotationName) {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAnnotations($annotationName);
 	}
-	
+
 	/**
 	 * Returns a map associating the annotation title to an array of objects representing the annotation.
-	 * 
+	 *
 	 * @var array("annotationClass"=>array($annotationObjects))
 	 */
 	public function getAllAnnotations() {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAllAnnotations();
 	}
 
@@ -194,7 +194,7 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
         if ($compare instanceof self) {
             return ($compare->className === $this->className && $compare->methodName === $this->methodName);
         }
-        
+
         return false;
     }
 
@@ -209,7 +209,7 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
         return $this->refClass;
     }
 
-    
+
 	/**
      * returns the specified parameter or null if it does not exist
      *
@@ -219,7 +219,7 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
     public function getParameter($name)
     {
         foreach ($this->xmlRoot->parameter as $parameter) {
-    		if ($method['name'] == $name) {
+    		if ($parameter['name'] == $name) {
 		        $moufRefParameter = new MoufXmlReflectionParameter($this, $parameter);
 		        return $moufRefParameter;
     		}
@@ -238,7 +238,7 @@ class MoufXmlReflectionMethod implements MoufReflectionMethodInterface
         foreach ($this->xmlElem->parameter as $parameter) {
             $moufParameters[] = new MoufXmlReflectionParameter($this, $parameter);
         }
-        
+
         return $moufParameters;
     }
 

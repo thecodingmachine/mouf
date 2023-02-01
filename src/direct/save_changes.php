@@ -13,7 +13,7 @@ use Mouf\MoufException;
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 
 use Mouf\MoufManager;
 
@@ -27,12 +27,12 @@ require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-        
+
 	require_once '../../../../../mouf/Mouf.php';
 	$selfEdit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$selfEdit = true;
 }
@@ -42,14 +42,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	// FIXME: add suppport for arrays (see "get")
-	$changesList = $_REQUEST["changesList"];
-	//$changesList = stripslashes($_REQUEST["changesList"]);
-} else {
-	$changesList = $_REQUEST["changesList"];
-}
+$changesList = $_REQUEST["changesList"];
 
 $moufManager = MoufManager::getMoufManager();
 
@@ -93,7 +86,7 @@ foreach ($changesList as $command) {
 			$propertyName = $command['property'];
 			$source = $command['source'];
 			$instanceDescriptor = $moufManager->getInstanceDescriptor($instanceName);
-			
+
 			// Source can be "constructor", "property" or "setter".
 			switch ($source) {
 				case "constructor":
@@ -108,9 +101,9 @@ foreach ($changesList as $command) {
 				default:
 					throw new MoufException("Unknown source '".$source."' while saving parameter ".$propertyName);
 			}
-			
+
 			//$propertyDescriptor = $property->getPropertyDescriptor();
-			
+
 			if ($command['origin'] == 'config') {
 				$property->setOrigin('config');
 				$property->setValue($command['value']);
@@ -124,14 +117,14 @@ foreach ($changesList as $command) {
 			} else {
 				$types = TypesDescriptor::parseTypeString($command['type'])->getTypes();
 				$type = $types[0];
-				
+
 				$property->setOrigin('string');
 				// Let's set the value
 				if ($command['isNull'] == "true") {
 					$value = null;
 				} else {
 					$value = isset($command['value'])?$command['value']:null;
-					
+
 					if ($type->isArray()) {
 						if ($value === null) {
 							$value = array();
@@ -147,11 +140,11 @@ foreach ($changesList as $command) {
 						}
 					}
 				}
-				
+
 				// FIXME: do not use setParameter/setParameterViaSetter directly!
 				// use the source!
-				
-				
+
+
 				if ($type->isPrimitiveTypesOrRecursiveArrayOfPrimitiveTypes()) {
 					$property->setValue($value);
 				} else {
@@ -231,7 +224,7 @@ $childClassArray = array();
 foreach ($classList as $childClassName) {
 	$childClassArray[] = $childClassName;
 	$classDescriptor = new MoufReflectionClass($childClassName);
-	
+
 	do {
 		$classArray[$classDescriptor->getName()] = $classDescriptor->toJson();
 		$classDescriptor = $classDescriptor->getParentClass();

@@ -6,7 +6,7 @@ use Mouf\MoufUtils;
 /**
  * The proxy server.
  * Executes a passed method of an instance and returns the result.
- * The user must be logged in Mouf to be able to run this script. 
+ * The user must be logged in Mouf to be able to run this script.
  */
 
 // Disable output buffering
@@ -29,7 +29,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	$selfEdit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;
@@ -45,12 +45,6 @@ if (isset($_REQUEST["encode"]) && $_REQUEST["encode"]="json") {
 }
 
 $code = $_REQUEST["code"];
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	if (isset($_REQUEST["code"])) {
-		$code = stripslashes($code);
-	}
-}
 
 $result = [
 	"status" => "success",

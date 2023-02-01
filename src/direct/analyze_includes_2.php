@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This file is part of the Mouf core package.
  *
@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 /**
  * Analyses all included PHP files to detect whether one is not behaving correctly (outputing some text, which is strictly forbidden)
  */
@@ -27,13 +27,13 @@ error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERRO
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;
@@ -43,12 +43,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	$classMapJson = stripslashes($_REQUEST["classMap"]);
-} else {
-	$classMapJson = $_REQUEST["classMap"];
-}
+$classMapJson = $_REQUEST["classMap"];
 
 $classMap = json_decode($classMapJson, true);
 if(json_last_error() != JSON_ERROR_NONE ){

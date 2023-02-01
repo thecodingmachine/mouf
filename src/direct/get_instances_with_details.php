@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 /**
  * Returns a serialized string representing the array for all components declares (classes with the @Component annotation)
  */
@@ -25,13 +25,13 @@ error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERRO
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;
@@ -42,12 +42,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	$className = stripslashes($_REQUEST["class"]);
-} else {
-	$className = $_REQUEST["class"];
-}
+$className = $_REQUEST["class"];
 
 //if ($selfEdit) {
 //	$moufManager = MoufManager::getMoufManagerHiddenInstance();
@@ -58,7 +53,7 @@ if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
 if (strpos($className, '\\') === 0) {
 	$className = substr($className, 1);
 }
-	
+
 
 $instanceList = $moufManager->findInstances($className);
 
@@ -81,7 +76,7 @@ $childClassArray = array();
 foreach ($classList as $childClassName) {
 	$childClassArray[] = $childClassName;
 	$classDescriptor = new MoufReflectionClass($childClassName);
-	
+
 	do {
 		$classArray[$classDescriptor->getName()] = $classDescriptor->toJson();
 		$classDescriptor = $classDescriptor->getParentClass();
@@ -104,7 +99,7 @@ if ($encode == "php") {
 } elseif ($encode == "json") {
 	header("Content-type: application/json");
 	echo json_encode($response);
-	
+
 	if (!(json_last_error() == JSON_ERROR_NONE)) {
 		checkJsonEncode($instanceArray);
 		checkJsonEncode($classArray);
@@ -117,29 +112,28 @@ if ($encode == "php") {
 function checkJsonEncode($array) {
 	foreach($array as $key =>$value) {
 		json_encode($value);
-			
-		if (!(json_last_error() == JSON_ERROR_NONE)) {
-			switch (json_last_error()) {
-				case JSON_ERROR_DEPTH:
-					echo $key.' - Maximum stack depth exceeded';
-					break;
-				case JSON_ERROR_STATE_MISMATCH:
-					echo $key.' - Underflow or the modes mismatch';
-					break;
-				case JSON_ERROR_CTRL_CHAR:
-					echo $key.' - Unexpected control character found';
-					break;
-				case JSON_ERROR_SYNTAX:
-					echo $key.' - Syntax error, malformed JSON';
-					break;
-				case JSON_ERROR_UTF8:
-					echo $key.' - Malformed UTF-8 characters, possibly incorrectly encoded';
-						
-					break;
-				default:
-					echo $key.' - Unknown error';
-					break;
-			}
+
+		switch (json_last_error()) {
+			case JSON_ERROR_NONE:
+				break;
+			case JSON_ERROR_DEPTH:
+				echo $key.' - Maximum stack depth exceeded';
+				break;
+			case JSON_ERROR_STATE_MISMATCH:
+				echo $key.' - Underflow or the modes mismatch';
+				break;
+			case JSON_ERROR_CTRL_CHAR:
+				echo $key.' - Unexpected control character found';
+				break;
+			case JSON_ERROR_SYNTAX:
+				echo $key.' - Syntax error, malformed JSON';
+				break;
+			case JSON_ERROR_UTF8:
+				echo $key.' - Malformed UTF-8 characters, possibly incorrectly encoded';
+				break;
+			default:
+				echo $key.' - Unknown error';
+				break;
 		}
 	}
 }

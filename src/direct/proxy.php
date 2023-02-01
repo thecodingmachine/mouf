@@ -6,7 +6,7 @@ use Mouf\MoufUtils;
 /**
  * The proxy server.
  * Executes a passed method of an instance and returns the result.
- * The user must be logged in Mouf to be able to run this script. 
+ * The user must be logged in Mouf to be able to run this script.
  */
 
 // Disable output buffering
@@ -20,13 +20,13 @@ error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERRO
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
 	$selfEdit = true;
@@ -49,17 +49,6 @@ if (isset($_REQUEST["class"])) {
 }
 $method = $_REQUEST["method"];
 $args = $_REQUEST["args"];
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	if (isset($_REQUEST["instance"])) {
-		$instance = stripslashes($instance);
-	}
-	if (isset($_REQUEST["class"])) {
-		$class = stripslashes($class);
-	}
-	$method = stripslashes($method);
-	$args = stripslashes($args);
-}
 
 if ($encode == "php") {
 	$arguments = unserialize($args);

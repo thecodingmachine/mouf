@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 /**
  * Returns the source code of a file passed in parameter.
  */
@@ -19,12 +19,12 @@ error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERRO
 
 if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 	define('ROOT_URL', $_SERVER['BASE']."/../../../");
-	
+
 	require_once '../../../../../mouf/Mouf.php';
 	$selfedit = false;
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$selfedit = true;
 }
@@ -33,12 +33,7 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 // and only after can we check if it was not loaded before loading it ourselves...
 require_once 'utils/check_rights.php';
 
-if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-{
-	$file = $_REQUEST["file"];
-} else {
-	$file = $_REQUEST["file"];
-}
+$file = $_REQUEST["file"];
 
 if (strpos($file, "..") !== false) {
 	echo "Error, invalid file name";

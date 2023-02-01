@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
- 
+
 /**
  * Returns a serialized string representing the list of instances implementing the MoufValidatorInterface
  * and classes implementing the MoufStaticValidatorInterface
@@ -29,17 +29,17 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 
         // Force loading autoload from mouf's version of PhpParser
         require_once __DIR__.'/../../vendor/nikic/php-parser/lib/bootstrap.php';
-        
+
 	require_once '../../../../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH;
 	$selfEdit = false;
-	
+
 } else {
 	define('ROOT_URL', $_SERVER['BASE']."/");
-	
+
 	require_once '../../mouf/Mouf.php';
 	$mouf_base_path = ROOT_PATH."mouf/";
-	$selfEdit = true;	
+	$selfEdit = true;
 }
 
 // Note: checking rights is done after loading the required files because we need to open the session
@@ -47,22 +47,12 @@ if (!isset($_REQUEST["selfedit"]) || $_REQUEST["selfedit"]!="true") {
 require_once 'utils/check_rights.php';
 
 if (isset($_REQUEST["class"])) {
-	if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-	{
-		$className = stripslashes($_REQUEST["class"]);
-	} else {
-		$className = $_REQUEST["class"];
-	}
-	
+	$className = $_REQUEST["class"];
+
 	$result = $className::validateClass();
 } else {
-	if (version_compare(phpversion(), '7.4.0', '<') && get_magic_quotes_gpc()==1)
-	{
-		$instanceName = stripslashes($_REQUEST["instance"]);
-	} else {
-		$instanceName = $_REQUEST["instance"];
-	}
-	
+	$instanceName = $_REQUEST["instance"];
+
 	$moufManager = MoufManager::getMoufManager();
 	$instance = $moufManager->getInstance($instanceName);
 	/* @var $instance Mouf\Validator\MoufValidatorInterface */
