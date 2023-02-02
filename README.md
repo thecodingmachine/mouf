@@ -60,3 +60,9 @@ Using an extension to the `composer.json` file format, you can [extend the Mouf 
 
 - You are developing a cache package? Add a "Purge" button in Mouf UI to let your developers purge the cache
 - You are developing a database connection? Add a screen to create a new database connection, etc...
+
+### Upgrade composer-mouf.json
+
+```shell
+$ COMPOSER=composer-mouf.json composer <command> ... # e.g. COMPOSER=composer-mouf.json composer install
+```

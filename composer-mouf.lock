@@ -2574,16 +2574,16 @@
         },
         {
             "name": "mouf/mouf",
-            "version": "v2.0.44",
+            "version": "v2.0.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf.git",
-                "reference": "5c31eea26fe514ed6cb1e8f9232154c740d49eeb"
+                "reference": "0860b9d21f5e3c13eb90f7a36586dcd681128c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf/zipball/5c31eea26fe514ed6cb1e8f9232154c740d49eeb",
-                "reference": "5c31eea26fe514ed6cb1e8f9232154c740d49eeb",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf/zipball/0860b9d21f5e3c13eb90f7a36586dcd681128c7e",
+                "reference": "0860b9d21f5e3c13eb90f7a36586dcd681128c7e",
                 "shasum": ""
             },
             "require": {
@@ -2723,7 +2723,7 @@
                 "issues": "https://github.com/thecodingmachine/mouf/issues",
                 "source": "https://github.com/thecodingmachine/mouf/"
             },
-            "time": "2023-02-01T11:14:55+00:00"
+            "time": "2023-02-02T10:18:17+00:00"
         },
         {
             "name": "mouf/mouf-installer",
