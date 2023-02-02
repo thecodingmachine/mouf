@@ -94,26 +94,29 @@
         },
         {
             "name": "mouf/mouf-installer",
-            "version": "v2.0.0",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/mouf-installer.git",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198"
+                "reference": "ce449077ffacd65ae05388b1613da83ebb455f1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/75cd4295a831b32aabea0b2bb6f4925da6b6e198",
-                "reference": "75cd4295a831b32aabea0b2bb6f4925da6b6e198",
+                "url": "https://api.github.com/repos/thecodingmachine/mouf-installer/zipball/ce449077ffacd65ae05388b1613da83ebb455f1c",
+                "reference": "ce449077ffacd65ae05388b1613da83ebb455f1c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "composer-plugin-api": "^2.3",
+                "php": "^8.0"
             },
-            "type": "composer-installer",
+            "require-dev": {
+                "composer/composer": "^2.3"
+            },
+            "type": "composer-plugin",
             "extra": {
                 "class": [
-                    "Mouf\\Installer\\MoufLibraryInstaller",
-                    "Mouf\\Installer\\MoufFrameworkInstaller"
+                    "Mouf\\Installer\\MoufPlugin"
                 ]
             },
             "autoload": {
@@ -140,9 +143,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thecodingmachine/mouf-installer/issues",
-                "source": "https://github.com/thecodingmachine/mouf-installer/tree/2.0"
+                "source": "https://github.com/thecodingmachine/mouf-installer/tree/v2.0.4"
             },
-            "time": "2014-06-03T20:47:09+00:00"
+            "time": "2023-02-01T17:41:26+00:00"
         },
         {
             "name": "mouf/mouf-validators-interface",

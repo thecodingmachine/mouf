@@ -118,7 +118,9 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"mouf/mouf-installer": true
+			"mouf/mouf-installer": true,
+			"mindplay/composer-locator": true,
+			"laminas/laminas-dependency-plugin": true
 		}
 	}
 }

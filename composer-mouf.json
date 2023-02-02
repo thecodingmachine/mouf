@@ -1,6 +1,6 @@
 {
     "require": {
-        "mouf/mouf-installer": "~2.0",
+        "mouf/mouf-installer": "^2.0",
     	"mouf/mouf-validators-interface": "~2.0",
         "mouf/html.template.mouftemplate": "~2.0",
         "mouf/html.template.bootstrap": "^5.2",
@@ -25,7 +25,7 @@
         "mouf/javascript.jquery.jq-bootstrap-validation": "^1.4",
     	"container-interop/container-interop": "~1.0",
     	"mouf/javascript.ace": "^1.1",
-    	"nikic/php-parser": "~2.0",
+    	"nikic/php-parser": "^4.15",
     	"mouf/security.userservice-splash": "^10.0",
         "mouf/classname-mapper": "~1.0",
         "mouf/html.utils.weblibrarymanager": "^4.0",
@@ -40,7 +40,7 @@
     "prefer-stable": true,
     "extra": {
     	"mouf": {
-    
+
     	}
     },
     "config": {
