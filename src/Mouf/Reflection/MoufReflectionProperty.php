@@ -249,7 +249,7 @@ class MoufReflectionProperty extends \ReflectionProperty implements MoufReflecti
 			if ($possibleError) {
 				throw new \Exception($possibleError);	
 			}
-	  		return $defaultProperties[$this->getName()];
+	  		return $defaultProperties[$this->getName()] ?? null;
     	} else {
     		return null;
     	}

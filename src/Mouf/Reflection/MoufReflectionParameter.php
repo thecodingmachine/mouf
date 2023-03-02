@@ -135,8 +135,12 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     		}else if (!class_exists($className) && !interface_exists($className) && !trait_exists($className)){
 	    		throw new MoufException("Error while analyzing @param annotation for parameter {$this->paramName} in '{$this->getDeclaringClass()->getName()}::{$this->getDeclaringFunction()->getName()}': class '$className' could not be found");
     		}
-	        $refClass = parent::getClass();
-	        if (null === $refClass) {
+
+	        $refClass = $this->getType() && !$this->getType()->isBuiltin()
+                ? new \ReflectionClass($this->getType()->getName())
+                : null;
+
+            if (null === $refClass) {
 	            return null;
 	        }
     	} catch (\ReflectionException $e) {
@@ -159,18 +163,10 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
         }
         return $class;
     }
-    
-    /**
-    * Returns the class of the parameter (if any)
-    *
-    * @return string
-    */
-    public function getType() {
-    	if ($this->getClass() != null) {
-    		return $this->getClass()->getName();
-    	} else {
-    		return null;
-    	}
+
+    public function isArray()
+    {
+        return $this->getType() instanceof \ReflectionNamedType && $this->getType()->getName() === 'array';
     }
     
    	/**
@@ -216,7 +212,7 @@ class MoufReflectionParameter extends \ReflectionParameter implements MoufReflec
     				throw new \Exception($possibleError);
     			}
     		}
-    		$result['isArray'] = $this->isArray();
+            $result['isArray'] = $this->isArray();
     		
     		// Let's export only the type if we are in a constructor... in order to save time.
     		if ($this->getDeclaringFunction()->isConstructor()) {
