@@ -44,7 +44,7 @@ class MoufManager implements ContainerInterface {
 	 * @var MoufManager
 	 */
 	private static $hiddenInstance;
-	
+
 
 	/**
 	 * Returns the default instance of the MoufManager.
@@ -119,7 +119,7 @@ class MoufManager implements ContainerInterface {
 
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
-	 * 
+	 *
 	 * @var ContainerInterface
 	 */
 	protected $delegateLookupContainer;
@@ -163,15 +163,15 @@ class MoufManager implements ContainerInterface {
 	 * @var array<string, array>
 	 */
 	private $declaredInstances = array();
-	
+
 	/**
 	 * A list of PHP closures used for instantiating instances.
 	 * For instance:
-	 * 
+	 *
 	 * $closures["instanceName"]["constructor"][4] = function($moufManager) {...}
-	 * 
+	 *
 	 * All closures are taking the $moufManager has sole and unique parameter.
-	 * 
+	 *
 	 * @var array
 	 */
 	private $closures;
@@ -229,7 +229,7 @@ class MoufManager implements ContainerInterface {
 	 * @var string
 	 */
 	private $mainClassName;
-	
+
 	/**
 	 * The instance of the main class
 	 *
@@ -269,7 +269,7 @@ class MoufManager implements ContainerInterface {
 	public function getInstance($instanceName) {
 		return $this->get($instanceName);
 	}
-	
+
 	/**
 	 * Returns true if the instance name passed in parameter is defined in Mouf.
 	 *
@@ -278,7 +278,7 @@ class MoufManager implements ContainerInterface {
 	public function instanceExists($instanceName) {
 		return isset($this->declaredInstances[$instanceName]);
 	}
-	
+
 	/**
 	 * Returns true if the instance name passed in parameter is defined in Mouf.
 	 * Alias of "instanceExists"
@@ -316,7 +316,7 @@ class MoufManager implements ContainerInterface {
 	public function addComponentInstances(array $definition) {
 		$this->declaredInstances = array_merge($this->declaredInstances, $definition);
 	}
-	
+
 
 	/**
 	 * Declares a new component.
@@ -342,11 +342,7 @@ class MoufManager implements ContainerInterface {
 				// Do nothing
 			}
 		}
-		
-		if (strpos($className, '\\') === 0) {
-			$className = substr($className, 1);
-		}
-		
+
 		$this->declaredInstances[$instanceName]["class"] = $className;
 		$this->declaredInstances[$instanceName]["external"] = $external;
 	}
@@ -363,7 +359,7 @@ class MoufManager implements ContainerInterface {
 		if (isset($this->instanceDescriptors[$instanceName])) {
 			unset($this->instanceDescriptors[$instanceName]);
 		}
-		
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["constructor"])) {
 				foreach ($declaredInstance["constructor"] as $index=>$propWrapper) {
@@ -388,7 +384,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-		
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["fieldBinds"])) {
 				foreach ($declaredInstance["fieldBinds"] as $paramName=>$properties) {
@@ -456,7 +452,7 @@ class MoufManager implements ContainerInterface {
 
 		$this->declaredInstances[$newInstanceName] = $this->declaredInstances[$instanceName];
 		unset($this->declaredInstances[$instanceName]);
-		
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["constructor"])) {
 				foreach ($declaredInstance["constructor"] as $index=>$propWrapper) {
@@ -481,8 +477,8 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-		
-		
+
+
 		foreach ($this->declaredInstances as $declaredInstanceName=>$declaredInstance) {
 			if (isset($declaredInstance["fieldBinds"])) {
 				foreach ($declaredInstance["fieldBinds"] as $paramName=>$properties) {
@@ -526,7 +522,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-		
+
 		if (isset($this->instanceDescriptors[$instanceName])) {
 			$this->instanceDescriptors[$newInstanceName] = $this->instanceDescriptors[$instanceName];
 			unset($this->instanceDescriptors[$instanceName]);
@@ -547,17 +543,17 @@ class MoufManager implements ContainerInterface {
 		}
 	}
 
-	private function getClosures() { 
+	private function getClosures() {
 		if ($this->mainClass === null){
 			$this->mainClass = new $this->mainClassName();
 		}
 		if ($this->closures === null){
 			$this->closures = $this->mainClass->getClosures();
 		}
-		
+
 		return $this->closures;
 	}
-	
+
 	/**
 	 * Instantiate the object (and any object needed on the way)
 	 *
@@ -568,7 +564,7 @@ class MoufManager implements ContainerInterface {
 		}
 		try {
 			$instanceDefinition = $this->declaredInstances[$instanceName];
-	
+
 			if (isset($instanceDefinition['code'])) {
 				if (isset($instanceDefinition['error'])) {
 					throw new MoufException("The code defining instance '$instanceName' is invalid: ".$instanceDefinition['error']);
@@ -579,14 +575,14 @@ class MoufManager implements ContainerInterface {
 				$this->objectInstances[$instanceName] = $instance;
 				return $instance;
 			}
-			
+
 			$className = $instanceDefinition["class"];
-	
+
 			if (isset($instanceDefinition['constructor'])) {
 				$constructorParametersArray = $instanceDefinition['constructor'];
-				
+
 				$classDescriptor = new \ReflectionClass($className);
-				
+
 				$constructorParameters = array();
 				foreach ($constructorParametersArray as $key=>$constructorParameterDefinition) {
 					$value = $constructorParameterDefinition["value"];
@@ -637,7 +633,7 @@ class MoufManager implements ContainerInterface {
 								}
 							}
 							break;
-						default:	
+						default:
 							throw new MoufException("Unknown parameter type ".$constructorParameterDefinition['parametertype']." for parameter in constructor of instance '".$instanceName."'");
 					}
 				}
@@ -680,7 +676,7 @@ class MoufManager implements ContainerInterface {
 					}
 				}
 			}
-	
+
 			if (isset($instanceDefinition["setterProperties"])) {
 				foreach ($instanceDefinition["setterProperties"] as $key=>$valueDef) {
 					//$object->$key($valueDef["value"]);
@@ -712,7 +708,7 @@ class MoufManager implements ContainerInterface {
 					}
 				}
 			}
-	
+
 			if (isset($instanceDefinition["fieldBinds"])) {
 				foreach ($instanceDefinition["fieldBinds"] as $key=>$value) {
 					if (is_array($value)) {
@@ -730,7 +726,7 @@ class MoufManager implements ContainerInterface {
 					}
 				}
 			}
-	
+
 			if (isset($instanceDefinition["setterBinds"])) {
 				foreach ($instanceDefinition["setterBinds"] as $key=>$value) {
 					if (is_array($value)) {
@@ -767,7 +763,7 @@ class MoufManager implements ContainerInterface {
 		if ($type != "string" && $type != "config" && $type != "request" && $type != "session" && $type != "php") {
 			throw new MoufContainerException("Invalid type. Must be one of: string|config|request|session. Value passed: '".$type."'");
 		}
-		
+
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["value"] = $paramValue;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["type"] = $type;
 		$this->declaredInstances[$instanceName]["fieldProperties"][$paramName]["metadata"] = $metadata;
@@ -858,11 +854,11 @@ class MoufManager implements ContainerInterface {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the value of the given parameter is set.
 	 * False otherwise.
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @param string $paramName
 	 * @return boolean
@@ -870,7 +866,7 @@ class MoufManager implements ContainerInterface {
 	public function isParameterSet($instanceName, $paramName) {
 		return isset($this->declaredInstances[$instanceName]['fieldProperties'][$paramName]) || isset($this->declaredInstances[$instanceName]['fieldBinds'][$paramName]);
 	}
-	
+
 	/**
 	 * Completely unset this parameter from the DI container.
 	 *
@@ -897,7 +893,7 @@ class MoufManager implements ContainerInterface {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the value of the given setter parameter is set.
 	 * False otherwise.
@@ -909,7 +905,7 @@ class MoufManager implements ContainerInterface {
 	public function isParameterSetForSetter($instanceName, $setterName) {
 		return isset($this->declaredInstances[$instanceName]['setterProperties'][$setterName]) || isset($this->declaredInstances[$instanceName]['setterBinds'][$setterName]);
 	}
-	
+
 	/**
 	 * Completely unset this setter parameter from the DI container.
 	 *
@@ -961,7 +957,7 @@ class MoufManager implements ContainerInterface {
 	public function isParameterSetForConstructor($instanceName, $index) {
 		return isset($this->declaredInstances[$instanceName]['constructor'][$index]);
 	}
-	
+
 	/**
 	 * Completely unset this constructor parameter from the DI container.
 	 *
@@ -981,7 +977,7 @@ class MoufManager implements ContainerInterface {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Returns the type for the given parameter (can be one of "string", "config", "session" or "request")
@@ -1261,12 +1257,12 @@ class MoufManager implements ContainerInterface {
 		fwrite($fp, " */\n");
 		fwrite($fp, "class $this->mainClassName {\n");
 		fwrite($fp, "	");
-		
+
 		// Now, let's export the closures!
 		/***** closures Start ******/
 		fwrite($fp, "public function getClosures() {\n");
 		fwrite($fp, "		return [\n");
-		
+
 		$targetArray = [];
 		foreach ($internalDeclaredInstances as $instanceName=>$instanceDesc) {
 			if (isset($instanceDesc['constructor'])) {
@@ -1369,12 +1365,12 @@ class MoufManager implements ContainerInterface {
 				fwrite($fp, "			],\n");
 			}
 		}
-		
+
 		fwrite($fp, "		];\n");
 		fwrite($fp, "	}\n");
 		/***** closures end ******/
-		
-		
+
+
 		$getters = array();
 		foreach ($this->declaredInstances as $name=>$classDesc) {
 			if (!isset($classDesc['class'])) {
@@ -1444,7 +1440,7 @@ class MoufManager implements ContainerInterface {
 	 * @return array<string>
 	 */
 	public function findInstances($instanceType) {
-		
+
 		$instancesArray = array();
 
 		$reflectionInstanceType = new \ReflectionClass($instanceType);
@@ -1452,16 +1448,16 @@ class MoufManager implements ContainerInterface {
 
 		foreach ($this->declaredInstances as $instanceName=>$classDesc) {
 			if (!isset($classDesc['class'])) {
-				continue;			
+				continue;
 			}
 			$className = $classDesc['class'];
-			
+
 			// Silently ignore any non existing class.
 			if (!class_exists($className)) {
 				continue;
 			}
-			
-			
+
+
 			$reflectionClass = new \ReflectionClass($className);
 			if ($isInterface) {
 				if ($reflectionClass->implementsInterface($instanceType)) {
@@ -1565,7 +1561,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-		
+
 		foreach ($this->declaredInstances as $scannedInstance=>$instanceDesc) {
 			if (isset($instanceDesc['constructor'])) {
 				foreach ($instanceDesc['constructor'] as $declaredConstructorProperty) {
@@ -1617,15 +1613,15 @@ class MoufManager implements ContainerInterface {
 			}
 			$destInstanceName = $this->getFreeAnonymousName();
 		}
-		
+
 		if (isset($this->declaredInstances[$destInstanceName])) {
 			throw new MoufContainerException("Error while duplicating instance: the dest instance already exists: ".$destInstanceName);
 		}
 		$this->declaredInstances[$destInstanceName] = $this->declaredInstances[$srcInstanceName];
-		
+
 		// TODO: special case: if an instance is pointing to itself, it might be a good idea to keep the copy
 		// pointing to the copy instead of the original.
-		
+
 		// We should also recursively duplicate anonymous instances:
 		if (isset($this->declaredInstances[$destInstanceName]["fieldBinds"])) {
 			foreach ($this->declaredInstances[$destInstanceName]["fieldBinds"] as $key=>$boundInstance) {
@@ -1658,7 +1654,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-		
+
 		if (isset($this->declaredInstances[$destInstanceName]["constructor"])) {
 			foreach ($this->declaredInstances[$destInstanceName]["constructor"] as $index=>$parameter) {
 				if ($parameter['parametertype'] == 'object' && $parameter['type'] == 'string') {
@@ -1677,7 +1673,7 @@ class MoufManager implements ContainerInterface {
 				}
 			}
 		}
-				
+
 		return $destInstanceName;
 	}
 
@@ -1740,7 +1736,7 @@ class MoufManager implements ContainerInterface {
 	/**
 	 * This function will delete any weak instance that would not be referred anymore.
 	 * This is used to garbage-collect any unused weak instances.
-	 * 
+	 *
 	 * This is public only for test purposes
 	 */
 	public function purgeUnreachableWeakInstances() {
@@ -1818,7 +1814,7 @@ class MoufManager implements ContainerInterface {
 							$moufManager->walkForGarbageCollection($singleProp);
 						}
 					});
-							
+
 					/*foreach ($prop as $singleProp) {
 						if ($singleProp != null) {
 							$this->walkForGarbageCollection($this->declaredInstances[$singleProp]);
@@ -1843,7 +1839,7 @@ class MoufManager implements ContainerInterface {
 							$this->walkForGarbageCollection($this->declaredInstances[$singleProp]);
 						}
 					}*/
-					
+
 				}
 				else {
 					$this->walkForGarbageCollection($prop);
@@ -1909,7 +1905,7 @@ class MoufManager implements ContainerInterface {
 	 * Returns an "anonymous" name for an instance.
 	 * "anonymous" names start with "__anonymous__" and is followed by a number.
 	 * This function will return a name that is not already used.
-	 * 
+	 *
 	 * The number suffixing "__anonymous__" is returned in a random fashion. This way,
 	 * VCS merges are easier to handle.
 	 *
@@ -1983,7 +1979,7 @@ class MoufManager implements ContainerInterface {
         }
         $this->declaredInstances[$instanceName]["class"] = $className;
     }
-	
+
 	/**
 	 * A list of descriptors.
 	 *
@@ -2010,7 +2006,7 @@ class MoufManager implements ContainerInterface {
 		}
 		return $this->classDescriptors[$className];
 	}
-	
+
 	/**
 	* Returns the list of public properties' names configured for this instance.
 	*
@@ -2023,7 +2019,7 @@ class MoufManager implements ContainerInterface {
 			isset($this->declaredInstances[$instanceName]["fieldBinds"])?array_keys($this->declaredInstances[$instanceName]["fieldBinds"]):array()
 		);
 	}
-	
+
 	/**
 	* Returns the list of setters' names configured for this instance.
 	*
@@ -2036,7 +2032,7 @@ class MoufManager implements ContainerInterface {
 				isset($this->declaredInstances[$instanceName]["setterBinds"])?array_keys($this->declaredInstances[$instanceName]["setterBinds"]):array()
 		);
 	}
-	
+
 	/**
 	* Returns the list of constructor parameters (index position of the parameter) configured for this instance.
 	*
@@ -2050,7 +2046,7 @@ class MoufManager implements ContainerInterface {
 			return array();
 		}
 	}
-	
+
 	/**
 	 * Creates a new instance declared by PHP code.
 	 *
@@ -2058,21 +2054,21 @@ class MoufManager implements ContainerInterface {
 	 */
 	public function createInstanceByCode() {
 		$name = $this->getFreeAnonymousName();
-	
+
 		$this->declaredInstances[$name]["weak"] = false;
 		$this->declaredInstances[$name]["comment"] = "";
 		$this->declaredInstances[$name]["class"] = null;
 		$this->declaredInstances[$name]["external"] = false;
 		$this->declaredInstances[$name]["code"] = "";
 		$this->setInstanceAnonymousness($name, true);
-	
+
 		return $this->getInstanceDescriptor($name);
 	}
-	
+
 	/**
-	 * For instance created via callback (created using `createInstanceByCode`), 
+	 * For instance created via callback (created using `createInstanceByCode`),
 	 * sets the PHP code to be executed to create the instances.
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @param string $code
 	 */
@@ -2086,11 +2082,11 @@ class MoufManager implements ContainerInterface {
 		$this->declaredInstances[$instanceName]["code"] = $code;
 		$this->findInstanceByCallbackType($instanceName);
 	}
-	
+
 	/**
-	 * Returns a string containing the PHP code that will be executed to instantiate this instance (if 
+	 * Returns a string containing the PHP code that will be executed to instantiate this instance (if
 	 * PHP code was passed using setCode), or "null" if this is a "normal" instance.
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @return string|NULL
 	 */
@@ -2100,11 +2096,11 @@ class MoufManager implements ContainerInterface {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Returns any error that would have been triggered by executing the php code that creates the instance (if 
+	 * Returns any error that would have been triggered by executing the php code that creates the instance (if
 	 * PHP code was passed using setCode), or "null" if this is a "normal" instance or there is no error.
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @return string
 	 */
@@ -2114,7 +2110,7 @@ class MoufManager implements ContainerInterface {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the type of an instance defined by callback.
 	 * For this, the instanciation code will be executed and the result will be returned.
@@ -2141,17 +2137,17 @@ class MoufManager implements ContainerInterface {
 		}
 		return $fullyQualifiedClassName;
 	}
-	
+
 	/**
 	 * If set, all dependencies lookup will be delegated to this container.
-	 * 
-	 * @param ContainerInterface $delegateLookupContainer        	
+	 *
+	 * @param ContainerInterface $delegateLookupContainer
 	 */
 	public function setDelegateLookupContainer(ContainerInterface $delegateLookupContainer) {
 		$this->delegateLookupContainer = $delegateLookupContainer;
 		return $this;
 	}
-	
+
 	/**
 	 * Check if there is no loop in constructor arguments
 	 * @throws MoufContainerException
@@ -2161,11 +2157,11 @@ class MoufManager implements ContainerInterface {
 	        $this->walkConstructorLoop($instanceName, []);
 	    }
 	}
-	
+
 	/**
 	 * This take a instance name and the path to access.
 	 * It throw an exception if a loop was detected
-	 * 
+	 *
 	 * @param string $instanceName
 	 * @param array $path
 	 * @throws MoufContainerException
