@@ -16,49 +16,49 @@ use Mouf\MoufPropertyDescriptor;
 
 /**
  * Reflection class extending ReflectionClass in order to access annotations.
- * 
+ *
  */
 class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClassInterface {
-	
+
 	/**
 	 * Export neither fields nor methods on a toJson() call.
 	 * @var string
 	 */
 	const EXPORT_TINY = "tiny";
-	
+
 	/**
 	 * Export constructor, public fields and setters on a to toJson() call.
 	 * @var string
 	 */
 	const EXPORT_PROPERTIES = "properties";
-	
+
 	/**
 	 * Export all fields and methods on a to toJson() call.
 	 * @var string
 	 */
 	const EXPORT_ALL = "all";
-	
+
 	/**
 	 * The phpDocComment we will use to access annotations.
 	 *
 	 * @var MoufPhpDocComment
 	 */
 	private $docComment;
-	
+
 	/**
 	 * The cache service used to store data hard to analyze.
-	 * 
+	 *
 	 * @var CacheInterface
 	 */
 	private $cacheService;
-	
+
 	/**
 	 * The traits for this class
 	 *
 	 * @var  MoufReflectionClass[]
 	 */
 	protected $traits;
-	
+
 	/**
 	 * Default constructor
 	 *
@@ -68,7 +68,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 		parent::__construct($className);
 		$this->cacheService = new MoufCache();
 	}
-	
+
 	/**
 	 * Analyzes and parses the comment (if it was not previously done).
 	 *
@@ -78,7 +78,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 			$this->docComment = new MoufPhpDocComment($this->getDocComment());
 		}
 	}
-	
+
 	/**
 	 * Returns the comment text, without the annotations.
 	 *
@@ -86,10 +86,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	 */
 	public function getDocCommentWithoutAnnotations() {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getComment();
 	}
-	
+
 	/**
 	 * Returns the number of declared annotations of type $annotationName in the class comment.
 	 *
@@ -98,36 +98,36 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	 */
 	public function hasAnnotation($annotationName) {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAnnotationsCount($annotationName);
 	}
-	
+
 	/**
 	 * Returns the annotation objects associated to $annotationName in an array.
 	 * For instance, if there is one annotation "@Filter toto", there will be an array of one element.
 	 * The element will contain an object of type FilterAnnotation. If the class FilterAnnotation is not defined,
-	 * a string is returned instead of an object.  
+	 * a string is returned instead of an object.
 	 *
 	 * @param string $annotationName
 	 * @return array<$objects>
 	 */
 	public function getAnnotations($annotationName) {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAnnotations($annotationName);
 	}
-	
+
 	/**
 	 * Returns a map associating the annotation title to an array of objects representing the annotation.
-	 * 
+	 *
 	 * @var array("annotationClass"=>array($annotationObjects))
 	 */
 	public function getAllAnnotations() {
 		$this->analyzeComment();
-		
+
 		return $this->docComment->getAllAnnotations();
 	}
-	
+
 	/**
      * returns the specified method or null if it does not exist
      *
@@ -139,11 +139,11 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         if (parent::hasMethod($name) == false) {
             return null;
         }
-        
+
         $moufRefMethod = new MoufReflectionMethod($this, $name);
         return $moufRefMethod;
     }
-    
+
     public function getConstructor() {
     	$constructor = parent::getConstructor();
     	if ($constructor == null) {
@@ -165,10 +165,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         foreach ($methods as $method) {
             $moufMethods[] = new MoufReflectionMethod($this, $method->getName());
         }
-        
+
         return $moufMethods;
     }
-    
+
     /**
     * returns a list of all methods matching a given regex
     * @param string $regex the regex to macth
@@ -183,7 +183,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     			$moufMethods[$method->getName()] = new MoufReflectionMethod($this, $method->getName());
     		}
     	}
-    
+
     	return $moufMethods;
     }
 
@@ -205,7 +205,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
                 }
             }
         }
-        
+
         return $moufMethods;
     }*/
 
@@ -220,7 +220,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         if (parent::hasProperty($name) == false) {
             return null;
         }
-        
+
         $moufRefProperty = new MoufReflectionProperty($this, $name);
         return $moufRefProperty;
     }
@@ -241,7 +241,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         	}
             $moufProperties[] = new MoufReflectionProperty($this, $property->getName());
         }
-        
+
         return $moufProperties;
     }
 
@@ -263,7 +263,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
                 }
             }
         }
-        
+
         return $moufProperties;
     }*/
 
@@ -279,7 +279,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         foreach ($interfaces as $interface) {
             $moufRefClasses[] = new self($interface->getName());
         }
-        
+
         return $moufRefClasses;
     }
 
@@ -294,28 +294,23 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         if (null === $parentClass || false === $parentClass) {
             return null;
         }
-        
+
         $moufRefClass = new self($parentClass->getName());
         return $moufRefClass;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see ReflectionClass::getTraits()
      */
     public function getTraits() {
-    	if (version_compare(PHP_VERSION, "5.4.0", '<')) {
-    		// I'm not using PHP 5.4 or higher
-    		return array();
-    	}
-    	
     	if ($this->traits !== null) {
     		return $this->traits;
     	}
-    	
+
     	$traitNames = parent::getTraitNames();
     	$this->traits = array_map(function($name) { return new MoufReflectionClass($name); }, $traitNames);
-    	
+
     	return $this->traits;
     }
 
@@ -330,11 +325,11 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
         if (null === $extensionName || false === $extensionName) {
             return null;
         }
-        
+
         $moufRefExtension = new MoufReflectionExtension($extensionName);
         return $moufRefExtension;
     }
-    
+
     /**
     * The list of Mouf properties this class contains.
     * This is initialized by a call to getMoufProperties()
@@ -342,7 +337,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     * @var array<MoufPropertyDescriptor> An array containing MoufXmlReflectionProperty objects.
     */
     private $moufProperties = null;
-    
+
     /**
      * Returns a list of properties that have the @Property annotation (and a list of setter that have the @Property annotation)
      *
@@ -353,10 +348,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	if ($this->moufProperties === null) {
     		$this->moufProperties = MoufReflectionHelper::getMoufProperties($this);
     	}
-    	 
+
     	return $this->moufProperties;
     }*/
-    
+
     /**
      * Returns the Mouf property whose name is $name
      * The property name is the "name" of the public property, or the "setter function name" of the setter-based property.
@@ -371,17 +366,17 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	} else {
     		return null;
     	}
-    	 
+
     }*/
-    
+
     /**
      * @var MoufPropertyDescriptor[]
      */
     private $injectablePropertiesByConstructor;
-    
+
     /**
      * Returns the list of MoufPropertyDescriptor that can be injected via the constructor.
-     * 
+     *
      * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
      */
     public function getInjectablePropertiesByConstructor() {
@@ -398,7 +393,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	}
     	return $this->injectablePropertiesByConstructor;
     }
-    
+
     /**
      * Returns a Mouf property descriptor for the public property whose argument name is $name.
      *
@@ -409,16 +404,16 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	$properties = $this->getInjectablePropertiesByConstructor();
     	return isset($properties[$name])?$properties[$name]:null;
     }
-    
-    
+
+
     /**
      * @var MoufPropertyDescriptor[]
      */
     private $injectablePropertiesByPublicProperty;
-    
+
     /**
      * Returns the list of MoufPropertyDescriptor that can be injected via a public property of the class.
-     * 
+     *
      * @return MoufPropertyDescriptor[] An associative array. The key is the name of the argument.
      */
     public function getInjectablePropertiesByPublicProperty() {
@@ -438,10 +433,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	}
     	return $this->injectablePropertiesByPublicProperty;
     }
-    
+
     /**
      * Returns a Mouf property descriptor for the public property whose name is $name.
-     * 
+     *
      * @param string $name
      * @return MoufPropertyDescriptor
      */
@@ -449,12 +444,12 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	$properties = $this->getInjectablePropertiesByPublicProperty();
     	return isset($properties[$name])?$properties[$name]:null;
     }
-    
+
     /**
      * @var MoufPropertyDescriptor[]
      */
     private $injectablePropertiesBySetter;
-    
+
     /**
      * Returns the list of MoufPropertyDescriptor that can be injected via a setter of the class.
      *
@@ -470,7 +465,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     /**
      * We need this static method because we cannot use traits for PHP 5.3 that would have been useful
      * to provide those methods to both MoufReflectionClass and MoufXMLReflectionClass.
-     * 
+     *
      * @param MoufReflectionClassInterface $refClass
      * @return multitype:\Mouf\MoufPropertyDescriptor
      */
@@ -479,7 +474,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	foreach($refClass->getMethodsByPattern('^set..*') as $method) {
     		/* @var $attribute MoufXmlReflectionProperty */
     		//if ($method->hasAnnotation("Property")) {
-    		 
+
     		$parameters = $method->getParameters();
     		if (count($parameters) == 0) {
     			continue;
@@ -496,15 +491,15 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     				continue;
     			}
     		}
-    		 
+
     		$propertyDescriptor = new MoufPropertyDescriptor($method);
     		$moufProperties[$method->getName()] = $propertyDescriptor;
     		//}
     	}
     	return $moufProperties;
     }
-    
-    
+
+
     /**
      * Returns a Mouf property descriptor for the setter whose method name is $name.
      *
@@ -515,25 +510,25 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	$properties = $this->getInjectablePropertiesBySetter();
     	return isset($properties[$name])?$properties[$name]:null;
     }
-    
+
     /**
      * Returns the full MoufPhpDocComment
-     * 
+     *
      * @return MoufPhpDocComment
      */
     public function getMoufDocComment() {
     	$this->analyzeComment();
     	return $this->docComment;
     }
-    
+
     public function toXml() {
     	$root = simplexml_load_string("<class name=\"".$this->getName()."\"></class>");
     	$commentNode = $root->addChild("comment");
-    	
+
     	$node= dom_import_simplexml($commentNode);
    		$no = $node->ownerDocument;
-   		$node->appendChild($no->createCDATASection($this->getDocComment())); 
-    	
+   		$node->appendChild($no->createCDATASection($this->getDocComment()));
+
 
     	foreach ($this->getProperties() as $property) {
     		$property->toXml($root);
@@ -542,24 +537,24 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
        	foreach ($this->getMethods() as $method) {
     		$method->toXml($root);
     	}
-    	
+
     	$uses = $this->getUseNamespaces();
     	foreach ($uses as $as=>$path) {
     		$use = $root->addChild("use");
     		$use->addAttribute("as", $as);
     		$use->addAttribute("path", $path);
     	}
-    	
+
     	$xml = $root->asXml();
     	return $xml;
     }
-    
+
     /**
      * Returns the last modification date of this file or one of the parent classes of this file.
      * This return actually the last modification date of this file and all parents classes.
-     * 
+     *
      * This is useful to discard cache records if this file or one of its parents is updated.
-     * 
+     *
      * TODO: take traits into account.
      */
     protected function getLastModificationDate() {
@@ -570,10 +565,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		return filemtime($this->getFileName());
     	}
     }
-    
+
     /**
      * Returns a PHP array representing the class.
-     * 
+     *
      * @param string $exportMode Decide what to export. Defaults to ALL.
      * @return string
      */
@@ -587,10 +582,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     				if ($resultArray['modificationdate'] == $this->getLastModificationDate()) {
     					return $resultArray['json'];
     				}
-    			}	
+    			}
     		}
     		$jsonArray = $this->performToJson($exportMode);
-    		
+
     		$this->cacheService->set("mouf_class_json_".$this->getName()."/".$exportMode,
     				array(
     						'filename'=>$this->getFileName(),
@@ -598,14 +593,14 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     						'json'=>$jsonArray
     					)
     				);
-    		
+
     		return $jsonArray;
     	} else {
     		// TODO: move MoufReflectionHelper::classToJson inside this class.
     		return $this->performToJson($exportMode);
     	}
     }
-    
+
     /**
      * Returns a PHP array representing the class.
      *
@@ -614,9 +609,9 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     public function performToJson($exportMode) {
     	$result = array();
     	$result['name'] = $this->getName();
-    
+
     	$result['exportmode'] = $exportMode;
-    
+
     	// The filename is relative to the ROOT_PATH.
     	// It is "null" if the class is not part of the ROOT_PATH.
     	$fileName = $this->getFileName();
@@ -627,7 +622,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	}
     	$result['startline'] = $this->getStartLine();
     	$result['isinstantiable'] = $this->isInstantiable();
-    
+
     	$result['comment'] = $this->getMoufDocComment()->getJsonArray();
     	$result['implements'] = array();
 
@@ -636,7 +631,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		/* @var $interface MoufReflectionClass */
     		$result['implements'][] = $interface->getName();
     	}
-    
+
     	/*$extends = array();
     		$currentClass = $this;
     	while ($currentClass->getExtension()) {
@@ -647,16 +642,16 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	if ($this->getParentClass()) {
     		$result['extend'] = $this->getParentClass()->getName();
     	}
-    
+
     	if ($exportMode != MoufReflectionClass::EXPORT_TINY) {
-    
+
     		$result['properties'] = array();
     		foreach ($this->getProperties() as $property) {
     			if ($property->isPublic() && !$property->isStatic()) {
     				$result['properties'][] = $property->toJson();
     			}
     		}
-    			
+
     		$result['methods'] = array();
     		foreach ($this->getMethods() as $method) {
     			$doExport = false;
@@ -669,60 +664,60 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     				$result['methods'][] = $method->toJson();
     			}
     		}
-    
+
     	}
-    		
+
     	return $result;
     }
-    
+
 
     private $useNamespaces;
-    
+
     /**
      * For the current class, returns a list of "use" statement used in the file for that class.
      * The key is the "alias" of the path, and the value the path.
-     * 
+     *
      * So if you have:
      * 	use Mouf\Mvc\Splash\Controller as SplashController
-     * 
+     *
      * the key will be "SplashController" and the value "Mouf\Mvc\Splash\Controller"
-     * 
+     *
      * Similarly, if you have only
      * 	use Mouf\Mvc\Splash\Controller
-     * 
+     *
      * the key will be "Controller" and the value "Mouf\Mvc\Splash\Controller"
-     * 
+     *
      * @return array<string, string>
      */
     public function getUseNamespaces() {
     	if ($this->useNamespaces === null) {
     		$this->useNamespaces = array();
-    		
+
     		// Optim from Doctrine / Symfony 2: let's not analyze the "use" statements after the start of the class!
     		$contents = $this->getFileContent($this->getFileName(), $this->getStartLine());
     		//$contents = file_get_contents($this->getFileName());
-    		
+
     		// Optim to avoid doing the token_get_all think that is costly.
     		if (strpos($contents, 'use ') === false) {
     			return array();
     		}
-    		
+
    			$tokens   = token_get_all($contents);
-    		
+
     		$classes = array();
-    		
+
     		//$namespace = '';
     		for ($i = 0, $max = count($tokens); $i < $max; $i++) {
     			$token = $tokens[$i];
-    		
+
     			if (is_string($token)) {
     				continue;
     			}
-    		
+
     			$class = '';
-    		
+
     			$path = '';
-    			
+
     			if ($token[0] == T_USE) {
 	    			while (($t = $tokens[++$i]) && is_array($t)) {
 	    				//if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
@@ -731,33 +726,33 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 	    					$path .= $t[1];
 	    					if ($type == T_STRING) {
 	    						$as = $t[1];
-	    					} 
+	    					}
 	    				} elseif ($type === T_AS) {
 							break;
 						}
 	    			}
-	    				
+
 	    			if (empty($path)) {
 	    				// Path can be empty if the USE statement is not at the beginning of the file but part of a closure
 	    				//		(function() use ($var))
 	    				continue;
 	    			}
-	    				
+
     				$nextToken = $tokens[$i];
     				if ($nextToken[0] === T_AS) {
 						$i += 2;
     					$as = $tokens[$i][1];
     				}
     				$path = ltrim($path, '\\');
-	    				
+
 	    			$this->useNamespaces[$as] = $path;
     			}
     		}
-    		
+
     	}
     	return $this->useNamespaces;
     }
-    
+
     /**
      * Get the content of the file right up to the given line number.
      * (thanks to Doctrine Annotations for this piece of code)
@@ -771,7 +766,7 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     	if ( ! is_file($filename)) {
     		return null;
     	}
-    
+
     	$content = '';
     	$lineCnt = 0;
     	$file = new \SplFileObject($filename);
@@ -779,11 +774,10 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
     		if ($lineCnt++ == $lineNumber) {
     			break;
     		}
-    
+
     		$content .= $file->fgets();
     	}
-    
+
     	return $content;
     }
 }
-?>

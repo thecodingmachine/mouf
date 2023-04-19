@@ -98,22 +98,13 @@ class ClassMapGenerator
     {
         $contents = file_get_contents($path);
         try {
-        	//$nbResults = preg_match_all('{\b(?:class|interface|trait)\b}i', $contents);
-        	//$nbResults = preg_match_all('{\b(?:class)\b}i', $contents, $results, PREG_OFFSET_CAPTURE);
-        	
-        	
-        	/*$nbResults = preg_match_all('{\b(?:class)\b}i', $contents);
-            if ($nbResults == 0) {
-                return array();
-            }*/
-        	
             // Let's trim the content after the last "class" keyword line.
             $classKeywordPos = strrpos($contents, 'class');
             if ($classKeywordPos === false) {
             	return array();
             }
             //$classKeywordPos = $results[0][count($results[0])-1][1];
-            
+
             // Jump 2 newlines after the last class keyword.
             if (strlen($contents) > $classKeywordPos+6) {
 	            $newLinePos = strpos($contents, "\n", $classKeywordPos+6);
@@ -124,8 +115,8 @@ class ClassMapGenerator
 		            }
 	            }
             }
-            
-            // Let's ignore any warning because we are cutting in the middle of a PHP file and we might cut in a 
+
+            // Let's ignore any warning because we are cutting in the middle of a PHP file and we might cut in a
             // comment.
             $currentErrorReporting = error_reporting(E_ALL & ~E_COMPILE_WARNING);
             $tokens = token_get_all($contents);
@@ -133,12 +124,11 @@ class ClassMapGenerator
         } catch (\Exception $e) {
             throw new \RuntimeException('Could not scan for classes inside '.$path.": \n".$e->getMessage(), 0, $e);
         }
-        $T_TRAIT  = version_compare(PHP_VERSION, '5.4', '<') ? -1 : T_TRAIT;
 
         $classes = array();
 
         $namespace = '';
-       	
+
         for ($i = 0, $max = count($tokens); $i < $max; $i++) {
             $token = $tokens[$i];
 
@@ -153,7 +143,7 @@ class ClassMapGenerator
                     $namespace = '';
                     // If there is a namespace, extract it
                     while (($t = $tokens[++$i]) && is_array($t)) {
-                        if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+                        if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED))) {
                             $namespace .= $t[1];
                         }
                     }
@@ -161,9 +151,9 @@ class ClassMapGenerator
                     break;
                 case T_CLASS:
                 //case T_INTERFACE:
-                //case $T_TRAIT:
+                //case T_TRAIT:
                     // Find the classname
-            		
+
                     while (($t = $tokens[++$i]) && is_array($t)) {
                     	if (T_STRING === $t[0]) {
                             $class .= $t[1];
@@ -173,16 +163,11 @@ class ClassMapGenerator
                     }
 
                     $classes[] = ltrim($namespace . $class, '\\');
-                    /*if ($nbResults == 1) {
-                    	// Optim: if there is only one "class" keyword in the file, there is only one class, and we have it!
-                    	return $classes;
-                    }*/
                     break;
                 default:
                     break;
             }
         }
-        
 
         return $classes;
     }
