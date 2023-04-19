@@ -53,7 +53,10 @@ class ComposerService {
 	 * Returns the classmap array.
 	 * This map associates the name of the classes and the PHP file they are declared in.
 	 *
-     * @param string $mode Mode can be "NO_FILTER", "ROOT_PACKAGE" or "VENDOR"
+     * @param string $mode Mode can have only those 3 values:
+	 * 						"ROOT_PACKAGE": only classes from the root package are returned
+	 *   					"VENDOR": only classes from (dev-)dependencies packages are returned
+	 * 						"NO_FILTER": all classes are returned
      * @return array<string, string>
 	 */
 	public function getClassMap($mode = 'NO_FILTER') {
@@ -209,7 +212,7 @@ class ComposerService {
 			} else {
 				$this->io = new BufferIO();
 			}
-			$this->composer = Factory::create($this->io, ['vendor-dir' => __DIR__ . '/../../../vendor'], true);
+			$this->composer = Factory::create($this->io, null, true);
 		}
 		return $this->composer;
 	}
