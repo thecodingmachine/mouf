@@ -672,7 +672,6 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
 
 
     private $useNamespaces;
-
     /**
      * For the current class, returns a list of "use" statement used in the file for that class.
      * The key is the "alias" of the path, and the value the path.
@@ -690,67 +689,68 @@ class MoufReflectionClass extends \ReflectionClass implements MoufReflectionClas
      * @return array<string, string>
      */
     public function getUseNamespaces() {
-    	if ($this->useNamespaces === null) {
-    		$this->useNamespaces = array();
+        if ($this->useNamespaces === null) {
+            $this->useNamespaces = array();
 
-    		// Optim from Doctrine / Symfony 2: let's not analyze the "use" statements after the start of the class!
-    		$contents = $this->getFileContent($this->getFileName(), $this->getStartLine());
-    		//$contents = file_get_contents($this->getFileName());
+            // Optim from Doctrine / Symfony 2: let's not analyze the "use" statements after the start of the class!
+            $contents = $this->getFileContent($this->getFileName(), $this->getStartLine());
+            //$contents = file_get_contents($this->getFileName());
 
-    		// Optim to avoid doing the token_get_all think that is costly.
-    		if (strpos($contents, 'use ') === false) {
-    			return array();
-    		}
+            // Optim to avoid doing the token_get_all think that is costly.
+            if (strpos($contents, 'use ') === false) {
+                return array();
+            }
 
-   			$tokens   = token_get_all($contents);
+            $tokens   = token_get_all($contents);
 
-    		$classes = array();
+            $classes = array();
 
-    		//$namespace = '';
-    		for ($i = 0, $max = count($tokens); $i < $max; $i++) {
-    			$token = $tokens[$i];
+            //$namespace = '';
+            for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+                $token = $tokens[$i];
 
-    			if (is_string($token)) {
-    				continue;
-    			}
+                if (is_string($token)) {
+                    continue;
+                }
 
-    			$class = '';
+                $class = '';
 
-    			$path = '';
+                $path = '';
 
-    			if ($token[0] == T_USE) {
-	    			while (($t = $tokens[++$i]) && is_array($t)) {
-	    				//if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
-	    				$type = $t[0];
-	    				if ($type == T_STRING || $type == T_NS_SEPARATOR) {
-	    					$path .= $t[1];
-	    					if ($type == T_STRING) {
-	    						$as = $t[1];
-	    					}
-	    				} elseif ($type === T_AS) {
-							break;
-						}
-	    			}
+                if ($token[0] == T_USE) {
+                    while (($t = $tokens[++$i]) && is_array($t)) {
+                        //if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+                        $type = $t[0];
+                        if ($type == T_STRING || $type == T_NS_SEPARATOR) {
+                            $path .= $t[1];
+                        } elseif ($type === T_NAME_QUALIFIED || $type === T_NAME_FULLY_QUALIFIED) {
+                            $path = $t[1];
+                        } elseif ($type === T_AS) {
+                            break;
+                        }
+                    }
 
-	    			if (empty($path)) {
-	    				// Path can be empty if the USE statement is not at the beginning of the file but part of a closure
-	    				//		(function() use ($var))
-	    				continue;
-	    			}
+                    if (empty($path)) {
+                        // Path can be empty if the USE statement is not at the beginning of the file but part of a closure
+                        //		(function() use ($var))
+                        continue;
+                    }
 
-    				$nextToken = $tokens[$i];
-    				if ($nextToken[0] === T_AS) {
-						$i += 2;
-    					$as = $tokens[$i][1];
-    				}
-    				$path = ltrim($path, '\\');
+                    $nextToken = $tokens[$i];
+                    if ($nextToken[0] === T_AS) {
+                        $i += 2;
+                        $as = $tokens[$i][1];
+                    } else {
+                        $as = substr($path, strrpos($path,"\\") + 1);
+                    }
+                    $path = ltrim($path, '\\');
 
-	    			$this->useNamespaces[$as] = $path;
-    			}
-    		}
+                    $this->useNamespaces[$as] = $path;
+                }
+            }
 
-    	}
-    	return $this->useNamespaces;
+        }
+        return $this->useNamespaces;
     }
 
     /**
