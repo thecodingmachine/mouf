@@ -179,6 +179,16 @@ class MoufXmlReflectionParameter implements MoufReflectionParameterInterface
 	public function getType() {
     	return (string)$this->xmlElem['class'];
     }
+
+    /**
+     *Returns Class Type from xmlElem
+     *
+     *@return string
+     */
+    public function getClassName() {
+
+        return $this->getType();
+    }
     
     /**
      * Returns the position of the parameter in the parameters list (starting 0)
